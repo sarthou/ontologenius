@@ -244,14 +244,14 @@ namespace ontologenius {
 
   std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string& individual)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = container_.find(individual);
     return getDistincts<std::string>(indiv);
   }
 
   std::unordered_set<index_t> IndividualGraph::getDistincts(index_t individual)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = ordered_individuals_[individual];
     return getDistincts<index_t>(indiv);
   }
@@ -268,14 +268,14 @@ namespace ontologenius {
 
   std::unordered_set<std::string> IndividualGraph::getRelationFrom(const std::string& individual, int depth)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = container_.find(individual);
     return getRelationFrom<std::string>(indiv, depth);
   }
 
   std::unordered_set<index_t> IndividualGraph::getRelationFrom(index_t individual, int depth)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = ordered_individuals_[individual];
     return getRelationFrom<index_t>(indiv, depth);
   }
@@ -338,7 +338,7 @@ namespace ontologenius {
     class_graph_->getRelatedFrom(object_properties, data_properties, class_res);
 
     std::unordered_set<T> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     for(auto& individual : all_branchs_)
     {
       for(const IndivObjectRelationElement& relation : individual->object_relations_)
@@ -365,7 +365,7 @@ namespace ontologenius {
   std::unordered_set<std::string> IndividualGraph::getRelationOn(const std::string& individual, int depth)
   {
     std::unordered_set<std::string> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     const std::unordered_set<index_t> same = getSameId(individual);
     for(const index_t id : same)
       for(auto& indiv : all_branchs_)
@@ -392,7 +392,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getRelationOn(index_t individual, int depth)
   {
     std::unordered_set<index_t> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     if(individual > 0)
     {
@@ -419,7 +419,7 @@ namespace ontologenius {
   std::unordered_set<std::string> IndividualGraph::getRelatedOn(const std::string& property)
   {
     std::unordered_set<std::string> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     getRelatedOn(property, res);
 
@@ -429,7 +429,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getRelatedOn(index_t property)
   {
     std::unordered_set<index_t> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     getRelatedOn(property, res);
 
@@ -466,7 +466,7 @@ namespace ontologenius {
     std::vector<int> depths;
     std::vector<std::string> tmp_res;
 
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     IndividualBranch* indiv = container_.find(individual);
     if(indiv != nullptr)
@@ -512,7 +512,7 @@ namespace ontologenius {
     std::vector<int> depths;
     std::vector<index_t> tmp_res;
 
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     IndividualBranch* indiv = ordered_individuals_[individual];
     if(indiv != nullptr)
@@ -553,7 +553,7 @@ namespace ontologenius {
   std::unordered_set<std::string> IndividualGraph::getRelatedWith(const std::string& individual)
   {
     std::unordered_set<std::string> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     index_t indiv_index = 0;
     auto* indiv_ptr = container_.find(individual);
@@ -581,7 +581,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getRelatedWith(index_t individual)
   {
     std::unordered_set<index_t> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     getRelatedWith(individual, res);
 
@@ -715,7 +715,7 @@ namespace ontologenius {
     const std::unordered_set<index_t> object_properties = object_property_graph_->getDownId(property);
     const std::unordered_set<index_t> data_properties = data_property_graph_->getDownId(property);
 
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
     for(auto& indiv_i : all_branchs_)
     {
@@ -837,7 +837,7 @@ namespace ontologenius {
 
   std::unordered_set<std::string> IndividualGraph::getOn(const std::string& individual, const std::string& property, bool single_same)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = container_.find(individual);
 
     return getOn(indiv, property, single_same);
@@ -845,7 +845,7 @@ namespace ontologenius {
 
   std::unordered_set<index_t> IndividualGraph::getOn(index_t individual, index_t property, bool single_same)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = ordered_individuals_[individual];
 
     return getOn(indiv, property, single_same);
@@ -946,7 +946,7 @@ namespace ontologenius {
   std::unordered_set<std::string> IndividualGraph::getWith(const std::string& first_individual, const std::string& second_individual, int depth)
   {
     std::unordered_set<std::string> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = container_.find(first_individual);
 
     std::unordered_set<index_t> second_individual_index;
@@ -978,7 +978,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getWith(index_t first_individual, index_t second_individual, int depth)
   {
     std::unordered_set<index_t> res;
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = ordered_individuals_[first_individual];
     if(second_individual > 0)
     {
@@ -1112,7 +1112,7 @@ namespace ontologenius {
 
   std::unordered_set<std::string> IndividualGraph::getUp(const std::string& individual, int depth)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = container_.find(individual);
     std::unordered_set<std::string> res;
     getUp(indiv, res, depth);
@@ -1121,7 +1121,7 @@ namespace ontologenius {
 
   std::unordered_set<index_t> IndividualGraph::getUp(index_t individual, int depth)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = ordered_individuals_[individual];
     std::unordered_set<index_t> res;
     getUp(indiv, res, depth);
@@ -1186,7 +1186,7 @@ namespace ontologenius {
 
   void IndividualGraph::getDistincts(IndividualBranch* individual, std::unordered_set<IndividualBranch*>& res)
   {
-    const std::lock_guard<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     if(individual != nullptr)
     {
       for(auto& distinct : individual->distinct_)
