@@ -7,22 +7,15 @@
 
 namespace ontologenius {
 
-  struct Variable_t
-  {
-    std::string var_name;
-    bool is_instantiated;
-    bool is_datavalue;
-
-    std::string toString() const { return var_name; }
-  };
-
-  struct Rule_t
+  struct Rule_t // temporary structure to store rules
   {
     std::vector<std::string> variables;
     std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>> antecedents;
     std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>> consequents;
     std::string rule_str;
     std::string rule_comment;
+
+    std::vector<std::pair<int64_t, int64_t>> atom_indexes_;
 
     std::string toStringRule()
     {
@@ -105,21 +98,15 @@ namespace ontologenius {
               DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
     ~RuleGraph() override = default;
 
-    RuleBranch* add(const std::size_t& value, Rule_t& rule);
-    void createRuleAtomList(RuleAtomList_t* rule_list, std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>> rule_element,
-                            const size_t& rule_id, const size_t& elem_id);
-    ClassAtom_t* createClassAtom(ExpressionMember_t* class_member, const Variable_t& variable, const size_t& rule_id, const size_t& elem_id);
-    ObjectPropertyAtom_t* createObjectPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
-    DataPropertyAtom_t* createDataPropertyAtom(ExpressionMember_t* property_member, std::vector<Variable_t> variable);
-    std::string getVariable(Rule_t& rule);
+    RuleBranch* add(const std::size_t& rule_id, Rule_t& rule);
 
-    // Anonymous method duplicates
-    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
-    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth);
-    AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
-    void printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const;
+    RuleTriplet_t createRuleAtomTriplet(RuleBranch* rule_branch, const std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>>& rule_element, const size_t& rule_id, const size_t& elem_id);
+    RuleTriplet_t createClassTriplet(RuleBranch* rule_branch, ExpressionMember_t* class_member, const Variable_t& variable, const size_t& rule_id, const size_t& elem_id);
+    RuleTriplet_t createObjectPropertyTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);
+    RuleTriplet_t createDataPropertyTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);
 
-    std::string toString(CardType_e value) const;
+    RuleResource_t getRuleResource(RuleBranch* rule_branch, const Variable_t& variable);
+    void setVariableIndex(RuleBranch* rule_branch, RuleResource_t& resource);
 
   private:
     ClassGraph* class_graph_;
