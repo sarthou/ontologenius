@@ -65,12 +65,17 @@ namespace ontologenius {
 
   struct IndivResult_t // found instantiation for a variable (indiv or datatype)
   {
-    // IndivResult_t(IndividualBranch* ind, const std::string& expl, const RuleUsedTriplet_t& triplets)
-    // {
-    //   indiv = ind;
-    //   explanations.push_back(expl);
-    //   used_triplets.push_back(triplets);
-    // }
+    IndivResult_t() : indiv(nullptr), literal(nullptr)
+    {}
+
+    IndivResult_t(IndividualBranch* indiv_res, const std::string& expl, const RuleUsedTriplet_t& triplets) : indiv(indiv_res), literal(nullptr)
+    {
+      explanations.push_back(expl);
+      used_triplets.push_back(triplets);
+    }
+
+    IndivResult_t(LiteralNode* literal_res) : indiv(nullptr), literal(literal_res)
+    {}
 
     // IndivResult_t(LiteralNode* lit, const std::string& expl, const RuleUsedTriplet_t& triplets)
     // {
