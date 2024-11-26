@@ -24,7 +24,7 @@ namespace ontologenius {
   void PropertiesOwlWriter<T>::writeDisjointWith(Branch<T>* branch)
   {
     for(auto& disjoint : branch->disjoints_)
-      if(disjoint.infered == false)
+      if(disjoint.inferred == false)
       {
         std::string tmp = "        <owl:disjointWith" +
                           getProba(disjoint) +

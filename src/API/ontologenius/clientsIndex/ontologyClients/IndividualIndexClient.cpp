@@ -120,4 +120,28 @@ namespace onto {
     return callIndexes("getDistincts", param);
   }
 
+  bool IndividualIndexClient::isInferred(int64_t subject, int64_t property, int64_t object)
+  {
+    std::string param = std::to_string(subject) + "|" + std::to_string(property) + "|" + std::to_string(object);
+    return (callStr("isInferred", param).empty() == false);
+  }
+
+  bool IndividualIndexClient::isInferred(int64_t subject, int64_t class_index)
+  {
+    std::string param = std::to_string(subject) + "|" + std::to_string(class_index);
+    return (callStr("isInferred", param).empty() == false);
+  }
+
+  std::vector<std::string> IndividualIndexClient::getInferenceExplanation(int64_t subject, int64_t property, int64_t object)
+  {
+    std::string param = std::to_string(subject) + "|" + std::to_string(property) + "|" + std::to_string(object);
+    return call("getInferenceExplanation", param);
+  }
+
+  std::vector<std::string> IndividualIndexClient::getInferenceExplanation(int64_t subject, int64_t class_index)
+  {
+    std::string param = std::to_string(subject) + "|" + std::to_string(class_index);
+    return call("getInferenceExplanation", param);
+  }
+
 } // namespace onto

@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"

@@ -247,12 +247,12 @@ namespace ontologenius {
       return std::make_pair("", -1);
     }
 
-    inline std::unordered_set<ObjectPropertyBranch*> getUpProperty(ObjectPropertyBranch* property)
+    std::unordered_set<ObjectPropertyBranch*> getUpProperty(ObjectPropertyBranch* property)
     {
       return ontology_->object_property_graph_.getUpPtrSafe(property);
     }
 
-    inline std::unordered_set<DataPropertyBranch*> getUpProperty(DataPropertyBranch* property)
+    std::unordered_set<DataPropertyBranch*> getUpProperty(DataPropertyBranch* property)
     {
       return ontology_->data_property_graph_.getUpPtrSafe(property);
     }
@@ -302,12 +302,12 @@ namespace ontologenius {
       return false;
     }
 
-    inline bool testProperty(AnonymousClassElement* ano_elem, ObjectPropertyBranch* property)
+    bool testProperty(AnonymousClassElement* ano_elem, ObjectPropertyBranch* property)
     {
       return ano_elem->object_property_involved_ == property;
     }
 
-    inline bool testProperty(AnonymousClassElement* ano_elem, DataPropertyBranch* property)
+    bool testProperty(AnonymousClassElement* ano_elem, DataPropertyBranch* property)
     {
       return ano_elem->data_property_involved_ == property;
     }

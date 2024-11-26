@@ -357,6 +357,10 @@ namespace ontologenius {
         }*/
         else if(req->action == "getAll")
           res->index_values = onto_->individual_graph_.getAllIndex();
+        else if(req->action == "isInferred")
+          res->string_values = onto_->individual_graph_.isInferredIndex(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
+        else if(req->action == "getInferenceExplanation")
+          res->string_values = onto_->individual_graph_.getInferenceExplanationIndex(params());
         else
           res->code = UNKNOW_ACTION;
 

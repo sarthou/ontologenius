@@ -64,7 +64,7 @@ namespace ontologenius {
   void IndividualOwlWriter::writeType(IndividualBranch* branch)
   {
     for(auto& mother : branch->is_a_)
-      if(mother.infered == false)
+      if(mother.inferred == false)
       {
         const std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
         const std::string tmp = "        <rdf:type" +
@@ -78,7 +78,7 @@ namespace ontologenius {
   void IndividualOwlWriter::writeObjectProperties(IndividualBranch* branch)
   {
     for(const IndivObjectRelationElement& relation : branch->object_relations_)
-      if(relation.infered == false)
+      if(relation.inferred == false)
       {
         const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
         const std::string tmp = "        <" +
@@ -94,7 +94,7 @@ namespace ontologenius {
   void IndividualOwlWriter::writeDataProperties(IndividualBranch* branch)
   {
     for(const IndivDataRelationElement& relation : branch->data_relations_)
-      if(relation.infered == false)
+      if(relation.inferred == false)
       {
         const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
         const std::string tmp = "        <" +
@@ -115,7 +115,7 @@ namespace ontologenius {
   void IndividualOwlWriter::writeSameAs(IndividualBranch* branch)
   {
     for(auto& same_as : branch->same_as_)
-      if(same_as.infered == false)
+      if(same_as.inferred == false)
       {
         const std::string tmp = "        <owl:sameAs rdf:resource=\"" + ns_ + "#" +
                                 same_as.elem->value() + "\"/>\n";

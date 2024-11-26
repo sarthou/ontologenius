@@ -24,6 +24,13 @@ TEST(reasoning_chain, chains_base)
   res = onto_ptr->individuals.getOn("ball", "isIn");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "box") != res.end());
 
+  EXPECT_FALSE(onto_ptr->individuals.isInferred("ball", "isOn", "cube_base"));
+  EXPECT_TRUE(onto_ptr->individuals.isInferred("ball", "isIn", "box"));
+  auto exp = onto_ptr->individuals.getInferenceExplanation("ball", "isIn", "box");
+  EXPECT_EQ(exp.size(), 2);
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "ball|isOn|cube_base") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "cube_base|isIn|box") != res.end());
+
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(std::find(res.begin(), res.end(), "table") != res.end());
 
@@ -53,6 +60,14 @@ TEST(reasoning_chain, chain_heritance)
 
   res = onto_ptr->individuals.getOn("ball", "isIn");
   EXPECT_TRUE(find(res.begin(), res.end(), "box") != res.end());
+
+  EXPECT_FALSE(onto_ptr->individuals.isInferred("ball", "isOnTop", "cube_base"));
+  EXPECT_TRUE(onto_ptr->individuals.isInferred("ball", "isIn", "box"));
+  auto exp = onto_ptr->individuals.getInferenceExplanation("ball", "isIn", "box");
+  EXPECT_EQ(exp.size(), 3);
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "ball|isOnTop|cube_base") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "isOnTop|isA|isOn") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "cube_base|isIn|box") != res.end());
 
   res = onto_ptr->individuals.getOn("ball", "thirdChain");
   EXPECT_TRUE(find(res.begin(), res.end(), "table") != res.end());
