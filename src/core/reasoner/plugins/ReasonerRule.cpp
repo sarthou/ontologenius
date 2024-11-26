@@ -125,12 +125,7 @@ namespace ontologenius {
     }
     else // we reached the end of an exploration, we backpropagate each instantiated variable into the resulting vector
     {
-      // here we are supposed to have one indiv/literal for each atom (hasObject(ndiv1, indiv2) -> 2 indivs / has_data(indiv1, boolean#true) ->  indiv and 1 literal)
       std::vector<std::vector<IndivResult_t>> res(values.size(), std::vector<IndivResult_t>(rule_branch->variables_.size()));
-      std::cout << "body size : " << rule_branch->rule_body_.size() << std::endl;
-      // std::vector<std::vector<IndivResult_t>> res(values.size());
-      std::cout << "variables size : " << rule_branch->variables_.size() << std::endl;
-      std::cout << "values size : " << values.size() << std::endl;
       size_t cpt = 0;
       for(auto& value : values)
         res[cpt++][var_index] = value;
@@ -215,17 +210,14 @@ namespace ontologenius {
         var_index = triplet.object.variable_id;
         values = getOnObject(triplet, accu[var_index]);
       }
-      else
+      else if(accu[triplet.object.variable_id].indiv != nullptr)
       {
-        if(accu[triplet.object.variable_id].indiv != nullptr)
-        {
-          triplet.object.indiv_value = accu[triplet.object.variable_id].indiv;
-          IndivResult_t none_value; // equivalent of the getDefaultSelector()
-          values = getFromObject(triplet, none_value);
-        }
-        else
-          std::cout << "no variable bounded to any of the variable fields" << std::endl;
+        triplet.object.indiv_value = accu[triplet.object.variable_id].indiv;
+        IndivResult_t none_value; // equivalent of the getDefaultSelector()
+        values = getFromObject(triplet, none_value);
       }
+      else
+        std::cout << "no variable bounded to any of the variable fields" << std::endl;
     }
   }
 
@@ -380,7 +372,7 @@ namespace ontologenius {
       else
         return {};
     }
-    else if(indiv_on.indiv == nullptr)
+    else
     {
       // return all individuals matching the (triplet.subject.indiv_value, property, X)
       std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(triplet.subject.indiv_value, triplet.object_predicate);
@@ -640,11 +632,10 @@ namespace ontologenius {
 
     if(index != -1)
     {
-      // if(var_from == true)
-      //   used_solution.indiv = indiv_from; // mark the indiv used in this atom evaluation -> maybe useless
-      // else
-      //   used_solution.indiv = indiv_on; // mark the indiv used in this atom evaluation
-      used_solution.indiv = indiv_from;
+      if(var_from == true)
+        used_solution.indiv = indiv_from; // mark the indiv used in this atom evaluation -> maybe useless
+      else
+        used_solution.indiv = indiv_on; // mark the indiv used in this atom evaluation
 
       RuleUsedTriplet_t used_object(indiv_from->object_relations_.has_induced_inheritance_relations[index],
                                     indiv_from->object_relations_.has_induced_object_relations[index],
@@ -664,11 +655,10 @@ namespace ontologenius {
 
     if(index != -1)
     {
-      // if(var_from == true)
-      //   used_solution.indiv = indiv_from; // mark the indiv used in this atom evaluation
-      // else
-      //   used_solution.literal = literal_on; // mark the literal used in this atom evaluation
-      used_solution.indiv = indiv_from;
+      if(var_from == true)
+        used_solution.indiv = indiv_from; // mark the indiv used in this atom evaluation
+      else
+        used_solution.literal = literal_on; // mark the literal used in this atom evaluation
 
       RuleUsedTriplet_t used_data(indiv_from->data_relations_.has_induced_inheritance_relations[index],
                                   indiv_from->data_relations_.has_induced_object_relations[index],
