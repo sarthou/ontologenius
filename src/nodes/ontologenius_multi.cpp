@@ -254,7 +254,7 @@ int main(int argc, char** argv)
   ontologenius::compat::onto_ros::Node::get().spin();
 
   while(ontologenius::compat::onto_ros::Node::ok())
-    usleep(1);
+    usleep(1000);
 
   std::vector<std::string> interfaces_names;
   std::transform(interfaces.cbegin(), interfaces.cend(), std::back_inserter(interfaces_names), [](const auto& it) { return it.first; });
