@@ -44,6 +44,7 @@ void removeUselessSpace(std::string& text)
 
 std::map<std::string, ontologenius::RosInterface*> interfaces;
 std::map<std::string, std::thread> interfaces_threads;
+bool use_root = false;
 
 ontologenius::Parameters params;
 
@@ -68,6 +69,32 @@ bool deleteInterface(const std::string& name)
 
   std::cout << name << " STOPED" << std::endl;
   return true;
+}
+
+void addInterface(const std::string& name, bool is_root = false)
+{
+  auto* tmp = new ontologenius::RosInterface(name);
+  interfaces[name] = tmp;
+
+  auto files = params.at("files").get();
+  if((is_root || (name.find("robot") != std::string::npos)) && (params.at("robot_file").getFirst() != "none"))
+  {
+    files.push_back(params.at("robot_file").getFirst());
+    use_root = true;
+  }
+  else if(use_root && params.at("human_file").getFirst() != "none")
+    files.push_back(params.at("human_file").getFirst());
+
+  tmp->setDisplay(params.at("display").getFirst() == "true");
+  tmp->init(params.at("language").getFirst(),
+            params.at("intern_file").getFirst(),
+            files,
+            params.at("config").getFirst());
+
+  std::thread th(&ontologenius::RosInterface::run, tmp);
+  interfaces_threads[name] = std::move(th);
+
+  std::cout << name << " STARTED" << std::endl;
 }
 
 std::vector<std::string> getDiff(const std::string& param, int* res_code)
@@ -128,27 +155,7 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
       if(it != interfaces.end())
         res->code = NO_EFFECT;
       else
-      {
-        auto* tmp = new ontologenius::RosInterface(req->param);
-        interfaces[req->param] = tmp;
-
-        auto files = params.at("files").get();
-        if((req->param.find("robot") != std::string::npos) && (params.at("robot_file").getFirst() != "none"))
-          files.push_back(params.at("robot_file").getFirst());
-        else if(params.at("human_file").getFirst() != "none")
-          files.push_back(params.at("human_file").getFirst());
-
-        tmp->setDisplay(params.at("display").getFirst() == "true");
-        tmp->init(params.at("language").getFirst(),
-                  params.at("intern_file").getFirst(),
-                  files,
-                  params.at("config").getFirst());
-
-        std::thread th(&ontologenius::RosInterface::run, tmp);
-        interfaces_threads[req->param] = std::move(th);
-
-        std::cout << req->param << " STARTED" << std::endl;
-      }
+        addInterface(req->param);
     }
     else if(req->action == "copy")
     {
@@ -212,6 +219,13 @@ bool managerHandle(ontologenius::compat::onto_ros::ServiceWrapper<ontologenius::
       res->values = getDiff(req->param, &code);
       res->code = code;
     }
+    else if(req->action == "getRoot")
+    {
+      int code = 0;
+      if(params.at("root").getFirst() != "none")
+        res->values = {params.at("root").getFirst()};
+      res->code = code;
+    }
     else
       res->code = UNKNOW_ACTION;
 
@@ -228,12 +242,16 @@ int main(int argc, char** argv)
   params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
   params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
   params.insert(ontologenius::Parameter("display", {"-d", "--display"}, {"true"}));
-  params.insert(ontologenius::Parameter("human_file", {"-h", "--robot"}, {"none"}));
-  params.insert(ontologenius::Parameter("robot_file", {"-r", "--human"}, {"none"}));
+  params.insert(ontologenius::Parameter("human_file", {"-h", "--human"}, {"none"}));
+  params.insert(ontologenius::Parameter("robot_file", {"-r", "--robot"}, {"none"}));
+  params.insert(ontologenius::Parameter("root", {"--root"}, {"none"}));
   params.insert(ontologenius::Parameter("files", {}));
 
   params.set(argc, argv);
   params.display();
+
+  if(params.at("root").getFirst() != "none")
+    addInterface(params.at("root").getFirst());
 
   const ontologenius::compat::onto_ros::Service<ontologenius::compat::OntologeniusService> service("ontologenius/manage", managerHandle);
   ontologenius::compat::onto_ros::Node::get().spin();

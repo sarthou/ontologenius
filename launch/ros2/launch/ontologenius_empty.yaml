@@ -12,6 +12,9 @@ launch:
     name: "display"
     default: "false"
 - arg:
+    name: "root"
+    default: "none"
+- arg:
     name: "files"
     default: ""
 - arg:
@@ -23,4 +26,4 @@ launch:
     exec: "ontologenius_single"
     name: "ontologenius_core"
     output: "screen"
-    args: "-l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) $(var files)"
+    args: "--root $(var root) -l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) $(var files)"
