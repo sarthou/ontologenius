@@ -20,7 +20,7 @@ namespace ontologenius {
     UpdatableNode() : nb_updates_(0), updated_(true)
     {}
 
-    bool isUpdated() { return updated_; }
+    bool isUpdated() const { return updated_; }
     void setUpdated(bool value) { updated_ = value; }
 
   protected:
@@ -44,7 +44,7 @@ namespace ontologenius {
     const index_t& get() const { return index_; }
     const std::string& value() const { return table[index_]; }
 
-    bool isHidden() { return hidden_; }
+    bool isHidden() const { return hidden_; }
 
     static WordTable table;
 
