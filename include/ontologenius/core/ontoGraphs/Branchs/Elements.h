@@ -48,7 +48,9 @@ namespace ontologenius {
   public:
     T elem;
 
-    explicit SingleElement(const T& elem, float probability = 1.0, bool inferred = false)
+    explicit SingleElement(const T& elem,
+                           float probability = 1.0,
+                           bool inferred = false)
     {
       this->elem = elem;
       this->probability = probability;
@@ -60,6 +62,8 @@ namespace ontologenius {
       this->elem = elem;
       this->probability = other.probability;
       this->inferred = other.inferred;
+      this->induced_traces = other.induced_traces;
+      this->explanation = other.explanation;
     }
 
     SingleElement(const SingleElement& other)
@@ -70,6 +74,7 @@ namespace ontologenius {
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
+      this->explanation = other.explanation;
     }
 
     SingleElement& operator=(const SingleElement& other)
@@ -78,6 +83,7 @@ namespace ontologenius {
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
+      this->explanation = other.explanation;
       return *this;
     }
 
@@ -113,6 +119,8 @@ namespace ontologenius {
       this->second = second;
       this->probability = other.probability;
       this->inferred = other.inferred;
+      this->induced_traces = other.induced_traces;
+      this->explanation = other.explanation;
     }
 
     PairElement(const PairElement& other)
@@ -124,6 +132,7 @@ namespace ontologenius {
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
+      this->explanation = other.explanation;
     }
 
     PairElement& operator=(const PairElement& other)
@@ -135,6 +144,7 @@ namespace ontologenius {
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
+      this->explanation = other.explanation;
 
       return *this;
     }
