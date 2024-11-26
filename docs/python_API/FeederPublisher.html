@@ -142,82 +142,25 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#__init__">__init__</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addObjectRelation">addObjectRelation</a></b>(self, concept_from, property, concept_on, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addDataRelation">addDataRelation</a></b>(self, concept_from, concept_property, type, data, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(self, concept_from, concept_on, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(self, concept_from, lang, name, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(self, concept_from, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeRelation">removeRelation</a></b>(self, concept_from, property, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeObjectRelation">removeObjectRelation</a></b>(self, concept_from, property, concept_on, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeDataRelation">removeDataRelation</a></b>(self, concept_from, property, type, data, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(self, concept_from, concept_on, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(self, concept_from, lang, name, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(self, concept_from, stamp = None)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> int </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitConnected">waitConnected</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitUpdate">waitUpdate</a></b>(self, timeout = 100000000)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commitAuto</a></b>(self, timeout = 100000000)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(self, commit_name, timeout = 100000000)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(self, commit_name, timeout = 100000000)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerNotificationCallback">registerNotificationCallback</a></b>(self, callback)</td>
-              </tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#__init__">__init__</a></b>(self, name)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addObjectProperty">addObjectProperty</a></b>(self, concept_from, property, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addDataProperty">addDataProperty</a></b>(self, concept_from, concept_property, type, data, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addInheritage">addInheritage</a></b>(self, child, parent, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addLanguage">addLanguage</a></b>(self, concept_from, lang, name, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#addConcept">addConcept</a></b>(self, concept_from, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeProperty">removeProperty</a></b>(self, concept_from, property, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeObjectProperty">removeObjectProperty</a></b>(self, concept_from, property, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeDataProperty">removeDataProperty</a></b>(self, concept_from, property, type, data, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeInheritage">removeInheritage</a></b>(self, concept_from, concept_on, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeLanguage">removeLanguage</a></b>(self, concept_from, lang, name, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#removeConcept">removeConcept</a></b>(self, concept_from, stamp = None)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> int </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#getNumSubscribers">getNumSubscribers</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitConnected">waitConnected</a></b>(self)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#waitUpdate">waitUpdate</a></b>(self, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> str </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit">commitAuto</a></b>(self, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#commit2">commit</a></b>(self, commit_name, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> bool </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#checkout">checkout</a></b>(self, commit_name, timeout = 100000000)</td></tr>
+              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="FeederPublisher.html#registerNotificationCallback">registerNotificationCallback</a></b>(self, callback)</td></tr>
             </tbody>
           </table>
         </div>
@@ -250,9 +193,9 @@
           <p><i>concept_from</i> must be already known to the system. The property can be unknown before calling this function.</p>
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
-          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a><span class="name">addInheritage</span>(self, concept_from, concept_on, stamp = None)</h3>
-          <p>Adds the inheratage : <i>concept_from</i>(str) is a <i>concept_on</i>(str). <i>concept_from</i> and <i>concept_on</i> could by a class, an individual or a property.</p>
-          <p>At least <i>concept_from</i> or <i>concept_on</i> must be already known to the system. If one of them is unknown, it will be automatically created.</p>
+          <h3 class="fn" id="addInheritage"><a name="addInheritage"></a><span class="name">addInheritage</span>(self, child, parent, stamp = None)</h3>
+          <p>Adds the inheratage : <i>child</i>(str) is a <i>parent</i>(str). <i>child</i> and <i>parent</i> could by a class, an individual or a property.</p>
+          <p>At least <i>child</i> or <i>parent</i> must be already known to the system. If one of them is unknown, it will be automatically created.</p>
           <p>If the time stamp <i>stamp</i> (rostime) is not defined, the function takes the current ROS time as the time stamp.</p>
 
           <h3 class="fn" id="addLanguage"><a name="addLanguage"></a><span class="name">addLanguage</span>(self, concept_from, lang, name, stamp = None)</h3>

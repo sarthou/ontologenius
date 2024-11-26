@@ -81,12 +81,12 @@ class FeederPublisher:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
-    def addInheritage(self, concept_from, concept_on, stamp = None):
-        """Adds the inheratage : concept_from(str) is a concept_on(str). concept_from and concept_on could by a class, an individual or a property.
-           At least concept_from or concept_on must be already known to the system. If one of them is unknown, it will be automatically created.
+    def addInheritage(self, child, mother, stamp = None):
+        """Adds the inheratage : child(str) is a mother(str). child and mother could by a class, an individual or a property.
+           At least child or mother must be already known to the system. If one of them is unknown, it will be automatically created.
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
         """
-        msg = '[add]' + concept_from + '|+|' + concept_on
+        msg = '[add]' + child + '|+|' + mother
         if stamp == None:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)

@@ -34,9 +34,9 @@ namespace onto {
     publishStamped(msg, stamp);
   }
 
-  void FeederPublisher::addInheritage(const std::string& from, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
+  void FeederPublisher::addInheritage(const std::string& child, const std::string& mother, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    const std::string msg = "[add]" + from + "|+|" + on;
+    const std::string msg = "[add]" + child + "|+|" + mother;
     publishStamped(msg, stamp);
   }
 
