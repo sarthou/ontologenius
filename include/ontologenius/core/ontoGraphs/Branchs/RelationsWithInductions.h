@@ -80,6 +80,9 @@ namespace ontologenius {
     typename std::vector<T>::const_iterator cend() const { return relations.cend(); }
     typename std::vector<T>::reverse_iterator rbegin() { return relations.rbegin(); }
     typename std::vector<T>::reverse_iterator rend() { return relations.rend(); }
+
+    T& back() { return relations.back(); }
+    T& front() { return relations.front(); }
   };
 
 } // namespace ontologenius

@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>IndividualClient Class (python) | Ontologenius 0.4.3</title>
+  <title>IndividualClient Class (python) | Ontologenius 0.4.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -207,6 +207,22 @@
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
                 <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRangeOf">getRangeOf</a></b>(self, name, selector = '', depth = -1)</td>
               </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isRelationInferred">isRelationInferred</a></b>(self, subject, property, object)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isInheritanceInferred">isInheritanceInferred</a></b>(self, subject, class_name)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str[] </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_name)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -286,6 +302,18 @@
           <p>Gives all the properties (str[]) for which the individual <i>name</i>(str) is part of the range.</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
+
+          <h3 class="fn" id="isRelationInferred"><a name="isRelationInferred"></a><span class="name">isRelationInferred</span>(self, subject, property, object)</h3>
+          <p>Tests if the relation (str, str, str) has been inferred or not.</p>
+
+          <h3 class="fn" id="isInheritanceInferred"><a name="isInheritanceInferred"></a><span class="name">isInheritanceInferred</span>(self, subject, class_name)</h3>
+          <p>Tests if the inheritance (str, str) has been inferred or not.</p>
+
+          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object)</h3>
+          <p>Gives all the relations (str[]) used in the inference of the provided relation (str, str, str).</p>
+
+          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_name)</h3>
+          <p>Gives all the relations (str[]) used in the inference of the provided inheritage (str, str).</p>
 
         </div>
       </div>

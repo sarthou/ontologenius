@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ManagerClient Class (python) | Ontologenius 0.4.3</title>
+  <title>ManagerClient Class (python) | Ontologenius 0.4.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -175,6 +175,14 @@
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
                 <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#getDifference">getDifference</a></b>(self, onto_1, onto_2, concept)</td>
               </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#hasRoot">hasRoot</a></b>(self)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> str </td>
+                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#getRootName">getRootName</a></b>(self)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -219,6 +227,12 @@
           <p>Returns the difference of knowledge between <i>onto_1</i>(str) and <i>onto_2</i>(str) regarding the concept (class or individual) <i>concept</i>(str).</p>
           <p>The elements of the returned vector are formated as : <b>[+]concept_from|property|concept_on</b> OR <b>[-]concept_from|property|concept_on</b>. An element is positive if it is present in <i>onto_1</i> and not in <i>onto_2</i> and negative in reverse.</p>
           <p>The difference in inheritance knowledge between concepts is returned with the property <b>isA</b>.</p>
+
+          <h3 class="fn" id="hasRoot"><a name="hasRoot"></a><span class="name">hasRoot</span>(self)</h3>
+          <p>Tests if a root has been setted.</p>
+
+          <h3 class="fn" id="getRootName"><a name="getRootName"></a><span class="name">getRootName</span>(self)</h3>
+          <p>Gets the name (str) of the root instance if one has been defined.</p>
 
         </div>
       </div>

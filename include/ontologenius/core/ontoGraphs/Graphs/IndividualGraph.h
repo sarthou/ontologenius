@@ -93,6 +93,11 @@ namespace ontologenius {
     bool relationExists(const std::string& param);
     bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
 
+    bool isInferred(const std::string& param);
+    bool isInferredIndex(const std::string& param);
+    std::vector<std::string> getInferenceExplanation(const std::string& param);
+    std::vector<std::string> getInferenceExplanationIndex(const std::string& param);
+
     ClassBranch* upgradeToBranch(IndividualBranch* indiv);
     IndividualBranch* findOrCreateBranchSafe(const std::string& name);
     IndividualBranch* findOrCreateBranch(const std::string& name);
@@ -103,8 +108,8 @@ namespace ontologenius {
     bool addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
     bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
     bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-    int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool infered = false, bool check_existance = true);
-    int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool infered = false);
+    int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existance = true);
+    int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& indiv_on);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& type, const std::string& data);
     void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch* indiv_on);
@@ -135,6 +140,16 @@ namespace ontologenius {
 
     std::vector<IndividualBranch*> ordered_individuals_; // contains the individuals ordered wrt their index
                                                          // unused indexes have nullptr in
+
+    IndividualBranch* getIndividualByIndex(index_t index)
+    {
+      if(index <= 0)
+        return nullptr;
+      else if(index <= (index_t)ordered_individuals_.size())
+        return ordered_individuals_[index];
+      else
+        return nullptr;
+    }
 
     template<typename T>
     std::unordered_set<T> getDistincts(IndividualBranch* individual);
@@ -171,6 +186,18 @@ namespace ontologenius {
     bool getFrom(ClassBranch* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, index_t data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch*>& next_step, std::unordered_set<index_t>& do_not_take);
 
     bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
+
+    template<typename R>
+    void getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
+    template<typename R>
+    void getInferenceDataIndex(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
+
+    template<typename T, typename R>
+    void getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
+    template<typename T, typename R>
+    void getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
+    template<typename T, typename R>
+    void getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
 
     void getDistincts(IndividualBranch* individual, std::unordered_set<IndividualBranch*>& res);
     std::unordered_set<index_t> getSameId(const std::string& individual);

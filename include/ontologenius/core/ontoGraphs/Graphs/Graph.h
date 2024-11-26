@@ -190,8 +190,8 @@ namespace ontologenius {
         vect.emplace_back(data);
         return true;
       }
-      else if(it->infered && (data.infered == false))
-        it->infered = false;
+      else if(it->inferred && (data.inferred == false))
+        it->inferred = false;
 
       return false;
     }
@@ -205,8 +205,8 @@ namespace ontologenius {
         vect.emplaceBack(data);
         return true;
       }
-      else if(it->infered && (data.infered == false))
-        it->infered = false;
+      else if(it->inferred && (data.inferred == false))
+        it->inferred = false;
 
       return false;
     }
