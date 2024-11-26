@@ -9,10 +9,16 @@ namespace ontologenius {
 
   class IndividualBranch;
   class ObjectPropertyBranch;
+  class DataPropertyBranch;
   class ClassBranch;
+  class LiteralNode;
 
   using ObjectRelationTriplet_t = Triplet_t<IndividualBranch, ObjectPropertyBranch, IndividualBranch>;
   using ObjectRelationTriplets = Triplets<IndividualBranch, ObjectPropertyBranch, IndividualBranch>;
+
+  using DataRelationTriplet_t = Triplet_t<IndividualBranch, DataPropertyBranch, LiteralNode>;
+  using DataRelationTriplets = Triplets<IndividualBranch, DataPropertyBranch, LiteralNode>;
+
   using InheritedRelationTriplet_t = Triplet_t<IndividualBranch, void, ClassBranch>;
   using InheritedRelationTriplets = Triplets<IndividualBranch, void, ClassBranch>;
 
@@ -22,6 +28,7 @@ namespace ontologenius {
   public:
     std::vector<T> relations;
     std::vector<ObjectRelationTriplets*> has_induced_object_relations;
+    std::vector<DataRelationTriplets*> has_induced_data_relations;
     std::vector<InheritedRelationTriplets*> has_induced_inheritance_relations;
 
     RelationsWithInductions() = default;
@@ -39,6 +46,7 @@ namespace ontologenius {
     {
       relations.emplace_back(relation);
       has_induced_object_relations.emplace_back(new ObjectRelationTriplets);
+      has_induced_data_relations.emplace_back(new DataRelationTriplets);
       has_induced_inheritance_relations.emplace_back(new InheritedRelationTriplets);
       updated_ = true;
       return relations.size() - 1;
@@ -48,6 +56,7 @@ namespace ontologenius {
     T& emplaceBack(Args&&... args)
     {
       has_induced_object_relations.emplace_back(new ObjectRelationTriplets);
+      has_induced_data_relations.emplace_back(new DataRelationTriplets);
       has_induced_inheritance_relations.emplace_back(new InheritedRelationTriplets);
       updated_ = true;
       return relations.emplace_back(std::forward<Args>(args)...);
@@ -58,6 +67,8 @@ namespace ontologenius {
       relations.erase(relations.begin() + index);
       delete has_induced_object_relations.at(index);
       has_induced_object_relations.erase(has_induced_object_relations.begin() + (int)index);
+      delete has_induced_data_relations.at(index);
+      has_induced_data_relations.erase(has_induced_data_relations.begin() + (int)index);
       delete has_induced_inheritance_relations.at(index);
       has_induced_inheritance_relations.erase(has_induced_inheritance_relations.begin() + (int)index);
     }
@@ -66,11 +77,14 @@ namespace ontologenius {
     {
       for(auto* induced_object : has_induced_object_relations)
         delete induced_object;
+      for(auto* induced_data : has_induced_data_relations)
+        delete induced_data;
       for(auto* induced_inherit : has_induced_inheritance_relations)
         delete induced_inherit;
 
       relations.clear();
       has_induced_object_relations.clear();
+      has_induced_data_relations.clear();
       has_induced_inheritance_relations.clear();
     }
 
