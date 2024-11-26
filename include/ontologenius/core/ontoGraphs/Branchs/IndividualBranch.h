@@ -35,6 +35,7 @@ namespace ontologenius {
 
     bool hasUpdatedObjectRelation();
     bool hasUpdatedDataRelation();
+    bool hasUpdatedInheritanceRelation();
 
     void setUpdated(bool value)
     {
