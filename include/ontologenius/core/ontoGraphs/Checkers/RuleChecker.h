@@ -2,6 +2,9 @@
 #define ONTOLOGENIUS_RULECHECKER_H
 
 #include "ontologenius/core/ontoGraphs/Checkers/ValidityChecker.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 
 namespace ontologenius {
@@ -21,33 +24,30 @@ namespace ontologenius {
     RuleGraph* rule_graph_;
     std::string current_rule_;
 
-    void checkAtomList(RuleAtomList_t* atom_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
+    void checkAtomList(std::vector<RuleTriplet_t>& atoms_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
                        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj,
                        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data,
                        std::set<std::string>& keys_variables);
+
     void checkVariableMappings(std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
 
     std::vector<std::string> resolveInstantiatedClass(ClassBranch* class_branch, IndividualBranch* indiv);
     std::vector<std::string> resolveInstantiatedObjectProperty(ObjectPropertyBranch* property_branch, IndividualBranch* indiv_from, IndividualBranch* indiv_on);
     std::vector<std::string> resolveInstantiatedDataProperty(DataPropertyBranch* property_branch, IndividualBranch* indiv_from);
 
-    void resolveClassAtom(ClassAtom_t* class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
-    void resolveObjectAtom(ObjectPropertyAtom_t* object_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
-                           std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj, std::set<std::string>& keys_variables);
-    void resolveDataAtom(DataPropertyAtom_t* data_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
-                         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data, std::set<std::string>& keys_variables);
-    // void resolveBuiltinAtom(ClassAtom_t* class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes);
+    void resolveClassTriplet(RuleTriplet_t& class_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);
+    void resolveObjectTriplet(RuleTriplet_t& object_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
+                              std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj, std::set<std::string>& keys_variables);
+    void resolveDataTriplet(RuleTriplet_t& data_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
+                            std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data, std::set<std::string>& keys_variables);
 
     void getUpperLevelDomains(AnonymousClassElement* class_expression, std::vector<ClassElement>& expression_domains);
 
-    std::string checkClassesDisjointness(ClassBranch* class_left, ClassBranch* class_right);
     std::vector<std::string> checkClassesVectorDisjointness(const std::vector<ClassElement>& classes_left, const std::vector<ClassElement>& class_right);
 
-    std::string checkObjectPropertyDisjointess(ObjectPropertyBranch* branch_left, ObjectPropertyBranch* branch_right);
     void checkObjectPropertyDisjointess(std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj,
                                         std::set<std::string>& keys_variables);
 
-    std::string checkDataPropertyDisjointess(DataPropertyBranch* branch_left, DataPropertyBranch* branch_right);
     void checkDataPropertyDisjointess(std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data,
                                       std::set<std::string>& keys_variables);
     std::string checkDataRange(LiteralNode* datatype_involved);
