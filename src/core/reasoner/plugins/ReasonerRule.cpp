@@ -581,9 +581,9 @@ namespace ontologenius {
               explanation = indiv->same_as_[i].elem->value() + "|isA|" + class_selector->value() + ";";
               used_solution.explanations.emplace_back(explanation);
 
-              RuleUsedTriplet used_same(indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j],
-                                        indiv->same_as_[i].elem->is_a_.has_induced_object_relations[j],
-                                        indiv->same_as_[i].elem->is_a_.has_induced_data_relations[j]);
+              RuleUsedTriplet_t used_same(indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j],
+                                          indiv->same_as_[i].elem->is_a_.has_induced_object_relations[j],
+                                          indiv->same_as_[i].elem->is_a_.has_induced_data_relations[j]);
 
               // IndivResult_t used(indiv, explanation, used_same); // new version with constructor
 
@@ -592,9 +592,9 @@ namespace ontologenius {
               explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
               used_solution.explanations.emplace_back(explanation);
 
-              RuleUsedTriplet used_indiv(indiv->same_as_.has_induced_inheritance_relations[i],
-                                         indiv->same_as_.has_induced_object_relations[i],
-                                         indiv->same_as_.has_induced_data_relations[i]);
+              RuleUsedTriplet_t used_indiv(indiv->same_as_.has_induced_inheritance_relations[i],
+                                           indiv->same_as_.has_induced_object_relations[i],
+                                           indiv->same_as_.has_induced_data_relations[i]);
               // IndivResult_t used_2(indiv, explanation, used_same);
 
               used_solution.used_triplets.emplace_back(used_indiv);
@@ -618,9 +618,9 @@ namespace ontologenius {
           used_solution.indiv = indiv;
           used_solution.explanations.emplace_back(explanation);
 
-          RuleUsedTriplet used_isa(indiv->is_a_.has_induced_inheritance_relations[i],
-                                   indiv->is_a_.has_induced_object_relations[i],
-                                   indiv->is_a_.has_induced_data_relations[i]);
+          RuleUsedTriplet_t used_isa(indiv->is_a_.has_induced_inheritance_relations[i],
+                                     indiv->is_a_.has_induced_object_relations[i],
+                                     indiv->is_a_.has_induced_data_relations[i]);
           // IndivResult_t used(indiv, explanation, used_isa); // new version with constructor
           used_solution.used_triplets.emplace_back(used_isa);
 
@@ -646,9 +646,9 @@ namespace ontologenius {
       //   used_solution.indiv = indiv_on; // mark the indiv used in this atom evaluation
       used_solution.indiv = indiv_from;
 
-      RuleUsedTriplet used_object(indiv_from->object_relations_.has_induced_inheritance_relations[index],
-                                  indiv_from->object_relations_.has_induced_object_relations[index],
-                                  indiv_from->object_relations_.has_induced_data_relations[index]);
+      RuleUsedTriplet_t used_object(indiv_from->object_relations_.has_induced_inheritance_relations[index],
+                                    indiv_from->object_relations_.has_induced_object_relations[index],
+                                    indiv_from->object_relations_.has_induced_data_relations[index]);
       used_solution.used_triplets.emplace_back(used_object);
     }
 
@@ -670,9 +670,9 @@ namespace ontologenius {
       //   used_solution.literal = literal_on; // mark the literal used in this atom evaluation
       used_solution.indiv = indiv_from;
 
-      RuleUsedTriplet used_data(indiv_from->data_relations_.has_induced_inheritance_relations[index],
-                                indiv_from->data_relations_.has_induced_object_relations[index],
-                                indiv_from->data_relations_.has_induced_data_relations[index]);
+      RuleUsedTriplet_t used_data(indiv_from->data_relations_.has_induced_inheritance_relations[index],
+                                  indiv_from->data_relations_.has_induced_object_relations[index],
+                                  indiv_from->data_relations_.has_induced_data_relations[index]);
       used_solution.used_triplets.emplace_back(used_data);
     }
 
@@ -695,9 +695,9 @@ namespace ontologenius {
 
           used.explanations.emplace_back(explanation);
 
-          RuleUsedTriplet used_elem(indiv_from->same_as_.has_induced_inheritance_relations[j],
-                                    indiv_from->same_as_.has_induced_object_relations[j],
-                                    indiv_from->same_as_.has_induced_data_relations[j]);
+          RuleUsedTriplet_t used_elem(indiv_from->same_as_.has_induced_inheritance_relations[j],
+                                      indiv_from->same_as_.has_induced_object_relations[j],
+                                      indiv_from->same_as_.has_induced_data_relations[j]);
 
           used.used_triplets.emplace_back(used_elem);
 

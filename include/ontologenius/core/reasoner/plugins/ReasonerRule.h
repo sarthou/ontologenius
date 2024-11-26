@@ -8,8 +8,8 @@
 
 namespace ontologenius {
 
-  // using RuleUsedTriplet = Triplet_t<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
-  // using RuleUsedTriplet = std::tuple<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
+  // using RuleUsedTriplet_t = Triplet_t<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
+  // using RuleUsedTriplet_t = std::tuple<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
   //  using RuleUsedTriplets = Triplets<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
 
   struct RuleUsedTriplet_t
@@ -65,14 +65,14 @@ namespace ontologenius {
 
   struct IndivResult_t // found instantiation for a variable (indiv or datatype)
   {
-    // IndivResult_t(IndividualBranch* ind, const std::string& expl, const RuleUsedTriplet& triplets)
+    // IndivResult_t(IndividualBranch* ind, const std::string& expl, const RuleUsedTriplet_t& triplets)
     // {
     //   indiv = ind;
     //   explanations.push_back(expl);
     //   used_triplets.push_back(triplets);
     // }
 
-    // IndivResult_t(LiteralNode* lit, const std::string& expl, const RuleUsedTriplet& triplets)
+    // IndivResult_t(LiteralNode* lit, const std::string& expl, const RuleUsedTriplet_t& triplets)
     // {
     //   literal = lit;
     //   explanations.push_back(expl);
@@ -183,9 +183,9 @@ namespace ontologenius {
             explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value() + ";";
             used.explanations.emplace_back(explanation);
 
-            RuleUsedTriplet used_mother(branch->mothers_.has_induced_inheritance_relations[i],
-                                        branch->mothers_.has_induced_object_relations[i],
-                                        branch->mothers_.has_induced_data_relations[i]);
+            RuleUsedTriplet_t used_mother(branch->mothers_.has_induced_inheritance_relations[i],
+                                          branch->mothers_.has_induced_object_relations[i],
+                                          branch->mothers_.has_induced_data_relations[i]);
 
             used.used_triplets.emplace_back(used_mother);
             return true;
