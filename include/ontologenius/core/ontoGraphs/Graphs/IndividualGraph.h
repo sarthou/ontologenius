@@ -86,6 +86,7 @@ namespace ontologenius {
 
     std::unordered_set<std::string> getType(const std::string& class_selector, bool single_same = false);
     std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
+    std::unordered_set<IndividualBranch*> getType(ClassBranch* class_selector); // for rule usage
     bool isA(const std::string& indiv, const std::string& class_selector);
     bool isA(index_t indiv, index_t class_selector);
     bool isA(IndividualBranch* indiv, const std::string& class_selector);

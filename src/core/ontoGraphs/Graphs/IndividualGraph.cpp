@@ -1400,6 +1400,22 @@ namespace ontologenius {
     return res;
   }
 
+  std::unordered_set<IndividualBranch*> IndividualGraph::getType(ClassBranch* class_selector)
+  {
+    const std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
+
+    std::unordered_set<IndividualBranch*> res;
+    if(class_selector != nullptr)
+    {
+      std::unordered_set<ClassBranch*> down_set;
+      class_graph_->getDownPtr(class_selector, down_set);
+      for(auto* down : down_set)
+        class_graph_->getDownIndividualPtr(down, res);
+    }
+
+    return res;
+  }
+
   bool IndividualGraph::isA(const std::string& indiv, const std::string& class_selector)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
