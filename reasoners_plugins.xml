@@ -26,4 +26,7 @@
   <class type="ontologenius::ReasonerTransitivity" base_class_type="ontologenius::ReasonerInterface">
     <description>This is a reasoner for transitive axioms.</description>
   </class>
+  <class type="ontologenius::ReasonerRule" base_class_type="ontologenius::ReasonerInterface">
+    <description>This is a reasoner for SWRL rules.</description>
+  </class>
 </library>

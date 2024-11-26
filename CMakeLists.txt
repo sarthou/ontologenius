@@ -285,6 +285,7 @@ add_ros_library(ontologenius_reasoner_plugin MODULE
   src/core/reasoner/plugins/ReasonerRangeDomain.cpp
   src/core/reasoner/plugins/ReasonerAnonymous.cpp
   src/core/reasoner/plugins/ReasonerTransitivity.cpp
+  src/core/reasoner/plugins/ReasonerRule.cpp
 )
 target_include_directories(ontologenius_reasoner_plugin
   PUBLIC ${pluginlib_INCLUDE_DIRS}
