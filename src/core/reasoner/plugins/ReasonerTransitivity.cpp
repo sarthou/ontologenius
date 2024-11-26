@@ -20,7 +20,7 @@ namespace ontologenius {
   void ReasonerTransitivity::postReason()
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    const std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
     for(auto* indiv : ontology_->individual_graph_.get())
       if(first_run_ ||
