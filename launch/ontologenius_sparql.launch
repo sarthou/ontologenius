@@ -3,7 +3,6 @@
   <arg name="intern_file" default="none"/>
   <arg name="config_file" default="/home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/conf/no_generalization.yaml"/>
   <arg name="display" default="false"/>
-  <arg name="root" default="none"/>
   <arg name="files" default="
     /home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/ontology/tests/linkdmdb/linkdmdb_upper.owl
     /home/gsarthou/Robots/Pr2/Dacobot/catkin_ws/src/referring_expression_generation/resources/ontology/tests/linkdmdb/linkdmdb.ttl
@@ -13,6 +12,6 @@
 
   <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
 
-  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="--root $(arg root) -l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
   <node name="ontologenius_gui" pkg="ontologenius" type="ontoloGUI" output="screen"> </node>
 </launch>
