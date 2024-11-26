@@ -13,93 +13,169 @@
 
 namespace ontologenius {
 
-  struct ClassAtom_t
+  struct RuleResource_t
   {
-    // the class expression is needed for the RuleChecker
-    // AnonymousClassBranch* class_expression; // stores the expression (hasCamera some Camera/Component) and the name of the element __rule_1_2
-    AnonymousClassElement* class_expression; // ClassBranch or ClassExpression if ano class-> create equiv class with name __rule_1_2 and add it to ano_graph with hidden = true
-    ClassBranch* equivalent_class;           // ClassBranch or equiv Anonymous class (if class then directly the pointer, else the newly created hidden ClassBranch)
+    // empty constructor
+    RuleResource_t() : variable_id(-1),
+                       is_variable(false),
+                       indiv_value(nullptr),
+                       datatype_value(nullptr)
+    {}
+    // variable constructor
+    RuleResource_t(const std::string& name_value) : name(name_value),
+                                                    is_variable(true),
+                                                    indiv_value(nullptr),
+                                                    datatype_value(nullptr)
+    {}
+    // instantiated individual variable constructor
+    RuleResource_t(IndividualBranch* indiv) : name(indiv->value()),
+                                              is_variable(false),
+                                              indiv_value(indiv),
+                                              datatype_value(nullptr)
+    {}
 
-    std::string var;
-    IndividualBranch* individual_involved;
+    // instantiated literal variable constructor
+    RuleResource_t(LiteralNode* literal) : name(literal->toString()),
+                                           is_variable(false),
+                                           indiv_value(nullptr),
+                                           datatype_value(literal)
+    {}
 
-    ClassAtom_t() : class_expression(nullptr), equivalent_class(nullptr), individual_involved(nullptr) {}
+    std::string name;
+    int64_t variable_id;
+    bool is_variable;
+    IndividualBranch* indiv_value;
+    LiteralNode* datatype_value;
   };
 
-  struct ObjectPropertyAtom_t
+  enum AtomType_e
   {
-    ObjectPropertyBranch* object_property_expression; // ObjectPropertyBranch*
-    std::string var1;
-    std::string var2;
-    IndividualBranch* individual_involved_1;
-    IndividualBranch* individual_involved_2;
+    default_atom,
+    class_atom,
+    object_atom,
+    data_atom,
+    builtin_atom
+  };
 
-    ObjectPropertyAtom_t() : object_property_expression(nullptr), individual_involved_1(nullptr), individual_involved_2(nullptr) {}
+  struct RuleTriplet_t
+  {
+    // empty constructor
+    RuleTriplet_t() : atom_type_(default_atom), class_predicate(nullptr), class_element(nullptr), object_predicate(nullptr), data_predicate(nullptr)
+    {}
 
-    std::string toString()
+    // simple class triplet
+    RuleTriplet_t(ClassBranch* class_branch,
+                  RuleResource_t& resource) : atom_type_(class_atom),
+                                              subject(resource),
+                                              class_predicate(class_branch),
+                                              class_element(nullptr),
+                                              object_predicate(nullptr),
+                                              data_predicate(nullptr)
+    {}
+
+    // complex class triplet
+    RuleTriplet_t(ClassBranch* class_branch,
+                  AnonymousClassElement* ano_expression,
+                  RuleResource_t& resource) : atom_type_(class_atom),
+                                              subject(resource),
+                                              class_predicate(class_branch),
+                                              class_element(ano_expression),
+                                              object_predicate(nullptr),
+                                              data_predicate(nullptr)
+    {}
+
+    // object triplet
+    RuleTriplet_t(RuleResource_t& resource_from,
+                  ObjectPropertyBranch* property,
+                  RuleResource_t& resource_on) : atom_type_(object_atom),
+                                                 subject(resource_from),
+                                                 class_predicate(nullptr),
+                                                 class_element(nullptr),
+                                                 object_predicate(property),
+                                                 data_predicate(nullptr),
+                                                 object(resource_on)
+    {}
+
+    // data triplet
+    RuleTriplet_t(RuleResource_t& resource_from,
+                  DataPropertyBranch* property,
+                  RuleResource_t& resource_on) : atom_type_(data_atom),
+                                                 subject(resource_from),
+                                                 class_predicate(nullptr),
+                                                 class_element(nullptr),
+                                                 object_predicate(nullptr),
+                                                 data_predicate(property),
+                                                 object(resource_on)
+    {}
+
+    AtomType_e atom_type_;
+
+    RuleResource_t subject;                 // can be variable or not (?c is, pr2 isn't)
+    ClassBranch* class_predicate;           // set only if class atom
+    AnonymousClassElement* class_element;   // used to store the anonymous class if the class expression is complex
+    ObjectPropertyBranch* object_predicate; // set only if object atom
+    DataPropertyBranch* data_predicate;     // set only if data atom
+    RuleResource_t object;                  // can be variable or not (realsense i not), uninstantiated if class atom since it doesnt have another variable
+
+    std::string toString() const
     {
       std::string res;
 
-      res = object_property_expression->value() + "(";
-      if(var1.empty() == false)
-        res += "?" + var1;
-      else if(individual_involved_1 != nullptr)
-        res += individual_involved_1->value();
+      switch(atom_type_)
+      {
+      case class_atom:
+        res = class_predicate->value();
+        if(subject.is_variable == true)
+          res += "(?" + subject.name + ")";
+        else
+          res += "(" + subject.name + ")";
+        break;
+      case object_atom:
+        res = object_predicate->value();
+        if(subject.is_variable == true)
+          res += "(?" + subject.name;
+        else
+          res += "(" + subject.name;
 
-      res += ", ";
-      if(var2.empty() == false)
-        res += "?" + var2;
-      else if(individual_involved_2 != nullptr)
-        res += individual_involved_2->value();
-      res += ")";
+        if(object.is_variable == true)
+          res += ", ?" + object.name + ")";
+        else
+          res += ", " + object.name + ")";
+        break;
+      case data_atom:
+        res = data_predicate->value();
 
+        if(subject.is_variable == true)
+          res += "(?" + subject.name;
+        else
+          res += "(" + subject.name;
+
+        if(object.is_variable == true)
+          res += ", ?" + object.name + ")";
+        else
+          res += ", " + object.name + ")";
+        break;
+      case builtin_atom:
+        /* code */
+        break;
+
+      default:
+        break;
+      }
       return res;
     }
   };
 
-  struct DataPropertyAtom_t
+  struct Variable_t
   {
-    DataPropertyBranch* data_property_expression; // DataPropertyBranch*
-    std::string var1;
-    std::string var2;
-    IndividualBranch* individual_involved;
-    LiteralNode* datatype_involved;
+    Variable_t() : is_instantiated(false), is_datavalue(false), var_index(-1) {}
 
-    DataPropertyAtom_t() : data_property_expression(nullptr), individual_involved(nullptr), datatype_involved(nullptr) {}
+    std::string var_name;
+    bool is_instantiated;
+    bool is_datavalue;
+    int64_t var_index;
 
-    std::string toString()
-    {
-      std::string res;
-
-      res = data_property_expression->value() + "(";
-      if(var1.empty() == false)
-        res += "?" + var1;
-      else if(individual_involved != nullptr)
-        res += individual_involved->value();
-
-      res += ", ";
-      if(var2.empty() == false)
-        res += "?" + var2;
-      else if(datatype_involved != nullptr)
-        res += datatype_involved->value();
-      res += ")";
-
-      return res;
-    }
-  };
-
-  struct BuiltinAtom_t
-  {
-    std::string builtin_type;
-    std::vector<std::string> vars;
-  };
-
-  struct RuleAtomList_t
-  {
-    std::vector<ClassAtom_t*> class_atoms_;
-    std::vector<ObjectPropertyAtom_t*> object_atoms_;
-    std::vector<DataPropertyAtom_t*> data_atoms_;
-    std::vector<BuiltinAtom_t*> builtin_atoms_;
+    std::string toString() const { return var_name; }
   };
 
   class RuleBranch : public ValuedNode
@@ -107,8 +183,14 @@ namespace ontologenius {
   public:
     explicit RuleBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden) {}
 
-    RuleAtomList_t rule_antecedents_;
-    RuleAtomList_t rule_consequents_;
+    std::vector<RuleTriplet_t> rule_body_;
+    std::vector<RuleTriplet_t> rule_head_;
+
+    // mapping between variables and creation of the RuleResource_t elements
+    std::unordered_map<std::string, int64_t> variables_; // mapping between var names and index
+    std::vector<std::string> to_variables_;              // mapping between index and var name
+
+    // std::vector<Variable_t*> rule_variables_; // pointers to the variables used in the antecedents (unique)
   };
 
 } // namespace ontologenius
