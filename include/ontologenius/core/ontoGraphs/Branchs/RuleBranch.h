@@ -181,7 +181,15 @@ namespace ontologenius {
   class RuleBranch : public ValuedNode
   {
   public:
-    explicit RuleBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden) {}
+    explicit RuleBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden),
+                                                                         involves_class(false),
+                                                                         involves_object_property(false),
+                                                                         involves_data_property(false)
+    {}
+
+    bool involves_class;
+    bool involves_object_property;
+    bool involves_data_property;
 
     std::vector<RuleTriplet_t> rule_body_;
     std::vector<RuleTriplet_t> rule_head_;
