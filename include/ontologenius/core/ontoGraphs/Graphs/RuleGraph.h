@@ -100,7 +100,7 @@ namespace ontologenius {
 
     RuleBranch* add(const std::size_t& rule_id, Rule_t& rule);
 
-    RuleTriplet_t createRuleAtomTriplet(RuleBranch* rule_branch, const std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>>& rule_element, const size_t& rule_id, const size_t& elem_id);
+    RuleTriplet_t createRuleAtomTriplet(RuleBranch* rule_branch, const std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>>& rule_element, const size_t& rule_id, const size_t& elem_id, const bool& is_head);
     RuleTriplet_t createClassTriplet(RuleBranch* rule_branch, ExpressionMember_t* class_member, const Variable_t& variable, const size_t& rule_id, const size_t& elem_id);
     RuleTriplet_t createObjectPropertyTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);
     RuleTriplet_t createDataPropertyTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);

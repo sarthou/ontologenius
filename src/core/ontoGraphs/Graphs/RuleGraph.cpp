@@ -63,33 +63,44 @@ namespace ontologenius {
     {
       if(atom_antec.first != nullptr)
       {
-        rule_branch->rule_body_.push_back(createRuleAtomTriplet(rule_branch, atom_antec, rule_id, elem_id));
+        rule_branch->rule_body_.push_back(createRuleAtomTriplet(rule_branch, atom_antec, rule_id, elem_id, true));
         rule_branch->atom_initial_order_.push_back(rule_branch->rule_body_.size() - 1);
       }
       elem_id++;
     }
-
     for(auto& atom_conseq : rule.consequents)
     {
       if(atom_conseq.first != nullptr)
-        rule_branch->rule_head_.push_back(createRuleAtomTriplet(rule_branch, atom_conseq, rule_id, elem_id));
+        rule_branch->rule_head_.push_back(createRuleAtomTriplet(rule_branch, atom_conseq, rule_id, elem_id, false));
       elem_id++;
     }
 
     return rule_branch;
   }
 
-  RuleTriplet_t RuleGraph::createRuleAtomTriplet(RuleBranch* rule_branch, const std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>>& rule_element, const size_t& rule_id, const size_t& elem_id)
+  RuleTriplet_t RuleGraph::createRuleAtomTriplet(RuleBranch* rule_branch, const std::pair<ontologenius::ExpressionMember_t*, std::vector<ontologenius::Variable_t>>& rule_element, const size_t& rule_id, const size_t& elem_id, const bool& is_head)
   {
     auto* rule_atom = rule_element.first;
     auto rule_variable = rule_element.second;
 
     if((rule_atom->is_data_property) && (rule_atom->logical_type_ == logical_none) && (!rule_atom->is_complex))
+    {
+      if(is_head)
+        rule_branch->involves_data_property = true;
       return createDataPropertyTriplet(rule_branch, rule_atom, rule_variable);
+    }
     else if((rule_atom->logical_type_ == logical_none) && (!rule_atom->is_complex) && (rule_atom->rest.restriction_range.empty()))
+    {
+      if(is_head)
+        rule_branch->involves_object_property = true;
       return createObjectPropertyTriplet(rule_branch, rule_atom, rule_variable);
+    }
     else
+    {
+      if(is_head)
+        rule_branch->involves_class = true;
       return createClassTriplet(rule_branch, rule_atom, rule_variable.front(), rule_id, elem_id);
+    }
   }
 
   RuleTriplet_t RuleGraph::createClassTriplet(RuleBranch* rule_branch, ExpressionMember_t* class_member, const Variable_t& variable, const size_t& rule_id, const size_t& elem_id)
