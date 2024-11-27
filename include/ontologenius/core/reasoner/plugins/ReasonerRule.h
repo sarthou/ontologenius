@@ -8,10 +8,6 @@
 
 namespace ontologenius {
 
-  // using RuleUsedTriplet_t = Triplet_t<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
-  // using RuleUsedTriplet_t = std::tuple<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
-  //  using RuleUsedTriplets = Triplets<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*>;
-
   struct RuleUsedTriplet_t
   {
     RuleUsedTriplet_t(InheritedRelationTriplets* inheritance, ObjectRelationTriplets* object, DataRelationTriplets* data)
@@ -55,42 +51,10 @@ namespace ontologenius {
     }
   };
 
-  enum Evaluation_e // since we don't evaluate triplets with both subject/object
-  {
-    none,
-    from,
-    on,
-    both
-  };
-
-  struct IndivResult_t // found instantiation for a variable (indiv or datatype)
+  struct IndivResult_t
   {
     IndivResult_t() : indiv(nullptr), literal(nullptr)
     {}
-
-    IndivResult_t(IndividualBranch* indiv_res, const std::string& expl, const RuleUsedTriplet_t& triplets) : indiv(indiv_res), literal(nullptr)
-    {
-      explanations.push_back(expl);
-      used_triplets.push_back(triplets);
-    }
-
-    IndivResult_t(LiteralNode* literal_res) : indiv(nullptr), literal(literal_res)
-    {}
-
-    // IndivResult_t(LiteralNode* lit, const std::string& expl, const RuleUsedTriplet_t& triplets)
-    // {
-    //   literal = lit;
-    //   explanations.push_back(expl);
-    //   used_triplets.push_back(triplets);
-    // }
-
-    // // to add into constructor -> explanations and used_triplets
-    // IndivResult_t(IndividualBranch* indiv_branch) : indiv(indiv_branch), literal(nullptr)
-    // {}
-
-    // // to add into constructor -> explanations and used_triplets
-    // IndivResult_t(LiteralNode* literal_branch) : indiv(nullptr), literal(literal_branch)
-    // {}
 
     IndividualBranch* indiv;               // for individual variable
     LiteralNode* literal;                  // for datatype variable
@@ -106,21 +70,25 @@ namespace ontologenius {
     }
   };
 
-  bool isSelectorDefined(const IndivResult_t& value) { return (value.indiv != nullptr) || bool(value.literal); } // if both are nullptr, then there is nothing in there (no previous instantiation)
-
   struct RuleResult_t // represent one instantiation of a rule (variables are set to the indiv) e.g: Agent(pr2), hasCapability(pr2, pr2_capa)
   {
-    std::vector<IndividualBranch*> indivs;                     // e.g : <pr2, pr2_capa>
-    std::vector<std::vector<std::string>> explanations;        // e.g : <pr2|isA|Robot, Robot|isA|Agent, pr2|hasCapability|pr2_capa>
-    std::vector<std::vector<RuleUsedTriplet_t>> triplets_used; // e.g : <<&pr2.is_a_[Robot], &Robot.mothers_[Agent], &pr2.object_relations_[hasCapability : pr2_capa]>
+    std::vector<index_t> assigned_result;         // e.g : <pr2, pr2_capa>, can be either indiv or literal indexes
+    std::vector<std::string> explanations;        // e.g : <pr2|isA|Robot, Robot|isA|Agent, pr2|hasCapability|pr2_capa>
+    std::vector<RuleUsedTriplet_t> triplets_used; // e.g : <<&pr2.is_a_[Robot], &Robot.mothers_[Agent], &pr2.object_relations_[hasCapability : pr2_capa]>
 
-    std::string toString() const
+    RuleResult_t(const std::size_t& nb_var) : assigned_result(nb_var, 0)
+    {}
+
+    void insertResult(const IndivResult_t& result, const size_t& var_index)
     {
-      std::string res;
-      for(const auto& ind : indivs)
-        res += ind->value() + ", ";
+      if(result.indiv != nullptr)
+        assigned_result[var_index] = result.indiv->get();
+      else if(result.literal != nullptr)
+        assigned_result[var_index] = result.literal->get();
 
-      return res;
+      explanations.insert(explanations.end(), result.explanations.begin(), result.explanations.end());
+
+      triplets_used.insert(triplets_used.end(), result.used_triplets.begin(), result.used_triplets.end());
     }
   };
 
@@ -143,25 +111,24 @@ namespace ontologenius {
   private:
     bool standard_mode_;
 
-    std::vector<std::vector<IndivResult_t>> resolve(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<IndivResult_t>& accu);
-    std::vector<RuleResult_t> transformResults(std::vector<std::vector<IndivResult_t>>& results);
+    std::vector<RuleResult_t> resolve(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<index_t>& accu);
 
-    void resolveAtom(RuleBranch* rule_branch, RuleTriplet_t triplet, std::vector<IndivResult_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveClassAtom(RuleBranch* rule_branch, RuleTriplet_t triplet, std::vector<IndivResult_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveObjectAtom(RuleBranch* rule_branch, RuleTriplet_t triplet, std::vector<IndivResult_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveDataAtom(RuleBranch* rule_branch, RuleTriplet_t triplet, std::vector<IndivResult_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveClassAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
 
-    std::vector<IndivResult_t> getFromObject(RuleTriplet_t& triplet, IndivResult_t& indiv_from);
-    std::vector<IndivResult_t> getFromData(RuleTriplet_t& triplet, IndivResult_t& indiv_from);
+    std::vector<IndivResult_t> getFromObject(RuleTriplet_t& triplet, const index_t& index_indiv_from);
+    std::vector<IndivResult_t> getFromData(RuleTriplet_t& triplet, const index_t& index_indiv_from);
 
-    std::unordered_set<IndividualBranch*> getFrom(ObjectPropertyBranch* property, IndividualBranch* individual_on);
-    std::unordered_set<IndividualBranch*> getFrom(DataPropertyBranch* property, LiteralNode* literal_on);
+    std::unordered_set<IndividualBranch*> getFrom(ObjectPropertyBranch* property, const index_t& index_indiv_on);
+    std::unordered_set<IndividualBranch*> getFrom(DataPropertyBranch* property, const index_t& index_literal_on);
 
-    std::vector<IndivResult_t> getOnObject(RuleTriplet_t& triplet, IndivResult_t& indiv_on);
-    std::vector<IndivResult_t> getOnData(RuleTriplet_t& triplet, IndivResult_t& literal_on);
+    std::vector<IndivResult_t> getOnObject(RuleTriplet_t& triplet, const index_t& index_indiv_on);
+    std::vector<IndivResult_t> getOnData(RuleTriplet_t& triplet, const index_t& index_literal_on);
 
-    std::unordered_set<IndividualBranch*> getOn(IndividualBranch* indiv_from, ObjectPropertyBranch* predicate);
-    std::unordered_set<LiteralNode*> getOn(IndividualBranch* indiv_from, DataPropertyBranch* predicate);
+    std::unordered_set<IndividualBranch*> getOn(const index_t& index_indiv_from, ObjectPropertyBranch* predicate);
+    std::unordered_set<LiteralNode*> getOn(const index_t& index_indiv_from, DataPropertyBranch* predicate);
 
     std::vector<IndivResult_t> getType(ClassBranch* class_selector);
 
@@ -185,14 +152,12 @@ namespace ontologenius {
         {
           if(existInInheritance(branch->mothers_[i].elem, selector, used))
           {
-            explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value() + ";";
+            explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
             used.explanations.emplace_back(explanation);
 
-            RuleUsedTriplet_t used_mother(branch->mothers_.has_induced_inheritance_relations[i],
-                                          branch->mothers_.has_induced_object_relations[i],
-                                          branch->mothers_.has_induced_data_relations[i]);
-
-            used.used_triplets.emplace_back(used_mother);
+            used.used_triplets.emplace_back(branch->mothers_.has_induced_inheritance_relations[i],
+                                            branch->mothers_.has_induced_object_relations[i],
+                                            branch->mothers_.has_induced_data_relations[i]);
             return true;
           }
         }
@@ -212,7 +177,7 @@ namespace ontologenius {
         {
           if(checkValue(relations[i].second, resource_on, used))
           {
-            explanation = indiv_from->value() + "|" + relations[i].first->value() + "|" + relations[i].second->value() + ";";
+            explanation = indiv_from->value() + "|" + relations[i].first->value() + "|" + relations[i].second->value();
             used.explanations.emplace_back(explanation);
 
             return int(i);
