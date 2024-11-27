@@ -190,7 +190,7 @@ namespace ontologenius {
     std::unordered_map<std::string, int64_t> variables_; // mapping between var names and index
     std::vector<std::string> to_variables_;              // mapping between index and var name
 
-    // std::vector<Variable_t*> rule_variables_; // pointers to the variables used in the antecedents (unique)
+    std::vector<size_t> atom_initial_order_;
   };
 
 } // namespace ontologenius

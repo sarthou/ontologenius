@@ -62,7 +62,10 @@ namespace ontologenius {
     for(auto& atom_antec : rule.antecedents)
     {
       if(atom_antec.first != nullptr)
+      {
         rule_branch->rule_body_.push_back(createRuleAtomTriplet(rule_branch, atom_antec, rule_id, elem_id));
+        rule_branch->atom_initial_order_.push_back(rule_branch->rule_body_.size() - 1);
+      }
       elem_id++;
     }
 
