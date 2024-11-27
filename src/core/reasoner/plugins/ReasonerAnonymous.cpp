@@ -16,6 +16,8 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/graphical/Display.h"
 
+// #define DEBUG
+
 namespace ontologenius {
 
   ReasonerAnonymous::ReasonerAnonymous() : standard_mode_(false)
@@ -40,7 +42,8 @@ namespace ontologenius {
          indiv->isUpdated() ||
          (indiv->flags_.find("equiv") != indiv->flags_.end()) ||
          indiv->hasUpdatedObjectRelation() ||
-         indiv->hasUpdatedDataRelation())
+         indiv->hasUpdatedDataRelation() ||
+         indiv->hasUpdatedInheritanceRelation())
       {
         bool has_active_equiv = false;
 
@@ -55,12 +58,18 @@ namespace ontologenius {
             // Loop over every equivalence relations corresponding to one class
             for(auto* anonymous_elem : anonymous_branch->ano_elems_)
             {
-              if((indiv->isUpdated()) || // used for the newly created individuals
-                 (anonymous_elem->involves_class && indiv->is_a_.isUpdated()) ||
-                 (anonymous_elem->involves_object_property && indiv->object_relations_.isUpdated()) ||
-                 (anonymous_elem->involves_data_property && indiv->data_relations_.isUpdated()) ||
-                 (anonymous_elem->involves_individual && indiv->same_as_.isUpdated()) ||
-                 indiv->flags_.find("equiv") != indiv->flags_.end()) // used for individuals which already have an equiv but no particular update
+#ifdef DEBUG
+              computeDebugUpdate(indiv, anonymous_elem);
+#endif
+
+              std::string equiv_flag = "equiv_" + anonymous_elem->ano_name;
+
+              if((indiv->flags_.find(equiv_flag) != indiv->flags_.end()) || // already validated at least one member of an ano expression
+                 ((indiv->isUpdated() == true) &&                           // indiv has been updated -> new individual
+                  ((anonymous_elem->involves_class && indiv->is_a_.isUpdated()) ||
+                   (anonymous_elem->involves_object_property && indiv->object_relations_.isUpdated()) ||
+                   (anonymous_elem->involves_data_property && indiv->data_relations_.isUpdated()) ||
+                   (anonymous_elem->involves_individual && indiv->same_as_.isUpdated()))))
               {
                 bool tree_first_layer_result = true;
                 bool current_tree_result = false;
@@ -71,11 +80,15 @@ namespace ontologenius {
 
                 if(tree_first_layer_result == true)
                 {
+                  indiv->flags_[equiv_flag] = {};
                   used.clear();
                   used.reserve(anonymous_branch->depth_);
                   current_tree_result = resolveTree(indiv, anonymous_elem, used);
                   trees_evaluation_result = trees_evaluation_result || current_tree_result;
                 }
+                else
+                  indiv->flags_.erase(equiv_flag);
+
                 if(has_active_equiv && current_tree_result)
                 {
                   if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
@@ -99,7 +112,6 @@ namespace ontologenius {
             ontology_->individual_graph_.removeInheritage(indiv, anonymous_branch->class_equiv_, explanations_, true);
           }
         }
-
         if(has_active_equiv)
           indiv->flags_["equiv"] = {};
         else

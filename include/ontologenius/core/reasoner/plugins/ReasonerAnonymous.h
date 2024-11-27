@@ -54,6 +54,18 @@ namespace ontologenius {
     bool checkSomeCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
     bool checkValueCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
+    std::string computeDebugUpdate(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
+    {
+      std::string res;
+      res = "indiv " + indiv->value() + ": " + indiv->updatesToString();
+      res += "with " + ano_elem->ano_name + ": " + ano_elem->involvesToString();
+      if(indiv->flags_.find("equiv") != indiv->flags_.end())
+        res += "|equiv: 1";
+      else
+        res += "|equiv: 0";
+      return res;
+    }
+
     template<typename T>
     bool checkPropertyExistence(const std::vector<T>& relations, AnonymousClassElement* ano_elem)
     {
