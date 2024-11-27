@@ -112,7 +112,7 @@ namespace ontologenius {
      xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n\
      xmlns:swrl=\"http://www.w3.org/2003/11/swrl#\"\n\
      xmlns:swrlb=\"http://www.w3.org/2003/11/swrlb#\"\n\
-     xmlns:onto=\"ontologenius#\">\n\
+     xmlns:onto=\"" + ns_ + "#\">\n\
     <owl:Ontology rdf:about=\"" +
                             ns_ + "\"/>\n\n\n\n";
     writeString(tmp);
