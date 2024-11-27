@@ -77,9 +77,9 @@ namespace ontologenius {
   {
     std::vector<std::string> reasoners = loader_.getDeclaredClasses();
 
-    try
+    for(auto& reasoner : reasoners)
     {
-      for(auto& reasoner : reasoners)
+      try
       {
         loader_.loadLibraryForClass(reasoner);
         ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
@@ -88,10 +88,10 @@ namespace ontologenius {
         if(tmp->defaultActive())
           active_reasoners_[reasoner] = tmp;
       }
-    }
-    catch(pluginlib::PluginlibException& ex)
-    {
-      Display::error("The plugin failed to load for some reason. Error: " + std::string(ex.what()));
+      catch(pluginlib::PluginlibException& ex)
+      {
+        Display::error("[Reasoners] Failed to load reasoner " + reasoner + ". Error: " + std::string(ex.what()));
+      }
     }
 
     reasoners = loader_.getRegisteredLibraries();
