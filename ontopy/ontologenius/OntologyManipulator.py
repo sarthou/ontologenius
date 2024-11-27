@@ -1,12 +1,14 @@
 from .clients import *
 from .FeederPublisher import FeederPublisher
+from .PatternsSubscriber import PatternsSubscriber
 
 class OntologyManipulator:
     """The OntologyManipulator class is just an object to access all API ROS abstraction classes so that you can query and manage ontologenius."""
 
     def __init__(self, name = ''):
         """Constructs an ontology manipulator with.
-           Can be used in a multi-ontology mode by specifying the name of the ontology name(str). For classic use, do not specify the ontology name name.
+           Can be used in a multi-ontology mode by specifying the name of the ontology name(str).
+           For classic use, do not specify the ontology name name.
         """
         self._name = name
         self.individuals = IndividualClient(name)
@@ -17,6 +19,7 @@ class OntologyManipulator:
         self.reasoners = ReasonerClient(name)
         self.feeder = FeederPublisher(name)
         self.sparql = SparqlClient(name)
+        self.subscriber = PatternsSubscriber(name)
 
         self.sparql._client.wait()
 

@@ -6,6 +6,7 @@
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 
@@ -30,11 +31,12 @@ namespace ontologenius {
             {
               try
               {
-                ontology_->individual_graph_.addRelation(sym_indiv, sym_prop, indiv, 1.0, true, false);
+                int index = ontology_->individual_graph_.addRelation(sym_indiv, sym_prop, indiv, 1.0, true, false);
+                sym_indiv->object_relations_[index].explanation = {indiv->value() + "|" + sym_prop->value() + "|" + sym_indiv->value()};
                 sym_indiv->nb_updates_++;
 
                 explanations_.emplace_back("[ADD]" + sym_indiv->value() + "|" + sym_prop->value() + "|" + indiv->value(),
-                                           "[ADD]" + indiv->value() + "|" + sym_prop->value() + "|" + sym_indiv->value());
+                                           "[ADD]" + sym_indiv->object_relations_[index].getExplanation());
                 nb_update++;
               }
               catch(GraphException& e)

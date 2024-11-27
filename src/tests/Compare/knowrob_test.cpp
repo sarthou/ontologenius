@@ -18,7 +18,10 @@ using namespace std::chrono;
 #include <unistd.h>
 using namespace std;
 
-void mem_usage(double& vm_usage, double& resident_set)
+constexpr std::string test_file = "/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/Compare/knowrob.owl"
+
+  void
+  mem_usage(double& vm_usage, double& resident_set)
 {
   vm_usage = 0.0;
   resident_set = 0.0;
@@ -99,7 +102,7 @@ int main(int argc, char** argv)
   interface.init("en", "none", {}, "none");
   onto = interface.getOntology();
   onto_thread = std::thread(&ontologenius::RosInterface::run, &interface);
-  onto->readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/test.owl");
+  onto->readFromFile(test_file);
   interface.close();
 
   std::vector<size_t> sizes;
@@ -137,7 +140,7 @@ int main(int argc, char** argv)
     mem.push_back(rss);
 
     reset(&interface, &onto);
-    onto->readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/test.owl");
+    onto->readFromFile(test_file);
     interface.close();
   }
 
@@ -170,7 +173,7 @@ int main(int argc, char** argv)
     mem.push_back(rss);
 
     reset(&interface, &onto);
-    onto->readFromFile("/home/gsarthou/Robots/Pr2/Semantic/catkin_ws/src/ontologenius/files/test.owl");
+    onto->readFromFile(test_file);
     interface.close();
   }
 

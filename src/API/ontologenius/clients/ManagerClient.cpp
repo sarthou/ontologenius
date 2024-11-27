@@ -31,4 +31,14 @@ namespace onto {
     return call("difference", param);
   }
 
+  bool ManagerClient::hasRoot()
+  {
+    return (callStr("getRoot", "").empty() == false);
+  }
+
+  std::string ManagerClient::getRootName()
+  {
+    return callStr("getRoot", "");
+  }
+
 } // namespace onto

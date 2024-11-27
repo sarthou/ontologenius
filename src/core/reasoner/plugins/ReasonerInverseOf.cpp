@@ -54,11 +54,12 @@ namespace ontologenius {
 
     try
     {
-      ontology_->individual_graph_.addRelation(indiv_on, inv_prop, inv_indiv, 1.0, true, false);
+      int index = ontology_->individual_graph_.addRelation(indiv_on, inv_prop, inv_indiv, 1.0, true, false);
+      indiv_on->object_relations_[index].explanation = {inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value()};
       indiv_on->nb_updates_++;
 
       explanations_.emplace_back("[ADD]" + indiv_on->value() + "|" + inv_prop->value() + "|" + inv_indiv->value(),
-                                 "[ADD]" + inv_indiv->value() + "|" + base_prop->value() + "|" + indiv_on->value());
+                                 "[ADD]" + indiv_on->object_relations_[index].getExplanation());
       nb_update++;
     }
     catch(GraphException& e)

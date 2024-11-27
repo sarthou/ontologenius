@@ -5,16 +5,16 @@
   <arg name="human_file" default="none"/>
   <arg name="config_file" default="none"/>
   <arg name="display" default="true"/>
+  <arg name="root" default="none"/>
   <arg name="files" default="
   $(find ontologenius)/files/attribute.owl
-  $(find ontologenius)/files/measure.owl
-  $(find ontologenius)/files/property.owl
+  $(find ontologenius)/files/animals.owl
   $(find ontologenius)/files/positionProperty.owl
-  $(find ontologenius)/files/testIndividuals.owl
+  $(find ontologenius)/files/test_individuals.owl
   "/>
   <arg name="tcmalloc_path" default=""/>
 
   <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
 
-  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_multi" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -r $(arg robot_file) -h $(arg human_file) $(arg files)"> </node>
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_multi" output="screen" args="--root $(arg root) -l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -r $(arg robot_file) -h $(arg human_file) $(arg files)"> </node>
 </launch>

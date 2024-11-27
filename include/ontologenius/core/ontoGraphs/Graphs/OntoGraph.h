@@ -38,6 +38,9 @@ namespace ontologenius {
     std::unordered_set<index_t> getUpId(const T& value, int depth = -1);
 
     template<typename T>
+    bool isA(const T& branch, const T& selector);
+
+    template<typename T>
     bool existInInheritance(B* branch, const T& selector);
 
     template<typename T>
@@ -213,6 +216,15 @@ namespace ontologenius {
           vect.erase(it);
       }
     }
+  }
+
+  template<typename B>
+  template<typename T>
+  bool OntoGraph<B>::isA(const T& branch, const T& selector)
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+    auto* b = this->findBranch(branch);
+    return existInInheritance(b, selector);
   }
 
   template<typename B>

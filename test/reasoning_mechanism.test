@@ -1,0 +1,9 @@
+<launch>
+  <include file="$(find ontologenius)/launch/ontologenius.launch">
+    <arg name="intern_file" default="none"/>
+    <arg name="config_file" default="$(find ontologenius)/configuration/config_example.yaml"/>
+    <arg name="display" default="false"/>
+  </include>
+  <arg name='TESTDURATION' value='60' />
+  <test pkg="ontologenius" type="onto_reasoning_mechanism_test" test-name="reasoning_mechanism_test" time-limit="$(arg TESTDURATION)" retry="0" />
+</launch>

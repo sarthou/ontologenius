@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>ClassIndexClient Class (cpp) | Ontologenius 0.4.2</title>
+  <title>ClassIndexClient Class (cpp) | Ontologenius 0.4.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -14,15 +14,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../index.html">
-              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -97,6 +97,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -126,9 +127,18 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clientsIndex/ontologyClients/ClassIndexClient.h&quot;</span></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Header:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clientsIndex/ontologyClients/ClassIndexClient.h&quot;</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Inherits:</td>
+                <td class="memItemRight bottomAlign"> <a href="OntologyIndexClient.html">OntologyIndexClient</a></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Namespace:</td>
+                <td class="memItemRight bottomAlign"> onto</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -138,20 +148,62 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#ClassIndexClient">ClassIndexClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDown">getDown</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1, int64_t <i>selector</i> = 0)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDisjoint">getDisjoint</a></b>(int64_t <i>index</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getOn">getOn</a></b>(int64_t <i>index</i>, int64_t <i>property</i>, int64_t <i>selector</i> = 0)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getFrom">getFrom</a></b>(int64_t <i>property</i>, int64_t <i>index</i>, int64_t <i>selector</i> = 0)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getWith">getWith</a></b>(int64_t <i>class_from</i>, int64_t <i>class_to</i>, int64_t <i>selector</i> = 0, int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedFrom">getRelatedFrom</a></b>(int64_t <i>property</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedOn">getRelatedOn</a></b>(int64_t <i>property</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedWith">getRelatedWith</a></b>(int64_t <i>index</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationFrom">getRelationFrom</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationOn">getRelationOn</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationWith">getRelationWith</a></b>(int64_t <i>index</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDomainOf">getDomainOf</a></b>(int64_t <i>index</i>, int64_t <i>selector</i> = 0, int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td><td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRangeOf">getRangeOf</a></b>(int64_t <i>index</i>, int64_t <i>selector</i> = 0, int <i>depth</i> = -1)</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#ClassIndexClient">ClassIndexClient</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDown">getDown</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1, int64_t <i>selector</i> = 0)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDisjoint">getDisjoint</a></b>(int64_t <i>index</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getOn">getOn</a></b>(int64_t <i>index</i>, int64_t <i>property</i>, int64_t <i>selector</i> = 0)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getFrom">getFrom</a></b>(int64_t <i>property</i>, int64_t <i>index</i>, int64_t <i>selector</i> = 0)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getWith">getWith</a></b>(int64_t <i>class_from</i>, int64_t <i>class_to</i>, int64_t <i>selector</i> = 0, int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedFrom">getRelatedFrom</a></b>(int64_t <i>property</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedOn">getRelatedOn</a></b>(int64_t <i>property</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelatedWith">getRelatedWith</a></b>(int64_t <i>index</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationFrom">getRelationFrom</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationOn">getRelationOn</a></b>(int64_t <i>index</i>, int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRelationWith">getRelationWith</a></b>(int64_t <i>index</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getDomainOf">getDomainOf</a></b>(int64_t <i>index</i>, int64_t <i>selector</i> = 0, int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;int64_t&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="ClassIndexClient.html#getRangeOf">getRangeOf</a></b>(int64_t <i>index</i>, int64_t <i>selector</i> = 0, int <i>depth</i> = -1)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -169,8 +221,8 @@
           <p>The ClassIndexClient class provides an abstraction of ontologenius classes ROS service.</p>
           <p>The ontologenius classes service allows the exploration of classes contained by ontologenius core using indexes.</p>
           <p>This class is based on <a href="ClientBaseIndex.html">ClientBaseIndex</a> and so ensure a persistent connection with ontologenius/class_index service.
-             The persistent connection ensures a minimal response time.
-             A reconnection logic is implemented in the event that the persistent connection fails. </p>
+            The persistent connection ensures a minimal response time.
+            A reconnection logic is implemented in the event that the persistent connection fails. </p>
           <p>At the difference of the usual ClassClient class, this one provides access to the interface based on indexes (integers) for better performances.</p>
         </div>
 
@@ -248,7 +300,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

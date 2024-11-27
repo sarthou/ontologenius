@@ -6,6 +6,7 @@
 #include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"

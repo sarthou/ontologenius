@@ -28,12 +28,14 @@ def generate_launch_description():
     display_arg = DeclareLaunchArgument(
         "display", default_value=TextSubstitution(text="true")
     )
+    root_arg = DeclareLaunchArgument(
+        "root", default_value=TextSubstitution(text="none")
+    )
     files_arg = DeclareLaunchArgument(
         "files", default_value=TextSubstitution(text = os.path.join(get_package_share_directory('ontologenius'), "files/attribute.owl") + " " +
-                                                       os.path.join(get_package_share_directory('ontologenius'), "files/measure.owl") + " " +
-                                                       os.path.join(get_package_share_directory('ontologenius'), "files/property.owl") + " " +
+                                                       os.path.join(get_package_share_directory('ontologenius'), "files/animals.owl") + " " +
                                                        os.path.join(get_package_share_directory('ontologenius'), "files/positionProperty.owl") + " " +
-                                                       os.path.join(get_package_share_directory('ontologenius'), "files/testIndividuals.owl"))
+                                                       os.path.join(get_package_share_directory('ontologenius'), "files/test_individuals.owl"))
     )
     robot_file_arg = DeclareLaunchArgument(
         "robot_file", default_value=TextSubstitution(text="none")
@@ -50,7 +52,8 @@ def generate_launch_description():
             executable='ontologenius_multi',
             name='ontologenius_core',
             output='screen',
-            arguments=['-l', LaunchConfiguration('language'),
+            arguments=['--root', LaunchConfiguration('root'),
+                       '-l', LaunchConfiguration('language'),
                        '-c', LaunchConfiguration('config_file'),
                        '-i', LaunchConfiguration('intern_file'),
                        '-r', LaunchConfiguration('robot_file'),
@@ -67,6 +70,7 @@ def generate_launch_description():
         )
 
     return LaunchDescription([
+        root_arg,
         language_arg,
         intern_file_arg,
         config_file_arg,

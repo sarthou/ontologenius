@@ -11,7 +11,7 @@ if os.environ["ROS_VERSION"] == "1":
             self.srv_name = srv_name
             self.srv_type = srv_type
 
-        def call(self, request, verbose):
+        def call(self, request, verbose=True):
             try:
                 response = self._client(request)
                 return response

@@ -164,6 +164,10 @@ OntoloGUI::OntoloGUI(QWidget* parent) : QMainWindow(parent),
   QObject::connect(ui_->Individual_getType, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
   QObject::connect(ui_->individualParameter, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
   QObject::connect(ui_->individualParameter, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_isInferred, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_isInferred, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
+  QObject::connect(ui_->Individual_getInferenceExplanation, SIGNAL(hoverEnter()), this, SLOT(individualhoverEnterSlot()));
+  QObject::connect(ui_->Individual_getInferenceExplanation, SIGNAL(hoverLeave()), this, SLOT(individualhoverLeaveSlot()));
 
   QObject::connect(ui_->Class_getName, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
   QObject::connect(ui_->Class_exist, SIGNAL(clicked()), this, SLOT(classClickedSlot()));
@@ -232,6 +236,8 @@ OntoloGUI::OntoloGUI(QWidget* parent) : QMainWindow(parent),
   QObject::connect(ui_->Individual_findFuzzy, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
   QObject::connect(ui_->Individual_findSub, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
   QObject::connect(ui_->Individual_getType, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_isInferred, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
+  QObject::connect(ui_->Individual_getInferenceExplanation, SIGNAL(clicked()), this, SLOT(individualClickedSlot()));
 
   QObject::connect(ui_->CloseButton, SIGNAL(clicked()), this, SLOT(closeOntologySlot()));
   QObject::connect(ui_->RefreshButton, SIGNAL(clicked()), this, SLOT(displayOntologiesListSlot()));
@@ -867,14 +873,14 @@ void OntoloGUI::feederAddSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.addProperty(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
+  onto_->feeder.addRelation(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
 }
 
 void OntoloGUI::feederDelSlot()
 {
   if(updateOntoPtr() == false)
     return;
-  onto_->feeder.removeProperty(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
+  onto_->feeder.removeRelation(ui_->FeederSubject->text().toStdString(), ui_->FeederProperty->text().toStdString(), ui_->FeederObject->text().toStdString());
 }
 
 void OntoloGUI::feederCommitSlot()

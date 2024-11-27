@@ -3,8 +3,10 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <iterator>
 #include <map>
+#include <mutex>
 #include <shared_mutex>
 #include <string>
 #include <unordered_set>
@@ -23,6 +25,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
@@ -239,7 +242,7 @@ namespace ontologenius {
 
   std::unordered_set<index_t> IndividualGraph::getSame(index_t individual)
   {
-    return getSameId(ordered_individuals_[individual]);
+    return getSameId(getIndividualByIndex(individual));
   }
 
   std::unordered_set<std::string> IndividualGraph::getDistincts(const std::string& individual)
@@ -252,8 +255,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getDistincts(index_t individual)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
-    IndividualBranch* indiv = ordered_individuals_[individual];
-    return getDistincts<index_t>(indiv);
+    return getDistincts<index_t>(getIndividualByIndex(individual));
   }
 
   template<typename T>
@@ -276,8 +278,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getRelationFrom(index_t individual, int depth)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
-    IndividualBranch* indiv = ordered_individuals_[individual];
-    return getRelationFrom<index_t>(indiv, depth);
+    return getRelationFrom<index_t>(getIndividualByIndex(individual), depth);
   }
 
   template<typename T>
@@ -514,7 +515,7 @@ namespace ontologenius {
 
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
 
-    IndividualBranch* indiv = ordered_individuals_[individual];
+    IndividualBranch* indiv = getIndividualByIndex(individual);
     if(indiv != nullptr)
     {
       std::unordered_set<IndividualBranch*> sames;
@@ -846,7 +847,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getOn(index_t individual, index_t property, bool single_same)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
-    IndividualBranch* indiv = ordered_individuals_[individual];
+    IndividualBranch* indiv = getIndividualByIndex(individual);
 
     return getOn(indiv, property, single_same);
   }
@@ -979,7 +980,7 @@ namespace ontologenius {
   {
     std::unordered_set<index_t> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
-    IndividualBranch* indiv = ordered_individuals_[first_individual];
+    IndividualBranch* indiv = getIndividualByIndex(first_individual);
     if(second_individual > 0)
     {
       if((size_t)second_individual >= ordered_individuals_.size())
@@ -988,7 +989,7 @@ namespace ontologenius {
       }
       else
       {
-        IndividualBranch* second = ordered_individuals_[second_individual];
+        IndividualBranch* second = getIndividualByIndex(second_individual);
         if((second == nullptr) || (second->same_as_.empty()))
           getWith(indiv, {second_individual}, res, depth); // class
         else
@@ -1068,7 +1069,7 @@ namespace ontologenius {
 
   std::unordered_set<index_t> IndividualGraph::getDomainOf(index_t individual, int depth)
   {
-    IndividualBranch* branch = ordered_individuals_[individual];
+    IndividualBranch* branch = getIndividualByIndex(individual);
     std::unordered_set<index_t> res;
     getDomainOf(branch, res, depth);
     return res;
@@ -1094,7 +1095,7 @@ namespace ontologenius {
 
   std::unordered_set<index_t> IndividualGraph::getRangeOf(index_t individual, int depth)
   {
-    IndividualBranch* branch = ordered_individuals_[individual];
+    IndividualBranch* branch = getIndividualByIndex(individual);
     std::unordered_set<index_t> res;
     getRangeOf(branch, res, depth);
     return res;
@@ -1122,7 +1123,7 @@ namespace ontologenius {
   std::unordered_set<index_t> IndividualGraph::getUp(index_t individual, int depth)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
-    IndividualBranch* indiv = ordered_individuals_[individual];
+    IndividualBranch* indiv = getIndividualByIndex(individual);
     std::unordered_set<index_t> res;
     getUp(indiv, res, depth);
     return res;
@@ -1201,7 +1202,7 @@ namespace ontologenius {
 
   std::unordered_set<index_t> IndividualGraph::getSameId(index_t individual)
   {
-    return getSameId(ordered_individuals_[individual]);
+    return getSameId(getIndividualByIndex(individual));
   }
 
   void IndividualGraph::getLowestSame(IndividualBranch* individual, std::unordered_set<IndividualBranch*>& res)
@@ -1343,8 +1344,7 @@ namespace ontologenius {
     {
       if(it > 0)
       {
-        IndividualBranch* branch = ordered_individuals_[it];
-        ;
+        IndividualBranch* branch = getIndividualByIndex(it);
         if(branch != nullptr)
         {
           std::unordered_set<index_t> tmp;
@@ -1428,7 +1428,7 @@ namespace ontologenius {
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_class(class_graph_->mutex_);
-    IndividualBranch* branch = ordered_individuals_[indiv];
+    IndividualBranch* branch = getIndividualByIndex(indiv);
     return isA(branch, class_selector);
   }
 
@@ -1539,6 +1539,244 @@ namespace ontologenius {
     }
 
     return false;
+  }
+
+  bool IndividualGraph::isInferred(const std::string& param)
+  {
+    bool res = false;
+    std::function<bool(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
+    getInferenceData(param, res, lambda);
+    return res;
+  }
+
+  bool IndividualGraph::isInferredIndex(const std::string& param)
+  {
+    bool res = false;
+    std::function<bool(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.inferred; };
+    getInferenceDataIndex(param, res, lambda);
+    return res;
+  }
+
+  std::vector<std::string> IndividualGraph::getInferenceExplanation(const std::string& param)
+  {
+    std::vector<std::string> res;
+    std::function<std::vector<std::string>(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
+    getInferenceData(param, res, lambda);
+    return res;
+  }
+
+  std::vector<std::string> IndividualGraph::getInferenceExplanationIndex(const std::string& param)
+  {
+    std::vector<std::string> res;
+    std::function<std::vector<std::string>(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
+    getInferenceDataIndex(param, res, lambda);
+    return res;
+  }
+
+  template<typename R>
+  void IndividualGraph::getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
+  {
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    auto token = split(param, "|");
+    if(token.size() > 1)
+    {
+      auto* subject = container_.find(token.front());
+      if(subject != nullptr)
+      {
+        if(token.size() == 2)
+          return getInheritageInferenceData(subject, token[1], res, getter);
+        else
+        {
+          const auto& object = token[2];
+          size_t pose = object.find('#');
+          if(pose == std::string::npos)
+            return getObjectRelationInferenceData(subject, token[1], object, res, getter);
+          else
+            return getDataRelationInferenceData(subject, token[1], object, res, getter);
+        }
+      }
+      else
+        return;
+    }
+    else
+      return;
+  }
+
+  template<typename R>
+  void IndividualGraph::getInferenceDataIndex(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
+  {
+    const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
+    auto token = split(param, "|");
+    if(token.size() > 1)
+    {
+      std::vector<int> index_token(0, (int)token.size());
+      try
+      {
+        for(size_t i = 0; i < token.size(); i++)
+          index_token[i] = std::stoi(token[i]);
+      }
+      catch(...)
+      {
+        return;
+      }
+
+      auto* subject = getIndividualByIndex(index_token.front());
+      if(subject != nullptr)
+      {
+        if(index_token.size() == 2)
+          return getInheritageInferenceData(subject, index_token[1], res, getter);
+        else
+        {
+          const auto& object = index_token[2];
+          if(object >= 0)
+            return getObjectRelationInferenceData(subject, index_token[1], object, res, getter);
+          else
+            return getDataRelationInferenceData(subject, index_token[1], object, res, getter);
+        }
+      }
+      else
+        return;
+    }
+    else
+      return;
+  }
+
+  template<typename T, typename R>
+  void IndividualGraph::getInheritageInferenceData(IndividualBranch* indiv, const T& class_selector, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
+  {
+    if(indiv == nullptr)
+      return;
+
+    std::unordered_set<IndividualBranch*> sames;
+    getSame(indiv, sames);
+    for(auto* same : sames)
+    {
+      for(const auto& mother : same->is_a_)
+      {
+        if(mother.elem->operator==(class_selector))
+        {
+          res = getter(mother);
+          return;
+        }
+      }
+    }
+
+    const std::shared_lock<std::shared_timed_mutex> class_lock(class_graph_->mutex_);
+    // This second loop is costly, we prefer to test the other independently as fast as possible first
+    for(auto* same : sames)
+    {
+      for(const auto& mother : same->is_a_)
+      {
+        if(class_graph_->existInInheritance(mother.elem, class_selector))
+        {
+          res = getter(mother);
+          return;
+        }
+      }
+    }
+  }
+
+  template<typename T, typename R>
+  void IndividualGraph::getObjectRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& object, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
+  {
+    if(subject == nullptr)
+      return;
+
+    std::unordered_set<IndividualBranch*> sames;
+    getSame(subject, sames);
+    auto same_objects = getSame(object);
+    if(same_objects.empty())
+      return; // if object exists it should not be empty
+
+    for(auto* same : sames)
+    {
+      for(const auto& relation : same->object_relations_)
+      {
+        if(relation.first->operator==(predicate))
+        {
+          if(relation.second->operator==(object))
+          {
+            res = getter(relation);
+            return;
+          }
+          else if((relation.second->same_as_.empty() == false) && (same_objects.size() == relation.second->same_as_.size())) // If they don't have the same same they cannot be the sames
+          {
+            if(std::find_if(same_objects.begin(), same_objects.end(), [relation](const T& x) { return relation.second->operator==(x); }) != same_objects.end())
+            {
+              res = getter(relation);
+              return;
+            }
+          }
+        }
+      }
+    }
+
+    const std::shared_lock<std::shared_timed_mutex> property_lock(object_property_graph_->mutex_);
+    // This second loop is costly, we prefer to test the other independently as fast as possible first
+    for(auto* same : sames)
+    {
+      for(const auto& relation : same->object_relations_)
+      {
+        if(object_property_graph_->existInInheritance(relation.first, predicate))
+        {
+          if(relation.second->operator==(object))
+          {
+            res = getter(relation);
+            return;
+          }
+          else if((relation.second->same_as_.empty() == false) && (same_objects.size() == relation.second->same_as_.size())) // If they don't have the same same they cannot be the sames
+          {
+            if(std::find_if(same_objects.begin(), same_objects.end(), [relation](const T& x) { return relation.second->operator==(x); }) != same_objects.end())
+            {
+              res = getter(relation);
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  template<typename T, typename R>
+  void IndividualGraph::getDataRelationInferenceData(IndividualBranch* subject, const T& predicate, const T& data, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
+  {
+    if(subject == nullptr)
+      return;
+
+    std::unordered_set<IndividualBranch*> sames;
+    getSame(subject, sames);
+
+    for(auto* same : sames)
+    {
+      for(const auto& relation : same->data_relations_)
+      {
+        if(relation.first->operator==(predicate))
+        {
+          if(relation.second->operator==(data))
+          {
+            res = getter(relation);
+            return;
+          }
+        }
+      }
+    }
+
+    const std::shared_lock<std::shared_timed_mutex> property_lock(data_property_graph_->mutex_);
+    // This second loop is costly, we prefer to test the other independently as fast as possible first
+    for(auto* same : sames)
+    {
+      for(const auto& relation : same->data_relations_)
+      {
+        if(data_property_graph_->existInInheritance(relation.first, predicate))
+        {
+          if(relation.second->operator==(data))
+          {
+            res = getter(relation);
+            return;
+          }
+        }
+      }
+    }
   }
 
   ClassBranch* IndividualGraph::upgradeToBranch(IndividualBranch* indiv)
@@ -1767,7 +2005,7 @@ namespace ontologenius {
       return false;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool infered, bool check_existance)
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existance)
   {
     if(object_property_graph_->isIrreflexive(property))
     {
@@ -1797,12 +2035,12 @@ namespace ontologenius {
     }
 
     indiv_from->object_relations_[index].probability = (float)proba;
-    indiv_from->object_relations_[index].infered = infered;
+    indiv_from->object_relations_[index].inferred = inferred;
 
     return index;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba, bool infered)
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba, bool inferred)
   {
     if(checkRangeAndDomain(indiv_from, property, data))
     {
@@ -1816,7 +2054,7 @@ namespace ontologenius {
       }
 
       indiv_from->data_relations_[index].probability = (float)proba;
-      indiv_from->data_relations_[index].infered = infered;
+      indiv_from->data_relations_[index].inferred = inferred;
       indiv_from->setUpdated(true);
 
       return index;
@@ -1952,7 +2190,7 @@ namespace ontologenius {
     {
       if(indiv->is_a_[i].elem == class_branch)
       {
-        if((protect_stated == true) && (indiv->is_a_[i].infered == false))
+        if((protect_stated == true) && (indiv->is_a_[i].inferred == false))
           return false;
 
         for(auto* trace_vect : indiv->is_a_[i].induced_traces)
@@ -2025,7 +2263,7 @@ namespace ontologenius {
       {
         if(branch_1->same_as_[i].elem == branch_2)
         {
-          if((protect_stated == true) && (branch_1->same_as_[i].infered == false))
+          if((protect_stated == true) && (branch_1->same_as_[i].inferred == false))
             break;
 
           auto expl = removeInductions(branch_1, branch_1->same_as_, i, "sameAs");
@@ -2035,7 +2273,7 @@ namespace ontologenius {
           {
             if(branch_2->same_as_[j].elem == branch_1)
             {
-              if((protect_stated == true) && (branch_2->same_as_[j].infered == false))
+              if((protect_stated == true) && (branch_2->same_as_[j].inferred == false))
                 break;
 
               expl = removeInductions(branch_2, branch_2->same_as_, j, "sameAs");
@@ -2079,7 +2317,7 @@ namespace ontologenius {
         {
           if((branch_on == nullptr) || (object_relation.second == branch_on)) // if branch_on == nullptr we have to remove relations regardless the object
           {
-            if((protect_stated == true) && (object_relation.infered == false))
+            if((protect_stated == true) && (object_relation.inferred == false))
             {
               if(branch_on == nullptr)
                 break; // if we have to remove everything we do not return now
@@ -2318,7 +2556,7 @@ namespace ontologenius {
 
     for(const auto& is_a : old_branch->is_a_)
     {
-      if(is_a.infered && (is_a.induced_traces.empty() == false))
+      if(is_a.inferred && (is_a.induced_traces.empty() == false))
         new_branch->setUpdated(true);
       else
         new_branch->is_a_.emplaceBack(is_a, class_graph_->container_.find(is_a.elem->value()));
@@ -2332,8 +2570,8 @@ namespace ontologenius {
 
     for(const auto& relation : old_branch->object_relations_)
     {
-      // infered relations using traces should not be copied but recomputed
-      if(relation.infered && (relation.induced_traces.empty() == false))
+      // inferred relations using traces should not be copied but recomputed
+      if(relation.inferred && (relation.induced_traces.empty() == false))
         new_branch->setUpdated(true);
       else
       {

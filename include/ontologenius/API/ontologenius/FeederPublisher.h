@@ -37,6 +37,10 @@ namespace onto {
 
     FeederPublisher(FeederPublisher& other) = delete;
 
+    /// @brief [deprecated] Consider using addRelation.
+    void addProperty(const std::string& from, const std::string& property, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    /// @brief [deprecated] Consider using addRelation.
+    void addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
     /// @brief Adds the fact that "from" is linked with "on" by the property "property".
     /// At least "from" or "on" must be already known to the system. If one of them is unknown, it will be automatically created.
     /// The property can be unknown before calling this function.
@@ -45,7 +49,7 @@ namespace onto {
     /// @param on is the object of the triplet to add.
     /// @param stamp is the time at which the added relation become true.
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-    void addProperty(const std::string& from, const std::string& property, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    void addRelation(const std::string& from, const std::string& property, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
     /// @brief Adds the fact that "from" is linked to the data "value" of type "type" by the property "property".
     /// At least "from" must be already known to the system.
     /// The property can be unknown before calling this function.
@@ -55,14 +59,14 @@ namespace onto {
     /// @param value is the value of the triplet object.
     /// @param stamp is the time at which the added relation become true.
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-    void addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
-    /// @brief Adds the inheratage: "from" is a "on". "from" and "on" could by a class, an individual or a property.
-    /// At least from or on must be already known to the system. If one of them is unknown, it will be automatically created.
-    /// @param from is the parent concept. It could by a class, an individual or a property.
-    /// @param on is the child concept. It could by a class, an individual or a property.
+    void addRelation(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    /// @brief Adds the inheratage: "child" is a "mother". "child" and "mother" could by a class, an individual or a property.
+    /// At least child or on must be already known to the system. If one of them is unknown, it will be automatically created.
+    /// @param child is the parent concept. It could by a class, an individual or a property.
+    /// @param mother is the child concept. It could by a class, an individual or a property.
     /// @param stamp is the time at which the added relation become true.
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-    void addInheritage(const std::string& from, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    void addInheritage(const std::string& child, const std::string& mother, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
     /// @brief Adds the label "name" in the language "lang" to the class, individual, or property "from".
     /// "from" must be already known to the system.
     /// @param from is the concept (individual, class, property) to which add a name in natural language.
@@ -83,13 +87,20 @@ namespace onto {
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
     void addInverseOf(const std::string& property, const std::string& inverse_property, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
 
+    /// @brief [deprecated] Consider using removeRelation.
+    void removeProperty(const std::string& from, const std::string& property, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    /// @brief [deprecated] Consider using removeRelation.
+    void removeProperty(const std::string& from, const std::string& property, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    /// @brief [deprecated] Consider using removeRelation.
+    void removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+
     /// @brief Removes the fact that "from" is linked to any object by the property "property".
     /// After this action, knowledge of the property is not removed.
     /// @param from is the subject of the triplet to remove.
     /// @param property is the predicat of the triplet to remove.
     /// @param stamp is the time at which the added relation become false.
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-    void removeProperty(const std::string& from, const std::string& property, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    void removeRelation(const std::string& from, const std::string& property, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
     /// @brief Removes the fact that "from" is linked with "on" by the property "property".
     /// After this action, knowledge of the property is not removed.
     /// @param from is the subject of the triplet to remove.
@@ -97,7 +108,7 @@ namespace onto {
     /// @param on is the object of the triplet to remove.
     /// @param stamp is the time at which the added relation become false.
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-    void removeProperty(const std::string& from, const std::string& property, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    void removeRelation(const std::string& from, const std::string& property, const std::string& on, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
     /// @brief Removes the fact that "from" is linked to the data "value" of type "type" by the property "property".
     /// After this action, knowledge of the property is not removed.
     /// @param from is the subject of the triplet to remove.
@@ -106,7 +117,7 @@ namespace onto {
     /// @param value is the value of the triplet object.
     /// @param stamp is the time at which the added relation become false.
     /// If the time stamp stamp is not defined, the function takes the current ROS time as the time stamp.
-    void removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
+    void removeRelation(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const onto_ros::Time& stamp = onto_ros::Node::get().currentTime());
     /// @brief Removes the inheratage: "from" is a "on". "from" and "on" could by a class, an individual or a property.
     /// @param from is the parent concept. It could by a class, an individual or a property.
     /// @param on is the child concept. It could by a class, an individual or a property.

@@ -460,7 +460,7 @@ namespace ontologenius {
   void ClassOwlWriter::writeSubClassOf(ClassBranch* branch)
   {
     for(auto& mother : branch->mothers_)
-      if(mother.infered == false)
+      if(mother.inferred == false)
       {
         const std::string proba = (mother < 1.0) ? " onto:probability=\"" + std::to_string(mother.probability) + "\"" : "";
         const std::string tmp = "        <rdfs:subClassOf" +
@@ -475,7 +475,7 @@ namespace ontologenius {
   {
     if(branch->disjoints_.size() < 2)
       for(auto& disjoint : branch->disjoints_)
-        if(disjoint.infered == false)
+        if(disjoint.inferred == false)
         {
           const std::string tmp = "        <owl:disjointWith" +
                                   getProba(disjoint) +
@@ -572,7 +572,7 @@ namespace ontologenius {
   void ClassOwlWriter::writeObjectProperties(ClassBranch* branch)
   {
     for(const ClassObjectRelationElement& relation : branch->object_relations_)
-      if(relation.infered == false)
+      if(relation.inferred == false)
       {
         const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
         const std::string tmp = "        <" +
@@ -588,7 +588,7 @@ namespace ontologenius {
   void ClassOwlWriter::writeDataProperties(ClassBranch* branch)
   {
     for(const ClassDataRelationElement& relation : branch->data_relations_)
-      if(relation.infered == false)
+      if(relation.inferred == false)
       {
         const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
         const std::string tmp = "        <" +

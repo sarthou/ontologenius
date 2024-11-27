@@ -1457,8 +1457,8 @@ namespace ontologenius {
 
     for(const auto& mother : old_branch->mothers_)
     {
-      // infered inheritance using traces should not be copied but recomputed
-      if(mother.infered && (mother.induced_traces.empty() == false))
+      // inferred inheritance using traces should not be copied but recomputed
+      if(mother.inferred && (mother.induced_traces.empty() == false))
         new_branch->setUpdated(true);
       else
         new_branch->mothers_.emplaceBack(mother, container_.find(mother.elem->value()));

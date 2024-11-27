@@ -104,7 +104,7 @@ namespace ontologenius {
     // use std::lock_guard<std::shared_timed_mutex> lock(mutex_); to WRITE A DATA
     // use std::shared_lock<std::shared_timed_mutex> lock(mutex_); to READ A DATA
 
-    inline void removeFromDictionary(std::map<std::string, std::vector<std::string>>& dictionary, const std::string& lang, const std::string& word)
+    void removeFromDictionary(std::map<std::string, std::vector<std::string>>& dictionary, const std::string& lang, const std::string& word)
     {
       if(dictionary.find(lang) != dictionary.end())
       {
@@ -117,7 +117,7 @@ namespace ontologenius {
     }
 
     template<class T>
-    inline void removeFromVect(std::vector<T>& vect, const T& value)
+    void removeFromVect(std::vector<T>& vect, const T& value)
     {
       for(size_t i = 0; i < vect.size();)
         if(vect[i] == value)
@@ -127,7 +127,7 @@ namespace ontologenius {
     }
 
     template<class T>
-    inline void removeFromElemVect(std::vector<SingleElement<T>>& vect, const T& value)
+    void removeFromElemVect(std::vector<SingleElement<T>>& vect, const T& value)
     {
       for(size_t i = 0; i < vect.size();)
         if(vect[i].elem == value)
@@ -137,7 +137,7 @@ namespace ontologenius {
     }
 
     template<class T>
-    inline void removeFromElemVect(RelationsWithInductions<SingleElement<T>>& vect, const T& value)
+    void removeFromElemVect(RelationsWithInductions<SingleElement<T>>& vect, const T& value)
     {
       for(size_t i = 0; i < vect.size();)
         if(vect[i].elem == value)
@@ -147,7 +147,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    inline void getInMap(T** ptr, const std::string& name, std::map<std::string, T*>& map)
+    void getInMap(T** ptr, const std::string& name, std::map<std::string, T*>& map)
     {
       if(*ptr != nullptr)
         return;
@@ -158,7 +158,7 @@ namespace ontologenius {
     }
 
     template<typename C>
-    inline bool conditionalPushBack(std::vector<C>& vect, const C& data)
+    bool conditionalPushBack(std::vector<C>& vect, const C& data)
     {
       if(std::find(vect.begin(), vect.end(), data) == vect.end())
       {
@@ -170,7 +170,7 @@ namespace ontologenius {
     }
 
     template<typename C>
-    inline bool conditionalPushBack(RelationsWithInductions<C>& vect, const C& data)
+    bool conditionalPushBack(RelationsWithInductions<C>& vect, const C& data)
     {
       if(std::find(vect.begin(), vect.end(), data) == vect.end())
       {
@@ -182,7 +182,7 @@ namespace ontologenius {
     }
 
     template<typename C>
-    inline bool conditionalPushBack(std::vector<SingleElement<C>>& vect, const SingleElement<C>& data)
+    bool conditionalPushBack(std::vector<SingleElement<C>>& vect, const SingleElement<C>& data)
     {
       auto it = std::find(vect.begin(), vect.end(), data);
       if(it == vect.end())
@@ -190,14 +190,14 @@ namespace ontologenius {
         vect.emplace_back(data);
         return true;
       }
-      else if(it->infered && (data.infered == false))
-        it->infered = false;
+      else if(it->inferred && (data.inferred == false))
+        it->inferred = false;
 
       return false;
     }
 
     template<typename C>
-    inline bool conditionalPushBack(RelationsWithInductions<SingleElement<C>>& vect, const SingleElement<C>& data)
+    bool conditionalPushBack(RelationsWithInductions<SingleElement<C>>& vect, const SingleElement<C>& data)
     {
       auto it = std::find(vect.begin(), vect.end(), data);
       if(it == vect.end())
@@ -205,8 +205,8 @@ namespace ontologenius {
         vect.emplaceBack(data);
         return true;
       }
-      else if(it->infered && (data.infered == false))
-        it->infered = false;
+      else if(it->inferred && (data.inferred == false))
+        it->inferred = false;
 
       return false;
     }

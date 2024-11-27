@@ -14,6 +14,7 @@
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyOperators/Sparql.h"
 #include "ontologenius/core/reasoner/Reasoners.h"
+#include "ontologenius/core/subscription/SubscriptionManager.h"
 
 // #define ONTO_TEST
 
@@ -54,10 +55,10 @@ namespace ontologenius {
 
     /// @brief Tests if the interface is running. By running we meant that the threads and ROS subscribers are alive
     /// @return true is the interface is running, false otherwise
-    inline bool isRunning() { return run_; }
+    bool isRunning() const { return run_; }
     /// @brief Gets a pointer on the used ontology to use it externally. Using it externally can be dangerous, be careful
     /// @return A pointer on an ontology object
-    Ontology* getOntology() { return onto_; }
+    Ontology* getOntology() const { return onto_; }
     /// @brief Gets a pointer on the SPARQL interface.
     /// @return A pointer on the SPARQL interface object
     Sparql* getSparqlInterface() { return &sparql_; }
@@ -82,6 +83,8 @@ namespace ontologenius {
     Reasoners reasoners_;
     /// @brief Analyses incoming statements and manage the versioning system
     Feeder feeder_;
+    /// @brief Allows subscription to triplets patterns
+    SubscriptionManager subscriber_;
     /// @brief Republishs the incoming statement and the deduced once
     FeederEcho feeder_echo_;
     /// @brief Resolves SPARQL queries.

@@ -1,0 +1,4 @@
+<launch>
+  <arg name='TESTDURATION' value='60' />
+  <test pkg="ontologenius" type="onto_feature_deep_copy_test" test-name="feature_deep_copy_test" time-limit="$(arg TESTDURATION)" retry="0" />
+</launch>

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"

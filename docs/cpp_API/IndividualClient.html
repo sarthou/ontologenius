@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>IndividualClient Class (cpp) | Ontologenius 0.4.2</title>
+  <title>IndividualClient Class (cpp) | Ontologenius 0.4.4</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
@@ -14,15 +14,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../index.html">
-              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../index.html">
+            <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -97,6 +97,7 @@
             <li class="level1"><a href="OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -125,11 +126,21 @@
         <p>The IndividualClient class provides a ROS service abstraction for individuals exploration. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
-          <tbody>
-            <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ontologyClients/IndividualClient.h&quot;</span></td></tr>
-            <tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a></td></tr>
-            <tr><td class="memItemLeft rightAlign topAlign"> Namespace:</td><td class="memItemRight bottomAlign"> onto</td></tr>
-          </tbody></table>
+            <tbody>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Header:</td>
+                <td class="memItemRight bottomAlign"> <span class="preprocessor">#include &quot;ontologenius/clients/ontologyClients/IndividualClient.h&quot;</span></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Inherits:</td>
+                <td class="memItemRight bottomAlign"> <a href="OntologyClient.html">OntologyClient</a></td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> Namespace:</td>
+                <td class="memItemRight bottomAlign"> onto</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <a name="public-functions"></a>
@@ -137,21 +148,82 @@
         <div class="table">
           <table class="alignedsummary">
             <tbody>
-              <tr><td class="memItemLeft rightAlign topAlign"> </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#IndividualClient">IndividualClient</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getType">getType</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getSame">getSame</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDistincts">getDistincts</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getOn">getOn</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>selector</i> = "")</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getFrom">getFrom</a></b>(const std::string&amp; <i>property</i>, const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "")</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getWith">getWith</a></b>(const std::string&amp; <i>name_from</i>, const std::string&amp; <i>name_to</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedFrom">getRelatedFrom</a></b>(const std::string&amp; <i>property</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedOn">getRelatedOn</a></b>(const std::string&amp; <i>property</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedWith">getRelatedWith</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationFrom">getRelationFrom</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationOn">getRelationOn</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationWith">getRelationWith</a></b>(const std::string&amp; <i>name</i>)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDomainOf">getDomainOf</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
-              <tr><td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td><td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRangeOf">getRangeOf</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td></tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#IndividualClient">IndividualClient</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getType">getType</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getSame">getSame</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDistincts">getDistincts</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getOn">getOn</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>selector</i> = "")</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getFrom">getFrom</a></b>(const std::string&amp; <i>property</i>, const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "")</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getWith">getWith</a></b>(const std::string&amp; <i>name_from</i>, const std::string&amp; <i>name_to</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedFrom">getRelatedFrom</a></b>(const std::string&amp; <i>property</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedOn">getRelatedOn</a></b>(const std::string&amp; <i>property</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedWith">getRelatedWith</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationFrom">getRelationFrom</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationOn">getRelationOn</a></b>(const std::string&amp; <i>name</i>, int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationWith">getRelationWith</a></b>(const std::string&amp; <i>name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDomainOf">getDomainOf</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRangeOf">getRangeOf</a></b>(const std::string&amp; <i>name</i>, const std::string&amp; <i>selector</i> = "", int <i>depth</i> = -1)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isInferred">isInferred</a></b>(const std::string&amp; <i>subject</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>object</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> bool </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isInferred2">isInferred</a></b>(const std::string&amp; <i>subject</i>, const std::string&amp; <i>class_name</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getInferenceExplanation">getInferenceExplanation</a></b>(const std::string&amp; <i>subject</i>, const std::string&amp; <i>property</i>, const std::string&amp; <i>object</i>)</td>
+              </tr>
+              <tr>
+                <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getInferenceExplanation2">getInferenceExplanation</a></b>(const std::string&amp; <i>subject</i>, const std::string&amp; <i>class_name</i>)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -232,6 +304,18 @@
           <p>The optional <i>selector</i> parameter can be set to only get results inheriting from the <i>selector</i> property. The default value &quot;&quot; represents no restriction on the result.</p>
           <p>The optional <i>depth</i> parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
+          <h3 class="fn" id="isInferred"><a name="isInferred"></a><span class="type">bool</span> IndividualClient::<span class="name">isInferred</span>(const <span class="type">std::string</span>&amp; <i>subject</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>object</i>)</h3>
+          <p>Tests if the relation has been inferred or not.</p>
+
+          <h3 class="fn" id="isInferred2"><a name="isInferred"></a><span class="type">bool</span> IndividualClient::<span class="name">isInferred</span>(const <span class="type">std::string</span>&amp; <i>subject</i>, const <span class="type">std::string</span>&amp; <i>class_name</i>)</h3>
+          <p>Tests if the inheritance has been inferred or not.</p>
+
+          <h3 class="fn" id="getInferenceExplanation"><a name="getInferenceExplanation"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getInferenceExplanation</span>(const <span class="type">std::string</span>&amp; <i>subject</i>, const <span class="type">std::string</span>&amp; <i>property</i>, const <span class="type">std::string</span>&amp; <i>object</i>)</h3>
+          <p>Gives all the relations used in the inference of the provided relation.</p>
+
+          <h3 class="fn" id="getInferenceExplanation2"><a name="getInferenceExplanation"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualClient::<span class="name">getInferenceExplanation</span>(const <span class="type">std::string</span>&amp; <i>subject</i>, const <span class="type">std::string</span>&amp; <i>class_name</i>)</h3>
+          <p>Gives all the relations used in the inference of the provided inheritage.</p>
+
         </div>
       </div>
     </div>
@@ -244,7 +328,7 @@
     <p>
       Brought to you by:
       <a class="laas_logo" href="https://www.laas.fr/public/">
-        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px" />
       </a>
     </p>
   </div>

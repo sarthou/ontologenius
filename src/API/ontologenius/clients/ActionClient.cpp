@@ -1,5 +1,7 @@
 #include "ontologenius/API/ontologenius/clients/ActionClient.h"
 
+#include <string>
+
 namespace onto {
 
   bool ActionClient::close()

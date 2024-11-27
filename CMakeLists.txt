@@ -79,6 +79,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     OntologeniusSparqlResponse.msg
     OntologeniusSparqlIndexResponse.msg
     OntologeniusExplanation.msg
+    OntologeniusSubscriptionAnswer.msg
   )
 
   # # Generate services in the 'srv' folder
@@ -89,6 +90,8 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     OntologeniusIndexService.srv
     OntologeniusSparqlService.srv
     OntologeniusSparqlIndexService.srv
+    OntologeniusSubscription.srv
+    OntologeniusUnsubscription.srv
   )
 
   # # Generate added messages and services with any dependencies listed here
@@ -103,11 +106,14 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     "msg/OntologeniusSparqlIndexResponse.msg"
     "msg/OntologeniusSparqlResponse.msg"
     "msg/OntologeniusStampedString.msg"
+    "msg/OntologeniusSubscriptionAnswer.msg"
     "srv/OntologeniusConversion.srv"
     "srv/OntologeniusIndexService.srv"
     "srv/OntologeniusService.srv"
     "srv/OntologeniusSparqlIndexService.srv"
     "srv/OntologeniusSparqlService.srv"
+    "srv/OntologeniusSubscription.srv"
+    "srv/OntologeniusUnsubscription.srv"
     DEPENDENCIES builtin_interfaces std_msgs)
 endif()
 
@@ -236,7 +242,7 @@ function(add_ros_library TARGET)
 
   if($ENV{ROS_VERSION} STREQUAL "1")
     add_dependencies(${TARGET} ontologenius_gencpp ${catkin_EXPORTED_TARGETS})
-    target_include_directories(${TARGET} PUBLIC 
+    target_include_directories(${TARGET} PUBLIC
       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
       $<INSTALL_INTERFACE:include>
       ${catkin_INCLUDE_DIRS})
@@ -325,6 +331,7 @@ add_ros_library(ontologenius_lib
   src/API/ontologenius/OntologyManipulator.cpp
   src/API/ontologenius/OntologyManipulatorIndex.cpp
   src/API/ontologenius/OntologiesManipulator.cpp
+  src/API/ontologenius/PatternsSubscriber.cpp
 )
 target_include_directories(ontologenius_lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ontologenius/API>
   $<INSTALL_INTERFACE:include/ontologenius/API>)
@@ -333,6 +340,18 @@ target_link_libraries(ontologenius_lib
   ontologenius_compat
   ontologenius_plugin_lib
 ) # ontologenius_interface
+
+# # SUBSCRIPTION
+add_ros_library(ontologenius_subscription_lib
+  src/core/subscription/Subscription.cpp
+  src/core/subscription/SubscriptionManager.cpp
+  src/core/subscription/SubscriptionPattern.cpp
+)
+target_link_libraries(ontologenius_subscription_lib
+  PUBLIC
+  ontologenius_compat
+  ontologenius_ontoGraphs_lib
+)
 
 # # INTERFACE
 add_ros_library(ontologenius_interface
@@ -346,6 +365,7 @@ target_link_libraries(ontologenius_interface
   ontologenius_feeder_lib
   ontologenius_plugin_lib
   ontologenius_operators
+  ontologenius_subscription_lib
 )
 
 # ##################################
@@ -413,9 +433,6 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   target_link_libraries(ontologenius_container_tester PRIVATE ontologenius_interface)
 
   # # FEATURES TESTS
-  add_ros_executable(ontologenius_config_tester src/tests/config_reader_test.cpp)
-  target_link_libraries(ontologenius_config_tester PRIVATE ontologenius_interface)
-
   add_ros_executable(ontologenius_versioning src/tests/versioning.cpp)
   target_link_libraries(ontologenius_versioning PRIVATE ontologenius_lib)
 
@@ -476,13 +493,13 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   # Generate CMake package config file
   include(CMakePackageConfigHelpers)
   configure_package_config_file(
-          cmake/ontologenius_compatConfigIntermediate.cmake.in
-          ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
-      INSTALL_DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+    cmake/ontologenius_compatConfigIntermediate.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
+    INSTALL_DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
   install(
-      FILES ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
-      DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/ontologenius_compatConfigIntermediate.cmake
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
 
   install(
@@ -497,7 +514,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     EXPORT ontologenius_compatTargets
     FILE ontologenius_compatTargets.cmake
     NAMESPACE ontologenius::
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/cmake
   )
 
   install(TARGETS
@@ -516,6 +533,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     ontologenius_plugin_lib
     ontologenius_ontoGraphs_lib
     ontologenius_reasoner_plugin
+    ontologenius_subscription_lib
     ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -559,6 +577,7 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     ontologenius_feeder_lib
     ontologenius_plugin_lib
     ontologenius_ontoGraphs_lib
+    ontologenius_subscription_lib
     ontologenius_reasoner_plugin
     EXPORT ontologenius
     ARCHIVE DESTINATION lib
@@ -590,49 +609,58 @@ if($ENV{ROS_VERSION} STREQUAL "1")
   if(CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
 
-    add_rostest_gtest(ontologenius_library_tester test/library.test src/tests/CI/library.cpp)
-    target_include_directories(ontologenius_library_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_library_tester ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_api_connection_test test/api_connection.test src/tests/CI/api_connection_test.cpp)
+    target_include_directories(onto_api_connection_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_api_connection_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_requests_tester test/requests.test src/tests/CI/requests.cpp)
-    target_include_directories(ontologenius_requests_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_requests_tester ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_api_inheritage_test test/api_inheritage.test src/tests/CI/api_inheritage_test.cpp)
+    target_include_directories(onto_api_inheritage_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_api_inheritage_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_global_tester test/globalFeatures.test src/tests/CI/globalFeatures.cpp)
-    target_include_directories(ontologenius_global_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_global_tester ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_api_relations_index_test test/api_relations_index.test src/tests/CI/api_relations_index_test.cpp)
+    target_include_directories(onto_api_relations_index_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_api_relations_index_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_propertiesInheritage_tester test/propertiesInheritage.test src/tests/CI/propertiesInheritage.cpp)
-    target_include_directories(ontologenius_propertiesInheritage_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_propertiesInheritage_tester ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_api_relations_test test/api_relations.test src/tests/CI/api_relations_test.cpp)
+    target_include_directories(onto_api_relations_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_api_relations_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_propertiesInheritageIndex_tester test/propertiesInheritageIndex.test src/tests/CI/propertiesInheritageIndex.cpp)
-    target_include_directories(ontologenius_propertiesInheritageIndex_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_propertiesInheritageIndex_tester ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_feature_deep_copy_test test/feature_deep_copy.test src/tests/CI/feature_deep_copy_test.cpp)
+    set_target_properties(onto_feature_deep_copy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(onto_feature_deep_copy_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_feature_deep_copy_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_multi_tester test/multi.test src/tests/CI/multi.cpp)
-    target_include_directories(ontologenius_multi_tester PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_multi_tester ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_feature_loading_test test/feature_loading.test src/tests/CI/feature_loading_test.cpp)
+    target_include_directories(onto_feature_loading_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_feature_loading_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(ontologenius_cpy_test test/cpy.test src/tests/CI/copy_test.cpp)
-    set_target_properties(ontologenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
-    target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_feature_multi_test test/feature_multi.test src/tests/CI/feature_multi_test.cpp)
+    target_include_directories(onto_feature_multi_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_feature_multi_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(anonymous_class_test test/anonymous_class.test src/tests/CI/anonymous_class_test.cpp)
-    set_target_properties(anonymous_class_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
-    target_include_directories(anonymous_class_test PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(anonymous_class_test ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_feature_subscription_test test/feature_subscription.test src/tests/CI/feature_subscription_test.cpp)
+    target_include_directories(onto_feature_subscription_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_feature_subscription_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(chain_test test/chain.test src/tests/CI/chain_test.cpp)
-    set_target_properties(chain_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
-    target_include_directories(chain_test PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(chain_test ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_reasoning_anonymous_class_test test/reasoning_anonymous_class.test src/tests/CI/reasoning_anonymous_class_test.cpp)
+    set_target_properties(onto_reasoning_anonymous_class_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(onto_reasoning_anonymous_class_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_reasoning_anonymous_class_test ontologenius_lib ${catkin_LIBRARIES})
 
-    add_rostest_gtest(transitivity_test test/transitivity.test src/tests/CI/transitivity_test.cpp)
-    set_target_properties(transitivity_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
-    target_include_directories(transitivity_test PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(transitivity_test ontologenius_lib ${catkin_LIBRARIES})
+    add_rostest_gtest(onto_reasoning_chain_test test/reasoning_chain.test src/tests/CI/reasoning_chain_test.cpp)
+    set_target_properties(onto_reasoning_chain_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(onto_reasoning_chain_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_reasoning_chain_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(onto_reasoning_mechanism_test test/reasoning_mechanism.test src/tests/CI/reasoning_mechanism_test.cpp)
+    set_target_properties(onto_reasoning_mechanism_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(onto_reasoning_mechanism_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_reasoning_mechanism_test ontologenius_lib ${catkin_LIBRARIES})
+
+    add_rostest_gtest(onto_reasoning_transitivity_test test/reasoning_transitivity.test src/tests/CI/reasoning_transitivity_test.cpp)
+    set_target_properties(onto_reasoning_transitivity_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(onto_reasoning_transitivity_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(onto_reasoning_transitivity_test ontologenius_lib ${catkin_LIBRARIES})
   endif()
 
 elseif($ENV{ROS_VERSION} STREQUAL "2")
@@ -640,10 +668,10 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     find_package(ament_lint_auto REQUIRED)
     find_package(ament_cmake_gtest REQUIRED)
 
-    ament_add_gtest(ontologenius_cpy_test src/tests/CI/copy_test.cpp TIMEOUT 10)
-    set_target_properties(ontologenius_cpy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
-    target_include_directories(ontologenius_cpy_test PRIVATE ${catkin_INCLUDE_DIRS})
-    target_link_libraries(ontologenius_cpy_test ontologenius_lib ${catkin_LIBRARIES})
+    ament_add_gtest(feature_deep_copy_test src/tests/CI/feature_deep_copy_test.cpp TIMEOUT 10)
+    set_target_properties(feature_deep_copy_test PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+    target_include_directories(feature_deep_copy_test PRIVATE ${catkin_INCLUDE_DIRS})
+    target_link_libraries(feature_deep_copy_test ontologenius_lib ${catkin_LIBRARIES})
   endif()
 endif()
 

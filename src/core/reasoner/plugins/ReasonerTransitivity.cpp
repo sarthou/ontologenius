@@ -51,9 +51,10 @@ namespace ontologenius {
               {
                 if(!relationExists(indiv, property, used.first))
                 {
+                  int index = -1;
                   try
                   {
-                    ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true, false);
+                    index = ontology_->individual_graph_.addRelation(indiv, property, used.first, 1.0, true, false);
                     indiv->nb_updates_++;
                   }
                   catch(GraphException& e)
@@ -63,12 +64,10 @@ namespace ontologenius {
                   }
 
                   used.second.insert(used.second.end(), local_used.begin(), local_used.end());
-                  std::string explanation_reference;
+                  indiv->object_relations_[index].explanation.reserve(used.second.size());
                   for(auto it = used.second.rbegin(); it != used.second.rend(); ++it)
                   {
-                    if(explanation_reference.empty() == false)
-                      explanation_reference += ", ";
-                    explanation_reference += it->first;
+                    indiv->object_relations_[index].explanation.push_back(it->first);
 
                     if(it->second->exist(indiv, property, used.first) == false)
                     {
@@ -79,7 +78,7 @@ namespace ontologenius {
 
                   nb_update++;
                   explanations_.emplace_back("[ADD]" + indiv->value() + "|" + property->value() + "|" + used.first->value(),
-                                             "[ADD]" + explanation_reference);
+                                             "[ADD]" + indiv->object_relations_[index].getExplanation());
                 }
               }
             }

@@ -104,6 +104,29 @@ namespace onto {
     /// @return a vector of identifiers of individuals.
     std::vector<std::string> getDistincts(const std::string& name);
 
+    /// @brief Tests if the relation has been inferred or not.
+    /// @param subject the subject of the relation.
+    /// @param property the property of the relation.
+    /// @param object the object of the relation. Can be an individual or a data (type#value)
+    /// @return true if the relation has been inferred.
+    bool isInferred(const std::string& subject, const std::string& property, const std::string& object);
+    /// @brief Tests if the relation has been inferred or not.
+    /// @param subject the subject of the relation.
+    /// @param class_name the class the subject inherite.
+    /// @return true if the relation has been inferred.
+    bool isInferred(const std::string& subject, const std::string& class_name);
+    /// @brief Gives all the relations used in the inference of the provided relation.
+    /// @param subject the subject of the relation.
+    /// @param property the property of the relation.
+    /// @param object the object of the relation. Can be an individual or a data (type#value)
+    /// @return a vector of relation in the form `subject|predicate|object|`
+    std::vector<std::string> getInferenceExplanation(const std::string& subject, const std::string& property, const std::string& object);
+    /// @brief Gives all the relations used in the inference of the provided inheritage.
+    /// @param subject the subject of the relation.
+    /// @param class_name the class the subject inherite.
+    /// @return a vector of relation in the form `subject|predicate|object|`
+    std::vector<std::string> getInferenceExplanation(const std::string& subject, const std::string& class_name);
+
   private:
   };
 

@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -101,6 +101,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -271,7 +272,7 @@
           <div class="code_line">      <span class="cpp_key">bool</span> <span class="cpp_var">is_same</span> = <span class="cpp_key">true</span>;</div>
           <div class="code_line">      <span class="cpp_op">for</span>(<span class="cpp_type">size_t</span> <span class="cpp_var">i</span> = <span class="cpp_value">1</span>; <span class="cpp_var">i</span> &lt; <span class="cpp_var">inheritances</span>.<span class="cpp_function">size</span>(); <span class="cpp_var">i</span>++)</div>
           <div class="code_line">      {</div>
-          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>(), <span class="cpp_var">inheritances</span>.<span class="cpp_function">front</span>[<span class="cpp_var">words</span>]);</div>
+          <div class="code_line">        <span class="cpp_type">std</span>::<span class="cpp_type">vector</span>&lt;<span class="cpp_type">std</span>::<span class="cpp_type">string</span>&gt;::<span class="cpp_type">iterator</span> <span class="cpp_var">it</span> = <span class="cpp_function">find</span>(<span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">begin</span>(), <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>(), <span class="cpp_var">inheritances</span>.<span class="cpp_function">front</span>()[<span class="cpp_var">words</span>]);</div>
           <div class="code_line">        <span class="cpp_op">if</span>(<span class="cpp_var">it</span> == <span class="cpp_var">inheritances</span>[<span class="cpp_var">i</span>].<span class="cpp_function">end</span>())</div>
           <div class="code_line">          <span class="cpp_var">is_same</span> = <span class="cpp_key">false</span>;</div>
           <div class="code_line">      }</div>

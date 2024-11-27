@@ -93,10 +93,10 @@ namespace ontologenius {
                 {
                   if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
                   {
-                    std::string explanation_reference = addInferredInheritance(indiv, anonymous_branch, used);
+                    addInferredInheritance(indiv, anonymous_branch, used);
                     nb_update++;
                     explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
-                                               "[ADD]" + explanation_reference);
+                                               "[ADD]" + indiv->is_a_.back().getExplanation());
                   }
                   // once we get a valid equivalence for a class, we break out of the loop
                   break;
@@ -122,10 +122,8 @@ namespace ontologenius {
     first_run_ = false;
   }
 
-  std::string ReasonerAnonymous::addInferredInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used)
+  void ReasonerAnonymous::addInferredInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used)
   {
-    std::string explanation;
-
     indiv->is_a_.emplaceBack(anonymous_branch->class_equiv_, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
     anonymous_branch->class_equiv_->individual_childs_.emplace_back(IndividualElement(indiv, 1.0, true));
 
@@ -134,7 +132,7 @@ namespace ontologenius {
 
     for(auto& induced_vector : used)
     {
-      explanation += induced_vector.first;
+      indiv->is_a_.back().explanation.push_back(induced_vector.first);
       // check for nullptr because OneOf returns a (string, nullptr)
       if(induced_vector.second != nullptr)
       {
@@ -145,8 +143,6 @@ namespace ontologenius {
         }
       }
     }
-
-    return explanation;
   }
 
   bool ReasonerAnonymous::checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv)
@@ -187,7 +183,7 @@ namespace ontologenius {
     {
       if(indiv_from->same_as_[j].elem->get() == indiv_range->get())
       {
-        explanation = indiv_from->value() + "|sameAs|" + indiv_range->value() + ";";
+        explanation = indiv_from->value() + "|sameAs|" + indiv_range->value();
         used.emplace_back(explanation, indiv_from->same_as_.has_induced_inheritance_relations[j]);
         return true;
       }
@@ -430,7 +426,7 @@ namespace ontologenius {
           {
             if(checkCard(indiv->same_as_[i].elem, ano_elem, used))
             {
-              explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
+              explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value();
               used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
               return true;
             }
@@ -481,10 +477,10 @@ namespace ontologenius {
           {
             if(existInInheritance(indiv->same_as_[i].elem->is_a_[j].elem, ano_elem->class_involved_->get(), used))
             {
-              explanation = indiv->same_as_[i].elem->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
+              explanation = indiv->same_as_[i].elem->value() + "|isA|" + ano_elem->class_involved_->value();
               used.emplace_back(explanation, indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j]);
 
-              explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value() + ";";
+              explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value();
               used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
               return true;
             }
@@ -499,7 +495,7 @@ namespace ontologenius {
       {
         if(existInInheritance(indiv->is_a_[i].elem, ano_elem->class_involved_->get(), used))
         {
-          explanation = indiv->value() + "|isA|" + ano_elem->class_involved_->value() + ";";
+          explanation = indiv->value() + "|isA|" + ano_elem->class_involved_->value();
           used.emplace_back(explanation, indiv->is_a_.has_induced_inheritance_relations[i]);
           return true;
         }
@@ -530,7 +526,7 @@ namespace ontologenius {
         {
           if(indiv->same_as_[i].elem->get() == ano_elem->individual_involved_->get())
           {
-            explanation = indiv->value() + "|sameAs|" + ano_elem->individual_involved_->value() + ";";
+            explanation = indiv->value() + "|sameAs|" + ano_elem->individual_involved_->value();
             used.emplace_back(explanation, indiv->same_as_.has_induced_inheritance_relations[i]);
             return true;
           }

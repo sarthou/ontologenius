@@ -60,6 +60,16 @@ namespace ontologenius {
       return ((type_ != other.type_) || (value_ != other.value_));
     }
 
+    bool operator==(const std::string& other) const
+    {
+      return (value() == other);
+    }
+
+    bool operator==(index_t other) const
+    {
+      return (get() == other);
+    }
+
   private:
     index_t index_;
   };

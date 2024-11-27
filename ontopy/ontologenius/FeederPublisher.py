@@ -51,6 +51,16 @@ class FeederPublisher:
         self._commit_sub.unregister()
 
     def addObjectProperty(self, concept_from, property, concept_on, stamp = None):
+        """[deprecated] Consider using addObjectRelation.
+        """
+        self.addObjectRelation(concept_from, property, concept_on, stamp)
+
+    def addDataProperty(self, concept_from, property, concept_on, stamp = None):
+        """[deprecated] Consider using addDataRelation.
+        """
+        self.addDataRelation(concept_from, property, concept_on, stamp)
+
+    def addObjectRelation(self, concept_from, property, concept_on, stamp = None):
         """Adds the fact that concept_from(str) is linked with concept_on(str) by the property property(str).
            At least concept_from or concept_on must be already known to the system.
            If one of them is unknown, it will be automatically created. The property can be unknown before calling this function.
@@ -61,7 +71,7 @@ class FeederPublisher:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
-    def addDataProperty(self, concept_from, property, type, data, stamp = None):
+    def addDataRelation(self, concept_from, property, type, data, stamp = None):
         """Adds the fact that concept_from(str) is linked to the data data(str) of type type(str) by the property property(str).
            concept_from must be already known to the system. The property can be unknown before calling this function.
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
@@ -71,12 +81,12 @@ class FeederPublisher:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
-    def addInheritage(self, concept_from, concept_on, stamp = None):
-        """Adds the inheratage : concept_from(str) is a concept_on(str). concept_from and concept_on could by a class, an individual or a property.
-           At least concept_from or concept_on must be already known to the system. If one of them is unknown, it will be automatically created.
+    def addInheritage(self, child, mother, stamp = None):
+        """Adds the inheratage : child(str) is a mother(str). child and mother could by a class, an individual or a property.
+           At least child or mother must be already known to the system. If one of them is unknown, it will be automatically created.
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
         """
-        msg = '[add]' + concept_from + '|+|' + concept_on
+        msg = '[add]' + child + '|+|' + mother
         if stamp == None:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
@@ -101,6 +111,21 @@ class FeederPublisher:
         self._publish_stamped(msg, stamp)
 
     def removeProperty(self, concept_from, property, stamp = None):
+        """[deprecated] Consider using removeRelation.
+        """
+        self.removeRelation(concept_from, property, stamp)
+
+    def removeObjectProperty(self, concept_from, property, concept_on, stamp = None):
+        """[deprecated] Consider using removeObjectRelation.
+        """
+        self.removeObjectRelation(concept_from, property, concept_on, stamp)
+
+    def removeDataProperty(self, concept_from, property, type, data, stamp = None):
+        """[deprecated] Consider using removeDataRelation.
+        """
+        self.removeDataRelation(concept_from, property, type, data, stamp)
+
+    def removeRelation(self, concept_from, property, stamp = None):
         """Removes the fact that concept_from(str) is linked to any object by the property property(str).
            After this action, knowledge of the property is not removed.
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
@@ -110,7 +135,7 @@ class FeederPublisher:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
-    def removeObjectProperty(self, concept_from, property, concept_on, stamp = None):
+    def removeObjectRelation(self, concept_from, property, concept_on, stamp = None):
         """Removes the fact that concept_from(str) is linked with concept_on(str) by the property property(str).
            After this action, knowledge of the property is not removed.
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.
@@ -120,7 +145,7 @@ class FeederPublisher:
             stamp = Ontoros.getRosTime()
         self._publish_stamped(msg, stamp)
 
-    def removeDataProperty(self, concept_from, property, type, data, stamp = None):
+    def removeDataRelation(self, concept_from, property, type, data, stamp = None):
         """Removes the fact that concept_from(str) is linked to the data data(str) of type type(str) by the property property(str).
            After this action, knowledge of the property is not removed.
            If the time stamp stamp (rostime) is not defined, the function takes the current ROS time as the time stamp.

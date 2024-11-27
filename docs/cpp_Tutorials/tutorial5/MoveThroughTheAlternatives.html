@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Explore possible futures (cpp) :  Move through the alternatives</title>
+  <title>Explore possible futures (cpp) : Move through the alternatives</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
   <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
@@ -16,15 +16,15 @@
   <div class="header" id="header">
     <header class="fixed" id="navbar">
       <div class="container">
-          <div class="navbar-header">
-            <div id="header-buttons">
-                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
-                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px"/></a></li>
-                </ul>
-            </div>
-            <a class="navbar-icon" href="../../index.html">
-              <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
-            </a>
+        <div class="navbar-header">
+          <div id="header-buttons">
+            <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+              <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" width="40px" height="40px" /></a></li>
+            </ul>
+          </div>
+          <a class="navbar-icon" href="../../index.html">
+            <img src="../../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px" />
+          </a>
         </div>
       </div>
     </header>
@@ -99,6 +99,7 @@
             <li class="level1"><a href="../../cpp_API/OntologiesManipulator.html">OntologiesManipulator</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyClient.html">OntologyClient</a></li>
             <li class="level1"><a href="../../cpp_API/OntologyManipulator.html">OntologyManipulator</a></li>
+            <li class="level1"><a href="../../cpp_API/PatternsSubscriber.html">PatternsSubscriber</a></li>
             <li class="level1"><a href="../../cpp_API/ReasonerClient.html">ReasonerClient</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlClient.html">SparqlClient</a></li>
             <li class="level2"><b>Index based classes</b></li>
@@ -112,7 +113,7 @@
             <li class="level1"><a href="../../cpp_API/OntologyManipulatorIndex.html">OntologyManipulatorIndex</a></li>
             <li class="level1"><a href="../../cpp_API/SparqlIndexClient.html">SparqlIndexClient</a></li>
           </ul>
-          <br/>
+          <br />
           <h3>
             <i class="fas fa-angle-right"></i>
             <a href="../../python_API/PythonAPI.html">
@@ -172,22 +173,22 @@
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addInheritage</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;human&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">first_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">first_commit</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_burger&quot;</span>);</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">hungry_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">hungry_commit</span>);</div>
@@ -236,22 +237,22 @@
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addInheritage</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;human&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">first_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;pasta&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;pasta&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">first_commit</span>);</div>
                 <div class="code_line"><br></div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;eat&quot;</span>, <span class="cpp_string">&quot;burger&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;burger&quot;</span>, <span class="cpp_string">&quot;isIn&quot;</span>, <span class="cpp_string">&quot;bob&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>(<span class="cpp_string">&quot;after_burger&quot;</span>);</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;true&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_type">std</span>::<span class="cpp_type">string</span> <span class="cpp_var">hungry_commit</span> = <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_string">&quot;after_pasta&quot;</span>);</div>
-                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addProperty</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
+                <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">addRelation</span>(<span class="cpp_string">&quot;bob&quot;</span>, <span class="cpp_string">&quot;isHungry&quot;</span>, <span class="cpp_string">&quot;bool&quot;</span>, <span class="cpp_string">&quot;false&quot;</span>);</div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">commit</span>();</div>
                 <div class="code_line"><br></div>
                 <div class="code_line">  <span class="cpp_var">onto</span>[<span class="cpp_string">&quot;cpy&quot;</span>]-&gt;feeder.<span class="cpp_function">checkout</span>(<span class="cpp_var">hungry_commit</span>);</div>

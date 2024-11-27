@@ -6,24 +6,37 @@
 #include <unistd.h>
 
 #include "ontologenius/compat/ros.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace onto {
 
   void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
   {
+    ontologenius::Display::warning("[ontologenius] function addProperty is deprecated, consider the equivalent function addRelation");
+    addRelation(from, property, on, stamp);
+  }
+
+  void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
+  {
+    ontologenius::Display::warning("[ontologenius] function addProperty is deprecated, consider the equivalent function addRelation");
+    addRelation(from, property, type, value, stamp);
+  }
+
+  void FeederPublisher::addRelation(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
+  {
     const std::string msg = "[add]" + from + "|" + property + "|" + on;
     publishStamped(msg, stamp);
   }
 
-  void FeederPublisher::addProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
+  void FeederPublisher::addRelation(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
   {
     const std::string msg = "[add]" + from + "|" + property + "|" + type + "#" + value;
     publishStamped(msg, stamp);
   }
 
-  void FeederPublisher::addInheritage(const std::string& from, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
+  void FeederPublisher::addInheritage(const std::string& child, const std::string& mother, const ontologenius::compat::onto_ros::Time& stamp)
   {
-    const std::string msg = "[add]" + from + "|+|" + on;
+    const std::string msg = "[add]" + child + "|+|" + mother;
     publishStamped(msg, stamp);
   }
 
@@ -47,19 +60,37 @@ namespace onto {
 
   void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const ontologenius::compat::onto_ros::Time& stamp)
   {
+    ontologenius::Display::warning("[ontologenius] function removeProperty is deprecated, consider the equivalent function removeRelation");
+    removeRelation(from, property, stamp);
+  }
+
+  void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
+  {
+    ontologenius::Display::warning("[ontologenius] function removeProperty is deprecated, consider the equivalent function removeRelation");
+    removeRelation(from, property, on, stamp);
+  }
+
+  void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
+  {
+    ontologenius::Display::warning("[ontologenius] function removeProperty is deprecated, consider the equivalent function removeRelation");
+    removeRelation(from, property, type, value, stamp);
+  }
+
+  void FeederPublisher::removeRelation(const std::string& from, const std::string& property, const ontologenius::compat::onto_ros::Time& stamp)
+  {
     std::string msg = "[del]" + from + "|" + property + "|_";
     publishStamped(msg, ontologenius::compat::onto_ros::Node::get().currentTime());
     msg += ":_";
     publishStamped(msg, stamp);
   }
 
-  void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
+  void FeederPublisher::removeRelation(const std::string& from, const std::string& property, const std::string& on, const ontologenius::compat::onto_ros::Time& stamp)
   {
     const std::string msg = "[del]" + from + "|" + property + "|" + on;
     publishStamped(msg, stamp);
   }
 
-  void FeederPublisher::removeProperty(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
+  void FeederPublisher::removeRelation(const std::string& from, const std::string& property, const std::string& type, const std::string& value, const ontologenius::compat::onto_ros::Time& stamp)
   {
     const std::string msg = "[del]" + from + "|" + property + "|" + type + "#" + value;
     publishStamped(msg, stamp);
@@ -99,7 +130,7 @@ namespace onto {
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
-      // ontologenius::compat::onto_ros::spin_once();
+      ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);
     }
 
@@ -131,7 +162,7 @@ namespace onto {
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
-      // ontologenius::compat::onto_ros::spin_once();
+      ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);
     }
 
@@ -153,7 +184,7 @@ namespace onto {
 
     while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
     {
-      // ontologenius::compat::onto_ros::spin_once();
+      ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);
     }
 

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ontologenius/API/ontologenius/FeederPublisher.h"
+#include "ontologenius/API/ontologenius/PatternsSubscriber.h"
 #include "ontologenius/API/ontologenius/clients/ActionClient.h"
 #include "ontologenius/API/ontologenius/clients/ReasonerClient.h"
 #include "ontologenius/API/ontologenius/clients/SparqlClient.h"
@@ -59,6 +60,8 @@ namespace onto {
     FeederPublisher feeder;
     /// @brief ROS service client to make SPAQRL queries
     SparqlClient sparql;
+    /// @brief ROS abstraction to subscribe to fact patterns
+    PatternsSubscriber subscriber;
   };
 
 } // namespace onto

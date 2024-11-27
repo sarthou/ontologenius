@@ -22,7 +22,7 @@ namespace ontologenius {
     ~OntologyOwlWriter() = default;
 
     void setFileName(const std::string& name) { file_name_ = name; }
-    std::string getFileName() { return file_name_; }
+    std::string getFileName() const { return file_name_; }
     void write(const std::string& file_name = "none");
 
   private:
