@@ -89,7 +89,7 @@ namespace ontologenius {
           {
             if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used))
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
               if(indexes.size() >= ano_elem->card_.card_number_)
                 return indexes;
@@ -99,7 +99,7 @@ namespace ontologenius {
           {
             if(checkTypeRestriction(relations[i].second, ano_elem, used))
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
 
               if(indexes.size() >= ano_elem->card_.card_number_)
@@ -126,7 +126,7 @@ namespace ontologenius {
           {
             if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used))
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
 
               if(indexes.size() > ano_elem->card_.card_number_)
@@ -140,7 +140,7 @@ namespace ontologenius {
           {
             if(checkTypeRestriction(relations[i].second, ano_elem, used))
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
 
               if(indexes.size() > ano_elem->card_.card_number_)
@@ -169,7 +169,7 @@ namespace ontologenius {
           {
             if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used))
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
             }
           }
@@ -177,7 +177,7 @@ namespace ontologenius {
           {
             if(checkTypeRestriction(relations[i].second, ano_elem, used))
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
             }
           }
@@ -212,7 +212,7 @@ namespace ontologenius {
             }
             else
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
             }
           }
@@ -225,7 +225,7 @@ namespace ontologenius {
             }
             else
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               indexes.emplace_back(explanation, i);
             }
           }
@@ -248,7 +248,7 @@ namespace ontologenius {
           {
             if(resolveTree(relations[i].second, ano_elem->sub_elements_.front(), used) == true)
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               return std::make_pair(explanation, i);
             }
           }
@@ -256,7 +256,7 @@ namespace ontologenius {
           {
             if(checkTypeRestriction(relations[i].second, ano_elem, used) == true)
             {
-              explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+              explanation = relations[i].first->value() + "|" + relations[i].second->value();
               return std::make_pair(explanation, i);
             }
           }
@@ -276,7 +276,7 @@ namespace ontologenius {
         {
           if(checkValue(relations[i].second, ano_elem, used))
           {
-            explanation = relations[i].first->value() + "|" + relations[i].second->value() + ";";
+            explanation = relations[i].first->value() + "|" + relations[i].second->value();
             return std::make_pair(explanation, i);
           }
         }
@@ -330,7 +330,7 @@ namespace ontologenius {
         {
           if(existInInheritance(branch->mothers_[i].elem, selector, used))
           {
-            explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value() + ";";
+            explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
             used.emplace_back(explanation, branch->mothers_.has_induced_inheritance_relations[i]);
             return true;
           }
