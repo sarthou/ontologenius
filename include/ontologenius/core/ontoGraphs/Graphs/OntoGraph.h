@@ -70,7 +70,6 @@ namespace ontologenius {
     bool addInheritage(B* branch, B* inherited);
     std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& branch_base, const std::string& branch_inherited);
     std::vector<std::pair<std::string, std::string>> removeInheritage(B* branch, B* inherited);
-    bool removeInheritage(IndividualBranch* indiv, ClassBranch* class_branch, std::vector<std::pair<std::string, std::string>>& explanations);
 
     template<typename T>
     std::unordered_set<T> select(const std::unordered_set<T>& on, const T& selector)
