@@ -308,7 +308,7 @@ namespace ontologenius {
         else if(req->action == "getRelatedWith")
           set_res = onto_->individual_graph_.getRelatedWith(params());
         else if(req->action == "getUp")
-          set_res = onto_->individual_graph_.getUp(params(), (int)params.depth);
+          set_res = onto_->individual_graph_.getUp(params(), (int)params.depth, false);
         else if(req->action == "getOn")
           set_res = onto_->individual_graph_.getOn(params());
         else if(req->action == "getFrom")

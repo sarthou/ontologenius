@@ -1111,26 +1111,26 @@ namespace ontologenius {
       class_graph_->getRangeOf(c, res, depth);
   }
 
-  std::unordered_set<std::string> IndividualGraph::getUp(const std::string& individual, int depth)
+  std::unordered_set<std::string> IndividualGraph::getUp(const std::string& individual, int depth, bool use_hidden)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = container_.find(individual);
     std::unordered_set<std::string> res;
-    getUp(indiv, res, depth);
+    getUp(indiv, res, depth, 0, use_hidden);
     return res;
   }
 
-  std::unordered_set<index_t> IndividualGraph::getUp(index_t individual, int depth)
+  std::unordered_set<index_t> IndividualGraph::getUp(index_t individual, int depth, bool use_hidden)
   {
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<IndividualBranch>::mutex_);
     IndividualBranch* indiv = getIndividualByIndex(individual);
     std::unordered_set<index_t> res;
-    getUp(indiv, res, depth);
+    getUp(indiv, res, depth, 0, use_hidden);
     return res;
   }
 
   template<typename T>
-  void IndividualGraph::getUp(IndividualBranch* indiv, std::unordered_set<T>& res, int depth, uint32_t current_depth)
+  void IndividualGraph::getUp(IndividualBranch* indiv, std::unordered_set<T>& res, int depth, uint32_t current_depth, bool use_hidden)
   {
     current_depth++;
     if(indiv != nullptr)
@@ -1139,12 +1139,14 @@ namespace ontologenius {
       {
         for(auto& it : indiv->same_as_)
           for(auto& is_a : it.elem->is_a_)
-            class_graph_->getUp(is_a.elem, res, depth, current_depth);
+            if(use_hidden || (is_a.elem->isHidden() == false))
+              class_graph_->getUp(is_a.elem, res, depth, current_depth);
       }
       else
       {
         for(auto& is_a : indiv->is_a_)
-          class_graph_->getUp(is_a.elem, res, depth, current_depth);
+          if(use_hidden || (is_a.elem->isHidden() == false))
+            class_graph_->getUp(is_a.elem, res, depth, current_depth);
       }
     }
   }

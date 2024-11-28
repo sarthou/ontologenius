@@ -79,8 +79,8 @@ namespace ontologenius {
     std::unordered_set<index_t> getDomainOf(index_t individual, int depth = -1);
     std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
     std::unordered_set<index_t> getRangeOf(index_t individual, int depth = -1);
-    std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1); // C3
-    std::unordered_set<index_t> getUp(index_t individual, int depth = -1);
+    std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1, bool use_hidden = true); // C3
+    std::unordered_set<index_t> getUp(index_t individual, int depth = -1, bool use_hidden = true);
     std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
     std::unordered_set<index_t> select(const std::unordered_set<index_t>& on, index_t class_selector);
 
@@ -161,7 +161,7 @@ namespace ontologenius {
     template<typename T>
     void getRelatedOn(const T& property, std::unordered_set<T>& res);
     template<typename T>
-    void getUp(IndividualBranch* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
+    void getUp(IndividualBranch* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0, bool use_hidden = true);
     template<typename T>
     void getRelatedWith(index_t individual, std::unordered_set<T>& res);
     template<typename T>
