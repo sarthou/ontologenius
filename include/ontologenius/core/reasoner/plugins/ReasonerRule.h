@@ -111,8 +111,18 @@ namespace ontologenius {
   private:
     bool standard_mode_;
 
-    std::vector<RuleResult_t> resolve(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<index_t>& accu);
+    std::unordered_map<ClassBranch*, std::unordered_set<ClassBranch*>> disjoints_cache_; // copy from ReasonerAnonymous
 
+    bool checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv);
+    bool relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on);
+    bool relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on);
+
+    void resolveHead(RuleBranch* rule_branch, const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution);
+    void addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution);
+    void addInferredObjectAtom(const RuleTriplet_t& triplet, RuleResult_t& solution);
+    void addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution);
+
+    std::vector<RuleResult_t> resolveBody(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<index_t>& accu);
     void resolveAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     void resolveClassAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);

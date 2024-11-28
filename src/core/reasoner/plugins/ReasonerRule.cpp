@@ -32,11 +32,14 @@ namespace ontologenius {
     const std::shared_lock<std::shared_timed_mutex> lock_data_prop(ontology_->data_property_graph_.mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_ano(ontology_->anonymous_graph_.mutex_);
 
+    // first run on teste tout
+    // après on marque ceux qui ont été updated pour analyser seulemnt celles concernées
+    // d'abord le consequent
     for(auto* rule_branch : ontology_->rule_graph_.get())
     {
       std::vector<RuleResult_t> results_resolve;
       std::vector<index_t> empty_accu(rule_branch->to_variables_.size(), index_t()); // need to initialize each index at 0
-      results_resolve = resolve(rule_branch, rule_branch->rule_body_, empty_accu);
+      results_resolve = resolveBody(rule_branch, rule_branch->rule_body_, empty_accu);
 
       // std::cout << "For rule " << rule_branch->value() << "results are:" << std::endl;
       // for(auto& rs : results_resolve)
@@ -46,10 +49,192 @@ namespace ontologenius {
       //     std::cout << "[" << i << "]" << rs.assigned_result[i] << " ";
       //   std::cout << std::endl;
       // }
+
+      for(auto& solution : results_resolve) // resolve the consequent for each found solution
+        resolveHead(rule_branch, rule_branch->rule_head_, solution);
     }
   }
 
-  std::vector<RuleResult_t> ReasonerRule::resolve(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<index_t>& accu)
+  void ReasonerRule::resolveHead(RuleBranch* rule_branch, const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution)
+  {
+    for(auto& atom : atoms)
+    {
+      switch(atom.atom_type_)
+      {
+      case class_atom:
+        addInferredClassAtom(atom, solution);
+        break;
+      case object_atom:
+        addInferredObjectAtom(atom, solution);
+        break;
+      case data_atom:
+        addInferredDataAtom(atom, solution);
+        break;
+      case builtin_atom:
+        break;
+
+      default:
+        break;
+      }
+    }
+  }
+
+  bool ReasonerRule::checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv) // copy from ReasonerAnonymous
+  {
+    auto it = disjoints_cache_.find(class_equiv);
+    std::unordered_set<ClassBranch*> disjoints;
+
+    if(it != disjoints_cache_.end())
+    {
+      if(it->second.empty())
+        return false;
+      else
+        disjoints = it->second;
+    }
+    else
+    {
+      ontology_->class_graph_.getDisjoint(class_equiv, disjoints);
+      disjoints_cache_[class_equiv] = disjoints;
+    }
+
+    if(disjoints.empty() == false)
+    {
+      std::unordered_set<ClassBranch*> ups;
+      ontology_->individual_graph_.getUpPtr(indiv, ups);
+      return (ontology_->class_graph_.firstIntersection(ups, disjoints) != nullptr);
+    }
+    else
+      return false;
+  }
+
+  bool ReasonerRule::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on)
+  {
+    for(auto& relation : indiv_from->object_relations_)
+    {
+      if(relation.second->get() == indiv_on->get())
+      {
+        std::unordered_set<ObjectPropertyBranch*> down_properties;
+        ontology_->object_property_graph_.getDownPtr(property, down_properties);
+        if(down_properties.find(relation.first) != down_properties.end())
+          return true;
+      }
+    }
+    return false;
+  }
+
+  bool ReasonerRule::relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on)
+  {
+    for(auto& relation : indiv_from->data_relations_)
+    {
+      if(relation.second->get() == literal_on->get())
+      {
+        std::unordered_set<DataPropertyBranch*> down_properties;
+        ontology_->data_property_graph_.getDownPtr(property, down_properties);
+        if(down_properties.find(relation.first) != down_properties.end())
+          return true;
+      }
+    }
+    return false;
+  }
+
+  void ReasonerRule::addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution) // maybe not const since we mark the updates
+  {
+    // the value we need to find is solution.assigned_result[triplet.subject.variable_id]
+
+    IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
+    const bool is_already_a = std::any_of(involved_indiv->is_a_.cbegin(), involved_indiv->is_a_.cend(), [triplet](const auto& is_a) { return is_a.elem == triplet.class_predicate; });
+
+    if(is_already_a == false && (checkClassesDisjointess(involved_indiv, triplet.class_predicate) == false))
+    {
+      involved_indiv->is_a_.emplaceBack(triplet.class_predicate, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
+      triplet.class_predicate->individual_childs_.emplace_back(IndividualElement(involved_indiv, 1.0, true));
+
+      involved_indiv->nb_updates_++;
+      triplet.class_predicate->nb_updates_++;
+
+      // insert all explanations since they all are the reason why it has been inferred
+      involved_indiv->is_a_.back().explanation.insert(involved_indiv->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+
+      for(auto& used : solution.triplets_used)
+      {
+        auto* inheritance_triplet = used.getInheritance();
+        if(inheritance_triplet->exist(involved_indiv, nullptr, triplet.class_predicate) == false)
+        {
+          inheritance_triplet->push(involved_indiv, nullptr, triplet.class_predicate);
+          involved_indiv->is_a_.relations.back().induced_traces.emplace_back(inheritance_triplet);
+        }
+      }
+      std::cout << involved_indiv->is_a_.back().getExplanation() << std::endl;
+      nb_update++;
+
+      explanations_.emplace_back("[ADD]" + involved_indiv->value() + "|isA|" + triplet.class_predicate->value(),
+                                 "[ADD]" + involved_indiv->is_a_.back().getExplanation());
+    }
+  }
+
+  void ReasonerRule::addInferredObjectAtom(const RuleTriplet_t& triplet, RuleResult_t& solution)
+  {
+    IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
+    IndividualBranch* involved_indiv_on = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.object.variable_id]);
+
+    if(!relationExists(involved_indiv_from, triplet.object_predicate, involved_indiv_on))
+    {
+      ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.object_predicate, involved_indiv_on, 1.0, true, false);
+      involved_indiv_from->nb_updates_++;
+
+      involved_indiv_from->object_relations_.back().explanation.insert(involved_indiv_from->object_relations_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+
+      for(auto& used : solution.triplets_used)
+      {
+        auto* object_triplet = used.getObject();
+        // auto* inheritace_triplet = used.getInheritance();
+        if(object_triplet->exist(involved_indiv_from, triplet.object_predicate, involved_indiv_on) == false)
+        {
+          object_triplet->push(involved_indiv_from, triplet.object_predicate, involved_indiv_on);
+          involved_indiv_from->object_relations_.relations.back().induced_traces.emplace_back(object_triplet); // need to add every X_triplet used to induced_traces
+          // involved_indiv_from->object_relations_.relations.back().induced_traces.emplace_back(inheritace_triplet);
+        }
+      }
+
+      nb_update++;
+      explanations_.emplace_back("[ADD]" + involved_indiv_from->value() + "|" + triplet.object_predicate->value() + "|" + involved_indiv_on->value(),
+                                 "[ADD]" + involved_indiv_from->object_relations_.back().getExplanation());
+    }
+  }
+
+  void ReasonerRule::addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution)
+  {
+    // std::cout << " data : index of variable subject : " << solution.assigned_result[triplet.subject.variable_id] << std::endl;
+    IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
+    // std::cout << " data : index of variable object : " << solution.assigned_result[triplet.object.variable_id] << std::endl;
+    if(solution.assigned_result[triplet.object.variable_id] != 0) // because of builtin usupported atom
+    {
+      LiteralNode* involved_literal_on = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-solution.assigned_result[triplet.object.variable_id]));
+
+      if(!relationExists(involved_indiv_from, triplet.data_predicate, involved_literal_on))
+      {
+        ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.data_predicate, involved_literal_on, 1.0, true);
+        involved_indiv_from->nb_updates_++;
+        involved_indiv_from->data_relations_.back().explanation.insert(involved_indiv_from->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+
+        for(auto& used : solution.triplets_used)
+        {
+          auto* data_triplet = used.getData();
+          if(data_triplet->exist(involved_indiv_from, triplet.data_predicate, involved_literal_on) == false)
+          {
+            data_triplet->push(involved_indiv_from, triplet.data_predicate, involved_literal_on); // write into has_induced_data_relation for the newly asserted relation
+            involved_indiv_from->data_relations_.relations.back().induced_traces.emplace_back(data_triplet);
+          }
+        }
+
+        nb_update++;
+        explanations_.emplace_back("[ADD]" + involved_indiv_from->value() + "|" + triplet.data_predicate->value() + "|" + involved_literal_on->value(),
+                                   "[ADD]" + involved_indiv_from->data_relations_.back().getExplanation());
+      }
+    }
+  }
+
+  std::vector<RuleResult_t> ReasonerRule::resolveBody(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<index_t>& accu)
   {
     std::vector<IndivResult_t> values;
     int64_t var_index = 0;
@@ -85,7 +270,7 @@ namespace ontologenius {
             std::cout << "No value was returned" << std::endl;
         }
 
-        std::vector<RuleResult_t> local_res = resolve(rule_branch, new_atoms, new_accu); // new solutions updated with the new_accu
+        std::vector<RuleResult_t> local_res = resolveBody(rule_branch, new_atoms, new_accu); // new solutions updated with the new_accu
 
         if(local_res.empty() == false)
         {
@@ -499,8 +684,18 @@ namespace ontologenius {
             {
               used_solution.indiv = indiv;
 
-              std::string explanation = indiv->same_as_[i].elem->value() + "|isA|" + class_selector->value();
-              used_solution.explanations.emplace_back(explanation);
+              if(class_selector->isHidden() == false)
+              {
+                std::string explanation = indiv->same_as_[i].elem->value() + "|isA|" + class_selector->value();
+                used_solution.explanations.emplace_back(explanation);
+              }
+              else
+              {
+                const auto& hidden_explanation = indiv->same_as_[i].elem->is_a_[j].explanation;
+                used_solution.explanations.insert(used_solution.explanations.end(),
+                                                  hidden_explanation.cbegin(),
+                                                  hidden_explanation.cend());
+              }
 
               used_solution.used_triplets.emplace_back(indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j],
                                                        indiv->same_as_[i].elem->is_a_.has_induced_object_relations[j],
@@ -529,11 +724,20 @@ namespace ontologenius {
       {
         if(existInInheritance(indiv->is_a_[i].elem, class_selector->get(), used_solution))
         {
-          std::string explanation = indiv->value() + "|isA|" + class_selector->value();
+          if(class_selector->isHidden() == false)
+          {
+            std::string explanation = indiv->value() + "|isA|" + class_selector->value();
+            used_solution.explanations.emplace_back(explanation);
+          }
+          else
+          {
+            const auto& hidden_explanation = indiv->is_a_[i].explanation;
+            used_solution.explanations.insert(used_solution.explanations.end(),
+                                              hidden_explanation.cbegin(),
+                                              hidden_explanation.cend());
+          }
 
           used_solution.indiv = indiv;
-          used_solution.explanations.emplace_back(explanation);
-
           used_solution.used_triplets.emplace_back(indiv->is_a_.has_induced_inheritance_relations[i],
                                                    indiv->is_a_.has_induced_object_relations[i],
                                                    indiv->is_a_.has_induced_data_relations[i]);
