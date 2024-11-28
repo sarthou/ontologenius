@@ -95,8 +95,11 @@ namespace ontologenius {
                   {
                     addInferredInheritance(indiv, anonymous_branch, used);
                     nb_update++;
-                    explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
-                                               "[ADD]" + indiv->is_a_.back().getExplanation());
+                    if(anonymous_branch->class_equiv_->isHidden() == false)
+                    {
+                      explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
+                                                 "[ADD]" + indiv->is_a_.back().getExplanation());
+                    }
                   }
                   // once we get a valid equivalence for a class, we break out of the loop
                   break;
@@ -104,7 +107,7 @@ namespace ontologenius {
               }
             }
           }
-          // used to remove inheritance in case an individual previously infered does not check any of the expressions after updates
+          // used to remove inheritance in case an individual previously inferred does not check any of the expressions after updates
           if(trees_evaluation_result == false && anonymous_branch->ano_elems_.empty() == false && is_already_a)
           {
             indiv->nb_updates_++;
