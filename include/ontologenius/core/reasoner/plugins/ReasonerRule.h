@@ -126,21 +126,24 @@ namespace ontologenius {
     void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     void resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
 
-    std::vector<IndivResult_t> getFrom(RuleTriplet_t& triplet, const index_t& index_indiv_from);
+    std::vector<IndivResult_t> getFrom(RuleTriplet_t& triplet, const index_t& subject_selector);
 
     std::unordered_set<IndividualBranch*> getFrom(ObjectPropertyBranch* property, const index_t& index_indiv_on);
     std::unordered_set<IndividualBranch*> getFrom(DataPropertyBranch* property, const index_t& index_literal_on);
 
-    std::vector<IndivResult_t> getOn(RuleTriplet_t& triplet, const index_t& index_resource_on);
+    std::vector<IndivResult_t> getOn(RuleTriplet_t& triplet, const index_t& object_selector);
 
     std::unordered_set<IndividualBranch*> getOn(const index_t& index_indiv_from, ObjectPropertyBranch* predicate);
+    inline void getOn(IndividualBranch* indiv, const std::unordered_set<index_t>& properties, std::unordered_set<IndividualBranch*>& res);
     std::unordered_set<LiteralNode*> getOn(const index_t& index_indiv_from, DataPropertyBranch* predicate);
+    inline void getOn(IndividualBranch* indiv, const std::unordered_set<index_t>& properties, std::unordered_set<LiteralNode*>& res);
 
     std::vector<IndivResult_t> getType(ClassBranch* class_selector);
+    IndivResult_t getTypeSingle(IndividualBranch* indiv, IndividualBranch* indiv_same, ClassBranch* class_selector);
+    IndivResult_t getType(IndividualBranch* indiv, ClassBranch* class_selector);
 
-    IndivResult_t checkInstantiatedTriplet(IndividualBranch* indiv, ClassBranch* class_selector);
-    IndivResult_t checkInstantiatedTriplet(IndividualBranch* indiv_from, ObjectPropertyBranch* property_predicate, IndividualBranch* indiv_on, bool var_from);
-    IndivResult_t checkInstantiatedTriplet(IndividualBranch* indiv_from, DataPropertyBranch* property_predicate, LiteralNode* literal_on, bool var_from);
+    IndivResult_t getRelationResult(IndividualBranch* indiv_from, ObjectPropertyBranch* property_predicate, IndividualBranch* indiv_on, bool var_from);
+    IndivResult_t getRelationResult(IndividualBranch* indiv_from, DataPropertyBranch* property_predicate, LiteralNode* literal_on, bool var_from);
 
     bool checkValue(IndividualBranch* indiv_from, IndividualBranch* indiv_on, IndivResult_t& used);
     bool checkValue(LiteralNode* literal_from, LiteralNode* literal_on, IndivResult_t& used);
@@ -148,8 +151,6 @@ namespace ontologenius {
     template<typename T>
     bool existInInheritance(T* branch, index_t selector, IndivResult_t& used)
     {
-      std::string explanation;
-
       if(branch->get() == selector)
         return true;
       else
@@ -158,7 +159,7 @@ namespace ontologenius {
         {
           if(existInInheritance(branch->mothers_[i].elem, selector, used))
           {
-            explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
+            std::string explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
             used.explanations.emplace_back(explanation);
 
             used.used_triplets.emplace_back(branch->mothers_.has_induced_inheritance_relations[i],
@@ -172,25 +173,26 @@ namespace ontologenius {
     }
 
     template<typename T, typename B, typename C>
-    int checkInstantiatedTriplet(IndividualBranch* indiv_from, T* property_predicate, B* resource_on, const std::vector<C>& relations, IndivResult_t& used)
+    bool getRelationResult(IndividualBranch* indiv_from, T* property_predicate, B* resource_on, const RelationsWithInductions<C>& relations, IndivResult_t& used)
     {
-      std::string explanation;
-      int index = -1;
-
       for(size_t i = 0; i < relations.size(); i++)
       {
-        if(existInInheritance(relations[i].first, property_predicate->get(), used))
+        if(existInInheritance(relations.at(i).first, property_predicate->get(), used))
         {
-          if(checkValue(relations[i].second, resource_on, used))
+          if(checkValue(relations.at(i).second, resource_on, used))
           {
-            explanation = indiv_from->value() + "|" + relations[i].first->value() + "|" + relations[i].second->value();
+            std::string explanation = indiv_from->value() + "|" + relations.at(i).first->value() + "|" + relations.at(i).second->value();
             used.explanations.emplace_back(explanation);
 
-            return int(i);
+            used.used_triplets.emplace_back(relations.has_induced_inheritance_relations[i],
+                                            relations.has_induced_object_relations[i],
+                                            relations.has_induced_data_relations[i]);
+
+            return true;
           }
         }
       }
-      return index;
+      return false;
     }
   };
 
