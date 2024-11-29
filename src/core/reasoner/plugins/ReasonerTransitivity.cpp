@@ -49,7 +49,7 @@ namespace ontologenius {
               local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
               for(auto& used : end_indivs)
               {
-                if(!relationExists(indiv, property, used.first))
+                if(ontology_->individual_graph_.relationExists(indiv, property, used.first) == false)
                 {
                   int index = -1;
                   try
@@ -151,21 +151,6 @@ namespace ontologenius {
         }
       }
     }
-  }
-
-  bool ReasonerTransitivity::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on)
-  {
-    for(auto& relation : indiv_from->object_relations_)
-    {
-      if(relation.second->get() == indiv_on->get())
-      {
-        std::unordered_set<ObjectPropertyBranch*> down_properties;
-        ontology_->object_property_graph_.getDownPtr(property, down_properties);
-        if(down_properties.find(relation.first) != down_properties.end())
-          return true;
-      }
-    }
-    return false;
   }
 
   std::string ReasonerTransitivity::getName()

@@ -93,6 +93,8 @@ namespace ontologenius {
     bool isA(IndividualBranch* indiv, index_t class_selector);
     bool relationExists(const std::string& param);
     bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
+    bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
+    bool relationExists(IndividualBranch* subject, DataPropertyBranch* property, LiteralNode* object);
 
     bool isInferred(const std::string& param);
     bool isInferredIndex(const std::string& param);
@@ -187,8 +189,6 @@ namespace ontologenius {
     void getRelationFrom(ClassBranch* class_branch, std::unordered_set<T>& res, int depth = -1);
     bool getRelatedWith(ClassBranch* class_branch, index_t data, std::unordered_set<ClassBranch*>& next_step, std::unordered_set<index_t>& took);
     bool getFrom(ClassBranch* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, index_t data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch*>& next_step, std::unordered_set<index_t>& do_not_take);
-
-    bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
 
     template<typename R>
     void getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);

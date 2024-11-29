@@ -1523,14 +1523,15 @@ namespace ontologenius {
   bool IndividualGraph::relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object)
   {
     std::unordered_set<IndividualBranch*> sames;
+    std::unordered_set<ObjectPropertyBranch*> down_properties;
+    object_property_graph_->getDownPtr(property, down_properties);
+
     getSame(subject, sames);
     for(IndividualBranch* it : sames)
     {
       for(const IndivObjectRelationElement& relation : it->object_relations_)
       {
-        if(relation.first != property)
-          continue;
-        else
+        if((relation.first == property) || down_properties.find(relation.first) != down_properties.end())
         {
           std::unordered_set<IndividualBranch*> sames_tmp;
           getSame(relation.second, sames_tmp);
@@ -1538,6 +1539,23 @@ namespace ontologenius {
             return true;
         }
       }
+    }
+
+    return false;
+  }
+
+  bool IndividualGraph::relationExists(IndividualBranch* subject, DataPropertyBranch* property, LiteralNode* object)
+  {
+    std::unordered_set<IndividualBranch*> sames;
+    std::unordered_set<DataPropertyBranch*> down_properties;
+    data_property_graph_->getDownPtr(property, down_properties);
+
+    getSame(subject, sames);
+    for(IndividualBranch* it : sames)
+    {
+      for(const IndivDataRelationElement& relation : it->data_relations_)
+        return ((relation.second == object) &&
+                ((relation.first == property) || down_properties.find(relation.first) != down_properties.end()));
     }
 
     return false;

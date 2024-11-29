@@ -105,36 +105,6 @@ namespace ontologenius {
       return false;
   }
 
-  bool ReasonerRule::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on)
-  {
-    for(auto& relation : indiv_from->object_relations_)
-    {
-      if(relation.second->get() == indiv_on->get())
-      {
-        std::unordered_set<ObjectPropertyBranch*> down_properties;
-        ontology_->object_property_graph_.getDownPtr(property, down_properties);
-        if(down_properties.find(relation.first) != down_properties.end())
-          return true;
-      }
-    }
-    return false;
-  }
-
-  bool ReasonerRule::relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on)
-  {
-    for(auto& relation : indiv_from->data_relations_)
-    {
-      if(relation.second->get() == literal_on->get())
-      {
-        std::unordered_set<DataPropertyBranch*> down_properties;
-        ontology_->data_property_graph_.getDownPtr(property, down_properties);
-        if(down_properties.find(relation.first) != down_properties.end())
-          return true;
-      }
-    }
-    return false;
-  }
-
   void ReasonerRule::addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule) // maybe not const since we mark the updates
   {
     if(solution.assigned_result[triplet.subject.variable_id] != 0)
@@ -178,7 +148,7 @@ namespace ontologenius {
       IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
       IndividualBranch* involved_indiv_on = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.object.variable_id]);
 
-      if(!relationExists(involved_indiv_from, triplet.object_predicate, involved_indiv_on))
+      if(ontology_->individual_graph_.relationExists(involved_indiv_from, triplet.object_predicate, involved_indiv_on) == false)
       {
         ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.object_predicate, involved_indiv_on, 1.0, true, false);
         involved_indiv_from->nb_updates_++;
@@ -210,7 +180,7 @@ namespace ontologenius {
       IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
       LiteralNode* involved_literal_on = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-solution.assigned_result[triplet.object.variable_id]));
 
-      if(!relationExists(involved_indiv_from, triplet.data_predicate, involved_literal_on))
+      if(ontology_->individual_graph_.relationExists(involved_indiv_from, triplet.data_predicate, involved_literal_on) == false)
       {
         ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.data_predicate, involved_literal_on, 1.0, true, false);
         involved_indiv_from->nb_updates_++;

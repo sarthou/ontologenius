@@ -114,8 +114,6 @@ namespace ontologenius {
     std::unordered_map<ClassBranch*, std::unordered_set<ClassBranch*>> disjoints_cache_; // copy from ReasonerAnonymous
 
     bool checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv);
-    bool relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on);
-    bool relationExists(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* literal_on);
 
     void resolveHead(const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution, RuleBranch* rule);
     void addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule);

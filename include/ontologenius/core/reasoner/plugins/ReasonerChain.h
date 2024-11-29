@@ -28,8 +28,6 @@ namespace ontologenius {
     std::vector<std::pair<IndividualBranch*, UsedVector>> resolveChain(IndividualBranch* indiv, const std::vector<ObjectPropertyBranch*>& chain, size_t chain_index = 0);
     void resolveChain(IndividualBranch* indiv, int same_index, const std::vector<ObjectPropertyBranch*>& chain, size_t chain_index, std::vector<std::pair<IndividualBranch*, UsedVector>>& res);
 
-    bool relationExists(IndividualBranch* indiv_on, ObjectPropertyBranch* chain_prop, IndividualBranch* chain_indiv);
-
     template<typename T>
     bool existInInheritance(T* branch, index_t selector, UsedVector& used)
     {
