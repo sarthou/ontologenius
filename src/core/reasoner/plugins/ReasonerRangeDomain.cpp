@@ -26,6 +26,7 @@ namespace ontologenius {
   void ReasonerRangeDomain::postReasonIndividuals()
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
 
     std::map<std::string, std::vector<std::string>>::iterator it_range;
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
