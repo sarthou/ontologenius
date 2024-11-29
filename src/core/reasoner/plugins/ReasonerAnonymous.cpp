@@ -33,7 +33,9 @@ namespace ontologenius {
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
-    const std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_data_prop(ontology_->data_property_graph_.mutex_);
+
     std::vector<std::pair<std::string, InheritedRelationTriplets*>> used;
 
     for(auto* indiv : ontology_->individual_graph_.get())
