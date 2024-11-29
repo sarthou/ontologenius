@@ -120,7 +120,6 @@ namespace ontologenius {
         else
           ano_element->card_.card_range_ = data_property_graph_->createLiteral(type_value + "#"); // need to add the "#"
 
-        std::cout << "created card range : " << ano_element->card_.card_range_->toString() << std::endl;
         ano_element->root_node_->involves_data_property = true;
       }
       else // object property
@@ -146,7 +145,6 @@ namespace ontologenius {
       {
         const std::string type = split(rest_range, "#").back();
         ano_element->card_.card_range_ = data_property_graph_->createLiteral(type + "#"); // need to add the "#"
-        std::cout << "created rest_range : " << ano_element->card_.card_range_->toString() << std::endl;
       }
       else if(exp->mother != nullptr && exp->mother->oneof) // individual node for oneOf (ClassX Eq to oneOf(indiv))
       {
