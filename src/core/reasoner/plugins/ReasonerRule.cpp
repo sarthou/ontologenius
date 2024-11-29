@@ -32,30 +32,27 @@ namespace ontologenius {
     const std::shared_lock<std::shared_timed_mutex> lock_data_prop(ontology_->data_property_graph_.mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_ano(ontology_->anonymous_graph_.mutex_);
 
-    // first run on teste tout
-    // après on marque ceux qui ont été updated pour analyser seulemnt celles concernées
-    // d'abord le consequent
     for(auto* rule_branch : ontology_->rule_graph_.get())
     {
       std::vector<RuleResult_t> results_resolve;
       std::vector<index_t> empty_accu(rule_branch->to_variables_.size(), index_t()); // need to initialize each index at 0
       results_resolve = resolveBody(rule_branch, rule_branch->rule_body_, empty_accu);
 
-      // std::cout << "For rule " << rule_branch->value() << "results are:" << std::endl;
-      // for(auto& rs : results_resolve)
-      // {
-      //   std::cout << "--> ";
-      //   for(size_t i = 0; i < rs.assigned_result.size(); i++)
-      //     std::cout << "[" << i << "]" << rs.assigned_result[i] << " ";
-      //   std::cout << std::endl;
-      // }
+      std::cout << "For rule " << rule_branch->value() << "results are:" << std::endl;
+      for(auto& rs : results_resolve)
+      {
+        std::cout << "--> ";
+        for(size_t i = 0; i < rs.assigned_result.size(); i++)
+          std::cout << "[" << i << "]" << rs.assigned_result[i] << " ";
+        std::cout << std::endl;
+      }
 
       for(auto& solution : results_resolve) // resolve the consequent for each found solution
-        resolveHead(rule_branch, rule_branch->rule_head_, solution);
+        resolveHead(rule_branch->rule_head_, solution);
     }
   }
 
-  void ReasonerRule::resolveHead(RuleBranch* rule_branch, const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution)
+  void ReasonerRule::resolveHead(const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution)
   {
     for(auto& atom : atoms)
     {
@@ -348,12 +345,12 @@ namespace ontologenius {
     else if(triplet.subject.is_variable && !triplet.object.is_variable)
     {
       var_index = triplet.subject.variable_id;
-      values = getFromObject(triplet, accu[var_index]);
+      values = getFrom(triplet, accu[var_index]);
     }
     else if(!triplet.subject.is_variable && triplet.object.is_variable)
     {
       var_index = triplet.object.variable_id;
-      values = getOnObject(triplet, accu[var_index]);
+      values = getOn(triplet, accu[var_index]);
     }
     else if(triplet.subject.is_variable && triplet.object.is_variable)
     {
@@ -362,12 +359,12 @@ namespace ontologenius {
       {
         triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
         var_index = triplet.object.variable_id;
-        values = getOnObject(triplet, accu[var_index]);
+        values = getOn(triplet, accu[var_index]);
       }
       else if(accu[triplet.object.variable_id] != 0)
       {
         triplet.object.indiv_value = ontology_->individual_graph_.findBranch(accu[triplet.object.variable_id]);
-        values = getFromObject(triplet, 0);
+        values = getFrom(triplet, 0);
       }
       else
         std::cout << "no variable bounded to any of the variable fields" << std::endl;
@@ -385,12 +382,12 @@ namespace ontologenius {
     else if(triplet.subject.is_variable && !triplet.object.is_variable)
     {
       var_index = triplet.subject.variable_id;
-      values = getFromData(triplet, accu[var_index]);
+      values = getFrom(triplet, accu[var_index]);
     }
     else if(!triplet.subject.is_variable && triplet.object.is_variable)
     {
       var_index = triplet.object.variable_id;
-      values = getOnData(triplet, accu[var_index]);
+      values = getOn(triplet, accu[var_index]);
     }
     else if(triplet.subject.is_variable && triplet.object.is_variable)
     {
@@ -399,14 +396,14 @@ namespace ontologenius {
       {
         triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
         var_index = triplet.object.variable_id;
-        values = getOnData(triplet, accu[var_index]);
+        values = getOn(triplet, accu[var_index]);
       }
       else
       {
         if(accu[triplet.object.variable_id] != 0)
         {
           triplet.object.datatype_value = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-accu[triplet.object.variable_id]));
-          values = getFromData(triplet, 0);
+          values = getFrom(triplet, 0);
         }
         else
           std::cout << "no variable bounded to any of the variable fields" << std::endl;
@@ -414,77 +411,135 @@ namespace ontologenius {
     }
   }
 
+  std::vector<IndivResult_t> ReasonerRule::getFrom(RuleTriplet_t& triplet, const index_t& index_indiv_from) // works for literal and indiv
+  {
+    std::vector<IndivResult_t> res_from;
+    std::unordered_set<IndividualBranch*> candidates_indivs_from;
+    IndivResult_t used_solution;
+
+    if(index_indiv_from == 0)
+    {
+      if(triplet.object_predicate != nullptr)
+        candidates_indivs_from = getFrom(triplet.object_predicate, triplet.object.indiv_value->get());
+      else
+        candidates_indivs_from = getFrom(triplet.data_predicate, triplet.object.datatype_value->get());
+
+      res_from.reserve(candidates_indivs_from.size());
+      for(auto* indiv_from : candidates_indivs_from) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+      {
+        if(triplet.object_predicate != nullptr)
+          used_solution = checkInstantiatedTriplet(indiv_from, triplet.object_predicate, triplet.object.indiv_value, true);
+        else
+          used_solution = checkInstantiatedTriplet(indiv_from, triplet.data_predicate, triplet.object.datatype_value, true);
+        if(used_solution.empty() == false)
+          res_from.push_back(used_solution);
+      }
+    }
+    else
+    { // here we revert the problem since we know what we are looking for
+      if(triplet.object_predicate != nullptr)
+      {
+        std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(index_indiv_from, triplet.object_predicate);
+        if(std::find(candidates_indivs_on.begin(), candidates_indivs_on.end(), triplet.object.indiv_value) != candidates_indivs_on.end())
+        {
+          IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_from);
+          used_solution = checkInstantiatedTriplet(involved_indiv, triplet.object_predicate, triplet.object.indiv_value, true);
+          if(used_solution.empty() == false)
+            res_from.push_back(used_solution);
+        }
+      }
+      else
+      {
+        std::unordered_set<LiteralNode*> candidates_literals_on = getOn(index_indiv_from, triplet.data_predicate);
+        if(std::find(candidates_literals_on.begin(), candidates_literals_on.end(), triplet.object.datatype_value) != candidates_literals_on.end())
+        {
+          IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_from);
+          used_solution = checkInstantiatedTriplet(involved_indiv, triplet.data_predicate, triplet.object.datatype_value, true);
+          if(used_solution.empty() == false)
+            res_from.push_back(used_solution);
+        }
+      }
+    }
+    return res_from;
+  }
   // returns IndivResults with IndividualBranch, explanation and triplets used
-  std::vector<IndivResult_t> ReasonerRule::getFromObject(RuleTriplet_t& triplet, const index_t& index_indiv_from)
-  {
-    std::vector<IndivResult_t> res_from;
+  // std::vector<IndivResult_t> ReasonerRule::getFromObject(RuleTriplet_t& triplet, const index_t& index_indiv_from)
+  // {
+  //   std::vector<IndivResult_t> res_from;
 
-    if(index_indiv_from == 0)
-    {
-      std::unordered_set<IndividualBranch*> candidates_indivs_from = getFrom(triplet.object_predicate, triplet.object.indiv_value->get());
-      res_from.reserve(candidates_indivs_from.size());
-      for(auto* indiv_from : candidates_indivs_from) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
-      {
-        IndivResult_t used_solution = checkInstantiatedTriplet(indiv_from, triplet.object_predicate, triplet.object.indiv_value, true);
-        if(used_solution.empty() == false)
-          res_from.push_back(used_solution);
-      }
-    }
-    else
-    {
-      // here we revert the problem since we know what we are looking for
-      std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(index_indiv_from, triplet.object_predicate);
-      if(std::find(candidates_indivs_on.begin(), candidates_indivs_on.end(), triplet.object.indiv_value) != candidates_indivs_on.end())
-      {
-        IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_from);
-        IndivResult_t used_solution = checkInstantiatedTriplet(involved_indiv, triplet.object_predicate, triplet.object.indiv_value, true);
-        if(used_solution.empty() == false)
-          res_from.push_back(used_solution);
-      }
-    }
-    return res_from;
-  }
+  //   if(index_indiv_from == 0)
+  //   {
+  //     std::unordered_set<IndividualBranch*> candidates_indivs_from = getFrom(triplet.object_predicate, triplet.object.indiv_value->get());
+  //     res_from.reserve(candidates_indivs_from.size());
+  //     for(auto* indiv_from : candidates_indivs_from) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+  //     {
+  //       IndivResult_t used_solution = checkInstantiatedTriplet(indiv_from, triplet.object_predicate, triplet.object.indiv_value, true);
+  //       if(used_solution.empty() == false)
+  //         res_from.push_back(used_solution);
+  //     }
+  //   }
+  //   else
+  //   {
+  //     // here we revert the problem since we know what we are looking for
+  //     std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(index_indiv_from, triplet.object_predicate);
+  //     if(std::find(candidates_indivs_on.begin(), candidates_indivs_on.end(), triplet.object.indiv_value) != candidates_indivs_on.end())
+  //     {
+  //       IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_from);
+  //       IndivResult_t used_solution = checkInstantiatedTriplet(involved_indiv, triplet.object_predicate, triplet.object.indiv_value, true);
+  //       if(used_solution.empty() == false)
+  //         res_from.push_back(used_solution);
+  //     }
+  //   }
+  //   return res_from;
+  // }
 
-  std::vector<IndivResult_t> ReasonerRule::getFromData(RuleTriplet_t& triplet, const index_t& index_indiv_from)
-  {
-    std::vector<IndivResult_t> res_from;
+  // std::vector<IndivResult_t> ReasonerRule::getFromData(RuleTriplet_t& triplet, const index_t& index_indiv_from)
+  // {
+  //   std::vector<IndivResult_t> res_from;
 
-    if(index_indiv_from == 0)
-    {
-      std::unordered_set<IndividualBranch*> candidates_indivs_from = getFrom(triplet.data_predicate, triplet.object.datatype_value->get());
-      res_from.reserve(candidates_indivs_from.size());
-      for(auto* indiv_from : candidates_indivs_from) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
-      {
-        IndivResult_t used_solution = checkInstantiatedTriplet(indiv_from, triplet.data_predicate, triplet.object.datatype_value, true);
-        if(used_solution.empty() == false)
-          res_from.push_back(used_solution);
-      }
-    }
-    else
-    {
-      // here we revert the problem since we know what we are looking for
-      std::unordered_set<LiteralNode*> candidates_literals_on = getOn(index_indiv_from, triplet.data_predicate);
-      if(std::find(candidates_literals_on.begin(), candidates_literals_on.end(), triplet.object.datatype_value) != candidates_literals_on.end())
-      {
-        IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_from);
-        IndivResult_t used_solution = checkInstantiatedTriplet(involved_indiv, triplet.data_predicate, triplet.object.datatype_value, true);
-        if(used_solution.empty() == false)
-          res_from.push_back(used_solution);
-      }
-    }
-    return res_from;
-  }
+  //   if(index_indiv_from == 0)
+  //   {
+  //     std::unordered_set<IndividualBranch*> candidates_indivs_from = getFrom(triplet.data_predicate, triplet.object.datatype_value->get());
+  //     res_from.reserve(candidates_indivs_from.size());
+  //     for(auto* indiv_from : candidates_indivs_from) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+  //     {
+  //       IndivResult_t used_solution = checkInstantiatedTriplet(indiv_from, triplet.data_predicate, triplet.object.datatype_value, true);
+  //       if(used_solution.empty() == false)
+  //         res_from.push_back(used_solution);
+  //     }
+  //   }
+  //   else
+  //   {
+  //     // here we revert the problem since we know what we are looking for
+  //     std::unordered_set<LiteralNode*> candidates_literals_on = getOn(index_indiv_from, triplet.data_predicate);
+  //     if(std::find(candidates_literals_on.begin(), candidates_literals_on.end(), triplet.object.datatype_value) != candidates_literals_on.end())
+  //     {
+  //       IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_from);
+  //       IndivResult_t used_solution = checkInstantiatedTriplet(involved_indiv, triplet.data_predicate, triplet.object.datatype_value, true);
+  //       if(used_solution.empty() == false)
+  //         res_from.push_back(used_solution);
+  //     }
+  //   }
+  //   return res_from;
+  // }
 
-  // returns IndivResults with either IndividualBranch or LiteralNode, explanation and triplets used
-  std::vector<IndivResult_t> ReasonerRule::getOnObject(RuleTriplet_t& triplet, const index_t& index_indiv_on)
+  std::vector<IndivResult_t> ReasonerRule::getOn(RuleTriplet_t& triplet, const index_t& index_resource_on)
   {
     std::vector<IndivResult_t> res_on;
+    IndivResult_t used_solution;
 
-    if(index_indiv_on != 0)
+    if(index_resource_on != 0)
     {
-      // check if triplet.subject.indiv_value, predicate, indiv_on.indiv holds
-      IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_on);
-      IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.object_predicate, involved_indiv, false);
+      if(triplet.object_predicate != nullptr)
+      {
+        IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_resource_on);
+        used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.object_predicate, involved_indiv, false);
+      }
+      else
+      {
+        LiteralNode* involved_literal = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-index_resource_on));
+        used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.data_predicate, involved_literal, false);
+      }
       if(used_solution.empty() == false)
         res_on.push_back(used_solution);
       else
@@ -492,52 +547,101 @@ namespace ontologenius {
     }
     else
     {
-      // return all individuals matching the (triplet.subject.indiv_value, property, X)
-      std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(triplet.subject.indiv_value->get(), triplet.object_predicate);
-      if(candidates_indivs_on.empty() == false)
+      if(triplet.object_predicate != nullptr)
       {
-        res_on.reserve(candidates_indivs_on.size());
-        for(auto* indiv_on : candidates_indivs_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+        std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(triplet.subject.indiv_value->get(), triplet.object_predicate);
+        if(candidates_indivs_on.empty() == false)
         {
-          IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.object_predicate, indiv_on, false);
-          if(used_solution.empty() == false)
-            res_on.push_back(used_solution);
+          res_on.reserve(candidates_indivs_on.size());
+          for(auto* indiv_on : candidates_indivs_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+          {
+            IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.object_predicate, indiv_on, false);
+            if(used_solution.empty() == false)
+              res_on.push_back(used_solution);
+          }
+        }
+      }
+      else
+      {
+        std::unordered_set<LiteralNode*> candidates_literals_on = getOn(triplet.subject.indiv_value->get(), triplet.data_predicate);
+        if(candidates_literals_on.empty() == false)
+        {
+          res_on.reserve(candidates_literals_on.size());
+          for(auto* literal_on : candidates_literals_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+          {
+            IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.data_predicate, literal_on, false);
+            if(used_solution.empty() == false)
+              res_on.push_back(used_solution);
+          }
         }
       }
     }
     return res_on;
   }
 
-  std::vector<IndivResult_t> ReasonerRule::getOnData(RuleTriplet_t& triplet, const index_t& index_literal_on)
-  {
-    std::vector<IndivResult_t> res;
+  // returns IndivResults with either IndividualBranch or LiteralNode, explanation and triplets used
+  // std::vector<IndivResult_t> ReasonerRule::getOnObject(RuleTriplet_t& triplet, const index_t& index_indiv_on)
+  // {
+  //   std::vector<IndivResult_t> res_on;
 
-    if(index_literal_on != 0)
-    {
-      LiteralNode* involved_literal = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-index_literal_on));
-      IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.data_predicate, involved_literal, false);
-      if(used_solution.empty() == false)
-        res.push_back(used_solution);
-      else
-        return {};
-    }
-    else
-    {
-      // return all literals matching the (triplet.subject.indiv_value, property, X)
-      std::unordered_set<LiteralNode*> candidates_literals_on = getOn(triplet.subject.indiv_value->get(), triplet.data_predicate);
-      if(candidates_literals_on.empty() == false)
-      {
-        res.reserve(candidates_literals_on.size());
-        for(auto* literal_on : candidates_literals_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
-        {
-          IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.data_predicate, literal_on, false);
-          if(used_solution.empty() == false)
-            res.push_back(used_solution);
-        }
-      }
-    }
-    return res;
-  }
+  //   if(index_indiv_on != 0)
+  //   {
+  //     // check if triplet.subject.indiv_value, predicate, indiv_on.indiv holds
+  //     IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(index_indiv_on);
+  //     IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.object_predicate, involved_indiv, false);
+  //     if(used_solution.empty() == false)
+  //       res_on.push_back(used_solution);
+  //     else
+  //       return {};
+  //   }
+  //   else
+  //   {
+  //     // return all individuals matching the (triplet.subject.indiv_value, property, X)
+  //     std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(triplet.subject.indiv_value->get(), triplet.object_predicate);
+  //     if(candidates_indivs_on.empty() == false)
+  //     {
+  //       res_on.reserve(candidates_indivs_on.size());
+  //       for(auto* indiv_on : candidates_indivs_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+  //       {
+  //         IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.object_predicate, indiv_on, false);
+  //         if(used_solution.empty() == false)
+  //           res_on.push_back(used_solution);
+  //       }
+  //     }
+  //   }
+  //   return res_on;
+  // }
+
+  // std::vector<IndivResult_t> ReasonerRule::getOnData(RuleTriplet_t& triplet, const index_t& index_literal_on)
+  // {
+  //   std::vector<IndivResult_t> res;
+
+  //   if(index_literal_on != 0)
+  //   {
+  //     LiteralNode* involved_literal = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-index_literal_on));
+  //     IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.data_predicate, involved_literal, false);
+  //     if(used_solution.empty() == false)
+  //       res.push_back(used_solution);
+  //     else
+  //       return {};
+  //   }
+  //   else
+  //   {
+  //     // return all literals matching the (triplet.subject.indiv_value, property, X)
+  //     std::unordered_set<LiteralNode*> candidates_literals_on = getOn(triplet.subject.indiv_value->get(), triplet.data_predicate);
+  //     if(candidates_literals_on.empty() == false)
+  //     {
+  //       res.reserve(candidates_literals_on.size());
+  //       for(auto* literal_on : candidates_literals_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+  //       {
+  //         IndivResult_t used_solution = checkInstantiatedTriplet(triplet.subject.indiv_value, triplet.data_predicate, literal_on, false);
+  //         if(used_solution.empty() == false)
+  //           res.push_back(used_solution);
+  //       }
+  //     }
+  //   }
+  //   return res;
+  // }
 
   // returns IndividualBranch without explanations
   std::unordered_set<IndividualBranch*> ReasonerRule::getFrom(ObjectPropertyBranch* property, const index_t& index_indiv_on)
@@ -701,15 +805,12 @@ namespace ontologenius {
                                                        indiv->same_as_[i].elem->is_a_.has_induced_object_relations[j],
                                                        indiv->same_as_[i].elem->is_a_.has_induced_data_relations[j]);
 
-              if(indiv != indiv->same_as_[i].elem)
-              {
-                std::string explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value();
-                used_solution.explanations.emplace_back(explanation);
+              std::string explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value();
+              used_solution.explanations.emplace_back(explanation);
 
-                used_solution.used_triplets.emplace_back(indiv->same_as_.has_induced_inheritance_relations[i],
-                                                         indiv->same_as_.has_induced_object_relations[i],
-                                                         indiv->same_as_.has_induced_data_relations[i]);
-              }
+              used_solution.used_triplets.emplace_back(indiv->same_as_.has_induced_inheritance_relations[i],
+                                                       indiv->same_as_.has_induced_object_relations[i],
+                                                       indiv->same_as_.has_induced_data_relations[i]);
 
               return used_solution;
             }
