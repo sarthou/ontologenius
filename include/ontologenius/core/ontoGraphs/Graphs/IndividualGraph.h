@@ -109,8 +109,8 @@ namespace ontologenius {
     bool addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
     bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
     bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-    int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existance = true);
-    int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false);
+    int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existence = true);
+    int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false, bool check_existence = true);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& indiv_on);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& type, const std::string& data);
     void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch* indiv_on);

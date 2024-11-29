@@ -2007,7 +2007,7 @@ namespace ontologenius {
       return false;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existance)
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existence)
   {
     if(object_property_graph_->isIrreflexive(property))
     {
@@ -2023,7 +2023,7 @@ namespace ontologenius {
     }
 
     int index = -1;
-    if(check_existance)
+    if(check_existence)
       index = indiv_from->objectRelationExists(property, indiv_on);
     if(index == -1)
     {
@@ -2042,29 +2042,25 @@ namespace ontologenius {
     return index;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba, bool inferred)
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba, bool inferred, bool check_existence)
   {
-    if(checkRangeAndDomain(indiv_from, property, data))
-    {
-      int index = -1;
-
+    int index = -1;
+    if(check_existence)
       index = indiv_from->dataRelationExists(property, data);
-      if(index == -1)
-      {
-        indiv_from->data_relations_.emplaceBack(property, data);
-        index = (int)indiv_from->data_relations_.size() - 1;
-      }
+    if(index == -1)
+    {
+      if(checkRangeAndDomain(indiv_from, property, data))
+        throw GraphException("Inconsistency prevented regarding the range or domain of the property");
 
-      indiv_from->data_relations_[index].probability = (float)proba;
-      indiv_from->data_relations_[index].inferred = inferred;
+      indiv_from->data_relations_.emplaceBack(property, data);
+      index = (int)indiv_from->data_relations_.size() - 1;
       indiv_from->setUpdated(true);
-
-      return index;
     }
-    else
-      throw GraphException("Inconsistency prevented regarding the range or domain of the property");
 
-    return -1;
+    indiv_from->data_relations_[index].probability = (float)proba;
+    indiv_from->data_relations_[index].inferred = inferred;
+
+    return index;
   }
 
   void IndividualGraph::addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& indiv_on)
