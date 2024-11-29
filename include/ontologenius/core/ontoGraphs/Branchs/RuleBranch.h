@@ -178,13 +178,17 @@ namespace ontologenius {
     std::string toString() const { return var_name; }
   };
 
-  class RuleBranch : public ValuedNode
+  class RuleBranch : public ValuedNode,
+                     public InferenceRuleNode
   {
   public:
-    explicit RuleBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden),
-                                                                         involves_class(false),
-                                                                         involves_object_property(false),
-                                                                         involves_data_property(false)
+    explicit RuleBranch(const std::string& value,
+                        const std::string& rule,
+                        bool hidden = false) : ValuedNode(value, hidden),
+                                               InferenceRuleNode(rule),
+                                               involves_class(false),
+                                               involves_object_property(false),
+                                               involves_data_property(false)
     {}
 
     bool involves_class;

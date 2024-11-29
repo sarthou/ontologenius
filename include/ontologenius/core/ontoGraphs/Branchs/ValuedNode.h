@@ -77,6 +77,18 @@ namespace ontologenius {
     bool hidden_;
   };
 
+  class InferenceRuleNode
+  {
+  public:
+    InferenceRuleNode(const std::string& rule) : rule_(rule)
+    {}
+
+    std::string getRule() const { return rule_; }
+
+  private:
+    std::string rule_;
+  };
+
 } // namespace ontologenius
 
 #endif // ONTOLOGENIUS_VALUEDNODE_H

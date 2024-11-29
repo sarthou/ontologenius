@@ -10,13 +10,15 @@
 
 namespace ontologenius {
 
+  class InferenceRuleNode;
+
   class ProbabilisticElement
   {
   public:
     float probability;
     bool inferred;
     std::vector<std::string> explanation;
-    // TODO add used rule
+    InferenceRuleNode* used_rule = nullptr;
     std::vector<TripletsInterface*> induced_traces;
 
     std::string getExplanation()

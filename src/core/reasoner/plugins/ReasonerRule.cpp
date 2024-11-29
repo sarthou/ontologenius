@@ -48,24 +48,24 @@ namespace ontologenius {
       }
 
       for(auto& solution : results_resolve) // resolve the consequent for each found solution
-        resolveHead(rule_branch->rule_head_, solution);
+        resolveHead(rule_branch->rule_head_, solution, rule_branch);
     }
   }
 
-  void ReasonerRule::resolveHead(const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution)
+  void ReasonerRule::resolveHead(const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution, RuleBranch* rule)
   {
     for(auto& atom : atoms)
     {
       switch(atom.atom_type_)
       {
       case class_atom:
-        addInferredClassAtom(atom, solution);
+        addInferredClassAtom(atom, solution, rule);
         break;
       case object_atom:
-        addInferredObjectAtom(atom, solution);
+        addInferredObjectAtom(atom, solution, rule);
         break;
       case data_atom:
-        addInferredDataAtom(atom, solution);
+        addInferredDataAtom(atom, solution, rule);
         break;
       case builtin_atom:
         break;
@@ -134,7 +134,7 @@ namespace ontologenius {
     return false;
   }
 
-  void ReasonerRule::addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution) // maybe not const since we mark the updates
+  void ReasonerRule::addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule) // maybe not const since we mark the updates
   {
     // the value we need to find is solution.assigned_result[triplet.subject.variable_id]
 
@@ -149,8 +149,9 @@ namespace ontologenius {
       involved_indiv->nb_updates_++;
       triplet.class_predicate->nb_updates_++;
 
-      // insert all explanations since they all are the reason why it has been inferred
-      involved_indiv->is_a_.back().explanation.insert(involved_indiv->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+        // insert all explanations since they all are the reason why it has been inferred
+        involved_indiv->is_a_.back().explanation.insert(involved_indiv->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+        involved_indiv->is_a_.back().used_rule = rule;
 
       for(auto& used : solution.triplets_used)
       {
@@ -169,7 +170,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::addInferredObjectAtom(const RuleTriplet_t& triplet, RuleResult_t& solution)
+  void ReasonerRule::addInferredObjectAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule)
   {
     IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
     IndividualBranch* involved_indiv_on = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.object.variable_id]);
@@ -179,7 +180,8 @@ namespace ontologenius {
       ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.object_predicate, involved_indiv_on, 1.0, true, false);
       involved_indiv_from->nb_updates_++;
 
-      involved_indiv_from->object_relations_.back().explanation.insert(involved_indiv_from->object_relations_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+        involved_indiv_from->object_relations_.back().explanation.insert(involved_indiv_from->object_relations_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+        involved_indiv_from->object_relations_.back().used_rule = rule;
 
       for(auto& used : solution.triplets_used)
       {
@@ -199,7 +201,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution)
+  void ReasonerRule::addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule)
   {
     // std::cout << " data : index of variable subject : " << solution.assigned_result[triplet.subject.variable_id] << std::endl;
     IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
@@ -212,7 +214,9 @@ namespace ontologenius {
       {
         ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.data_predicate, involved_literal_on, 1.0, true);
         involved_indiv_from->nb_updates_++;
+
         involved_indiv_from->data_relations_.back().explanation.insert(involved_indiv_from->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+        involved_indiv_from->data_relations_.back().used_rule = rule;
 
         for(auto& used : solution.triplets_used)
         {

@@ -360,6 +360,8 @@ namespace ontologenius {
           res->values = onto_->individual_graph_.isInferred(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
         else if(req->action == "getInferenceExplanation")
           res->values = onto_->individual_graph_.getInferenceExplanation(params());
+        else if(req->action == "getInferenceRule")
+          res->values = {onto_->individual_graph_.getInferenceRule(params())};
         else
           res->code = UNKNOW_ACTION;
 

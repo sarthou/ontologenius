@@ -98,6 +98,8 @@ namespace ontologenius {
     bool isInferredIndex(const std::string& param);
     std::vector<std::string> getInferenceExplanation(const std::string& param);
     std::vector<std::string> getInferenceExplanationIndex(const std::string& param);
+    std::string getInferenceRule(const std::string& param);
+    std::string getInferenceRuleIndex(const std::string& param);
 
     ClassBranch* upgradeToBranch(IndividualBranch* indiv);
     IndividualBranch* findOrCreateBranchSafe(const std::string& name);

@@ -37,12 +37,13 @@ namespace ontologenius {
     LiteralNode* card_range_ = nullptr;
   };
 
-  class AnonymousClassElement
+  class AnonymousClassElement : public InferenceRuleNode
   {
   public:
-    AnonymousClassElement() : logical_type_(logical_none), oneof(false), is_complex(false), root_node_(nullptr),
-                              involves_class(false), involves_object_property(false), involves_data_property(false), involves_individual(false),
-                              class_involved_(nullptr), object_property_involved_(nullptr), data_property_involved_(nullptr), individual_involved_(nullptr)
+    AnonymousClassElement(const std::string& rule) : InferenceRuleNode(rule),
+                                                     logical_type_(logical_none), oneof(false), is_complex(false), root_node_(nullptr),
+                                                     involves_class(false), involves_object_property(false), involves_data_property(false), involves_individual(false),
+                                                     class_involved_(nullptr), object_property_involved_(nullptr), data_property_involved_(nullptr), individual_involved_(nullptr)
     {}
 
     LogicalNodeType_e logical_type_;

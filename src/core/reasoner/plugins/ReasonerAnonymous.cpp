@@ -93,7 +93,7 @@ namespace ontologenius {
                 {
                   if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
                   {
-                    addInferredInheritance(indiv, anonymous_branch, used);
+                    addInferredInheritance(indiv, anonymous_branch, anonymous_elem, used);
                     nb_update++;
                     if(anonymous_branch->class_equiv_->isHidden() == false)
                     {
@@ -125,7 +125,10 @@ namespace ontologenius {
     first_run_ = false;
   }
 
-  void ReasonerAnonymous::addInferredInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used)
+  void ReasonerAnonymous::addInferredInheritance(IndividualBranch* indiv,
+                                                 AnonymousClassBranch* anonymous_branch,
+                                                 AnonymousClassElement* element,
+                                                 const std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     indiv->is_a_.emplaceBack(anonymous_branch->class_equiv_, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
     anonymous_branch->class_equiv_->individual_childs_.emplace_back(IndividualElement(indiv, 1.0, true));
@@ -136,6 +139,7 @@ namespace ontologenius {
     for(auto& induced_vector : used)
     {
       indiv->is_a_.back().explanation.push_back(induced_vector.first);
+      indiv->is_a_.back().used_rule = element;
       // check for nullptr because OneOf returns a (string, nullptr)
       if(induced_vector.second != nullptr)
       {

@@ -1575,6 +1575,32 @@ namespace ontologenius {
     return res;
   }
 
+  std::string IndividualGraph::getInferenceRule(const std::string& param)
+  {
+    std::string res;
+    std::function<std::string(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) {
+      if(elem.used_rule != nullptr)
+        return elem.used_rule->getRule();
+      else
+        return std::string();
+    };
+    getInferenceData(param, res, lambda);
+    return res;
+  }
+
+  std::string IndividualGraph::getInferenceRuleIndex(const std::string& param)
+  {
+    std::string res;
+    std::function<std::string(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) {
+      if(elem.used_rule != nullptr)
+        return elem.used_rule->getRule();
+      else
+        return std::string();
+    };
+    getInferenceDataIndex(param, res, lambda);
+    return res;
+  }
+
   template<typename R>
   void IndividualGraph::getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter)
   {

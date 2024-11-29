@@ -28,7 +28,10 @@ namespace ontologenius {
 
     bool checkClassesDisjointess(IndividualBranch* indiv, ClassBranch* class_equiv);
 
-    void addInferredInheritance(IndividualBranch* indiv, AnonymousClassBranch* anonymous_branch, std::vector<std::pair<std::string, InheritedRelationTriplets*>> used);
+    void addInferredInheritance(IndividualBranch* indiv,
+                                AnonymousClassBranch* anonymous_branch,
+                                AnonymousClassElement* element,
+                                const std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);
 
     bool resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem);
     bool resolveTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used);

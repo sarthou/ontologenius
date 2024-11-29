@@ -49,7 +49,7 @@ namespace ontologenius {
 
   AnonymousClassElement* AnonymousClassGraph::createElement(ExpressionMember_t* exp, AnonymousClassElement* root_node)
   {
-    AnonymousClassElement* ano_element = new AnonymousClassElement();
+    AnonymousClassElement* ano_element = new AnonymousClassElement(exp->toString());
     ano_element->is_complex = exp->is_complex;
     Restriction_t current_rest = exp->rest;
 
