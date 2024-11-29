@@ -51,7 +51,7 @@ namespace ontologenius {
         for(auto* anonymous_branch : ontology_->anonymous_graph_.get())
         {
           bool trees_evaluation_result = false;
-          const bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch](const auto& is_a) { return is_a.elem == anonymous_branch->class_equiv_; });
+          bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch](const auto& is_a) { return is_a.elem == anonymous_branch->class_equiv_; });
 
           if(is_already_a || checkClassesDisjointess(indiv, anonymous_branch->class_equiv_) == false)
           {
@@ -61,6 +61,19 @@ namespace ontologenius {
 #ifdef DEBUG
               computeDebugUpdate(indiv, anonymous_elem);
 #endif
+
+              if(is_already_a)
+              {
+                const bool inferred_by_me = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch, anonymous_elem](const auto& is_a) {
+                  return ((is_a.elem == anonymous_branch->class_equiv_) &&
+                          (is_a.used_rule == anonymous_elem));
+                });
+                if(inferred_by_me == false)
+                {
+                  is_already_a = false;
+                  break;
+                }
+              }
 
               std::string equiv_flag = "equiv_" + anonymous_elem->ano_name;
 
