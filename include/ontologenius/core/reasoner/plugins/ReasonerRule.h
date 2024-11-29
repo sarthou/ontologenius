@@ -128,14 +128,12 @@ namespace ontologenius {
     void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     void resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
 
-    std::vector<IndivResult_t> getFromObject(RuleTriplet_t& triplet, const index_t& index_indiv_from);
-    std::vector<IndivResult_t> getFromData(RuleTriplet_t& triplet, const index_t& index_indiv_from);
+    std::vector<IndivResult_t> getFrom(RuleTriplet_t& triplet, const index_t& index_indiv_from);
 
     std::unordered_set<IndividualBranch*> getFrom(ObjectPropertyBranch* property, const index_t& index_indiv_on);
     std::unordered_set<IndividualBranch*> getFrom(DataPropertyBranch* property, const index_t& index_literal_on);
 
-    std::vector<IndivResult_t> getOnObject(RuleTriplet_t& triplet, const index_t& index_indiv_on);
-    std::vector<IndivResult_t> getOnData(RuleTriplet_t& triplet, const index_t& index_literal_on);
+    std::vector<IndivResult_t> getOn(RuleTriplet_t& triplet, const index_t& index_resource_on);
 
     std::unordered_set<IndividualBranch*> getOn(const index_t& index_indiv_from, ObjectPropertyBranch* predicate);
     std::unordered_set<LiteralNode*> getOn(const index_t& index_indiv_from, DataPropertyBranch* predicate);
