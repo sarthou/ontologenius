@@ -44,7 +44,7 @@ namespace ontologenius {
   {
     for(auto* branch : other.all_branchs_)
     {
-      auto* rule_branch = new RuleBranch(branch->value());
+      auto* rule_branch = new RuleBranch(branch->value(), branch->getRule(), branch->isHidden());
       all_branchs_.push_back(rule_branch);
     }
   }
@@ -54,7 +54,7 @@ namespace ontologenius {
     const std::lock_guard<std::shared_timed_mutex> lock(Graph<RuleBranch>::mutex_);
 
     const std::string rule_name = "rule_" + std::to_string(rule_id);
-    RuleBranch* rule_branch = new RuleBranch(rule_name);
+    RuleBranch* rule_branch = new RuleBranch(rule_name, rule.rule_str);
     all_branchs_.push_back(rule_branch);
 
     size_t elem_id = 0;
