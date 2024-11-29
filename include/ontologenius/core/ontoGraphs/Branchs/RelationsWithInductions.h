@@ -38,6 +38,7 @@ namespace ontologenius {
     size_t size() const { return relations.size(); }
     bool empty() const { return relations.empty(); }
     T& operator[](size_t index) { return relations[index]; }
+    const T& at(size_t index) const { return relations.at(index); }
 
     void resetUpdated() { updated_ = false; }
     bool isUpdated() { return updated_; }
