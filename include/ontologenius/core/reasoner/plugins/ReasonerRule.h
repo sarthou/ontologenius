@@ -126,72 +126,75 @@ namespace ontologenius {
     void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     void resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
 
-    std::vector<IndivResult_t> getFrom(RuleTriplet_t& triplet, const index_t& subject_selector);
+    void getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev = IndivResult_t());
+    IndivResult_t isA(IndividualBranch* indiv, ClassBranch* class_selector);
 
-    std::unordered_set<IndividualBranch*> getFrom(ObjectPropertyBranch* property, const index_t& index_indiv_on);
-    std::unordered_set<IndividualBranch*> getFrom(DataPropertyBranch* property, const index_t& index_literal_on);
+    std::vector<IndivResult_t> getFromObject(RuleTriplet_t& triplet);
+    std::vector<IndivResult_t> getOnObject(RuleTriplet_t& triplet, index_t selector);
 
-    std::vector<IndivResult_t> getOn(RuleTriplet_t& triplet, const index_t& object_selector);
+    std::vector<IndivResult_t> getFromData(RuleTriplet_t& triplet);
+    std::vector<IndivResult_t> getOnData(RuleTriplet_t& triplet, index_t selector);
 
-    std::unordered_set<IndividualBranch*> getOn(const index_t& index_indiv_from, ObjectPropertyBranch* predicate);
-    inline void getOn(IndividualBranch* indiv, const std::unordered_set<index_t>& properties, std::unordered_set<IndividualBranch*>& res);
-    std::unordered_set<LiteralNode*> getOn(const index_t& index_indiv_from, DataPropertyBranch* predicate);
-    inline void getOn(IndividualBranch* indiv, const std::unordered_set<index_t>& properties, std::unordered_set<LiteralNode*>& res);
-
-    std::vector<IndivResult_t> getType(ClassBranch* class_selector);
-    IndivResult_t getTypeSingle(IndividualBranch* indiv, IndividualBranch* indiv_same, ClassBranch* class_selector);
-    IndivResult_t getType(IndividualBranch* indiv, ClassBranch* class_selector);
-
-    IndivResult_t getRelationResult(IndividualBranch* indiv_from, ObjectPropertyBranch* property_predicate, IndividualBranch* indiv_on, bool var_from);
-    IndivResult_t getRelationResult(IndividualBranch* indiv_from, DataPropertyBranch* property_predicate, LiteralNode* literal_on, bool var_from);
-
-    bool checkValue(IndividualBranch* indiv_from, IndividualBranch* indiv_on, IndivResult_t& used);
-    bool checkValue(LiteralNode* literal_from, LiteralNode* literal_on, IndivResult_t& used);
+    void constructResult(const std::string& concept,
+                         const RelationsWithInductions<IndividualElement>& relation,
+                         size_t index, IndivResult_t& res);
 
     template<typename T>
-    bool existInInheritance(T* branch, index_t selector, IndivResult_t& used)
+    void constructResult(const std::string& concept,
+                         const RelationsWithInductions<SingleElement<T*>>& relation,
+                         size_t index, IndivResult_t& res)
     {
-      if(branch->get() == selector)
-        return true;
+      if(relation.at(index).elem->isHidden() == false)
+      {
+        std::string explanation = concept + "|isA|" + relation.at(index).elem->value();
+        res.explanations.emplace_back(explanation);
+      }
       else
       {
-        for(size_t i = 0; i < branch->mothers_.size(); i++)
-        {
-          if(existInInheritance(branch->mothers_[i].elem, selector, used))
-          {
-            std::string explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
-            used.explanations.emplace_back(explanation);
-
-            used.used_triplets.emplace_back(branch->mothers_.has_induced_inheritance_relations[i],
-                                            branch->mothers_.has_induced_object_relations[i],
-                                            branch->mothers_.has_induced_data_relations[i]);
-            return true;
-          }
-        }
+        const auto& hidden_explanation = relation.at(index).explanation;
+        res.explanations.insert(res.explanations.end(),
+                                hidden_explanation.cbegin(),
+                                hidden_explanation.cend());
       }
-      return false;
+
+      res.used_triplets.emplace_back(relation.has_induced_inheritance_relations[index],
+                                     relation.has_induced_object_relations[index],
+                                     relation.has_induced_data_relations[index]);
     }
 
-    template<typename T, typename B, typename C>
-    bool getRelationResult(IndividualBranch* indiv_from, T* property_predicate, B* resource_on, const RelationsWithInductions<C>& relations, IndivResult_t& used)
+    template<typename T, typename D>
+    void constructResult(const std::string& concept,
+                         const RelationsWithInductions<PairElement<T*, D*>>& relation,
+                         size_t index, IndivResult_t& res)
+    {
+      std::string explanation = concept + "|" + relation.at(index).first->value() + "|" + relation.at(index).second->value();
+      res.explanations.emplace_back(explanation);
+
+      res.used_triplets.emplace_back(relation.has_induced_inheritance_relations[index],
+                                     relation.has_induced_object_relations[index],
+                                     relation.has_induced_data_relations[index]);
+    }
+
+    template<typename T>
+    bool isA(const std::string& concept,
+             T* selector,
+             const RelationsWithInductions<SingleElement<T*>>& relations,
+             IndivResult_t& res)
     {
       for(size_t i = 0; i < relations.size(); i++)
       {
-        if(existInInheritance(relations.at(i).first, property_predicate->get(), used))
+        if(relations.at(i).elem == selector)
         {
-          if(checkValue(relations.at(i).second, resource_on, used))
-          {
-            std::string explanation = indiv_from->value() + "|" + relations.at(i).first->value() + "|" + relations.at(i).second->value();
-            used.explanations.emplace_back(explanation);
-
-            used.used_triplets.emplace_back(relations.has_induced_inheritance_relations[i],
-                                            relations.has_induced_object_relations[i],
-                                            relations.has_induced_data_relations[i]);
-
-            return true;
-          }
+          constructResult(concept, relations, i, res);
+          return true;
+        }
+        else if(isA(relations.at(i).elem->value(), selector, relations.at(i).elem->mothers_, res))
+        {
+          constructResult(concept, relations, i, res);
+          return true;
         }
       }
+
       return false;
     }
   };

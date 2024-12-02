@@ -38,7 +38,7 @@ namespace ontologenius {
       std::vector<index_t> empty_accu(rule_branch->to_variables_.size(), index_t()); // need to initialize each index at 0
       results_resolve = resolveBody(rule_branch, rule_branch->rule_body_, empty_accu);
 
-      std::cout << "For rule " << rule_branch->value() << "results are:" << std::endl;
+      std::cout << "For rule " << rule_branch->value() << " results are: " << std::endl;
 
       for(auto& rs : results_resolve)
       {
@@ -293,41 +293,115 @@ namespace ontologenius {
     if(triplet.subject.is_variable == true)
     {
       if(accu[var_index] == 0) // has no previous value
-        values = getType(triplet.class_predicate);
+        getType(triplet.class_predicate, values);
       else
       {
         IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(accu[var_index]);
-        if(ontology_->individual_graph_.isA(involved_indiv, triplet.class_predicate->get()) == true)
-        {
-          // has a previous value, so we evaluate it
-          values.emplace_back(getType(involved_indiv, triplet.class_predicate));
-        }
+        auto res = isA(involved_indiv, triplet.class_predicate);
+        if(res.empty() == false)
+          values.emplace_back(std::move(res));
       }
     }
-    else if(ontology_->individual_graph_.isA(triplet.subject.indiv_value, triplet.class_predicate->value()) == true)
+    else
     {
       // atom is not variable, so we check the individual in the triplet
-      values.emplace_back(getType(triplet.subject.indiv_value, triplet.class_predicate));
+      auto res = isA(triplet.subject.indiv_value, triplet.class_predicate);
+      if(res.empty() == false)
+        values.emplace_back(std::move(res));
     }
+  }
+
+  void ReasonerRule::getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev)
+  {
+    for(const auto& child : class_selector->individual_childs_)
+    {
+      auto local_res = prev;
+      IndividualBranch* indiv = child.elem;
+      local_res.indiv = indiv;
+      for(size_t i = 0; i < indiv->is_a_.size(); i++)
+      {
+        if(indiv->is_a_[i] == class_selector)
+        {
+          constructResult(indiv->value(), indiv->is_a_, i, local_res);
+          break;
+        }
+      }
+
+      res.emplace_back(std::move(local_res));
+    }
+
+    for(const auto& child : class_selector->childs_)
+    {
+      auto local_res = prev;
+      ClassBranch* child_ptr = child.elem;
+      for(size_t i = 0; i < child_ptr->mothers_.size(); i++)
+      {
+        if(child_ptr->mothers_[i] == class_selector)
+        {
+          constructResult(child_ptr->value(), child_ptr->mothers_, i, local_res);
+          break;
+        }
+      }
+
+      getType(child_ptr, res, local_res);
+    }
+  }
+
+  void ReasonerRule::constructResult(const std::string& concept,
+                                     const RelationsWithInductions<IndividualElement>& relation,
+                                     size_t index, IndivResult_t& res)
+  {
+    std::string explanation = concept + "|sameAs|" + relation.at(index).elem->value();
+    res.explanations.emplace_back(explanation);
+
+    res.used_triplets.emplace_back(relation.has_induced_inheritance_relations[index],
+                                   relation.has_induced_object_relations[index],
+                                   relation.has_induced_data_relations[index]);
+  }
+
+  IndivResult_t ReasonerRule::isA(IndividualBranch* indiv, ClassBranch* class_selector)
+  {
+    IndivResult_t res;
+    if(indiv->same_as_.empty())
+    {
+      if(isA(indiv->value(), class_selector, indiv->is_a_, res))
+        res.indiv = indiv;
+    }
+    else
+    {
+      for(size_t i = 0; i < indiv->same_as_.size(); i++)
+        if(isA(indiv->same_as_.at(i).elem->value(), class_selector, indiv->same_as_.at(i).elem->is_a_, res))
+        {
+          res.indiv = indiv;
+          if(indiv != indiv->same_as_[i].elem)
+            constructResult(indiv->value(), indiv->same_as_, i, res);
+          break;
+        }
+    }
+    return res;
   }
 
   void ReasonerRule::resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
     if(!triplet.subject.is_variable && !triplet.object.is_variable)
     {
-      IndivResult_t used = getRelationResult(triplet.subject.indiv_value, triplet.object_predicate, triplet.object.indiv_value, true); // true because the indiv matching the atom is subject
-      if(used.empty() == false)
-        values.push_back(used);
+      values = getOnObject(triplet, triplet.object.indiv_value->get());
     }
     else if(triplet.subject.is_variable && !triplet.object.is_variable)
     {
       var_index = triplet.subject.variable_id;
-      values = getFrom(triplet, accu[var_index]);
+      if(accu[var_index] == 0)
+        values = getFromObject(triplet);
+      else
+      {
+        triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
+        values = getOnObject(triplet, triplet.object.indiv_value->get());
+      }
     }
     else if(!triplet.subject.is_variable && triplet.object.is_variable)
     {
       var_index = triplet.object.variable_id;
-      values = getOn(triplet, accu[var_index]);
+      values = getOnObject(triplet, accu[var_index]);
     }
     else if(triplet.subject.is_variable && triplet.object.is_variable)
     {
@@ -336,35 +410,202 @@ namespace ontologenius {
       {
         triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
         var_index = triplet.object.variable_id;
-        values = getOn(triplet, accu[var_index]);
+        values = getOnObject(triplet, accu[var_index]);
       }
       else if(accu[triplet.object.variable_id] != 0)
       {
         triplet.object.indiv_value = ontology_->individual_graph_.findBranch(accu[triplet.object.variable_id]);
-        values = getFrom(triplet, 0);
+        values = getFromObject(triplet);
       }
       else
         std::cout << "no variable bounded to any of the variable fields" << std::endl;
     }
+  }
+
+  std::vector<IndivResult_t> ReasonerRule::getFromObject(RuleTriplet_t& triplet)
+  {
+    std::vector<IndivResult_t> res;
+
+    if(triplet.object.indiv_value->same_as_.empty())
+    {
+      for(auto& indiv : ontology_->individual_graph_.all_branchs_)
+        for(size_t i = 0; i < indiv->object_relations_.size(); i++)
+        {
+          const auto& relations = indiv->object_relations_;
+          if(relations.at(i).second == triplet.object.indiv_value)
+          {
+            IndivResult_t local_res;
+            if((relations.at(i).first == triplet.object_predicate) ||
+               isA(relations.at(i).first->value(), triplet.object_predicate, relations.at(i).first->mothers_, local_res))
+            {
+              local_res.indiv = indiv;
+              constructResult(indiv->value(), relations, i, local_res);
+              res.emplace_back(std::move(local_res));
+            }
+          }
+        }
+    }
+    else
+    {
+      for(auto& indiv : ontology_->individual_graph_.all_branchs_)
+        for(size_t i = 0; i < indiv->object_relations_.size(); i++)
+        {
+          for(size_t j = 0; j < triplet.object.indiv_value->same_as_.size(); j++)
+          {
+            const auto& relations = indiv->object_relations_;
+            if(relations.at(i).second == triplet.object.indiv_value->same_as_[j].elem)
+            {
+              IndivResult_t local_res;
+              if((relations.at(i).first == triplet.object_predicate) ||
+                 isA(relations.at(i).first->value(), triplet.object_predicate, relations.at(i).first->mothers_, local_res))
+              {
+                local_res.indiv = indiv;
+                constructResult(triplet.object.indiv_value->same_as_[i].elem->value(), relations, i, local_res);
+
+                if(triplet.object.indiv_value != triplet.object.indiv_value->same_as_[i].elem)
+                  constructResult(triplet.object.indiv_value->value(), triplet.object.indiv_value->same_as_, j, local_res);
+
+                res.emplace_back(std::move(local_res));
+                break;
+              }
+            }
+          }
+        }
+    }
+
+    return res;
+  }
+
+  std::vector<IndivResult_t> ReasonerRule::getOnObject(RuleTriplet_t& triplet, index_t selector)
+  {
+    std::vector<IndivResult_t> res;
+    IndividualBranch* indiv = triplet.subject.indiv_value;
+    IndividualBranch* selector_ptr = nullptr;
+    if(selector != 0)
+      selector_ptr = ontology_->individual_graph_.findBranch(selector);
+
+    if(indiv->same_as_.empty())
+    {
+      const auto& relations = indiv->object_relations_;
+      for(size_t i = 0; i < relations.size(); i++)
+      {
+        IndivResult_t local_res;
+        if((relations.at(i).first == triplet.object_predicate) ||
+           isA(relations.at(i).first->value(), triplet.object_predicate, relations.at(i).first->mothers_, local_res))
+        {
+          if(selector == 0)
+          {
+            local_res.indiv = relations.at(i).second;
+            constructResult(indiv->value(), relations, i, local_res);
+            res.emplace_back(std::move(local_res));
+          }
+          else if(selector_ptr->same_as_.empty())
+          {
+            if(selector_ptr == relations.at(i).second)
+            {
+              local_res.indiv = relations.at(i).second;
+              constructResult(indiv->value(), relations, i, local_res);
+              res.emplace_back(std::move(local_res));
+            }
+          }
+          else
+          {
+            for(size_t j = 0; j < selector_ptr->same_as_.size(); j++)
+              if(relations.at(i).second == selector_ptr->same_as_[j].elem)
+              {
+                local_res.indiv = relations.at(i).second;
+
+                if(selector_ptr != selector_ptr->same_as_[j].elem)
+                  constructResult(selector_ptr->value(), selector_ptr->same_as_, j, local_res);
+
+                constructResult(indiv->value(), relations, i, local_res);
+                res.emplace_back(std::move(local_res));
+              }
+          }
+        }
+      }
+    }
+    else
+    {
+      for(size_t s = 0; s < indiv->same_as_.size(); s++)
+      {
+        IndividualBranch* same = indiv->same_as_[s].elem;
+        const auto& relations = same->object_relations_;
+        for(size_t i = 0; i < relations.size(); i++)
+        {
+          IndivResult_t local_res;
+          if((relations.at(i).first == triplet.object_predicate) ||
+             isA(relations.at(i).first->value(), triplet.object_predicate, relations.at(i).first->mothers_, local_res))
+          {
+            if(selector == 0)
+            {
+              local_res.indiv = relations.at(i).second;
+
+              if(same != indiv)
+                constructResult(same->value(), same->same_as_, s, local_res);
+
+              constructResult(same->value(), relations, i, local_res);
+              res.emplace_back(std::move(local_res));
+            }
+            else if(selector_ptr->same_as_.empty())
+            {
+              if(selector_ptr == relations.at(i).second)
+              {
+                local_res.indiv = relations.at(i).second;
+
+                if(same != indiv)
+                  constructResult(same->value(), same->same_as_, s, local_res);
+
+                constructResult(same->value(), relations, i, local_res);
+                res.emplace_back(std::move(local_res));
+              }
+            }
+            else
+            {
+              for(size_t j = 0; j < selector_ptr->same_as_.size(); j++)
+                if(relations.at(i).second == selector_ptr->same_as_[j].elem)
+                {
+                  local_res.indiv = relations.at(i).second;
+
+                  if(same != indiv)
+                    constructResult(same->value(), same->same_as_, s, local_res);
+
+                  if(selector_ptr != selector_ptr->same_as_[j].elem)
+                    constructResult(selector_ptr->value(), selector_ptr->same_as_, j, local_res);
+
+                  constructResult(same->value(), relations, i, local_res);
+                  res.emplace_back(std::move(local_res));
+                }
+            }
+          }
+        }
+      }
+    }
+
+    return res;
   }
 
   void ReasonerRule::resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
     if(!triplet.subject.is_variable && !triplet.object.is_variable)
     {
-      IndivResult_t used = getRelationResult(triplet.subject.indiv_value, triplet.data_predicate, triplet.object.datatype_value, true); // true because the indiv matching the atom is subject
-      if(used.empty() == false)
-        values.push_back(used);
+      values = getOnData(triplet, triplet.object.datatype_value->get());
     }
     else if(triplet.subject.is_variable && !triplet.object.is_variable)
     {
       var_index = triplet.subject.variable_id;
-      values = getFrom(triplet, accu[var_index]);
+      if(accu[var_index] == 0)
+        values = getFromData(triplet);
+      else
+      {
+        triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
+        values = getOnData(triplet, accu[var_index]);
+      }
     }
     else if(!triplet.subject.is_variable && triplet.object.is_variable)
     {
       var_index = triplet.object.variable_id;
-      values = getOn(triplet, accu[var_index]);
+      values = getOnData(triplet, accu[var_index]);
     }
     else if(triplet.subject.is_variable && triplet.object.is_variable)
     {
@@ -373,355 +614,93 @@ namespace ontologenius {
       {
         triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
         var_index = triplet.object.variable_id;
-        values = getOn(triplet, accu[var_index]);
+        values = getOnData(triplet, accu[var_index]);
       }
       else if(accu[triplet.object.variable_id] != 0)
       {
         triplet.object.datatype_value = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-accu[triplet.object.variable_id]));
-        values = getFrom(triplet, 0);
+        values = getFromData(triplet);
       }
       else
         std::cout << "no variable bounded to any of the variable fields" << std::endl;
     }
   }
 
-  std::vector<IndivResult_t> ReasonerRule::getFrom(RuleTriplet_t& triplet, const index_t& subject_selector) // works for literal and indiv
+  std::vector<IndivResult_t> ReasonerRule::getFromData(RuleTriplet_t& triplet)
   {
-    std::vector<IndivResult_t> res_from;
-    std::unordered_set<IndividualBranch*> candidates_indivs_from;
-    IndivResult_t used_solution;
+    std::vector<IndivResult_t> res;
 
-    if(subject_selector != 0)
-    { // here we revert the problem since we know what we are looking for
-      IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(subject_selector);
-      if(triplet.object_predicate != nullptr)
-        used_solution = getRelationResult(involved_indiv, triplet.object_predicate, triplet.object.indiv_value, true);
-      else
-        used_solution = getRelationResult(involved_indiv, triplet.data_predicate, triplet.object.datatype_value, true);
-
-      if(used_solution.empty() == false)
-        res_from.push_back(used_solution);
-    }
-    else
-    {
-      if(triplet.object_predicate != nullptr)
-        candidates_indivs_from = getFrom(triplet.object_predicate, triplet.object.indiv_value->get());
-      else
-        candidates_indivs_from = getFrom(triplet.data_predicate, triplet.object.datatype_value->get());
-
-      res_from.reserve(candidates_indivs_from.size());
-      for(auto* indiv_from : candidates_indivs_from) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+    for(auto& indiv : ontology_->individual_graph_.all_branchs_)
+      for(size_t i = 0; i < indiv->data_relations_.size(); i++)
       {
-        if(triplet.object_predicate != nullptr)
-          used_solution = getRelationResult(indiv_from, triplet.object_predicate, triplet.object.indiv_value, true);
-        else
-          used_solution = getRelationResult(indiv_from, triplet.data_predicate, triplet.object.datatype_value, true);
-        if(used_solution.empty() == false)
-          res_from.push_back(used_solution);
-      }
-    }
-
-    return res_from;
-  }
-
-  std::vector<IndivResult_t> ReasonerRule::getOn(RuleTriplet_t& triplet, const index_t& object_selector)
-  {
-    std::vector<IndivResult_t> res_on;
-    IndivResult_t used_solution;
-
-    if(object_selector != 0)
-    {
-      if(triplet.object_predicate != nullptr)
-      {
-        IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(object_selector);
-        used_solution = getRelationResult(triplet.subject.indiv_value, triplet.object_predicate, involved_indiv, false);
-      }
-      else
-      {
-        LiteralNode* involved_literal = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-object_selector));
-        used_solution = getRelationResult(triplet.subject.indiv_value, triplet.data_predicate, involved_literal, false);
-      }
-
-      if(used_solution.empty() == false)
-        res_on.push_back(used_solution);
-      else
-        return {};
-    }
-    else
-    {
-      if(triplet.object_predicate != nullptr)
-      {
-        std::unordered_set<IndividualBranch*> candidates_indivs_on = getOn(triplet.subject.indiv_value->get(), triplet.object_predicate);
-        if(candidates_indivs_on.empty() == false)
+        const auto& relations = indiv->data_relations_;
+        if(relations.at(i).second == triplet.object.datatype_value)
         {
-          res_on.reserve(candidates_indivs_on.size());
-          for(auto* indiv_on : candidates_indivs_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
+          IndivResult_t local_res;
+          if((relations.at(i).first == triplet.data_predicate) ||
+             isA(relations.at(i).first->value(), triplet.data_predicate, relations.at(i).first->mothers_, local_res))
           {
-            IndivResult_t used_solution = getRelationResult(triplet.subject.indiv_value, triplet.object_predicate, indiv_on, false);
-            if(used_solution.empty() == false)
-              res_on.push_back(used_solution);
+            local_res.indiv = indiv;
+            constructResult(indiv->value(), relations, i, local_res);
+            res.emplace_back(std::move(local_res));
           }
         }
       }
-      else
-      {
-        std::unordered_set<LiteralNode*> candidates_literals_on = getOn(triplet.subject.indiv_value->get(), triplet.data_predicate);
-        if(candidates_literals_on.empty() == false)
-        {
-          res_on.reserve(candidates_literals_on.size());
-          for(auto* literal_on : candidates_literals_on) // here we have to explore based on the selected individuals to compute explanations and memory adress to store into values
-          {
-            IndivResult_t used_solution = getRelationResult(triplet.subject.indiv_value, triplet.data_predicate, literal_on, false);
-            if(used_solution.empty() == false)
-              res_on.push_back(used_solution);
-          }
-        }
-      }
-    }
-    return res_on;
-  }
-
-  // returns IndividualBranch without explanations
-  std::unordered_set<IndividualBranch*> ReasonerRule::getFrom(ObjectPropertyBranch* property, const index_t& index_indiv_on)
-  {
-    std::unordered_set<IndividualBranch*> indivs_from;
-    const std::unordered_set<index_t> object_properties = ontology_->object_property_graph_.getDownId(property->get());
-
-    for(auto& indiv_i : ontology_->individual_graph_.all_branchs_)
-      for(const IndivObjectRelationElement& relation : indiv_i->object_relations_)
-        for(const index_t id : object_properties)
-          if(relation.first->get() == id)
-          {
-            if(relation.second->get() == index_indiv_on)
-            {
-              indivs_from.insert(indiv_i);
-              break;
-            }
-          }
-
-    return indivs_from;
-  }
-
-  std::unordered_set<IndividualBranch*> ReasonerRule::getFrom(DataPropertyBranch* property, const index_t& index_literal_on)
-  {
-    std::unordered_set<IndividualBranch*> indivs_from;
-    const std::unordered_set<index_t> data_properties = ontology_->data_property_graph_.getDownId(property->get());
-
-    for(auto& indiv_i : ontology_->individual_graph_.all_branchs_)
-      for(const IndivDataRelationElement& relation : indiv_i->data_relations_)
-        for(const index_t id : data_properties)
-          if(relation.first->get() == id)
-          {
-            if(relation.second->get() == index_literal_on)
-            {
-              indivs_from.insert(indiv_i);
-              break;
-            }
-          }
-
-    return indivs_from;
-  }
-
-  // returns either IndividualBranch or Literalode without explanations
-  std::unordered_set<IndividualBranch*> ReasonerRule::getOn(const index_t& index_indiv_from, ObjectPropertyBranch* predicate)
-  {
-    IndividualBranch* indiv_from = ontology_->individual_graph_.findBranch(index_indiv_from);
-    std::unordered_set<IndividualBranch*> res;
-    std::unordered_set<index_t> object_properties = ontology_->object_property_graph_.getDownId(predicate->get());
-
-    if(object_properties.empty() == false)
-    {
-      if(indiv_from->same_as_.empty() == false)
-      {
-        for(auto& same_indiv : indiv_from->same_as_)
-          getOn(same_indiv.elem, object_properties, res);
-      }
-      else
-        getOn(indiv_from, object_properties, res);
-    }
 
     return res;
   }
 
-  void ReasonerRule::getOn(IndividualBranch* indiv, const std::unordered_set<index_t>& properties, std::unordered_set<IndividualBranch*>& res)
+  std::vector<IndivResult_t> ReasonerRule::getOnData(RuleTriplet_t& triplet, index_t selector)
   {
-    for(const IndivObjectRelationElement& relation : indiv->object_relations_)
-      for(const index_t id : properties)
-        if(relation.first->get() == id)
-        {
-          res.insert(relation.second);
-          break;
-        }
-  }
+    std::vector<IndivResult_t> res;
+    IndividualBranch* indiv = triplet.subject.indiv_value;
 
-  std::unordered_set<LiteralNode*> ReasonerRule::getOn(const index_t& index_indiv_from, DataPropertyBranch* predicate)
-  {
-    IndividualBranch* indiv_from = ontology_->individual_graph_.findBranch(index_indiv_from);
-    std::unordered_set<LiteralNode*> res;
-    std::unordered_set<index_t> data_properties = ontology_->data_property_graph_.getDownId(predicate->get());
-
-    if(data_properties.empty() == false)
+    if(indiv->same_as_.empty())
     {
-      if(indiv_from->same_as_.empty() == false)
+      const auto& relations = indiv->data_relations_;
+      for(size_t i = 0; i < relations.size(); i++)
       {
-        for(auto& same_indiv : indiv_from->same_as_)
-          getOn(same_indiv.elem, data_properties, res);
-      }
-      else
-        getOn(indiv_from, data_properties, res);
-    }
-
-    return res;
-  }
-
-  void ReasonerRule::getOn(IndividualBranch* indiv, const std::unordered_set<index_t>& properties, std::unordered_set<LiteralNode*>& res)
-  {
-    for(const IndivDataRelationElement& relation : indiv->data_relations_)
-      for(const index_t id : properties)
-        if(relation.first->get() == id)
+        IndivResult_t local_res;
+        if((relations.at(i).first == triplet.data_predicate) ||
+           isA(relations.at(i).first->value(), triplet.data_predicate, relations.at(i).first->mothers_, local_res))
         {
-          res.insert(relation.second);
-          break;
-        }
-  }
-
-  std::vector<IndivResult_t> ReasonerRule::getType(ClassBranch* class_selector)
-  {
-    std::unordered_set<IndividualBranch*> indiv_res = ontology_->individual_graph_.getType(class_selector);
-    std::vector<IndivResult_t> indiv_of_class;
-    indiv_of_class.reserve(indiv_res.size());
-
-    for(auto* indiv : indiv_res)
-      indiv_of_class.emplace_back(getType(indiv, class_selector));
-
-    return indiv_of_class;
-  }
-
-  // check the existence of the triplet and compute the explanation
-  IndivResult_t ReasonerRule::getType(IndividualBranch* indiv, ClassBranch* class_selector)
-  {
-    if(indiv->same_as_.empty() == false)
-    {
-      const size_t same_size = indiv->same_as_.size();
-      for(size_t i = 0; i < same_size; i++)
-      {
-        if(indiv->same_as_[i].elem->get() != indiv->get())
-        {
-          auto solution = getTypeSingle(indiv, indiv->same_as_[i].elem, class_selector);
-          if(solution.empty() == false)
+          if((selector == 0) || (selector == relations.at(i).second->get()))
           {
-            std::string explanation = indiv->value() + "|sameAs|" + indiv->same_as_[i].elem->value();
-            solution.explanations.emplace_back(explanation);
-
-            solution.used_triplets.emplace_back(indiv->same_as_.has_induced_inheritance_relations[i],
-                                                indiv->same_as_.has_induced_object_relations[i],
-                                                indiv->same_as_.has_induced_data_relations[i]);
-
-            return solution;
+            local_res.literal = relations.at(i).second;
+            constructResult(indiv->value(), relations, i, local_res);
+            res.emplace_back(std::move(local_res));
           }
         }
       }
     }
     else
-      return getTypeSingle(indiv, indiv, class_selector);
-
-    return IndivResult_t();
-  }
-
-  IndivResult_t ReasonerRule::getTypeSingle(IndividualBranch* indiv, IndividualBranch* indiv_same, ClassBranch* class_selector)
-  {
-    const size_t is_a_size = indiv_same->is_a_.size();
-    for(size_t i = 0; i < is_a_size; i++)
     {
-      IndivResult_t used_solution;
-      if(existInInheritance(indiv_same->is_a_[i].elem, class_selector->get(), used_solution))
+      for(size_t s = 0; s < indiv->same_as_.size(); s++)
       {
-        if(class_selector->isHidden() == false)
+        IndividualBranch* same = indiv->same_as_[s].elem;
+        const auto& relations = same->data_relations_;
+        for(size_t i = 0; i < relations.size(); i++)
         {
-          std::string explanation = indiv_same->value() + "|isA|" + class_selector->value();
-          used_solution.explanations.emplace_back(explanation);
-        }
-        else
-        {
-          const auto& hidden_explanation = indiv_same->is_a_[i].explanation;
-          used_solution.explanations.insert(used_solution.explanations.end(),
-                                            hidden_explanation.cbegin(),
-                                            hidden_explanation.cend());
-        }
+          IndivResult_t local_res;
+          if((relations.at(i).first == triplet.data_predicate) ||
+             isA(relations.at(i).first->value(), triplet.data_predicate, relations.at(i).first->mothers_, local_res))
+          {
+            if((selector == 0) || (selector == relations.at(i).second->get()))
+            {
+              local_res.literal = relations.at(i).second;
 
-        used_solution.indiv = indiv;
-        used_solution.used_triplets.emplace_back(indiv_same->is_a_.has_induced_inheritance_relations[i],
-                                                 indiv_same->is_a_.has_induced_object_relations[i],
-                                                 indiv_same->is_a_.has_induced_data_relations[i]);
+              if(same != indiv)
+                constructResult(same->value(), same->same_as_, s, local_res);
 
-        return used_solution;
+              constructResult(same->value(), relations, i, local_res);
+              res.emplace_back(std::move(local_res));
+            }
+          }
+        }
       }
     }
 
-    return IndivResult_t();
-  }
-
-  IndivResult_t ReasonerRule::getRelationResult(IndividualBranch* indiv_from, ObjectPropertyBranch* property_predicate, IndividualBranch* indiv_on, bool var_from)
-  {
-    IndivResult_t used_solution;
-
-    if(getRelationResult(indiv_from, property_predicate, indiv_on, indiv_from->object_relations_, used_solution))
-    {
-      if(var_from == true)
-        used_solution.indiv = indiv_from; // mark the indiv used in this atom evaluation -> maybe useless
-      else
-        used_solution.indiv = indiv_on; // mark the indiv used in this atom evaluation
-    }
-
-    return used_solution;
-  }
-
-  IndivResult_t ReasonerRule::getRelationResult(IndividualBranch* indiv_from, DataPropertyBranch* property_predicate, LiteralNode* literal_on, bool var_from) // if var_from = true, then used_solution used indiv_from, else it used resource_on
-  {
-    IndivResult_t used_solution;
-
-    if(getRelationResult(indiv_from, property_predicate, literal_on, indiv_from->data_relations_, used_solution))
-    {
-      if(var_from == true)
-        used_solution.indiv = indiv_from; // mark the indiv used in this atom evaluation
-      else
-        used_solution.literal = literal_on; // mark the literal used in this atom evaluation
-    }
-
-    return used_solution;
-  }
-
-  // check the match between either two individuals or literals
-  bool ReasonerRule::checkValue(IndividualBranch* indiv_from, IndividualBranch* indiv_on, IndivResult_t& used)
-  {
-    if(indiv_from->same_as_.empty() == false)
-    {
-      const size_t same_size = indiv_from->same_as_.size();
-      for(size_t j = 0; j < same_size; j++)
-      {
-        if(indiv_from->same_as_[j].elem->get() == indiv_on->get())
-        {
-          std::string explanation = indiv_from->value() + "|sameAs|" + indiv_on->value();
-          used.explanations.emplace_back(explanation);
-
-          used.used_triplets.emplace_back(indiv_from->same_as_.has_induced_inheritance_relations[j],
-                                          indiv_from->same_as_.has_induced_object_relations[j],
-                                          indiv_from->same_as_.has_induced_data_relations[j]);
-
-          return true;
-        }
-      }
-    }
-    else if(indiv_from->get() == indiv_on->get())
-      return true;
-
-    return false;
-  }
-
-  bool ReasonerRule::checkValue(LiteralNode* literal_from, LiteralNode* literal_on, IndivResult_t& used)
-  {
-    (void)used;
-    return (literal_from->get() == literal_on->get());
+    return res;
   }
 
   std::string ReasonerRule::getName()
