@@ -1554,10 +1554,11 @@ namespace ontologenius {
     for(IndividualBranch* it : sames)
     {
       for(const IndivDataRelationElement& relation : it->data_relations_)
-        return ((relation.second == object) &&
-                ((relation.first == property) || down_properties.find(relation.first) != down_properties.end()));
+      {
+        if((relation.second == object) && ((relation.first == property) || down_properties.find(relation.first) != down_properties.end()))
+          return true;
+      }
     }
-
     return false;
   }
 
