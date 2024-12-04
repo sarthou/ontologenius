@@ -2094,7 +2094,7 @@ namespace ontologenius {
       index = indiv_from->dataRelationExists(property, data);
     if(index == -1)
     {
-      if(checkRangeAndDomain(indiv_from, property, data))
+      if(checkRangeAndDomain(indiv_from, property, data) == false)
         throw GraphException("Inconsistency prevented regarding the range or domain of the property");
 
       indiv_from->data_relations_.emplaceBack(property, data);
