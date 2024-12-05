@@ -63,10 +63,7 @@ namespace ontologenius {
 
     bool empty() const
     {
-      if((indiv == nullptr) && (literal == nullptr))
-        return true;
-      else
-        return false;
+      return ((indiv == nullptr) && (literal == nullptr));
     }
   };
 
