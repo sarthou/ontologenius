@@ -123,6 +123,7 @@ namespace ontologenius {
     void addSameAs(const std::string& indiv_1, const std::string& indiv_2);
     std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_stated = false);
     std::pair<std::vector<std::pair<std::string, std::string>>, bool> removeRelation(IndividualBranch* branch_from, ObjectPropertyBranch* property, IndividualBranch* branch_on, bool protect_stated = false);
+    std::pair<std::vector<std::pair<std::string, std::string>>, bool> removeRelation(IndividualBranch* branch_from, DataPropertyBranch* property, LiteralNode* branch_on, bool protect_stated = false);
     std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
     std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
     std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on);

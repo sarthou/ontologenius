@@ -2398,6 +2398,55 @@ namespace ontologenius {
     return {explanations, true}; // we should reach this place only if we remove relations regardless the object
   }
 
+  std::pair<std::vector<std::pair<std::string, std::string>>, bool> IndividualGraph::removeRelation(IndividualBranch* branch_from, DataPropertyBranch* property, LiteralNode* branch_on, bool protect_stated)
+  {
+    std::vector<std::pair<std::string, std::string>> explanations;
+    std::unordered_set<DataPropertyBranch*> down_properties;
+    data_property_graph_->getDownPtr(property, down_properties);
+
+    for(size_t i = 0; i < branch_from->data_relations_.size();)
+    {
+      auto& data_relation = branch_from->data_relations_[i];
+      bool applied = false;
+      for(const auto& down : down_properties)
+      {
+        if(data_relation.first == down)
+        {
+          if((branch_on == nullptr) || (data_relation.second == branch_on)) // if branch_on == nullptr we have to remove relations regardless the object
+          {
+            if((protect_stated == true) && (data_relation.inferred == false))
+            {
+              if(branch_on == nullptr)
+                break; // if we have to remove everything we do not return now
+              else
+                return {{}, false};
+            }
+
+            for(auto& trace_vect : data_relation.induced_traces)
+              trace_vect->eraseGeneric(branch_from, property, branch_on);
+
+            auto exp_ch = removeInductions(branch_from, branch_from->data_relations_, i);
+            explanations.insert(explanations.end(), exp_ch.begin(), exp_ch.end());
+
+            branch_from->data_relations_.erase(i);
+            branch_from->setUpdated(true);
+            applied = true;
+
+            if(branch_on == nullptr)
+              break; // if we have to remove everything we do not return now
+            else
+              return {explanations, true};
+          }
+        }
+      }
+
+      if(applied == false)
+        i++;
+    }
+
+    return {explanations, true}; // we should reach this place only if we remove relations regardless the object
+  }
+
   std::vector<std::pair<std::string, std::string>> IndividualGraph::removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on)
   {
     IndividualBranch* branch_from = findBranchSafe(indiv_from);
