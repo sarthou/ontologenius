@@ -220,13 +220,7 @@ namespace ontologenius {
   bool ReasonerAnonymous::checkValue(LiteralNode* literal_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
     (void)used;
-    std::string explanation;
-    auto* literal_range = ano_elem->card_.card_range_;
-
-    if(literal_from->get() == literal_range->get())
-      return true;
-
-    return false;
+    return (literal_from->get() == ano_elem->card_.card_range_->get());
   }
 
   bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
