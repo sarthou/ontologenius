@@ -107,11 +107,18 @@ namespace ontologenius {
 
   void ReasonerRule::addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule) // maybe not const since we mark the updates
   {
-    if(solution.assigned_result[triplet.subject.variable_id] != 0)
-    {
-      IndividualBranch* involved_indiv = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
-      const bool is_already_a = std::any_of(involved_indiv->is_a_.cbegin(), involved_indiv->is_a_.cend(), [triplet](const auto& is_a) { return is_a.elem == triplet.class_predicate; });
+    IndividualBranch* involved_indiv;
 
+    if(triplet.subject.is_variable && (solution.assigned_result[triplet.subject.variable_id] != 0))
+      involved_indiv = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
+    else
+      involved_indiv = triplet.subject.indiv_value;
+
+    const bool is_already_a = std::any_of(involved_indiv->is_a_.cbegin(), involved_indiv->is_a_.cend(), [triplet](const auto& is_a) { return is_a.elem == triplet.class_predicate; });
+
+    if(involved_indiv != nullptr)
+    {
+      // std::cout << "adding inferred " << triplet.class_predicate->value() << "(" << involved_indiv->value() << ")" << std::endl;
       if((is_already_a == false) && (checkClassesDisjointess(involved_indiv, triplet.class_predicate) == false))
       {
         involved_indiv->is_a_.emplaceBack(triplet.class_predicate, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
@@ -121,7 +128,10 @@ namespace ontologenius {
         triplet.class_predicate->nb_updates_++;
 
         // insert all explanations since they all are the reason why it has been inferred
-        involved_indiv->is_a_.back().explanation.insert(involved_indiv->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
+        involved_indiv->is_a_.back().explanation.insert(involved_indiv->is_a_.back().explanation.end(),
+                                                        solution.explanations.begin(),
+                                                        solution.explanations.end());
+        // add the pointer to the rule_branch used to make that inference
         involved_indiv->is_a_.back().used_rule = rule;
 
         for(auto& used : solution.triplets_used)
@@ -143,18 +153,30 @@ namespace ontologenius {
 
   void ReasonerRule::addInferredObjectAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule)
   {
-    if((solution.assigned_result[triplet.subject.variable_id] != 0) && (solution.assigned_result[triplet.object.variable_id] != 0))
-    {
-      IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
-      IndividualBranch* involved_indiv_on = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.object.variable_id]);
+    IndividualBranch* involved_indiv_from;
+    IndividualBranch* involved_indiv_on;
 
+    if(triplet.subject.is_variable && (solution.assigned_result[triplet.subject.variable_id] != 0))
+      involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
+    else
+      involved_indiv_from = triplet.subject.indiv_value;
+    if(triplet.object.is_variable && (solution.assigned_result[triplet.object.variable_id] != 0))
+      involved_indiv_on = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.object.variable_id]);
+    else
+      involved_indiv_on = triplet.object.indiv_value;
+
+    if(involved_indiv_from != nullptr && involved_indiv_on != nullptr)
+    {
+      // std::cout << "adding inferred :" << triplet.object_predicate->value() << "(" << involved_indiv_from->value() << ", " << involved_indiv_on->value() << ")" << std::endl;
       if(ontology_->individual_graph_.relationExists(involved_indiv_from, triplet.object_predicate, involved_indiv_on) == false)
       {
-        ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.object_predicate, involved_indiv_on, 1.0, true, false);
+        int relation_index = ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.object_predicate, involved_indiv_on, 1.0, true, false);
         involved_indiv_from->nb_updates_++;
 
-        involved_indiv_from->object_relations_.back().explanation.insert(involved_indiv_from->object_relations_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
-        involved_indiv_from->object_relations_.back().used_rule = rule;
+        involved_indiv_from->object_relations_[relation_index].explanation.insert(involved_indiv_from->object_relations_[relation_index].explanation.end(),
+                                                                                  solution.explanations.begin(),
+                                                                                  solution.explanations.end());
+        involved_indiv_from->object_relations_[relation_index].used_rule = rule;
 
         for(auto& used : solution.triplets_used)
         {
@@ -162,31 +184,43 @@ namespace ontologenius {
           if(object_triplet->exist(involved_indiv_from, triplet.object_predicate, involved_indiv_on) == false)
           {
             object_triplet->push(involved_indiv_from, triplet.object_predicate, involved_indiv_on);
-            involved_indiv_from->object_relations_.relations.back().induced_traces.emplace_back(object_triplet); // need to add every X_triplet used to induced_traces
+            involved_indiv_from->object_relations_.relations[relation_index].induced_traces.emplace_back(object_triplet); // need to add every X_triplet used to induced_traces
           }
         }
 
         nb_update++;
         explanations_.emplace_back("[ADD]" + involved_indiv_from->value() + "|" + triplet.object_predicate->value() + "|" + involved_indiv_on->value(),
-                                   "[ADD]" + involved_indiv_from->object_relations_.back().getExplanation());
+                                   "[ADD]" + involved_indiv_from->object_relations_[relation_index].getExplanation());
       }
     }
   }
 
   void ReasonerRule::addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule)
   {
-    if((solution.assigned_result[triplet.subject.variable_id] != 0) && (solution.assigned_result[triplet.object.variable_id] != 0))
-    {
-      IndividualBranch* involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
-      LiteralNode* involved_literal_on = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-solution.assigned_result[triplet.object.variable_id]));
+    IndividualBranch* involved_indiv_from;
+    LiteralNode* involved_literal_on;
 
+    if(triplet.subject.is_variable && (solution.assigned_result[triplet.subject.variable_id] != 0))
+      involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
+    else
+      involved_indiv_from = triplet.subject.indiv_value;
+    if(triplet.object.is_variable && (solution.assigned_result[triplet.object.variable_id] != 0))
+      involved_literal_on = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-solution.assigned_result[triplet.object.variable_id]));
+    else
+      involved_literal_on = triplet.object.datatype_value;
+
+    if(involved_indiv_from != nullptr && involved_literal_on != nullptr)
+    {
+      // std::cout << "adding inference : " << triplet.data_predicate->value() << "(" << involved_indiv_from->value() << ", " << involved_literal_on->value() << ")" << std::endl;
       if(ontology_->individual_graph_.relationExists(involved_indiv_from, triplet.data_predicate, involved_literal_on) == false)
       {
-        ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.data_predicate, involved_literal_on, 1.0, true, false);
+        int relation_index = ontology_->individual_graph_.addRelation(involved_indiv_from, triplet.data_predicate, involved_literal_on, 1.0, true, false);
         involved_indiv_from->nb_updates_++;
 
-        involved_indiv_from->data_relations_.back().explanation.insert(involved_indiv_from->is_a_.back().explanation.end(), solution.explanations.begin(), solution.explanations.end());
-        involved_indiv_from->data_relations_.back().used_rule = rule;
+        involved_indiv_from->data_relations_[relation_index].explanation.insert(involved_indiv_from->data_relations_[relation_index].explanation.end(),
+                                                                                solution.explanations.begin(),
+                                                                                solution.explanations.end());
+        involved_indiv_from->data_relations_[relation_index].used_rule = rule;
 
         for(auto& used : solution.triplets_used)
         {
@@ -194,13 +228,12 @@ namespace ontologenius {
           if(data_triplet->exist(involved_indiv_from, triplet.data_predicate, involved_literal_on) == false)
           {
             data_triplet->push(involved_indiv_from, triplet.data_predicate, involved_literal_on); // write into has_induced_data_relation for the newly asserted relation
-            involved_indiv_from->data_relations_.relations.back().induced_traces.emplace_back(data_triplet);
+            involved_indiv_from->data_relations_[relation_index].induced_traces.emplace_back(data_triplet);
           }
         }
-
         nb_update++;
         explanations_.emplace_back("[ADD]" + involved_indiv_from->value() + "|" + triplet.data_predicate->value() + "|" + involved_literal_on->value(),
-                                   "[ADD]" + involved_indiv_from->data_relations_.back().getExplanation());
+                                   "[ADD]" + involved_indiv_from->data_relations_[relation_index].getExplanation());
       }
     }
   }
@@ -289,6 +322,7 @@ namespace ontologenius {
 
   void ReasonerRule::resolveClassAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
+    // std::cout << "Resolving Class atom : " << triplet.toString() << std::endl;
     var_index = triplet.subject.variable_id;
     if(triplet.subject.is_variable == true)
     {
@@ -383,6 +417,7 @@ namespace ontologenius {
 
   void ReasonerRule::resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
+    // std::cout << "Resolving Object atom : " << triplet.toString() << std::endl;
     if(!triplet.subject.is_variable && !triplet.object.is_variable)
     {
       values = getOnObject(triplet, triplet.object.indiv_value->get());
@@ -395,6 +430,7 @@ namespace ontologenius {
       else
       {
         triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
+        var_index = triplet.object.variable_id;
         values = getOnObject(triplet, triplet.object.indiv_value->get());
       }
     }
@@ -599,7 +635,8 @@ namespace ontologenius {
       else
       {
         triplet.subject.indiv_value = ontology_->individual_graph_.findBranch(accu[var_index]);
-        values = getOnData(triplet, accu[var_index]);
+        var_index = triplet.object.variable_id;
+        values = getOnData(triplet, triplet.object.datatype_value->get());
       }
     }
     else if(!triplet.subject.is_variable && triplet.object.is_variable)
