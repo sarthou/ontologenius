@@ -16,25 +16,6 @@ namespace ontologenius {
     }
     std::tuple<InheritedRelationTriplets*, ObjectRelationTriplets*, DataRelationTriplets*> used_triplet_;
 
-    template<typename T>
-    T getUsedTriplet(const int index)
-    {
-      switch(index)
-      {
-      case 0:
-        return std::get<InheritedRelationTriplets>(used_triplet_); // return std::get<0>(used_triplet_);
-        break;
-      case 1:
-        return std::get<ObjectRelationTriplets>(used_triplet_); // return std::get<1>(used_triplet_);
-        break;
-      case 2:
-        return std::get<DataRelationTriplets>(used_triplet_); // return std::get<2>(used_triplet_);
-        break;
-      default:
-        break;
-      }
-    }
-
     InheritedRelationTriplets* getInheritance()
     {
       return std::get<0>(used_triplet_);
