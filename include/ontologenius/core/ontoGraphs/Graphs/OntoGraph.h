@@ -113,6 +113,25 @@ namespace ontologenius {
           i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
       }
 
+      for(size_t i = 0; i < relations.has_induced_data_relations[relation_index]->triplets.size();)
+      {
+        auto& triplet = relations.has_induced_data_relations[relation_index]->triplets[i];
+        auto tmp = individual_graph_->removeRelation(triplet.subject,
+                                                     triplet.predicate,
+                                                     triplet.object,
+                                                     true);
+        if(tmp.second)
+        {
+          explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                      triplet.predicate->value() + "|" +
+                                      triplet.object->value(),
+                                    "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+          explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+        }
+        else
+          i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+      }
+
       for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size();)
       {
         auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
