@@ -69,9 +69,9 @@
 
 
 
-    <!-- attribute#area -->
+    <!-- attribute#Area -->
 
-    <owl:Class rdf:about="attribute#area">
+    <owl:Class rdf:about="attribute#Area">
         <rdfs:subClassOf rdf:resource="attribute#attribute"/>
         <rdfs:label xml:lang="fr">zone</rdfs:label>
     </owl:Class>
@@ -137,13 +137,33 @@
 
 
 
-    <!-- attribute#indoorArea -->
+    <!-- attribute#IndoorArea -->
 
-    <owl:Class rdf:about="attribute#indoorArea">
-        <rdfs:subClassOf rdf:resource="attribute#area"/>
+    <owl:Class rdf:about="attribute#IndoorArea">
+        <rdfs:subClassOf rdf:resource="attribute#Area"/>
         <owl:disjointWith rdf:resource="attribute#outdoorArea"/>
         <rdfs:label xml:lang="en">indoor area</rdfs:label>
         <rdfs:label xml:lang="fr">zone intérieure</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- attribute#Room -->
+
+    <owl:Class rdf:about="attribute#Room">
+        <rdfs:subClassOf rdf:resource="attribute#IndoorArea"/>
+        <rdfs:label xml:lang="en">room</rdfs:label>
+        <rdfs:label xml:lang="fr">piece</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- attribute#Kitchen -->
+
+    <owl:Class rdf:about="attribute#Kitchen">
+        <rdfs:subClassOf rdf:resource="attribute#Room"/>
+        <rdfs:label xml:lang="en">kitchen</rdfs:label>
+        <rdfs:label xml:lang="fr">cuisine</rdfs:label>
     </owl:Class>
 
 
@@ -209,7 +229,7 @@
     <!-- attribute#outdoorArea -->
 
     <owl:Class rdf:about="attribute#outdoorArea">
-        <rdfs:subClassOf rdf:resource="attribute#area"/>
+        <rdfs:subClassOf rdf:resource="attribute#Area"/>
         <rdfs:label xml:lang="en">outdoor area</rdfs:label>
         <rdfs:label xml:lang="fr">zone extérieur</rdfs:label>
     </owl:Class>

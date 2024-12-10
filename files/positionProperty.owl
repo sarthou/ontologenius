@@ -50,7 +50,7 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#Area"/>
     </owl:ObjectProperty>
 
 
@@ -60,7 +60,7 @@
     <owl:ObjectProperty rdf:about="position_property#isBetween">
         <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#Area"/>
         <rdfs:range rdf:resource="attribute#entity"/>
     </owl:ObjectProperty>
 
@@ -73,7 +73,7 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#Area"/>
     </owl:ObjectProperty>
 
 
@@ -84,7 +84,7 @@
         <rdfs:subPropertyOf rdf:resource="position_property#isPositioned"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#Area"/>
         <rdfs:range rdf:resource="attribute#entity"/>
         <owl:propertyChainAxiom rdf:parseType="Collection">
             <rdf:Description rdf:about="position_property#isOn"/>
@@ -99,7 +99,7 @@
     <owl:ObjectProperty rdf:about="position_property#isInArea">
         <rdfs:subPropertyOf rdf:resource="position_property#isIn"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#area"/>
+        <rdfs:range rdf:resource="attribute#Area"/>
     </owl:ObjectProperty>
 
 
@@ -119,7 +119,7 @@
     <owl:ObjectProperty rdf:about="position_property#isInBuilding">
         <rdfs:subPropertyOf rdf:resource="position_property#isInArea"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#indoorArea"/>
+        <rdfs:range rdf:resource="attribute#IndoorArea"/>
     </owl:ObjectProperty>
 
 
@@ -148,7 +148,7 @@
     <owl:ObjectProperty rdf:about="position_property#isInRoom">
         <rdfs:subPropertyOf rdf:resource="position_property#isInArea"/>
         <rdfs:domain rdf:resource="attribute#entity"/>
-        <rdfs:range rdf:resource="attribute#indoorArea"/>
+        <rdfs:range rdf:resource="attribute#Room"/>
     </owl:ObjectProperty>
 
 
@@ -260,13 +260,6 @@
 
 
 
-
-    <!-- attribute#area -->
-
-    <owl:Class rdf:about="attribute#area"/>
-
-
-
     <!-- attribute#box -->
 
     <owl:Class rdf:about="attribute#box"/>
@@ -276,12 +269,6 @@
     <!-- attribute#entity -->
 
     <owl:Class rdf:about="attribute#entity"/>
-
-
-
-    <!-- attribute#indoorArea -->
-
-    <owl:Class rdf:about="attribute#indoorArea"/>
 </rdf:RDF>
 
 
