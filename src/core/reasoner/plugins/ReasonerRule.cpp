@@ -38,15 +38,15 @@ namespace ontologenius {
       std::vector<index_t> empty_accu(rule_branch->to_variables_.size(), index_t()); // need to initialize each index at 0
       results_resolve = resolveBody(rule_branch, rule_branch->rule_body_, empty_accu);
 
-      std::cout << "For rule " << rule_branch->value() << " results are: " << std::endl;
+      // std::cout << "For rule " << rule_branch->value() << " results are: " << std::endl;
 
-      for(auto& rs : results_resolve)
-      {
-        std::cout << "--> ";
-        for(size_t i = 0; i < rs.assigned_result.size(); i++)
-          std::cout << "[" << i << "]" << rs.assigned_result[i] << " ";
-        std::cout << std::endl;
-      }
+      // for(auto& rs : results_resolve)
+      // {
+      //   std::cout << "--> ";
+      //   for(size_t i = 0; i < rs.assigned_result.size(); i++)
+      //     std::cout << "[" << i << "]" << rs.assigned_result[i] << " ";
+      //   std::cout << std::endl;
+      // }
 
       for(auto& solution : results_resolve) // resolve the consequent for each found solution
         resolveHead(rule_branch->rule_head_, solution, rule_branch);
