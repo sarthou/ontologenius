@@ -283,7 +283,7 @@ namespace ontologenius {
       const std::string s = resource;
       if(isIn("http://www.w3.org/", s))
       {
-        exp->rest.card.cardinality_range = resource;
+        exp->rest.card.cardinality_range = getName(resource);
         exp->is_data_property = true;
       }
       else
@@ -293,7 +293,7 @@ namespace ontologenius {
     else if(resource_data != nullptr)
     {
       exp->is_data_property = true;
-      exp->rest.card.cardinality_range = std::string(resource_data) + "#" + elem->GetText();
+      exp->rest.card.cardinality_range = getName(std::string(resource_data)) + "#" + elem->GetText(); // without getName before
       return true;
     }
     return false;

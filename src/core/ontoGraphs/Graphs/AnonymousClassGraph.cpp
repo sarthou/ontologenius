@@ -114,12 +114,13 @@ namespace ontologenius {
     {
       if(exp->is_data_property) // data property
       {
-        const std::string type_value = card_range.substr(card_range.find("#") + 1, -1);
         if(ano_element->card_.card_type_ == cardinality_value)
-          ano_element->card_.card_range_ = data_property_graph_->createLiteral(type_value);
+          ano_element->card_.card_range_ = data_property_graph_->createLiteral(card_range);
         else
+        {
+          const std::string type_value = card_range.substr(card_range.find("#") + 1, -1);
           ano_element->card_.card_range_ = data_property_graph_->createLiteral(type_value + "#"); // need to add the "#"
-
+        }
         ano_element->root_node_->involves_data_property = true;
       }
       else // object property
