@@ -333,7 +333,7 @@ namespace ontologenius {
         {
           if(existInInheritance(branch->mothers_[i].elem, selector, used))
           {
-            explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
+            // explanation = branch->value() + "|isA|" + branch->mothers_[i].elem->value();
             used.emplace_back(explanation, branch->mothers_.has_induced_inheritance_relations[i]);
             return true;
           }
