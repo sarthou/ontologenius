@@ -104,7 +104,7 @@ namespace ontologenius {
     void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     void resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
 
-    void getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev = IndivResult_t());
+    void getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev = IndivResult_t(), ClassBranch* main_class_predicate = nullptr);
     IndivResult_t isA(IndividualBranch* indiv, ClassBranch* class_selector);
 
     std::vector<IndivResult_t> getFromObject(RuleTriplet_t& triplet);
@@ -120,19 +120,22 @@ namespace ontologenius {
     template<typename T>
     void constructResult(const std::string& concept,
                          const RelationsWithInductions<SingleElement<T*>>& relation,
-                         size_t index, IndivResult_t& res)
+                         size_t index, IndivResult_t& res, bool write_expl)
     {
-      if(relation.at(index).elem->isHidden() == false)
+      if(write_expl == true) // bool to avoid writing the whole inheritance in the explanation : only the indiv isA Class
       {
-        std::string explanation = concept + "|isA|" + relation.at(index).elem->value();
-        res.explanations.emplace_back(explanation);
-      }
-      else
-      {
-        const auto& hidden_explanation = relation.at(index).explanation;
-        res.explanations.insert(res.explanations.end(),
-                                hidden_explanation.cbegin(),
-                                hidden_explanation.cend());
+        if(relation.at(index).elem->isHidden() == false)
+        {
+          std::string explanation = concept + "|isA|" + relation.at(index).elem->value();
+          res.explanations.emplace_back(explanation);
+        }
+        else
+        {
+          const auto& hidden_explanation = relation.at(index).explanation;
+          res.explanations.insert(res.explanations.end(),
+                                  hidden_explanation.cbegin(),
+                                  hidden_explanation.cend());
+        }
       }
 
       res.used_triplets.emplace_back(relation.has_induced_inheritance_relations[index],
@@ -163,12 +166,12 @@ namespace ontologenius {
       {
         if(relations.at(i).elem == selector)
         {
-          constructResult(concept, relations, i, res);
+          constructResult(concept, relations, i, res, true);
           return true;
         }
         else if(isA(relations.at(i).elem->value(), selector, relations.at(i).elem->mothers_, res))
         {
-          constructResult(concept, relations, i, res);
+          constructResult(concept, relations, i, res, true);
           return true;
         }
       }

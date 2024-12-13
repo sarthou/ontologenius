@@ -345,9 +345,12 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev)
+  void ReasonerRule::getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev, ClassBranch* main_class_predicate)
   {
-    for(const auto& child : class_selector->individual_childs_)
+    if(main_class_predicate == nullptr) // set the main_class_predicate only for the first function call
+      main_class_predicate = class_selector;
+
+    for(const auto& child : class_selector->individual_childs_) // Inheritance individual/class
     {
       auto local_res = prev;
       IndividualBranch* indiv = child.elem;
@@ -356,7 +359,15 @@ namespace ontologenius {
       {
         if(indiv->is_a_[i] == class_selector)
         {
-          constructResult(indiv->value(), indiv->is_a_, i, local_res);
+          if(class_selector == main_class_predicate)
+            constructResult(indiv->value(), indiv->is_a_, i, local_res, true);
+          else
+          {
+            std::string explanation = indiv->value() + "|isA|" + main_class_predicate->value(); // main explanation
+            local_res.explanations.emplace_back(explanation);
+            constructResult(indiv->value(), indiv->is_a_, i, local_res, false);
+          }
+
           break;
         }
       }
@@ -364,7 +375,7 @@ namespace ontologenius {
       res.emplace_back(std::move(local_res));
     }
 
-    for(const auto& child : class_selector->childs_)
+    for(const auto& child : class_selector->childs_) // Inheritance class/class
     {
       auto local_res = prev;
       ClassBranch* child_ptr = child.elem;
@@ -372,12 +383,12 @@ namespace ontologenius {
       {
         if(child_ptr->mothers_[i] == class_selector)
         {
-          constructResult(child_ptr->value(), child_ptr->mothers_, i, local_res);
+          constructResult(child_ptr->value(), child_ptr->mothers_, i, local_res, false);
           break;
         }
       }
 
-      getType(child_ptr, res, local_res);
+      getType(child_ptr, res, local_res, main_class_predicate);
     }
   }
 
