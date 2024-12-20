@@ -12,7 +12,8 @@ namespace onto {
                                                                       actions(name),
                                                                       reasoners(name),
                                                                       feeder(name),
-                                                                      sparql(name)
+                                                                      sparql(name),
+                                                                      subscriber(name)
   {
     sparql.client_.wait(-1);
   }
@@ -25,7 +26,8 @@ namespace onto {
                                                                                actions(other.name_),
                                                                                reasoners(other.name_),
                                                                                feeder(other.name_),
-                                                                               sparql(other.name_)
+                                                                               sparql(other.name_),
+                                                                               subscriber(other.name_)
   {
     sparql.client_.wait(-1);
   }
@@ -38,7 +40,8 @@ namespace onto {
                                                                           actions(other.name_),
                                                                           reasoners(other.name_),
                                                                           feeder(other.name_),
-                                                                          sparql(other.name_)
+                                                                          sparql(other.name_),
+                                                                          subscriber(other.name_)
   {
     sparql.client_.wait(-1);
   }

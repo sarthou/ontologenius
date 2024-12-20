@@ -126,14 +126,14 @@ namespace ontologenius {
         return false;
     }
 
-    if(pattern.isSubjectIndividual() == false)
+    if((pattern.isSubjectIndividual() == false) && !pattern.isSubjectUndefined())
     {
       if(onto_->individual_graph_.isA(triplet.subject, pattern.subject()) == false)
         return false;
     }
     // subject match
 
-    if(pattern.isObjectIndividual() == false)
+    if((pattern.isObjectIndividual() == false) && !pattern.isObjectUndefined())
     {
       if((onto_->individual_graph_.isA(triplet.object, pattern.object()) == false) &&
          (onto_->class_graph_.isA(triplet.object, pattern.object()) == false))
