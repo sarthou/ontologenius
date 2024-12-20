@@ -224,6 +224,8 @@ namespace ontologenius {
   {
     std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     auto* b = this->findBranch(branch);
+    if(b == nullptr)
+      return false;
     return existInInheritance(b, selector);
   }
 
