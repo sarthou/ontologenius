@@ -145,10 +145,9 @@ namespace ontologenius {
 
   RuleTriplet_t RuleGraph::createBuiltinTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable)
   {
-    std::cout << "createBuiltinTriplet" << std::endl;
     RuleResource_t var_from = getRuleResource(rule_branch, variable.front());
     RuleResource_t var_on = getRuleResource(rule_branch, variable.back());
-    std::cout << " end createBuiltinTriplet" << std::endl;
+
     return RuleTriplet_t(var_from, property_member->builtin_type_, var_on);
   }
 
