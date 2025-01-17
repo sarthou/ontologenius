@@ -84,7 +84,7 @@ namespace ontologenius {
       writeDataAtom(current_atom, level + 3);
       break;
     case builtin_atom:
-      /* code */
+      writeBuiltinAtom(current_atom, level + 3);
       break;
     default:
       break;
@@ -227,6 +227,71 @@ namespace ontologenius {
              data_atom.object.datatype_value->value_ + "</" + subfield_var + "2>\n";
     // <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl:argument2>
     writeString(tmp, level);
+  }
+
+  void RuleOwlWriter::writeBuiltinAtom(const RuleTriplet_t& builtin_atom, size_t level)
+  {
+    std::string field, tmp_var, subfield_builtin, subfield_var, builtin_name;
+    field = "rdf:Description";
+    subfield_builtin = "swrl:builtin";
+    subfield_var = "swrl:arguments";
+    tmp_var = "<rdf:Description rdf:resource=\"urn:swrl:var#";
+
+    // write the Atom type
+    writeString("<rdf:type rdf:resource=\"http://www.w3.org/2003/11/swrl#BuiltinAtom\"/>\n", level);
+
+    // write Builtin type
+    switch(builtin_atom.builtin_type)
+    {
+    case greaterThan:
+      builtin_name = "greaterThan";
+      break;
+    case greaterThanOrEqual:
+      builtin_name = "greaterThanOrEqual";
+      break;
+    case lessThan:
+      builtin_name = "lessThan";
+      break;
+    case lessThanOrEqual:
+      builtin_name = "lessThanOrEqual";
+      break;
+    case equal:
+      builtin_name = "equal";
+      break;
+    case notEqual:
+      builtin_name = "notEqual";
+      break;
+    default:
+      break;
+    }
+
+    writeString("<" + subfield_builtin + " rdf:resource=\"http://www.w3.org/2003/11/swrlb#" + builtin_name + "\"/>\n", level);
+
+    // write Builtin variables
+    if(builtin_atom.object.datatype_value == nullptr) // if both variables
+    {
+      writeString("<" + subfield_var + "rdf:parseType=\"Collection\">\n", level);
+      writeString(tmp_var + builtin_atom.subject.name + "\"/>\n", level + 1);
+      writeString(tmp_var + builtin_atom.object.name + "\"/>\n", level + 1);
+    }
+    else // if one variable is a datavalue
+    {
+      writeString("<" + subfield_var + ">\n", level);
+      writeString("<" + field + ">\n", level + 1);
+      writeString("<rdf:type rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#List\"/>\n", level + 2);
+      writeString("<rdf:first rdf:resource=\"urn:swrl:var#" + builtin_atom.subject.name + "\"/>\n", level + 2);
+
+      writeString("<rdf:rest>\n", level + 2);
+      writeString("<" + field + ">\n", level + 3);
+      writeString("<rdf:type rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#List\"/>\n", level + 4);
+      writeString("<rdf:first rdf:resource=\"urn:swrl:var#" + builtin_atom.object.name + "\"/>\n", level + 4);
+      writeString("<rdf:rest rdf:resource=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#nil\"/>\n", level + 4);
+      writeString("</" + field + ">\n", level + 3);
+      writeString("</rdf:rest>\n", level + 2);
+      writeString("</" + field + ">\n", level + 1);
+    }
+
+    writeString("</" + subfield_var + ">", level);
   }
 
   void RuleOwlWriter::writeVariable(const std::string& rule_variable)
