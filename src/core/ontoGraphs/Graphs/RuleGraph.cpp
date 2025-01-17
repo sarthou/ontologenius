@@ -83,7 +83,9 @@ namespace ontologenius {
     auto* rule_atom = rule_element.first;
     auto rule_variable = rule_element.second;
 
-    if((rule_atom->is_data_property) && (rule_atom->logical_type_ == logical_none) && (!rule_atom->is_complex))
+    if(rule_atom->builtin_type_ != builtin_none)
+      return createBuiltinTriplet(rule_branch, rule_atom, rule_variable);
+    else if((rule_atom->is_data_property) && (rule_atom->logical_type_ == logical_none) && (!rule_atom->is_complex))
     {
       if(is_head)
         rule_branch->involves_data_property = true;
@@ -139,6 +141,15 @@ namespace ontologenius {
     RuleResource_t resource_on = getRuleResource(rule_branch, variable.back());
 
     return RuleTriplet_t(resource_from, property, resource_on);
+  }
+
+  RuleTriplet_t RuleGraph::createBuiltinTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable)
+  {
+    std::cout << "createBuiltinTriplet" << std::endl;
+    RuleResource_t var_from = getRuleResource(rule_branch, variable.front());
+    RuleResource_t var_on = getRuleResource(rule_branch, variable.back());
+    std::cout << " end createBuiltinTriplet" << std::endl;
+    return RuleTriplet_t(var_from, property_member->builtin_type_, var_on);
   }
 
   RuleResource_t RuleGraph::getRuleResource(RuleBranch* rule_branch, const Variable_t& variable)

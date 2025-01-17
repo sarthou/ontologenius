@@ -81,7 +81,8 @@ namespace ontologenius {
                                               class_predicate(class_branch),
                                               class_element(ano_expression),
                                               object_predicate(nullptr),
-                                              data_predicate(nullptr)
+                                              data_predicate(nullptr),
+                                              builtin_type(builtin_none)
     {}
 
     // object triplet
@@ -93,6 +94,7 @@ namespace ontologenius {
                                                  class_element(nullptr),
                                                  object_predicate(property),
                                                  data_predicate(nullptr),
+                                                 builtin_type(builtin_none),
                                                  object(resource_on)
     {}
 
@@ -105,6 +107,20 @@ namespace ontologenius {
                                                  class_element(nullptr),
                                                  object_predicate(nullptr),
                                                  data_predicate(property),
+                                                 builtin_type(builtin_none),
+                                                 object(resource_on)
+    {}
+
+    // builtin triplet
+    RuleTriplet_t(RuleResource_t& resource_from,
+                  Builtintype_e builtin_type,
+                  RuleResource_t& resource_on) : atom_type_(builtin_atom),
+                                                 subject(resource_from),
+                                                 class_predicate(nullptr),
+                                                 class_element(nullptr),
+                                                 object_predicate(nullptr),
+                                                 data_predicate(nullptr),
+                                                 builtin_type(builtin_type),
                                                  object(resource_on)
     {}
 
@@ -115,6 +131,7 @@ namespace ontologenius {
     AnonymousClassElement* class_element;   // used to store the anonymous class if the class expression is complex
     ObjectPropertyBranch* object_predicate; // set only if object atom
     DataPropertyBranch* data_predicate;     // set only if data atom
+    Builtintype_e builtin_type;              // used only for builtin atoms
     RuleResource_t object;                  // can be variable or not (realsense i not), uninstantiated if class atom since it doesnt have another variable
 
     std::string toString() const
@@ -168,11 +185,12 @@ namespace ontologenius {
 
   struct Variable_t
   {
-    Variable_t() : is_instantiated(false), is_datavalue(false), var_index(-1) {}
+    Variable_t() : is_instantiated(false), is_datavalue(false), is_builtin_value(false), var_index(-1) {}
 
     std::string var_name;
-    bool is_instantiated;
-    bool is_datavalue;
+    bool is_instantiated; // for indiv
+    bool is_datavalue; // for literal
+    bool is_builtin_value; // for builtin data
     int64_t var_index;
 
     std::string toString() const { return var_name; }

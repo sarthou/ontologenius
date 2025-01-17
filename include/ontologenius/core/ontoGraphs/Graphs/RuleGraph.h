@@ -104,6 +104,7 @@ namespace ontologenius {
     RuleTriplet_t createClassTriplet(RuleBranch* rule_branch, ExpressionMember_t* class_member, const Variable_t& variable, const size_t& rule_id, const size_t& elem_id);
     RuleTriplet_t createObjectPropertyTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);
     RuleTriplet_t createDataPropertyTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);
+    RuleTriplet_t createBuiltinTriplet(RuleBranch* rule_branch, ExpressionMember_t* property_member, const std::vector<Variable_t>& variable);
 
     RuleResource_t getRuleResource(RuleBranch* rule_branch, const Variable_t& variable);
     void setVariableIndex(RuleBranch* rule_branch, RuleResource_t& resource);

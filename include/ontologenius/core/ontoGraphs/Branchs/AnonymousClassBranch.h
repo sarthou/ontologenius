@@ -30,6 +30,17 @@ namespace ontologenius {
     logical_none
   };
 
+  enum Builtintype_e
+  {
+    builtin_none,
+    greaterThan,
+    greaterThanOrEqual,
+    lessThan,
+    lessThanOrEqual,
+    equal,
+    notEqual,
+  };
+
   struct CardinalityElement_t
   {
     CardType_e card_type_ = cardinality_none;

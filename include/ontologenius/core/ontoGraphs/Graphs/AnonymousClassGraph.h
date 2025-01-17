@@ -76,6 +76,9 @@ namespace ontologenius {
     bool is_complex;
     bool is_data_property;
 
+    // for SWRL rule use only
+    Builtintype_e builtin_type_;
+
     Restriction_t rest; // Restriction (e.g hasComponent some Camera)
     std::vector<ExpressionMember_t*> child_members;
     ExpressionMember_t* mother;
@@ -83,7 +86,7 @@ namespace ontologenius {
 
     ExpressionMember_t() : logical_type_(logical_none), oneof(false),
                            is_complex(false), is_data_property(false),
-                           mother(nullptr) {}
+                           builtin_type_(builtin_none), mother(nullptr) {}
 
     std::string toString() const
     {
