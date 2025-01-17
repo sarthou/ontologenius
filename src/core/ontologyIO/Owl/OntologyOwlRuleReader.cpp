@@ -87,8 +87,8 @@ namespace ontologenius {
       res = readRuleObjectPropertyAtom(elem);
     else if(type_atom == "DatavaluedPropertyAtom")
       res = readRuleDataPropertyAtom(elem);
-    // else if(type_atom == "BuiltinAtom")
-    //   res = readRuleBuiltinAtom(elem);
+    else if(type_atom == "BuiltinAtom")
+      res = readRuleBuiltinAtom(elem);
 
     return res;
   }
@@ -181,7 +181,7 @@ namespace ontologenius {
     std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
 
-    // std::cout << "DataPropertyAtom" << std::endl;
+    // std::cout << "DataPropertyAtom" << std::endl;auto* sub_elem = elem->FirstChildElement("rdf:Description");
     auto* data_pred = elem->FirstChildElement("swrl:propertyPredicate");
 
     // get Data Property
@@ -240,9 +240,107 @@ namespace ontologenius {
   {
     // std::cout << "BuiltinAtom" << std::endl;
     std::vector<Variable_t> variables;
-    ExpressionMember_t* temp_exp = nullptr;
+    ExpressionMember_t* temp_exp = new ExpressionMember_t();
+
+    // get builtin type
+    const auto* builtin_type = elem->FirstChildElement("swrl:builtin")->Attribute("rdf:resource");
+
+    if(builtin_type != nullptr)
+    {
+      std::string builtin_name = getName(std::string(builtin_type));
+      std::cout << builtin_name << std::endl;
+      if(builtin_name == "greaterThan")
+        temp_exp->builtin_type_ = greaterThan;
+      else if(builtin_name == "greaterThanOrEqual")
+        temp_exp->builtin_type_ = greaterThanOrEqual;
+      else if(builtin_name == "lessThan")
+        temp_exp->builtin_type_ = lessThan;
+      else if(builtin_name == "lessThanOrEqual")
+        temp_exp->builtin_type_ = lessThanOrEqual;
+      else if(builtin_name == "equal")
+        temp_exp->builtin_type_ = equal;
+      else if(builtin_name == "notEqual")
+        temp_exp->builtin_type_ = notEqual;
+      else
+      {
+        temp_exp->builtin_type_ = builtin_none;
+        if(display_)
+          std::cout << "unsupported buitlin atom : " << builtin_name << std::endl;
+      }
+    }
+    // get builtins arguments in order
+    auto* builtin_arguments = elem->FirstChildElement("swrl:arguments");
+
+    variables = readRuleBuiltinArguments(builtin_arguments);
 
     return {std::make_pair(temp_exp, variables)};
+  }
+
+  std::vector<Variable_t> OntologyOwlReader::readRuleBuiltinArguments(TiXmlElement* elem)
+  {
+    std::vector<Variable_t> variables;
+
+    if(elem->Attribute("rdf:parseType") != nullptr) // two variables
+      readSimpleBuiltinArguments(elem, variables);
+    else
+      readComplexBuiltinArguments(elem, variables);
+
+    return variables;
+  }
+
+  void OntologyOwlReader::readSimpleBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables)
+  {
+    for(TiXmlElement* sub_elem = elem->FirstChildElement("rdf:Description");
+        sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement("rdf:Description"))
+    {
+      const auto* builtin_arg = elem->Attribute("rdf:about");
+      if(builtin_arg != nullptr)
+      {
+        Variable_t new_var;
+        new_var.var_name = getName(std::string(builtin_arg));
+        new_var.is_instantiated = false;
+        new_var.is_datavalue = false;
+        new_var.is_builtin_value = true;
+        variables.push_back(new_var);
+      }
+    }
+  }
+
+  void OntologyOwlReader::readComplexBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables)
+  {
+    auto* sub_elem = elem->FirstChildElement("rdf:Description");
+
+    if(sub_elem != nullptr)
+      readComplexBuiltinArguments(sub_elem, variables);
+    else
+    {
+      const auto* new_elem = elem->FirstChildElement("rdf:first");
+      if(new_elem != nullptr)
+      {
+        const auto* var_elem = new_elem->Attribute("rdf:resource");
+        const auto* value_elem = new_elem->Attribute("rdf:datatype");
+
+        if(var_elem != nullptr)
+        {
+          Variable_t new_var;
+          new_var.var_name = getName(std::string(var_elem));
+          variables.push_back(new_var);
+        }
+        else if(value_elem != nullptr)
+        {
+          Variable_t new_var;
+          new_var.var_name = getName(std::string(value_elem) + "#" + std::string(new_elem->GetText()));
+          new_var.is_datavalue = true;
+          variables.push_back(new_var);
+        }
+
+        auto* rest_elem = elem->FirstChildElement("rdf:rest");
+        if(rest_elem->Attribute("rdf:resource") == nullptr)
+          readComplexBuiltinArguments(rest_elem, variables);
+      }
+      else
+        readComplexBuiltinArguments(elem, variables);
+    }
   }
 
   ExpressionMember_t* OntologyOwlReader::readRuleRestriction(TiXmlElement* elem)

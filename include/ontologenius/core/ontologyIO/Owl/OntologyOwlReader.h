@@ -109,6 +109,9 @@ namespace ontologenius {
     void readRestAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect);
     void readFirstAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect);
     Variable_t getRuleArgument(TiXmlElement* elem);
+    std::vector<Variable_t> readRuleBuiltinArguments(TiXmlElement* elem);
+    void readSimpleBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables);
+    void readComplexBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables);
 
     /**********************
      *        inline       *
