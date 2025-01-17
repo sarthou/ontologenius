@@ -298,9 +298,6 @@ namespace ontologenius {
       {
         Variable_t new_var;
         new_var.var_name = getName(std::string(builtin_arg));
-        new_var.is_instantiated = false;
-        new_var.is_datavalue = false;
-        new_var.is_builtin_value = true;
         variables.push_back(new_var);
       }
     }
