@@ -208,6 +208,25 @@ TEST(reasoning_rule, predicate_combinations)
   EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "robot_helper|sameAs|pepper") != res.end());
 }
 
+TEST(reasoning_rule, builtin_tests)
+{
+  std::vector<std::string> res;
+  onto_ptr->feeder.addConcept("a");
+  onto_ptr->feeder.addInheritage("a", "Agent");
+
+  onto_ptr->feeder.addRelation("a", "hasAge", "integer#35");
+  onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(onto_ptr->individuals.isA("a", "Adult"));
+
+  onto_ptr->feeder.removeRelation("a", "hasAge", "integer#35");
+  onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_FALSE(onto_ptr->individuals.isA("a", "Adult"));
+
+  onto_ptr->feeder.addRelation("a", "hasAge", "integer#12");
+  onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(onto_ptr->individuals.isA("a", "Child"));
+}
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_reasoning_rule_test");
