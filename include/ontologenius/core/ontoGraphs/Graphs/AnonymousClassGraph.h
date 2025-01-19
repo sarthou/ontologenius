@@ -77,7 +77,7 @@ namespace ontologenius {
     bool is_data_property;
 
     // for SWRL rule use only
-    Builtintype_e builtin_type_;
+    Builtin_t builtin_;
 
     Restriction_t rest; // Restriction (e.g hasComponent some Camera)
     std::vector<ExpressionMember_t*> child_members;
@@ -86,13 +86,15 @@ namespace ontologenius {
 
     ExpressionMember_t() : logical_type_(logical_none), oneof(false),
                            is_complex(false), is_data_property(false),
-                           builtin_type_(builtin_none), mother(nullptr) {}
+                           mother(nullptr) {}
 
-    std::string toString() const
+    std::string toString()
     {
       std::string str_equivalence;
 
-      if(child_members.empty())
+      if(builtin_.builtin_type_ != builtin_none)
+        str_equivalence = builtin_.builtinToString();
+      else if(child_members.empty())
         str_equivalence = rest.toString();
       else if(logical_type_ == logical_not)
         str_equivalence = "not (" + child_members.front()->toString() + ")";
