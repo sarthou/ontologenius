@@ -221,7 +221,7 @@ namespace ontologenius {
     // writing the Variable 2
     tmp = "<" + subfield_var + "2";
     if(data_atom.object.datatype_value == nullptr)
-      tmp += " rdf:resource=\"urn:swrl:var#" + data_atom.subject.name + "\"/>\n";
+      tmp += " rdf:resource=\"urn:swrl:var#" + data_atom.object.name + "\"/>\n";
     else
       tmp += " rdf:datatype=\"" + data_atom.object.datatype_value->getNs() + "#" + data_atom.object.datatype_value->type_ + "\">" +
              data_atom.object.datatype_value->value_ + "</" + subfield_var + "2>\n";
@@ -269,7 +269,7 @@ namespace ontologenius {
       writeString("</" + field + ">\n", level + 1);
     }
 
-    writeString("</" + subfield_var + ">", level);
+    writeString("</" + subfield_var + ">\n", level);
   }
 
   void RuleOwlWriter::writeVariable(const std::string& rule_variable)
