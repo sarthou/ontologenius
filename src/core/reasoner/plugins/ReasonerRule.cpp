@@ -313,8 +313,8 @@ namespace ontologenius {
       resolveDataAtom(triplet, accu, var_index, values);
       break;
     case builtin_atom:
+      resolveBuiltinAtom(triplet, accu, var_index, values);
       break;
-
     default:
       break;
     }
@@ -749,6 +749,103 @@ namespace ontologenius {
     }
 
     return res;
+  }
+
+  void ReasonerRule::resolveBuiltinAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
+  {
+    LiteralNode* subject_ptr;
+    LiteralNode* object_ptr;
+    IndivResult_t res;
+
+    var_index = triplet.subject.variable_id;
+
+    if(accu[triplet.subject.variable_id] != 0)
+      subject_ptr = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-accu[triplet.subject.variable_id]));
+    else if(triplet.subject.datatype_value != nullptr)
+      subject_ptr = triplet.subject.datatype_value;
+    else
+    {
+      std::cout << "No value for arg1 of the builtin :" << triplet.builtin.builtin_str_ << std::endl;
+      return;
+    }
+
+    if(accu[triplet.object.variable_id] != 0)
+      object_ptr = ontology_->data_property_graph_.createLiteral(LiteralNode::table.get(-accu[triplet.object.variable_id]));
+    else if(triplet.object.datatype_value != nullptr)
+      object_ptr = triplet.object.datatype_value;
+    else
+    {
+      std::cout << "No value for arg2 of the builtin :" << triplet.builtin.builtin_str_ << std::endl;
+      return;
+    }
+
+    if((subject_ptr != nullptr) && (object_ptr != nullptr))
+    {
+      if((subject_ptr->type_ == "string") && (object_ptr->type_ == "string") &&
+         (resolveStringBuiltinAtom(triplet.builtin.builtin_type_, subject_ptr, object_ptr) == true))
+      {
+        res.literal = subject_ptr;
+        std::string explanation = triplet.builtin.builtin_str_ + "(" + subject_ptr->value() + "," + object_ptr->value();
+        res.explanations.emplace_back(explanation);
+        values.emplace_back(std::move(res));
+      }
+      else if(resolveNumericalBuiltinAtom(triplet.builtin.builtin_type_, subject_ptr, object_ptr) == true)
+      {
+        res.literal = subject_ptr;
+        std::string explanation = triplet.builtin.builtin_str_ + "(" + subject_ptr->value() + "," + object_ptr->value();
+        res.explanations.emplace_back(explanation);
+        values.emplace_back(std::move(res));
+      }
+    }
+  }
+
+  bool ReasonerRule::resolveNumericalBuiltinAtom(BuiltinType_e builtin_type, LiteralNode* subject, LiteralNode* object)
+  {
+    try
+    {
+      IndivResult_t res;
+
+      const double subject_cast = stod(subject->value_);
+      const double object_cast = stod(object->value_);
+
+      switch(builtin_type)
+      {
+      case greaterThan:
+        return subject_cast > object_cast;
+      case greaterThanOrEqual:
+        return subject_cast >= object_cast;
+      case lessThan:
+        return subject_cast < object_cast;
+      case lessThanOrEqual:
+        return subject_cast <= object_cast;
+      case equal:
+        return subject_cast == object_cast;
+      case notEqual:
+        return subject_cast != object_cast;
+      default:
+        std::cout << "Unsupported builtin type : " << builtin_type << "for numerical arguments" << std::endl;
+        return false;
+      }
+    }
+    catch(std::invalid_argument const& ex)
+    {
+      std::cout << "cannot convert either arg1 or arg2 to double" << std::endl;
+      return false;
+    }
+  }
+
+  bool ReasonerRule::resolveStringBuiltinAtom(BuiltinType_e builtin_type, LiteralNode* subject, LiteralNode* object)
+  {
+    switch(builtin_type)
+    {
+    case equal:
+      return subject->value() == object->value();
+    case notEqual:
+      return subject->value() != object->value();
+    default:
+      std::cout << "Unsupported builtin type : " << builtin_type << "for string arguments" << std::endl;
+      return false;
+    }
   }
 
   std::string ReasonerRule::getName()
