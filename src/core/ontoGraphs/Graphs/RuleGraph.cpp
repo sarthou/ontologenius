@@ -83,7 +83,7 @@ namespace ontologenius {
     auto* rule_atom = rule_element.first;
     auto rule_variable = rule_element.second;
 
-    if(rule_atom->builtin_type_ != builtin_none)
+    if(rule_atom->builtin_.builtin_type_ != builtin_none)
       return createBuiltinTriplet(rule_branch, rule_atom, rule_variable);
     else if((rule_atom->is_data_property) && (rule_atom->logical_type_ == logical_none) && (!rule_atom->is_complex))
     {
@@ -148,7 +148,7 @@ namespace ontologenius {
     RuleResource_t var_from = getRuleResource(rule_branch, variable.front());
     RuleResource_t var_on = getRuleResource(rule_branch, variable.back());
 
-    return RuleTriplet_t(var_from, property_member->builtin_type_, var_on);
+    return RuleTriplet_t(var_from, property_member->builtin_, var_on);
   }
 
   RuleResource_t RuleGraph::getRuleResource(RuleBranch* rule_branch, const Variable_t& variable)
