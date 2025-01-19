@@ -30,7 +30,7 @@ namespace ontologenius {
     logical_none
   };
 
-  enum Builtintype_e
+  enum BuiltinType_e
   {
     builtin_none,
     greaterThan,
@@ -38,7 +38,48 @@ namespace ontologenius {
     lessThan,
     lessThanOrEqual,
     equal,
-    notEqual,
+    notEqual
+  };
+
+  struct Builtin_t
+  {
+    BuiltinType_e builtin_type_;
+    std::string builtin_str_;
+
+    Builtin_t() : builtin_type_(builtin_none) {}
+    Builtin_t(const BuiltinType_e& builtin_type, const std::string& builtin_str) : builtin_type_(builtin_type),
+                                                                                   builtin_str_(builtin_str)
+    {}
+
+    std::string builtinToString()
+    {
+      std::string builtin_name;
+      switch(this->builtin_type_)
+      {
+      case greaterThan:
+        builtin_name = "greaterThan";
+        break;
+      case greaterThanOrEqual:
+        builtin_name = "greaterThanOrEqual";
+        break;
+      case lessThan:
+        builtin_name = "lessThan";
+        break;
+      case lessThanOrEqual:
+        builtin_name = "lessThanOrEqual";
+        break;
+      case equal:
+        builtin_name = "equal";
+        break;
+      case notEqual:
+        builtin_name = "notEqual";
+        break;
+      default:
+        break;
+      }
+
+      return builtin_name;
+    }
   };
 
   struct CardinalityElement_t
