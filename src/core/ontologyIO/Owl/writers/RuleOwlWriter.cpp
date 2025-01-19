@@ -241,29 +241,7 @@ namespace ontologenius {
     writeString("<rdf:type rdf:resource=\"http://www.w3.org/2003/11/swrl#BuiltinAtom\"/>\n", level);
 
     // write Builtin type
-    switch(builtin_atom.builtin_type)
-    {
-    case greaterThan:
-      builtin_name = "greaterThan";
-      break;
-    case greaterThanOrEqual:
-      builtin_name = "greaterThanOrEqual";
-      break;
-    case lessThan:
-      builtin_name = "lessThan";
-      break;
-    case lessThanOrEqual:
-      builtin_name = "lessThanOrEqual";
-      break;
-    case equal:
-      builtin_name = "equal";
-      break;
-    case notEqual:
-      builtin_name = "notEqual";
-      break;
-    default:
-      break;
-    }
+    builtin_name = builtin_atom.builtin.builtin_str_;
 
     writeString("<" + subfield_builtin + " rdf:resource=\"http://www.w3.org/2003/11/swrlb#" + builtin_name + "\"/>\n", level);
 
