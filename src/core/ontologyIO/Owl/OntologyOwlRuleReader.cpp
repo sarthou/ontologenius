@@ -248,22 +248,22 @@ namespace ontologenius {
     if(builtin_type != nullptr)
     {
       std::string builtin_name = getName(std::string(builtin_type));
-      std::cout << builtin_name << std::endl;
+
       if(builtin_name == "greaterThan")
-        temp_exp->builtin_type_ = greaterThan;
+        temp_exp->builtin_ = Builtin_t(greaterThan, builtin_name);
       else if(builtin_name == "greaterThanOrEqual")
-        temp_exp->builtin_type_ = greaterThanOrEqual;
+        temp_exp->builtin_ = Builtin_t(greaterThanOrEqual, builtin_name);
       else if(builtin_name == "lessThan")
-        temp_exp->builtin_type_ = lessThan;
+       temp_exp->builtin_ = Builtin_t(lessThan, builtin_name);
       else if(builtin_name == "lessThanOrEqual")
-        temp_exp->builtin_type_ = lessThanOrEqual;
+        temp_exp->builtin_ = Builtin_t(lessThanOrEqual, builtin_name);
       else if(builtin_name == "equal")
-        temp_exp->builtin_type_ = equal;
+       temp_exp->builtin_ = Builtin_t(equal, builtin_name);
       else if(builtin_name == "notEqual")
-        temp_exp->builtin_type_ = notEqual;
+        temp_exp->builtin_ = Builtin_t(notEqual, builtin_name);
       else
       {
-        temp_exp->builtin_type_ = builtin_none;
+        temp_exp->builtin_ = Builtin_t(builtin_none, "none");
         if(display_)
           std::cout << "unsupported buitlin atom : " << builtin_name << std::endl;
       }
