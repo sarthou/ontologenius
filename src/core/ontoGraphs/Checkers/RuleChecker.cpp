@@ -39,11 +39,13 @@ namespace ontologenius {
       // usage [c1, [c2, [obj_prop1, objprop2]]] ... then check for objprop_n that they are not disjoint
       std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>> mapping_var_obj;
       std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>> mapping_var_data;
-
+      // usage [var1][LiteralNode->type1 ,...,LiteralNode->type2]
+      // [integer#18][integer]
+      std::unordered_map<std::string, std::vector<LiteralNode*>> mapping_var_builtin;
       std::set<std::string> keys_variables;
 
-      checkAtomList(rule_branch->rule_body_, mapping_var_classes, mapping_var_obj, mapping_var_data, keys_variables);
-      checkAtomList(rule_branch->rule_head_, mapping_var_classes, mapping_var_obj, mapping_var_data, keys_variables);
+      checkAtomList(rule_branch->rule_body_, mapping_var_classes, mapping_var_obj, mapping_var_data, mapping_var_builtin, keys_variables);
+      checkAtomList(rule_branch->rule_head_, mapping_var_classes, mapping_var_obj, mapping_var_data, mapping_var_builtin, keys_variables);
 
       // ========== check the mapping between variables in the rule ==========
       checkVariableMappings(mapping_var_classes, keys_variables);
@@ -77,6 +79,7 @@ namespace ontologenius {
   void RuleChecker::checkAtomList(std::vector<RuleTriplet_t>& atoms_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
                                   std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj,
                                   std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data,
+                                  std::unordered_map<std::string, std::vector<LiteralNode*>> mapping_var_builtin,
                                   std::set<std::string>& keys_variables)
   {
     for(auto& atom : atoms_list)
@@ -90,12 +93,11 @@ namespace ontologenius {
         resolveObjectTriplet(atom, mapping_var_classes, mapping_var_obj, keys_variables);
         break;
       case data_atom:
-        resolveDataTriplet(atom, mapping_var_classes, mapping_var_data, keys_variables);
+        resolveDataTriplet(atom, mapping_var_classes, mapping_var_data, mapping_var_builtin, keys_variables);
         break;
       case builtin_atom:
-        /* code */
+        resolveBuiltinTriplet(atom, mapping_var_builtin);
         break;
-
       default:
         break;
       }
@@ -183,7 +185,8 @@ namespace ontologenius {
   }
 
   void RuleChecker::resolveDataTriplet(RuleTriplet_t& data_atom, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
-                                       std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data, std::set<std::string>& keys_variables)
+                                       std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data,
+                                       std::unordered_map<std::string, std::vector<LiteralNode*>> mapping_var_builtin, std::set<std::string>& keys_variables)
   {
     std::vector<std::string> errs;
 
@@ -205,19 +208,63 @@ namespace ontologenius {
     }
 
     if(data_atom.object.is_variable)
+    {
       keys_variables.insert(data_atom.object.name);
+      for(auto* range_elem : data_atom.data_predicate->ranges_)
+        mapping_var_builtin[data_atom.object.name].push_back(range_elem);
+    }
     else if(data_atom.object.datatype_value != nullptr)
     {
       std::string err;
       const std::string err_base = "In rule " + current_rule_ + ": error over instantiated data property atom " + data_atom.toString() +
                                    " on object " + data_atom.object.datatype_value->value() + " because of ";
       err = checkDataRange(data_atom.object.datatype_value);
+      mapping_var_builtin[data_atom.object.name].push_back(data_atom.object.datatype_value);
       if(err.empty() == false)
         printError(err_base + err);
     }
 
     if(data_atom.subject.is_variable && data_atom.object.is_variable)
       mapping_var_data[data_atom.subject.name][data_atom.object.name].push_back(data_atom.data_predicate);
+  }
+
+  void RuleChecker::resolveBuiltinTriplet(RuleTriplet_t& builtin_atom, std::unordered_map<std::string, std::vector<LiteralNode*>> mapping_var_builtin)
+  {
+    std::string err;
+    const std::string err_base = "In rule " + current_rule_ + ": error over builtin atom" + " because of ";
+
+    if(!builtin_atom.subject.is_variable)
+      mapping_var_builtin[builtin_atom.subject.name].emplace_back(builtin_atom.subject.datatype_value);
+
+    if(!builtin_atom.object.is_variable)
+      mapping_var_builtin[builtin_atom.object.name].emplace_back(builtin_atom.object.datatype_value);
+
+    for(auto* range_elem_subject : mapping_var_builtin[builtin_atom.subject.name])
+    {
+      for(auto* range_elem_object : mapping_var_builtin[builtin_atom.object.name])
+      {
+        if(range_elem_subject->type_ != "string" && range_elem_object->type_ != "string")
+        {
+          if(!range_elem_subject->value_.empty() && !range_elem_object->value_.empty())
+          {
+            try
+            {
+              const double sub_val = std::stod(range_elem_subject->value_);
+              const double obj_val = std::stod(range_elem_object->value_);
+              (void)sub_val;
+              (void)obj_val;
+            }
+            catch(std::invalid_argument const& ex)
+            {
+              err = "Incompatibility between datatypes : " + range_elem_subject->type_ + " and " + range_elem_object->type_;
+              printError(err_base + err);
+            }
+          }
+        }
+        else if(range_elem_subject->type_ != range_elem_object->type_)
+          printWarning("Dataypes " + range_elem_subject->type_ + " and " + range_elem_object->type_ + "are different, cannot ensure proper functioning");
+      }
+    }
   }
 
   std::vector<std::string> RuleChecker::resolveInstantiatedClass(ClassBranch* class_branch, IndividualBranch* indiv)
@@ -340,10 +387,10 @@ namespace ontologenius {
   {
     std::string err;
     const std::string err_base = "In rule  " + current_rule_ + ": error over data property atom" + " because of ";
-    // map is [var1][var2][obj_prop1, ..., objpropn]
+    // map is [var1][var2][data_prop1, ..., datapropn]
     //               ...
-    //              [varn][obj_prop1, ..., objpropn]
-    //        [var2][var1][obj_prop1, ..., objpropn]
+    //              [varn][data_prop1, ..., datapropn]
+    //        [var2][var1][data_prop1, ..., datapropn]
 
     for(const auto& var_elem1 : keys_variables) // loop over variables in map
     {
@@ -377,6 +424,7 @@ namespace ontologenius {
       try
       {
         const int conv_val = std::stoi(datatype_involved->value_);
+        (void)conv_val;
       }
       catch(std::invalid_argument const& ex)
       {
@@ -388,6 +436,7 @@ namespace ontologenius {
       try
       {
         const float conv_val = std::stof(datatype_involved->value_);
+        (void)conv_val;
       }
       catch(std::invalid_argument const& ex)
       {
@@ -399,6 +448,7 @@ namespace ontologenius {
       try
       {
         const double conv_val = std::stod(datatype_involved->value_);
+        (void)conv_val;
       }
       catch(std::invalid_argument const& ex)
       {
@@ -408,4 +458,5 @@ namespace ontologenius {
 
     return error;
   }
+
 } // namespace ontologenius
