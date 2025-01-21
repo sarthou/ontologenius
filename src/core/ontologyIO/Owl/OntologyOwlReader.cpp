@@ -21,7 +21,6 @@
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
-#include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
@@ -342,7 +341,6 @@ namespace ontologenius {
     else if(description_type_resource_name == "Imp")
       readSwrlRule(elem);
   }
-
 
   void OntologyOwlReader::readSwrlRule(TiXmlElement* elem)
   {
