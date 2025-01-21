@@ -1,5 +1,6 @@
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <iostream>
 #include <mutex>
@@ -175,8 +176,7 @@ namespace ontologenius {
     {
       size_t child_depth = depth + 1;
       node->sub_elements_.push_back(createTree(child, child_depth, root_node));
-      if(child_depth > local_depth)
-        local_depth = child_depth;
+      local_depth = std::max(child_depth, local_depth);
     }
 
     depth = local_depth;
