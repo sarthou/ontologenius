@@ -810,17 +810,17 @@ namespace ontologenius {
 
       switch(builtin_type)
       {
-      case greaterThan:
+      case greater_than:
         return subject_cast > object_cast;
-      case greaterThanOrEqual:
+      case greater_than_or_equal:
         return subject_cast >= object_cast;
-      case lessThan:
+      case less_than:
         return subject_cast < object_cast;
-      case lessThanOrEqual:
+      case less_than_or_equal:
         return subject_cast <= object_cast;
       case equal:
         return subject_cast == object_cast;
-      case notEqual:
+      case not_equal:
         return subject_cast != object_cast;
       default:
         std::cout << "Unsupported builtin type : " << builtin_type << "for numerical arguments" << std::endl;
@@ -840,7 +840,7 @@ namespace ontologenius {
     {
     case equal:
       return subject->value() == object->value();
-    case notEqual:
+    case not_equal:
       return subject->value() != object->value();
     default:
       std::cout << "Unsupported builtin type : " << builtin_type << "for string arguments" << std::endl;
