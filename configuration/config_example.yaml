@@ -6,6 +6,7 @@ flow:
   - ontologenius::ReasonerSymmetric
   - ontologenius::ReasonerAnonymous
   - ontologenius::ReasonerTransitivity
+  - ontologenius::ReasonerRule
 ontologenius::ReasonerGeneralize:
   min_count : 2
   min_percent : 0.7
