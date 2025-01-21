@@ -150,7 +150,7 @@ namespace ontologenius {
     indiv->nb_updates_++;
     anonymous_branch->class_equiv_->nb_updates_++;
 
-    for(auto& induced_vector : used)
+    for(const auto& induced_vector : used)
     {
       indiv->is_a_.back().explanation.push_back(induced_vector.first);
       indiv->is_a_.back().used_rule = element;

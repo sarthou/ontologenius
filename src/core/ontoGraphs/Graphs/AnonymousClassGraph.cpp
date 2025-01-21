@@ -118,7 +118,7 @@ namespace ontologenius {
           ano_element->card_.card_range_ = data_property_graph_->createLiteral(card_range);
         else
         {
-          const std::string type_value = card_range.substr(card_range.find("#") + 1, -1);
+          const std::string type_value = card_range.substr(card_range.find('#') + 1, -1);
           ano_element->card_.card_range_ = data_property_graph_->createLiteral(type_value + "#"); // need to add the "#"
         }
         ano_element->root_node_->involves_data_property = true;

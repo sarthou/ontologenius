@@ -27,7 +27,7 @@ namespace ontologenius {
     void checkAtomList(std::vector<RuleTriplet_t>& atoms_list, std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes,
                        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<ObjectPropertyBranch*>>>& mapping_var_obj,
                        std::unordered_map<std::string, std::unordered_map<std::string, std::vector<DataPropertyBranch*>>>& mapping_var_data,
-                       std::unordered_map<std::string, std::vector<LiteralNode*>> mapping_var_builtin,
+                       std::unordered_map<std::string, std::vector<LiteralNode*>>& mapping_var_builtin,
                        std::set<std::string>& keys_variables);
 
     void checkVariableMappings(std::unordered_map<std::string, std::vector<std::vector<ClassElement>>>& mapping_var_classes, std::set<std::string>& keys_variables);

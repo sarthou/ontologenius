@@ -28,7 +28,7 @@ namespace ontologenius {
     void writeClassAtom(const RuleTriplet_t& class_atom, size_t level);
     void writeObjectAtom(const RuleTriplet_t& object_atom, size_t level);
     void writeDataAtom(const RuleTriplet_t& data_atom, size_t level);
-    void writeBuiltinAtom(const RuleTriplet_t& data_atom, size_t level);
+    void writeBuiltinAtom(const RuleTriplet_t& builtin_atom, size_t level);
 
     // Anonymous classes method duplicates
     void writeEquivalentClass(ClassBranch* branch);

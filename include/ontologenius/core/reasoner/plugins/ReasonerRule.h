@@ -99,22 +99,22 @@ namespace ontologenius {
     void addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule);
 
     std::vector<RuleResult_t> resolveBody(RuleBranch* rule_branch, std::vector<RuleTriplet_t>& atoms, std::vector<index_t>& accu);
-    void resolveAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveClassAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
-    void resolveBuiltinAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveClassAtom(const RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveObjectAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveDataAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
+    void resolveBuiltinAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values);
     bool resolveNumericalBuiltinAtom(BuiltinType_e builtin_type, LiteralNode* subject, LiteralNode* object);
     bool resolveStringBuiltinAtom(BuiltinType_e builtin_type, LiteralNode* subject, LiteralNode* object);
 
-    void getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev = IndivResult_t(), ClassBranch* main_class_predicate = nullptr);
+    void getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, const IndivResult_t& prev = IndivResult_t(), ClassBranch* main_class_predicate = nullptr);
     IndivResult_t isA(IndividualBranch* indiv, ClassBranch* class_selector);
 
-    std::vector<IndivResult_t> getFromObject(RuleTriplet_t& triplet);
-    std::vector<IndivResult_t> getOnObject(RuleTriplet_t& triplet, index_t selector);
+    std::vector<IndivResult_t> getFromObject(const RuleTriplet_t& triplet);
+    std::vector<IndivResult_t> getOnObject(const RuleTriplet_t& triplet, index_t selector);
 
-    std::vector<IndivResult_t> getFromData(RuleTriplet_t& triplet);
-    std::vector<IndivResult_t> getOnData(RuleTriplet_t& triplet, index_t selector);
+    std::vector<IndivResult_t> getFromData(const RuleTriplet_t& triplet);
+    std::vector<IndivResult_t> getOnData(const RuleTriplet_t& triplet, index_t selector);
 
     void constructResult(const std::string& concept,
                          const RelationsWithInductions<IndividualElement>& relation,
