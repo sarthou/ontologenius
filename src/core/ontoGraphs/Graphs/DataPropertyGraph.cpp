@@ -328,7 +328,7 @@ namespace ontologenius {
   void DataPropertyGraph::cpyBranch(DataPropertyBranch* old_branch, DataPropertyBranch* new_branch)
   {
     new_branch->nb_updates_ = old_branch->nb_updates_;
-    new_branch->updated_ = old_branch->updated_;
+    new_branch->setUpdated(old_branch->isUpdated());
     new_branch->flags_ = old_branch->flags_;
 
     new_branch->dictionary_ = old_branch->dictionary_;

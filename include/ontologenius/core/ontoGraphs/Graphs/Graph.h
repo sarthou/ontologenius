@@ -61,8 +61,8 @@ namespace ontologenius {
     virtual B* findBranch(const std::string& name);
     virtual B* findBranchSafe(index_t index);
     virtual B* findBranch(index_t index);
-    B* findOrCreateBranch(const std::string& name);
-    B* newDefaultBranch(const std::string& name);
+    B* findOrCreateBranch(const std::string& name, bool hidden = false);
+    B* newDefaultBranch(const std::string& name, bool hidden = false);
 
     std::vector<std::string> getAll();
     std::vector<index_t> getAllIndex();
@@ -284,41 +284,72 @@ namespace ontologenius {
   B* Graph<B>::findBranchSafe(const std::string& name)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    return container_.find(name);
+    auto* branch = container_.find(name);
+
+    if(branch != nullptr)
+    {
+      if(branch->isHidden())
+        return nullptr;
+    }
+
+    return branch;
   }
 
   template<typename B>
   B* Graph<B>::findBranch(const std::string& name)
   {
-    return container_.find(name);
+    auto* branch = container_.find(name);
+    if(branch != nullptr)
+    {
+      if(branch->isHidden())
+        return nullptr;
+    }
+
+    return branch;
   }
 
   template<typename B>
   B* Graph<B>::findBranchSafe(index_t index)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    return container_.find(ValuedNode::table.get(index));
+    auto* branch = container_.find(ValuedNode::table.get(index));
+
+    if(branch != nullptr)
+    {
+      if(branch->isHidden())
+        return nullptr;
+    }
+
+    return branch;
   }
 
   template<typename B>
   B* Graph<B>::findBranch(index_t index)
   {
-    return container_.find(ValuedNode::table.get(index));
-  }
+    auto* branch = container_.find(ValuedNode::table.get(index));
 
-  template<typename B>
-  B* Graph<B>::findOrCreateBranch(const std::string& name)
-  {
-    B* branch = container_.find(name);
-    if(branch == nullptr)
-      branch = newDefaultBranch(name);
+    if(branch != nullptr)
+    {
+      if(branch->isHidden())
+        return nullptr;
+    }
+
     return branch;
   }
 
   template<typename B>
-  B* Graph<B>::newDefaultBranch(const std::string& name)
+  B* Graph<B>::findOrCreateBranch(const std::string& name, bool hidden)
   {
-    auto* branch = new B(name);
+    B* branch = container_.find(name);
+    if(branch == nullptr)
+      branch = newDefaultBranch(name, hidden);
+    return branch;
+  }
+
+  template<typename B>
+  B* Graph<B>::newDefaultBranch(const std::string& name, bool hidden)
+  {
+    auto* branch = new B(name, hidden);
     all_branchs_.push_back(branch);
     container_.insert(branch);
     return branch;
@@ -398,7 +429,7 @@ namespace ontologenius {
     {
       std::lock_guard<std::shared_timed_mutex> lock(this->mutex_);
       branch->setSteadyDictionary(lang.substr(1), name);
-      branch->updated_ = true;
+      branch->setUpdated(true);
       return true;
     }
     else
@@ -596,7 +627,8 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     std::vector<B*> branchs = this->container_.find(&fullComparator<B>, value, language_, use_default);
     for(auto& branch : branchs)
-      insert(res, branch);
+      if(branch->isHidden() == false)
+        insert(res, branch);
 
     return res;
   }
@@ -609,7 +641,8 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     std::vector<B*> branchs = this->container_.find(&comparator<B>, value, language_, use_default);
     for(auto& branch : branchs)
-      insert(res, branch);
+      if(branch->isHidden() == false)
+        insert(res, branch);
 
     return res;
   }
@@ -622,7 +655,8 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     std::vector<B*> branchs = this->container_.find(&comparatorRegex<B>, regex, language_, use_default);
     for(auto& branch : branchs)
-      insert(res, branch);
+      if(branch->isHidden() == false)
+        insert(res, branch);
 
     return res;
   }
@@ -639,6 +673,9 @@ namespace ontologenius {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
     for(auto* branch : this->all_branchs_)
     {
+      if(branch->isHidden())
+        continue;
+
       if(use_default)
         if((tmp_cost = dist.get(branch->value(), value)) <= lower_cost)
         {

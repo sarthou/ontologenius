@@ -1,0 +1,948 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="test_rules#"
+     xml:base="test_rules"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:test_rules1="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#">
+    <owl:Ontology rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#canManipulate -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#canManipulate">
+        <rdfs:range rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasAvailableComponent -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasAvailableComponent">
+        <owl:propertyChainAxiom rdf:parseType="Collection">
+            <rdf:Description rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isCapabilityOf"/>
+            <rdf:Description rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasComponent"/>
+        </owl:propertyChainAxiom>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasCapability -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasCapability">
+        <owl:inverseOf rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isCapabilityOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasComponent -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasComponent"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasDisposition -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasDisposition">
+        <owl:inverseOf rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isDispositionOf"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasPart -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasPart"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isCapabilityOf -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isCapabilityOf"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isDispositionOf -->
+
+    <owl:ObjectProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isDispositionOf"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/swrl_complete#hasAge -->
+
+    <owl:DatatypeProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/swrl_complete#hasAge"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasHandle -->
+
+    <owl:DatatypeProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasHandle"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isFilled -->
+
+    <owl:DatatypeProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isFilled"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isManipulable -->
+
+    <owl:DatatypeProperty rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isManipulable"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Adult -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Adult"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Capability -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Capability"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Child -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Child"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Component -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Component"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Disposition -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Disposition"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Gripper -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Gripper">
+        <rdfs:subClassOf rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Component"/>
+    </owl:Class>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Human -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Human"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulableDisposition -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulableDisposition">
+        <rdfs:subClassOf rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Disposition"/>
+    </owl:Class>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapability -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapability">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasAvailableComponent"/>
+                <owl:someValuesFrom rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Gripper"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Capability"/>
+    </owl:Class>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapableAgent -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapableAgent"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Mug -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Mug">
+        <rdfs:subClassOf rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object"/>
+    </owl:Class>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Robot -->
+
+    <owl:Class rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Robot"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred">
+        <rdf:type rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Human"/>
+        <test_rules1:hasCapability rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred_capa"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred_capa -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred_capa"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#handle_0 -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#handle_0">
+        <test_rules1:hasDisposition rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#handle_0_disp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#handle_0_disp -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#handle_0_disp"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_0 -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_0">
+        <rdf:type rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Mug"/>
+        <owl:sameAs rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred&apos;s_mug"/>
+        <test_rules1:hasDisposition rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_0_disp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_0_disp -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_0_disp"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_1 -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_1"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_1_disp -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#mug_1_disp"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pepper -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pepper"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2 -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2">
+        <owl:sameAs rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#robot_helper"/>
+        <test_rules1:hasCapability rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_capa"/>
+        <test_rules1:hasComponent rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_left_gripper"/>
+        <test_rules1:hasComponent rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_right_gripper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_capa -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_capa"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_left_gripper -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_left_gripper">
+        <rdf:type rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Gripper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_right_gripper -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_right_gripper">
+        <rdf:type rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Gripper"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#robot_helper -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#robot_helper"/>
+    
+
+
+    <!-- file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred&apos;s_mug -->
+
+    <owl:NamedIndividual rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#fred&apos;s_mug"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_left_gripper"/>
+            <rdf:Description rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#pr2_right_gripper"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Rules
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="urn:swrl:var#a">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#c">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#a1">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#r">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#o">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#d">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#m">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasCapability"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Capability"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/swrl_complete#hasAge"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a1"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThanOrEqual"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="urn:swrl:var#a1"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Adult"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/swrl_complete#hasAge"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a1"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:resource="urn:swrl:var#a1"/>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Child"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <!-- <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/swrl_complete#hasAge"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a1"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThanOrEqual"/>
+                                        <swrl:arguments>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">18</rdf:first>
+                                                <rdf:rest rdf:parseType="Collection">
+                                                    <rdf:Description rdf:about="urn:swrl:var#a1"/>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Adult"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description> -->
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Robot"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#r"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasCapability"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#r"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapability"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                        <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasDisposition"/>
+                                                        <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                                                        <swrl:argument2 rdf:resource="urn:swrl:var#d"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                        <rdf:first>
+                                                            <rdf:Description>
+                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                                <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulableDisposition"/>
+                                                                <swrl:argument1 rdf:resource="urn:swrl:var#d"/>
+                                                            </rdf:Description>
+                                                        </rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#canManipulate"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#r"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Mug"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#m"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isFilled"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#m"/>
+                                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</swrl:argument2>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isManipulable"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#m"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl:argument2>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isManipulable"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</swrl:argument2>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasDisposition"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#d"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                        <swrl:classPredicate>
+                                            <owl:Restriction>
+                                                <owl:onProperty rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasPart"/>
+                                                <owl:someValuesFrom>
+                                                    <owl:Restriction>
+                                                        <owl:onProperty rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isManipulable"/>
+                                                        <owl:hasValue rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</owl:hasValue>
+                                                    </owl:Restriction>
+                                                </owl:someValuesFrom>
+                                            </owl:Restriction>
+                                        </swrl:classPredicate>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulableDisposition"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#d"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Object"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isFilled"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                                <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</swrl:argument2>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#isManipulable"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#o"/>
+                        <swrl:argument2 rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrl:argument2>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#Agent"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#hasCapability"/>
+                                        <owl:someValuesFrom rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapability"/>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </swrl:classPredicate>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="file:/home/bdussard/catkin_ws/src/ontologenius/files/CI/test_rules#ManipulationCapableAgent"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

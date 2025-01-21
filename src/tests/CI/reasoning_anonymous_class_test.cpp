@@ -193,6 +193,62 @@ TEST(reasoning_anonymous_class, same_as_one_of)
   EXPECT_TRUE(std::find(res.begin(), res.end(), "BobInstances") == res.end());
 }
 
+TEST(global_tests, card_value)
+{
+  std::vector<std::string> res;
+
+  // object property
+  onto_ptr->feeder.addConcept("a");
+  onto_ptr->feeder.addProperty("a", "hasCamera", "realsense");
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getUp("a");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "RealsenseOwner") != res.end());
+
+  onto_ptr->feeder.removeProperty("a", "hasCamera", "realsense");
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getUp("a");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "RealsenseOwner") == res.end());
+
+  onto_ptr->feeder.addConcept("realsense2");
+  onto_ptr->feeder.addProperty("realsense", "=", "realsense2");
+  onto_ptr->feeder.addProperty("a", "hasCamera", "realsense2");
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getUp("a");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "RealsenseOwner") != res.end());
+
+  onto_ptr->feeder.removeProperty("realsense", "=", "realsense2");
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getUp("a");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "RealsenseOwner") == res.end());
+
+  // data property
+  onto_ptr->feeder.addConcept("b");
+  onto_ptr->feeder.addProperty("b", "has_node", "boolean#true");
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getUp("b");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "Capability") != res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "YoloAlgo") != res.end());
+
+  onto_ptr->feeder.removeProperty("b", "has_node", "boolean#true");
+  onto_ptr->feeder.waitUpdate(1000);
+
+  res = onto_ptr->individuals.getUp("b");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "Capability") == res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "YoloAlgo") == res.end());
+
+  onto_ptr->feeder.addProperty("b", "has_node", "boolean#false");
+  onto_ptr->feeder.waitUpdate(1000);
+  
+  res = onto_ptr->individuals.getUp("b");
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "Capability") == res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "YoloAlgo") != res.end());
+}
+
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "ontologenius_reasoning_anonymous_class_test");

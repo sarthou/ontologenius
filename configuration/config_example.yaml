@@ -1,6 +1,5 @@
 flow:
   - ontologenius::ReasonerChain
-  - ontologenius::ReasonerGeneralize
   - ontologenius::ReasonerDictionary
   - ontologenius::ReasonerInverseOf
   - ontologenius::ReasonerRangeDomain

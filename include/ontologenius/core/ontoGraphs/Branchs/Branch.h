@@ -22,7 +22,14 @@ namespace ontologenius {
     RelationsWithInductions<SingleElement<T*>> mothers_;
     std::vector<SingleElement<T*>> disjoints_;
 
-    explicit Branch(const std::string& value) : ValuedNode(value) {}
+    explicit Branch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden) {}
+
+    void setUpdated(bool value)
+    {
+      if(value == false)
+        mothers_.resetUpdated();
+      ValuedNode::setUpdated(value);
+    }
   };
 
 } // namespace ontologenius

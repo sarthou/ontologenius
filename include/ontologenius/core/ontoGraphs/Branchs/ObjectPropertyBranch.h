@@ -25,7 +25,7 @@ namespace ontologenius {
     std::vector<std::vector<ObjectPropertyBranch*>> chains_;
     std::vector<std::vector<std::string>> str_chains_;
 
-    ObjectPropertyBranch(const std::string& value = "") : Branch(value){};
+    ObjectPropertyBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden){};
   };
 
 } // namespace ontologenius

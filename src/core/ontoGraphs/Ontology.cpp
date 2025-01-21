@@ -8,6 +8,7 @@
 #include "ontologenius/core/ontoGraphs/Checkers/DataPropertyChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/IndividualChecker.h"
 #include "ontologenius/core/ontoGraphs/Checkers/ObjectPropertyChecker.h"
+#include "ontologenius/core/ontoGraphs/Checkers/RuleChecker.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 
@@ -18,6 +19,7 @@ namespace ontologenius {
                                                     data_property_graph_(&individual_graph_, &class_graph_),
                                                     individual_graph_(&class_graph_, &object_property_graph_, &data_property_graph_),
                                                     anonymous_graph_(&class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
+                                                    rule_graph_(&class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_, &anonymous_graph_),
                                                     loader_((Ontology&)*this),
                                                     writer_((Ontology&)*this),
                                                     is_preloaded_(false),
@@ -35,6 +37,7 @@ namespace ontologenius {
                                               data_property_graph_(other.data_property_graph_, &individual_graph_, &class_graph_),
                                               individual_graph_(other.individual_graph_, &class_graph_, &object_property_graph_, &data_property_graph_),
                                               anonymous_graph_(other.anonymous_graph_, &class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_),
+                                              rule_graph_(other.rule_graph_, &class_graph_, &object_property_graph_, &data_property_graph_, &individual_graph_, &anonymous_graph_),
                                               loader_((Ontology&)*this),
                                               writer_((Ontology&)*this),
                                               is_preloaded_(true),
@@ -63,6 +66,7 @@ namespace ontologenius {
     DataPropertyChecker data_property_checker(&data_property_graph_);
     IndividualChecker individual_checker(&individual_graph_);
     AnonymousClassChecker ano_class_checker(&anonymous_graph_);
+    RuleChecker rule_checker(&rule_graph_);
 
     size_t err = class_checker.check();
     err += object_property_checker.check();
@@ -78,6 +82,7 @@ namespace ontologenius {
       is_init_ = true;
     }
     err += ano_class_checker.check();
+    err += rule_checker.check();
 
     Display::info("\n***************SUMMARY****************");
     if(is_init_)
@@ -90,6 +95,7 @@ namespace ontologenius {
     data_property_checker.printStatus();
     individual_checker.printStatus();
     ano_class_checker.printStatus();
+    rule_checker.printStatus();
 
     Display::info("**************************************");
 

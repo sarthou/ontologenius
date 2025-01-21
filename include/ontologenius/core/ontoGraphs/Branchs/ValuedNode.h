@@ -14,11 +14,17 @@ namespace ontologenius {
   {
   public:
     unsigned int nb_updates_;
-    bool updated_;
+
     std::map<std::string, std::vector<std::string>> flags_;
 
     UpdatableNode() : nb_updates_(0), updated_(true)
     {}
+
+    bool isUpdated() const { return updated_; }
+    void setUpdated(bool value) { updated_ = value; }
+
+  protected:
+    bool updated_;
   };
 
   class Dictionary
@@ -31,10 +37,14 @@ namespace ontologenius {
   class ValuedNode : public UpdatableNode
   {
   public:
-    explicit ValuedNode(const std::string& value) : index_(table.add(value)) {}
+    explicit ValuedNode(const std::string& value, bool hidden = false) : index_(table.add(value)),
+                                                                         hidden_(hidden)
+    {}
 
     const index_t& get() const { return index_; }
     const std::string& value() const { return table[index_]; }
+
+    bool isHidden() const { return hidden_; }
 
     static WordTable table;
 
@@ -64,6 +74,19 @@ namespace ontologenius {
 
   private:
     index_t index_;
+    bool hidden_;
+  };
+
+  class InferenceRuleNode
+  {
+  public:
+    InferenceRuleNode(const std::string& rule) : rule_(rule)
+    {}
+
+    std::string getRule() const { return rule_; }
+
+  private:
+    std::string rule_;
   };
 
 } // namespace ontologenius

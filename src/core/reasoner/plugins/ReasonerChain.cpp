@@ -19,10 +19,13 @@ namespace ontologenius {
   void ReasonerChain::postReason()
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    const std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
     for(auto* indiv : ontology_->individual_graph_.get())
-      if((indiv->updated_ == true) || (indiv->flags_.find("chain") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
+      if(first_run_ ||
+         (indiv->isUpdated() && (indiv->same_as_.isUpdated() || indiv->object_relations_.isUpdated())) ||
+         (indiv->flags_.find("chain") != indiv->flags_.end()) ||
+         indiv->hasUpdatedObjectRelation())
       {
         bool has_active_chain = false;
         // /!\ Do not use a for each loop style.
@@ -47,7 +50,7 @@ namespace ontologenius {
                 local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
                 for(auto& used : end_indivs)
                 {
-                  if(!relationExists(indiv, chain.back(), used.first))
+                  if(ontology_->individual_graph_.relationExists(indiv, chain.back(), used.first) == false)
                   {
                     int index = -1;
                     try
@@ -90,6 +93,8 @@ namespace ontologenius {
         else
           indiv->flags_.erase("chain");
       }
+
+    first_run_ = false;
   }
 
   void ReasonerChain::getUpPtrChain(ObjectPropertyBranch* branch, std::unordered_set<ObjectPropertyBranch*>& res)
@@ -147,21 +152,6 @@ namespace ontologenius {
         }
       }
     }
-  }
-
-  bool ReasonerChain::relationExists(IndividualBranch* indiv_on, ObjectPropertyBranch* chain_prop, IndividualBranch* chain_indiv)
-  {
-    for(auto& relation : indiv_on->object_relations_)
-    {
-      if(relation.second->get() == chain_indiv->get())
-      {
-        std::unordered_set<ObjectPropertyBranch*> down_properties;
-        ontology_->object_property_graph_.getDownPtr(chain_prop, down_properties);
-        if(down_properties.find(relation.first) != down_properties.end())
-          return true;
-      }
-    }
-    return false;
   }
 
   std::string ReasonerChain::getName()

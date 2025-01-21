@@ -17,6 +17,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 #include "ontologenius/core/utility/error_code.h"
@@ -28,11 +29,13 @@ namespace ontologenius {
                                        ObjectPropertyGraph* object_property_graph,
                                        DataPropertyGraph* data_property_graph,
                                        IndividualGraph* individual_graph,
-                                       AnonymousClassGraph* anonymous_graph) : OntologyReader(class_graph,
-                                                                                              object_property_graph,
-                                                                                              data_property_graph,
-                                                                                              individual_graph,
-                                                                                              anonymous_graph),
+                                       AnonymousClassGraph* anonymous_graph,
+                                       RuleGraph* rule_graph) : OntologyReader(class_graph,
+                                                                               object_property_graph,
+                                                                               data_property_graph,
+                                                                               individual_graph,
+                                                                               anonymous_graph,
+                                                                               rule_graph),
                                                                                double_reg_(R"(^[-+]?\d+\.\d+[eE][-+]?\d+$)"),
                                                                                decimal_reg_(R"(^[-+]?\d*\.\d+$)"),
                                                                                integer_reg_(R"(^[-+]?\d+$)")

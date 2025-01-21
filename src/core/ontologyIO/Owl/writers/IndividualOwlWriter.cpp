@@ -81,7 +81,7 @@ namespace ontologenius {
       if(relation.inferred == false)
       {
         const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-        const std::string tmp = "        <" +
+        const std::string tmp = "        <onto:" +
                                 relation.first->value() +
                                 proba +
                                 " rdf:resource=\"" + ns_ + "#" +
@@ -97,7 +97,7 @@ namespace ontologenius {
       if(relation.inferred == false)
       {
         const std::string proba = (relation < 1.0) ? " onto:probability=\"" + std::to_string(relation.probability) + "\"" : "";
-        const std::string tmp = "        <" +
+        const std::string tmp = "        <onto:" +
                                 relation.first->value() +
                                 proba +
                                 " rdf:datatype=\"" +
@@ -106,7 +106,7 @@ namespace ontologenius {
                                 relation.second->type_ +
                                 "\">" +
                                 relation.second->value_ +
-                                "</" +
+                                "</onto:" +
                                 relation.first->value() +
                                 ">\n";
         writeString(tmp);
