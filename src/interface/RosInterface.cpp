@@ -38,6 +38,7 @@ namespace ontologenius {
     onto_->setDisplay(display_);
     reasoners_.link(onto_);
     feeder_.link(onto_);
+    subscriber_.link(onto_);
     sparql_.link(onto_);
 
     // n_.setCallbackQueue(&callback_queue_);
