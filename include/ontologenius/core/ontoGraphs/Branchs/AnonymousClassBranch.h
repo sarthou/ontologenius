@@ -33,12 +33,12 @@ namespace ontologenius {
   enum BuiltinType_e
   {
     builtin_none,
-    greaterThan,
-    greaterThanOrEqual,
-    lessThan,
-    lessThanOrEqual,
+    greater_than,
+    greater_than_or_equal,
+    less_than,
+    less_than_or_equal,
     equal,
-    notEqual
+    not_equal
   };
 
   struct Builtin_t
@@ -51,27 +51,27 @@ namespace ontologenius {
                                                                                    builtin_str_(builtin_str)
     {}
 
-    std::string builtinToString()
+    std::string builtinToString() const
     {
       std::string builtin_name;
       switch(this->builtin_type_)
       {
-      case greaterThan:
+      case greater_than:
         builtin_name = "greaterThan";
         break;
-      case greaterThanOrEqual:
+      case greater_than_or_equal:
         builtin_name = "greaterThanOrEqual";
         break;
-      case lessThan:
+      case less_than:
         builtin_name = "lessThan";
         break;
-      case lessThanOrEqual:
+      case less_than_or_equal:
         builtin_name = "lessThanOrEqual";
         break;
       case equal:
         builtin_name = "equal";
         break;
-      case notEqual:
+      case not_equal:
         builtin_name = "notEqual";
         break;
       default:

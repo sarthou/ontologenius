@@ -55,7 +55,7 @@ namespace ontologenius {
 
   void ReasonerRule::resolveHead(const std::vector<RuleTriplet_t>& atoms, RuleResult_t& solution, RuleBranch* rule)
   {
-    for(auto& atom : atoms)
+    for(const auto& atom : atoms)
     {
       switch(atom.atom_type_)
       {
@@ -107,7 +107,7 @@ namespace ontologenius {
 
   void ReasonerRule::addInferredClassAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule) // maybe not const since we mark the updates
   {
-    IndividualBranch* involved_indiv;
+    IndividualBranch* involved_indiv = nullptr;
 
     if(triplet.subject.is_variable && (solution.assigned_result[triplet.subject.variable_id] != 0))
       involved_indiv = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
@@ -153,8 +153,8 @@ namespace ontologenius {
 
   void ReasonerRule::addInferredObjectAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule)
   {
-    IndividualBranch* involved_indiv_from;
-    IndividualBranch* involved_indiv_on;
+    IndividualBranch* involved_indiv_from = nullptr;
+    IndividualBranch* involved_indiv_on = nullptr;
 
     if(triplet.subject.is_variable && (solution.assigned_result[triplet.subject.variable_id] != 0))
       involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
@@ -197,8 +197,8 @@ namespace ontologenius {
 
   void ReasonerRule::addInferredDataAtom(const RuleTriplet_t& triplet, RuleResult_t& solution, RuleBranch* rule)
   {
-    IndividualBranch* involved_indiv_from;
-    LiteralNode* involved_literal_on;
+    IndividualBranch* involved_indiv_from = nullptr;
+    LiteralNode* involved_literal_on = nullptr;
 
     if(triplet.subject.is_variable && (solution.assigned_result[triplet.subject.variable_id] != 0))
       involved_indiv_from = ontology_->individual_graph_.findBranch(solution.assigned_result[triplet.subject.variable_id]);
@@ -299,7 +299,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::resolveAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
+  void ReasonerRule::resolveAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
     switch(triplet.atom_type_)
     {
@@ -320,7 +320,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::resolveClassAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
+  void ReasonerRule::resolveClassAtom(const RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
     // std::cout << "Resolving Class atom : " << triplet.toString() << std::endl;
     var_index = triplet.subject.variable_id;
@@ -345,7 +345,7 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, IndivResult_t prev, ClassBranch* main_class_predicate)
+  void ReasonerRule::getType(ClassBranch* class_selector, std::vector<IndivResult_t>& res, const IndivResult_t& prev, ClassBranch* main_class_predicate)
   {
     if(main_class_predicate == nullptr) // set the main_class_predicate only for the first function call
       main_class_predicate = class_selector;
@@ -426,7 +426,7 @@ namespace ontologenius {
     return res;
   }
 
-  void ReasonerRule::resolveObjectAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
+  void ReasonerRule::resolveObjectAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
     // std::cout << "Resolving Object atom : " << triplet.toString() << std::endl;
     if(!triplet.subject.is_variable && !triplet.object.is_variable)
@@ -469,7 +469,7 @@ namespace ontologenius {
     }
   }
 
-  std::vector<IndivResult_t> ReasonerRule::getFromObject(RuleTriplet_t& triplet)
+  std::vector<IndivResult_t> ReasonerRule::getFromObject(const RuleTriplet_t& triplet)
   {
     std::vector<IndivResult_t> res;
 
@@ -523,7 +523,7 @@ namespace ontologenius {
     return res;
   }
 
-  std::vector<IndivResult_t> ReasonerRule::getOnObject(RuleTriplet_t& triplet, index_t selector)
+  std::vector<IndivResult_t> ReasonerRule::getOnObject(const RuleTriplet_t& triplet, index_t selector)
   {
     std::vector<IndivResult_t> res;
     IndividualBranch* indiv = triplet.subject.indiv_value;
@@ -560,6 +560,7 @@ namespace ontologenius {
             for(size_t j = 0; j < selector_ptr->same_as_.size(); j++)
               if(relations.at(i).second == selector_ptr->same_as_[j].elem)
               {
+                IndivResult_t local_res;
                 local_res.indiv = relations.at(i).second;
 
                 if(selector_ptr != selector_ptr->same_as_[j].elem)
@@ -612,6 +613,7 @@ namespace ontologenius {
               for(size_t j = 0; j < selector_ptr->same_as_.size(); j++)
                 if(relations.at(i).second == selector_ptr->same_as_[j].elem)
                 {
+                  IndivResult_t local_res;
                   local_res.indiv = relations.at(i).second;
 
                   if(same != indiv)
@@ -632,7 +634,7 @@ namespace ontologenius {
     return res;
   }
 
-  void ReasonerRule::resolveDataAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
+  void ReasonerRule::resolveDataAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
     if(!triplet.subject.is_variable && !triplet.object.is_variable)
     {
@@ -674,7 +676,7 @@ namespace ontologenius {
     }
   }
 
-  std::vector<IndivResult_t> ReasonerRule::getFromData(RuleTriplet_t& triplet)
+  std::vector<IndivResult_t> ReasonerRule::getFromData(const RuleTriplet_t& triplet)
   {
     std::vector<IndivResult_t> res;
 
@@ -698,7 +700,7 @@ namespace ontologenius {
     return res;
   }
 
-  std::vector<IndivResult_t> ReasonerRule::getOnData(RuleTriplet_t& triplet, index_t selector)
+  std::vector<IndivResult_t> ReasonerRule::getOnData(const RuleTriplet_t& triplet, index_t selector)
   {
     std::vector<IndivResult_t> res;
     IndividualBranch* indiv = triplet.subject.indiv_value;
@@ -751,10 +753,10 @@ namespace ontologenius {
     return res;
   }
 
-  void ReasonerRule::resolveBuiltinAtom(RuleTriplet_t triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
+  void ReasonerRule::resolveBuiltinAtom(RuleTriplet_t& triplet, std::vector<index_t>& accu, int64_t& var_index, std::vector<IndivResult_t>& values)
   {
-    LiteralNode* subject_ptr;
-    LiteralNode* object_ptr;
+    LiteralNode* subject_ptr = nullptr;
+    LiteralNode* object_ptr = nullptr;
     IndivResult_t res;
 
     var_index = triplet.subject.variable_id;
@@ -810,17 +812,17 @@ namespace ontologenius {
 
       switch(builtin_type)
       {
-      case greaterThan:
+      case greater_than:
         return subject_cast > object_cast;
-      case greaterThanOrEqual:
+      case greater_than_or_equal:
         return subject_cast >= object_cast;
-      case lessThan:
+      case less_than:
         return subject_cast < object_cast;
-      case lessThanOrEqual:
+      case less_than_or_equal:
         return subject_cast <= object_cast;
       case equal:
         return subject_cast == object_cast;
-      case notEqual:
+      case not_equal:
         return subject_cast != object_cast;
       default:
         std::cout << "Unsupported builtin type : " << builtin_type << "for numerical arguments" << std::endl;
@@ -840,7 +842,7 @@ namespace ontologenius {
     {
     case equal:
       return subject->value() == object->value();
-    case notEqual:
+    case not_equal:
       return subject->value() != object->value();
     default:
       std::cout << "Unsupported builtin type : " << builtin_type << "for string arguments" << std::endl;

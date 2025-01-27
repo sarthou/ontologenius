@@ -98,7 +98,6 @@ namespace ontologenius {
     void readRuleCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
 
     void readRuleCollection(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect);
-    void readSwrlVariable(TiXmlElement* elem);
     void readSwrlRule(TiXmlElement* elem);
     std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleAtom(TiXmlElement* elem, const std::string& type_atom);
     std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleClassAtom(TiXmlElement* elem);

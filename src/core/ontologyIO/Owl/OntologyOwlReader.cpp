@@ -21,7 +21,6 @@
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
-#include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
@@ -332,24 +331,15 @@ namespace ontologenius {
     if(description_type == nullptr)
       return;
 
-    auto* description_type_resource = description_type->Attribute("rdf:resource");
+    const auto* description_type_resource = description_type->Attribute("rdf:resource");
     std::string description_type_resource_name = getName(std::string(description_type_resource));
 
     if(description_type_resource_name == "AllDisjointClasses")
       readDisjoint(elem, true);
     else if(description_type_resource_name == "AllDisjointProperties")
       readDisjoint(elem, false);
-    else if(description_type_resource_name == "Variable")
-      readSwrlVariable(elem);
     else if(description_type_resource_name == "Imp")
       readSwrlRule(elem);
-  }
-
-  void OntologyOwlReader::readSwrlVariable(TiXmlElement* elem)
-  {
-    const char* attr_var = elem->Attribute("rdf:about");
-    // if(attr_var != nullptr)
-    //   rule_vector.variables.push_back(getName(std::string(attr_var)));
   }
 
   void OntologyOwlReader::readSwrlRule(TiXmlElement* elem)
@@ -372,7 +362,7 @@ namespace ontologenius {
     TiXmlElement* member_elem = elem->FirstChildElement("owl:members");
     if(member_elem != nullptr)
     {
-      auto* parse_type_member = member_elem->Attribute("rdf:parseType");
+      const auto* parse_type_member = member_elem->Attribute("rdf:parseType");
       if(parse_type_member != nullptr)
       {
         std::string parse_type = std::string(parse_type_member);

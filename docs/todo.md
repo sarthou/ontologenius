@@ -22,3 +22,4 @@
 [ ] add Builtins to perform computations between datatype values (swrl)
 [ ] reorganize the atoms in the antecedents for better performances (swrl)
 [ ] cardinality restriction -> add unqualified restriction (anonymous)
+[ ] adding variable property atom and indiv creation for dispositional match (swrl)

@@ -1,10 +1,11 @@
-#include <cstddef>
 #include <iostream>
 #include <string>
 #include <tinyxml.h>
 #include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
@@ -238,7 +239,6 @@ namespace ontologenius {
 
   std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleBuiltinAtom(TiXmlElement* elem)
   {
-    // std::cout << "BuiltinAtom" << std::endl;
     std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
 
@@ -250,17 +250,17 @@ namespace ontologenius {
       std::string builtin_name = getName(std::string(builtin_type));
 
       if(builtin_name == "greaterThan")
-        temp_exp->builtin_ = Builtin_t(greaterThan, builtin_name);
+        temp_exp->builtin_ = Builtin_t(greater_than, builtin_name);
       else if(builtin_name == "greaterThanOrEqual")
-        temp_exp->builtin_ = Builtin_t(greaterThanOrEqual, builtin_name);
+        temp_exp->builtin_ = Builtin_t(greater_than_or_equal, builtin_name);
       else if(builtin_name == "lessThan")
-       temp_exp->builtin_ = Builtin_t(lessThan, builtin_name);
+        temp_exp->builtin_ = Builtin_t(less_than, builtin_name);
       else if(builtin_name == "lessThanOrEqual")
-        temp_exp->builtin_ = Builtin_t(lessThanOrEqual, builtin_name);
+        temp_exp->builtin_ = Builtin_t(less_than_or_equal, builtin_name);
       else if(builtin_name == "equal")
-       temp_exp->builtin_ = Builtin_t(equal, builtin_name);
+        temp_exp->builtin_ = Builtin_t(equal, builtin_name);
       else if(builtin_name == "notEqual")
-        temp_exp->builtin_ = Builtin_t(notEqual, builtin_name);
+        temp_exp->builtin_ = Builtin_t(not_equal, builtin_name);
       else
       {
         temp_exp->builtin_ = Builtin_t(builtin_none, "none");
