@@ -1,6 +1,5 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerAnonymous.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <mutex>
 #include <pluginlib/class_list_macros.hpp>
@@ -17,6 +16,8 @@
 #include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/graphical/Display.h"
 
+// #define DEBUG
+
 namespace ontologenius {
 
   ReasonerAnonymous::ReasonerAnonymous() : standard_mode_(false)
@@ -32,86 +33,135 @@ namespace ontologenius {
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
-    const std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_data_prop(ontology_->data_property_graph_.mutex_);
+
     std::vector<std::pair<std::string, InheritedRelationTriplets*>> used;
 
     for(auto* indiv : ontology_->individual_graph_.get())
     {
-      if((indiv->updated_ == true) || (indiv->flags_.find("equiv") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
+      if(first_run_ ||
+         indiv->isUpdated() ||
+         (indiv->flags_.find("equiv") != indiv->flags_.end()) ||
+         indiv->hasUpdatedObjectRelation() ||
+         indiv->hasUpdatedDataRelation() ||
+         indiv->hasUpdatedInheritanceRelation())
       {
         bool has_active_equiv = false;
 
         // Loop over every classes which includes equivalence relations
-        for(auto* anonymous : ontology_->anonymous_graph_.get())
+        for(auto* anonymous_branch : ontology_->anonymous_graph_.get())
         {
-          bool tree_evaluation_result = false;
-          const bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous](const auto& is_a) { return is_a.elem == anonymous->class_equiv_; });
+          bool trees_evaluation_result = false;
+          bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch](const auto& is_a) { return is_a.elem == anonymous_branch->class_equiv_; });
 
-          if(is_already_a || checkClassesDisjointess(indiv, anonymous->class_equiv_) == false)
+          if(is_already_a || checkClassesDisjointess(indiv, anonymous_branch->class_equiv_) == false)
           {
             // Loop over every equivalence relations corresponding to one class
-            for(auto* anonymous_branch : anonymous->ano_elems_)
+            for(auto* anonymous_elem : anonymous_branch->ano_elems_)
             {
-              bool tree_first_layer_result = true;
-              if(is_already_a == false)
-                tree_first_layer_result = resolveFirstLayer(indiv, anonymous_branch);
-              has_active_equiv = has_active_equiv || tree_first_layer_result;
+#ifdef DEBUG
+              computeDebugUpdate(indiv, anonymous_elem);
+#endif
 
-              if(tree_first_layer_result == true)
+              if(is_already_a)
               {
-                used.clear();
-                used.reserve(anonymous->depth_);
-                tree_evaluation_result = resolveTree(indiv, anonymous_branch, used);
+                const bool inferred_by_me = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch, anonymous_elem](const auto& is_a) {
+                  return ((is_a.elem == anonymous_branch->class_equiv_) && (is_a.used_rule == anonymous_elem));
+                });
+                if(inferred_by_me == false)
+                {
+                  is_already_a = false;
+                  break;
+                }
               }
 
-              if(has_active_equiv && tree_evaluation_result)
+              std::string equiv_flag = "equiv_" + anonymous_elem->ano_name;
+
+              if((indiv->flags_.find(equiv_flag) != indiv->flags_.end()) || // already validated at least one member of an ano expression
+                 ((indiv->isUpdated() == true) &&                           // indiv has been updated -> new individual
+                  ((anonymous_elem->involves_class && indiv->is_a_.isUpdated()) ||
+                   (anonymous_elem->involves_object_property && indiv->object_relations_.isUpdated()) ||
+                   (anonymous_elem->involves_data_property && indiv->data_relations_.isUpdated()) ||
+                   (anonymous_elem->involves_individual && indiv->same_as_.isUpdated()))))
               {
-                if(ontology_->individual_graph_.conditionalPushBack(indiv->is_a_, ClassElement(anonymous->class_equiv_, 1.0, true)))
+                bool tree_first_layer_result = true;
+                bool current_tree_result = false;
+
+                if(is_already_a == false)
+                  tree_first_layer_result = resolveFirstLayer(indiv, anonymous_elem);
+                has_active_equiv = has_active_equiv || tree_first_layer_result;
+
+                if(tree_first_layer_result == true)
                 {
-                  if(ontology_->individual_graph_.conditionalPushBack(anonymous->class_equiv_->individual_childs_, IndividualElement(indiv, 1.0, true)))
-                  {
-                    indiv->nb_updates_++;
-                    anonymous->class_equiv_->nb_updates_++;
-                    indiv->is_a_.back().explanation.reserve(used.size());
-
-                    for(auto& induced_vector : used)
-                    {
-                      indiv->is_a_.back().explanation.push_back(induced_vector.first);
-                      // check for nullptr because OneOf returns a (string, nullptr)
-                      if(induced_vector.second != nullptr)
-                      {
-                        if(induced_vector.second->exist(indiv, nullptr, anonymous->class_equiv_) == false)
-                        {
-                          induced_vector.second->push(indiv, nullptr, anonymous->class_equiv_);
-                          indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
-                        }
-                      }
-                    }
-
-                    nb_update++;
-                    explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous->class_equiv_->value(),
-                                               "[ADD]" + indiv->is_a_.back().getExplanation());
-                  }
+                  indiv->flags_[equiv_flag] = {};
+                  used.clear();
+                  used.reserve(anonymous_branch->depth_);
+                  current_tree_result = resolveTree(indiv, anonymous_elem, used);
+                  trees_evaluation_result = trees_evaluation_result || current_tree_result;
                 }
-                // once we get a valid equivalence for a class, we break out of the loop
-                break;
+                else
+                  indiv->flags_.erase(equiv_flag);
+
+                if(has_active_equiv && current_tree_result)
+                {
+                  if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
+                  {
+                    addInferredInheritance(indiv, anonymous_branch, anonymous_elem, used);
+                    nb_update++;
+                    if(anonymous_branch->class_equiv_->isHidden() == false)
+                    {
+                      explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
+                                                 "[ADD]" + indiv->is_a_.back().getExplanation());
+                    }
+                  }
+                  // once we get a valid equivalence for a class, we break out of the loop
+                  break;
+                }
               }
             }
           }
-
-          // Manages implicitly the NOT, MIN, MAX, EXACTLY cases
-          if(tree_evaluation_result == false && anonymous->ano_elems_.empty() == false && ontology_->individual_graph_.isA(indiv, anonymous->class_equiv_->get()) == true)
+          // used to remove inheritance in case an individual previously inferred does not check any of the expressions after updates
+          if(trees_evaluation_result == false && anonymous_branch->ano_elems_.empty() == false && is_already_a)
           {
             indiv->nb_updates_++;
-            anonymous->class_equiv_->nb_updates_++;
-            ontology_->individual_graph_.removeInheritage(indiv, anonymous->class_equiv_, explanations_, true);
+            anonymous_branch->class_equiv_->nb_updates_++;
+            ontology_->individual_graph_.removeInheritage(indiv, anonymous_branch->class_equiv_, explanations_, true);
           }
         }
-
         if(has_active_equiv)
           indiv->flags_["equiv"] = {};
         else
           indiv->flags_.erase("equiv");
+      }
+    }
+
+    first_run_ = false;
+  }
+
+  void ReasonerAnonymous::addInferredInheritance(IndividualBranch* indiv,
+                                                 AnonymousClassBranch* anonymous_branch,
+                                                 AnonymousClassElement* element,
+                                                 const std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    indiv->is_a_.emplaceBack(anonymous_branch->class_equiv_, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
+    anonymous_branch->class_equiv_->individual_childs_.emplace_back(IndividualElement(indiv, 1.0, true));
+
+    indiv->nb_updates_++;
+    anonymous_branch->class_equiv_->nb_updates_++;
+
+    for(const auto& induced_vector : used)
+    {
+      indiv->is_a_.back().explanation.push_back(induced_vector.first);
+      indiv->is_a_.back().used_rule = element;
+      // check for nullptr because OneOf returns a (string, nullptr)
+      if(induced_vector.second != nullptr)
+      {
+        if(induced_vector.second->exist(indiv, nullptr, anonymous_branch->class_equiv_) == false)
+        {
+          induced_vector.second->push(indiv, nullptr, anonymous_branch->class_equiv_);
+          indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
+        }
       }
     }
   }
@@ -144,36 +194,32 @@ namespace ontologenius {
       return false;
   }
 
-  int ReasonerAnonymous::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  bool ReasonerAnonymous::checkValue(IndividualBranch* indiv_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    std::unordered_set<ObjectPropertyBranch*> down_properties;
     std::string explanation;
-    ontology_->object_property_graph_.getDownPtr(property, down_properties);
+    auto* indiv_range = ano_elem->individual_involved_;
+    const size_t same_size = indiv_from->same_as_.size();
 
-    const size_t relation_size = indiv_from->object_relations_.size();
-    const size_t same_size = indiv_on->same_as_.size();
-    for(size_t i = 0; i < relation_size; i++)
+    for(size_t j = 0; j < same_size; j++)
     {
-      for(size_t j = 0; j < same_size; j++)
+      if(indiv_from->same_as_[j].elem->get() == indiv_range->get())
       {
-        if(indiv_from->object_relations_[i].second->get() == indiv_on->same_as_[j].elem->get())
-        {
-          if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
-          {
-            explanation = indiv_on->value() + "|sameAs|" + indiv_on->same_as_[j].elem->value();
-            used.emplace_back(explanation, indiv_on->same_as_.has_induced_inheritance_relations[j]);
-            return (int)i;
-          }
-        }
-      }
-
-      if(indiv_from->object_relations_[i].second->get() == indiv_on->get())
-      {
-        if(down_properties.find(indiv_from->object_relations_[i].first) != down_properties.end())
-          return (int)i;
+        explanation = indiv_from->value() + "|sameAs|" + indiv_range->value();
+        used.emplace_back(explanation, indiv_from->same_as_.has_induced_inheritance_relations[j]);
+        return true;
       }
     }
-    return -1;
+
+    if(indiv_from->get() == indiv_range->get())
+      return true;
+
+    return false;
+  }
+
+  bool ReasonerAnonymous::checkValue(LiteralNode* literal_from, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    (void)used;
+    return (literal_from->get() == ano_elem->card_.card_range_->get());
   }
 
   bool ReasonerAnonymous::resolveFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
@@ -189,7 +235,12 @@ namespace ontologenius {
       return false;
     }
     else if(ano_elem->logical_type_ == logical_not)
-      return !resolveFirstLayer(indiv, ano_elem->sub_elements_.front());
+    {
+      if(standard_mode_ == true)                                                         // OWA
+        return resolveDisjunctionTreeFirstLayer(indiv, ano_elem->sub_elements_.front()); // need to make a version without the 'used' vector
+      else                                                                               // CWA
+        return !resolveFirstLayer(indiv, ano_elem->sub_elements_.front());
+    }
     else
       return checkRestrictionFirstLayer(indiv, ano_elem);
     return false;
@@ -256,12 +307,74 @@ namespace ontologenius {
     {
       // do smth with used (maybe pass a tmp_used)
       if(standard_mode_ == true)
-        return false;
+        return resolveDisjunctionTree(indiv, ano_elem->sub_elements_.front(), used);
       else
-        return !resolveTree(indiv, ano_elem->sub_elements_.front(), used);
+        return !resolveTree(indiv, ano_elem->sub_elements_.front(), used); // CWA
     }
     else
       return checkRestriction(indiv, ano_elem, used);
+
+    return false;
+  }
+
+  bool ReasonerAnonymous::resolveDisjunctionTree(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
+  {
+    // works for class and class expression on object property range, not for data property
+    // do we need to take into account the used, since disjointness isn't dynamic
+    // check the disjunctions between the indiv and the class elements in the ano_elem tree (not( Lidar and Sonar))
+    if(ano_elem->logical_type_ == logical_and)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTree(indiv, elem, used) == false) // if false, one of the classes is not disjunctive, and thus the eq is not verif
+        {
+          used.clear();
+          return false;
+        }
+      }
+      return true;
+    }
+    else if(ano_elem->logical_type_ == logical_or)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTree(indiv, elem, used) == true) // if true, at least one in the or expression is disjoint, so eq is verif
+          return true;
+      }
+      used.clear();
+      return false;
+    }
+    else if(ano_elem->class_involved_ != nullptr)
+      return checkClassesDisjointess(indiv, ano_elem->class_involved_); // actual check of disjointness
+
+    return false;
+  }
+
+  bool ReasonerAnonymous::resolveDisjunctionTreeFirstLayer(IndividualBranch* indiv, AnonymousClassElement* ano_elem)
+  {
+    // works for class and class expression on object property range, not for data property
+    // do we need to take into account the used, since disjointness isn't dynamic
+    // check the disjunctions between the indiv and the class elements in the ano_elem tree (not( Lidar and Sonar))
+    if(ano_elem->logical_type_ == logical_and)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTreeFirstLayer(indiv, elem) == false)
+          return false;
+      }
+      return true;
+    }
+    else if(ano_elem->logical_type_ == logical_or)
+    {
+      for(auto* elem : ano_elem->sub_elements_)
+      {
+        if(resolveDisjunctionTreeFirstLayer(indiv, elem) == true)
+          return true;
+      }
+      return false;
+    }
+    else if(ano_elem->class_involved_ != nullptr)
+      return checkClassesDisjointess(indiv, ano_elem->class_involved_); // actual check of disjointness
 
     return false;
   }
@@ -486,11 +599,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -501,17 +609,9 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkMaxCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -527,11 +627,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -542,17 +637,9 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkExactlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -568,11 +655,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -583,17 +665,9 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkOnlyCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
@@ -609,11 +683,6 @@ namespace ontologenius {
           used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -623,11 +692,6 @@ namespace ontologenius {
         for(auto& index : indexes)
           used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
-      }
-      else
-      {
-        used.clear();
-        return false;
       }
     }
     used.clear();
@@ -646,11 +710,6 @@ namespace ontologenius {
         used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
@@ -660,37 +719,37 @@ namespace ontologenius {
         used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
         return true;
       }
-      else
-      {
-        used.clear();
-        return false;
-      }
     }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   bool ReasonerAnonymous::checkValueCard(IndividualBranch* indiv, AnonymousClassElement* ano_elem, std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    int index = -1;
+    std::pair<std::string, int> index;
     std::string explanation;
 
-    index = relationExists(indiv, ano_elem->object_property_involved_, ano_elem->individual_involved_, used);
+    if(ano_elem->object_property_involved_ != nullptr)
+    {
+      index = checkValueCard(indiv->object_relations_.relations, ano_elem, used);
+      if(index.second != -1)
+      {
+        used.emplace_back(indiv->value() + "|" + index.first, indiv->object_relations_.has_induced_inheritance_relations[index.second]);
+        return true;
+      }
+    }
+    else if(ano_elem->data_property_involved_ != nullptr)
+    {
+      index = checkValueCard(indiv->data_relations_.relations, ano_elem, used);
+      if(index.second != -1)
+      {
+        used.emplace_back(indiv->value() + "|" + index.first, indiv->data_relations_.has_induced_inheritance_relations[index.second]);
+        return true;
+      }
+    }
 
-    if(index != -1)
-    {
-      explanation = indiv->value() + "|" + ano_elem->object_property_involved_->value() + "|" + ano_elem->individual_involved_->value();
-      used.emplace_back(explanation, indiv->object_relations_.has_induced_inheritance_relations[index]);
-      return true;
-    }
-    else
-    {
-      used.clear();
-      return false;
-    }
+    used.clear();
+    return false;
   }
 
   std::string ReasonerAnonymous::getName()

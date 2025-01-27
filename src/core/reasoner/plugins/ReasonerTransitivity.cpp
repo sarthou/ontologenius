@@ -20,10 +20,13 @@ namespace ontologenius {
   void ReasonerTransitivity::postReason()
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
-    const std::lock_guard<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_prop(ontology_->object_property_graph_.mutex_);
 
     for(auto* indiv : ontology_->individual_graph_.get())
-      if((indiv->updated_ == true) || (indiv->flags_.find("transi") != indiv->flags_.end()) || indiv->hasUpdatedObjectRelation())
+      if(first_run_ ||
+         (indiv->isUpdated() && (indiv->same_as_.isUpdated() || indiv->object_relations_.isUpdated())) ||
+         (indiv->flags_.find("transi") != indiv->flags_.end()) ||
+         indiv->hasUpdatedObjectRelation())
       {
         bool has_active_transitivity = false;
         // /!\ Do not use a for each loop style.
@@ -46,7 +49,7 @@ namespace ontologenius {
               local_used.emplace_back(indiv->value() + "|" + base_property->value() + "|" + indiv->object_relations_[rel_i].second->value(), indiv->object_relations_.has_induced_object_relations[rel_i]);
               for(auto& used : end_indivs)
               {
-                if(!relationExists(indiv, property, used.first))
+                if(ontology_->individual_graph_.relationExists(indiv, property, used.first) == false)
                 {
                   int index = -1;
                   try
@@ -88,6 +91,8 @@ namespace ontologenius {
         else
           indiv->flags_.erase("transi");
       }
+
+    first_run_ = false;
   }
 
   void ReasonerTransitivity::getUpPtrTransitive(ObjectPropertyBranch* branch, std::unordered_set<ObjectPropertyBranch*>& res)
@@ -146,21 +151,6 @@ namespace ontologenius {
         }
       }
     }
-  }
-
-  bool ReasonerTransitivity::relationExists(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on)
-  {
-    for(auto& relation : indiv_from->object_relations_)
-    {
-      if(relation.second->get() == indiv_on->get())
-      {
-        std::unordered_set<ObjectPropertyBranch*> down_properties;
-        ontology_->object_property_graph_.getDownPtr(property, down_properties);
-        if(down_properties.find(relation.first) != down_properties.end())
-          return true;
-      }
-    }
-    return false;
   }
 
   std::string ReasonerTransitivity::getName()

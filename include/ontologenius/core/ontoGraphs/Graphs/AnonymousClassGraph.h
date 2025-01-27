@@ -16,7 +16,7 @@ namespace ontologenius {
     {
       std::string res;
       if(cardinality_type.empty() == false)
-        res += cardinality_type + " ";
+        res += " " + cardinality_type + " ";
       if(cardinality_number.empty() == false)
         res += cardinality_number + " ";
       if(cardinality_range.empty() == false)
@@ -41,7 +41,7 @@ namespace ontologenius {
       std::string res;
 
       if(!property.empty())
-        res += property + " ";
+        res += property;
 
       res += card.toString();
 
@@ -76,6 +76,9 @@ namespace ontologenius {
     bool is_complex;
     bool is_data_property;
 
+    // for SWRL rule use only
+    Builtin_t builtin_;
+
     Restriction_t rest; // Restriction (e.g hasComponent some Camera)
     std::vector<ExpressionMember_t*> child_members;
     ExpressionMember_t* mother;
@@ -85,11 +88,13 @@ namespace ontologenius {
                            is_complex(false), is_data_property(false),
                            mother(nullptr) {}
 
-    std::string toString() const
+    std::string toString()
     {
       std::string str_equivalence;
 
-      if(child_members.empty())
+      if(builtin_.builtin_type_ != builtin_none)
+        str_equivalence = builtin_.builtinToString();
+      else if(child_members.empty())
         str_equivalence = rest.toString();
       else if(logical_type_ == logical_not)
         str_equivalence = "not (" + child_members.front()->toString() + ")";
@@ -156,10 +161,10 @@ namespace ontologenius {
                         DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph);
     ~AnonymousClassGraph() override = default;
 
-    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf);
-    void update(ExpressionMember_t* exp, AnonymousClassElement* ano_class);
-    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth);
+    AnonymousClassElement* createElement(ExpressionMember_t* exp_leaf, AnonymousClassElement* root_node = nullptr);
+    AnonymousClassElement* createTree(ExpressionMember_t* member_node, size_t& depth, AnonymousClassElement* root_node = nullptr);
     AnonymousClassBranch* add(const std::string& value, AnonymousClassVectors_t& ano_class);
+    AnonymousClassBranch* addHiddenRuleElem(const size_t& rule_id, const size_t& elem_id, ExpressionMember_t* ano_expression); // for rule usage
     AnonymousClassElement* resolveTree(AnonymousClassElement* elem, bool prev_and);
 
     void printTree(AnonymousClassElement* ano_elem, size_t level, bool root) const;

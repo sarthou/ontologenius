@@ -46,10 +46,12 @@
 
 *.pyc
 catalog-v*
+*.vb
 
 # VsCode files
 settings.json
 launch.json
+tasks.json
 
 # CMake
 *.cmake

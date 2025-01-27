@@ -79,24 +79,29 @@ namespace ontologenius {
     std::unordered_set<index_t> getDomainOf(index_t individual, int depth = -1);
     std::unordered_set<std::string> getRangeOf(const std::string& individual, int depth = -1);
     std::unordered_set<index_t> getRangeOf(index_t individual, int depth = -1);
-    std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1); // C3
-    std::unordered_set<index_t> getUp(index_t individual, int depth = -1);
+    std::unordered_set<std::string> getUp(const std::string& individual, int depth = -1, bool use_hidden = true); // C3
+    std::unordered_set<index_t> getUp(index_t individual, int depth = -1, bool use_hidden = true);
     std::unordered_set<std::string> select(const std::unordered_set<std::string>& on, const std::string& class_selector);
     std::unordered_set<index_t> select(const std::unordered_set<index_t>& on, index_t class_selector);
 
     std::unordered_set<std::string> getType(const std::string& class_selector, bool single_same = false);
     std::unordered_set<index_t> getType(index_t class_selector, bool single_same = false);
+    std::unordered_set<IndividualBranch*> getType(ClassBranch* class_selector); // for rule usage
     bool isA(const std::string& indiv, const std::string& class_selector);
     bool isA(index_t indiv, index_t class_selector);
     bool isA(IndividualBranch* indiv, const std::string& class_selector);
     bool isA(IndividualBranch* indiv, index_t class_selector);
     bool relationExists(const std::string& param);
     bool relationExists(const std::string& subject, const std::string& property, const std::string& object);
+    bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
+    bool relationExists(IndividualBranch* subject, DataPropertyBranch* property, LiteralNode* object);
 
     bool isInferred(const std::string& param);
     bool isInferredIndex(const std::string& param);
     std::vector<std::string> getInferenceExplanation(const std::string& param);
     std::vector<std::string> getInferenceExplanationIndex(const std::string& param);
+    std::string getInferenceRule(const std::string& param);
+    std::string getInferenceRuleIndex(const std::string& param);
 
     ClassBranch* upgradeToBranch(IndividualBranch* indiv);
     IndividualBranch* findOrCreateBranchSafe(const std::string& name);
@@ -108,8 +113,8 @@ namespace ontologenius {
     bool addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
     bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
     bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
-    int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existance = true);
-    int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false);
+    int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existence = true);
+    int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false, bool check_existence = true);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& indiv_on);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& type, const std::string& data);
     void addRelationInvert(const std::string& indiv_from, const std::string& property, IndividualBranch* indiv_on);
@@ -118,6 +123,7 @@ namespace ontologenius {
     void addSameAs(const std::string& indiv_1, const std::string& indiv_2);
     std::vector<std::pair<std::string, std::string>> removeSameAs(const std::string& indiv_1, const std::string& indiv_2, bool protect_stated = false);
     std::pair<std::vector<std::pair<std::string, std::string>>, bool> removeRelation(IndividualBranch* branch_from, ObjectPropertyBranch* property, IndividualBranch* branch_on, bool protect_stated = false);
+    std::pair<std::vector<std::pair<std::string, std::string>>, bool> removeRelation(IndividualBranch* branch_from, DataPropertyBranch* property, LiteralNode* branch_on, bool protect_stated = false);
     std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& indiv_on);
     std::vector<std::pair<std::string, std::string>> removeRelation(const std::string& indiv_from, const std::string& property, const std::string& type, const std::string& data);
     std::vector<std::pair<std::string, std::string>> removeRelationInverse(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on);
@@ -160,7 +166,7 @@ namespace ontologenius {
     template<typename T>
     void getRelatedOn(const T& property, std::unordered_set<T>& res);
     template<typename T>
-    void getUp(IndividualBranch* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0);
+    void getUp(IndividualBranch* indiv, std::unordered_set<T>& res, int depth = -1, uint32_t current_depth = 0, bool use_hidden = true);
     template<typename T>
     void getRelatedWith(index_t individual, std::unordered_set<T>& res);
     template<typename T>
@@ -184,8 +190,6 @@ namespace ontologenius {
     void getRelationFrom(ClassBranch* class_branch, std::unordered_set<T>& res, int depth = -1);
     bool getRelatedWith(ClassBranch* class_branch, index_t data, std::unordered_set<ClassBranch*>& next_step, std::unordered_set<index_t>& took);
     bool getFrom(ClassBranch* class_branch, const std::unordered_set<index_t>& object_properties, const std::unordered_set<index_t>& data_properties, index_t data, const std::unordered_set<index_t>& down_classes, std::unordered_set<ClassBranch*>& next_step, std::unordered_set<index_t>& do_not_take);
-
-    bool relationExists(IndividualBranch* subject, ObjectPropertyBranch* property, IndividualBranch* object);
 
     template<typename R>
     void getInferenceData(const std::string& param, R& res, const std::function<R(const ProbabilisticElement& elem)>& getter);
@@ -227,7 +231,26 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+      auto tmp = removeRelation(triplet.subject,
+                                triplet.predicate,
+                                triplet.object,
+                                true);
+      if(tmp.second)
+      {
+        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                    triplet.predicate->value() + "|" +
+                                    triplet.object->value(),
+                                  "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
+        explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+      }
+      else
+        i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+    }
+
+    for(size_t i = 0; i < relations.has_induced_data_relations[relation_index]->triplets.size();)
+    {
+      auto triplet = relations.has_induced_data_relations[relation_index]->triplets[i];
       auto tmp = removeRelation(triplet.subject,
                                 triplet.predicate,
                                 triplet.object,
@@ -246,13 +269,12 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
 
       std::vector<std::pair<std::string, std::string>> tmp;
       if(removeInheritage(triplet.subject, triplet.object, tmp, true))
       {
-        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" +
-                                    triplet.object->value(),
+        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|isA|" + triplet.object->value(),
                                   "[DEL]" + indiv_from->value() + "|" + property->value() + "|" + indiv_on->value());
         explanations.insert(explanations.end(), tmp.begin(), tmp.end());
       }
@@ -273,7 +295,26 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+      auto tmp = removeRelation(triplet.subject,
+                                triplet.predicate,
+                                triplet.object,
+                                true);
+      if(tmp.second)
+      {
+        explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                    triplet.predicate->value() + "|" +
+                                    triplet.object->value(),
+                                  "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+        explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+      }
+      else
+        i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+    }
+
+    for(size_t i = 0; i < relations.has_induced_data_relations[relation_index]->triplets.size();)
+    {
+      auto triplet = relations.has_induced_data_relations[relation_index]->triplets[i];
       auto tmp = removeRelation(triplet.subject,
                                 triplet.predicate,
                                 triplet.object,
@@ -292,7 +333,7 @@ namespace ontologenius {
 
     for(size_t i = 0; i < relations.has_induced_inheritance_relations[relation_index]->triplets.size();)
     {
-      auto& triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
+      auto triplet = relations.has_induced_inheritance_relations[relation_index]->triplets[i];
 
       std::vector<std::pair<std::string, std::string>> tmp;
       if(removeInheritage(triplet.subject, triplet.object, tmp, true))

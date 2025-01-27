@@ -343,7 +343,15 @@ namespace ontologenius {
     switch(ano_elem->card_.card_type_)
     {
     case cardinality_value:
-      tmp += "<owl:hasValue rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
+      field = "owl:hasValue";
+      if(is_data_prop)
+      {
+        tmp += "<" + field + " rdf:datatype=\"";
+        tmp += ano_elem->card_.card_range_->getNs() + "#" + ano_elem->card_.card_range_->type_ + "\">" + ano_elem->card_.card_range_->value_;
+        tmp += "</" + field + ">\n";
+      }
+      else
+        tmp += "<" + field + " rdf:resource=\"" + ns_ + "#" + ano_elem->individual_involved_->value() + "\"/>\n";
       writeString(tmp, level);
       return;
     case cardinality_only:

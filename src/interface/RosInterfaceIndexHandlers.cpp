@@ -309,7 +309,7 @@ namespace ontologenius {
         else if(req->action == "getRelatedWith")
           set_res_index = onto_->individual_graph_.getRelatedWith(params.main_index);
         else if(req->action == "getUp")
-          set_res_index = onto_->individual_graph_.getUp(params.main_index, (int)params.depth);
+          set_res_index = onto_->individual_graph_.getUp(params.main_index, (int)params.depth, false);
         else if(req->action == "getOn")
           set_res_index = onto_->individual_graph_.getOn(params.main_index, params.optional_index);
         else if(req->action == "getFrom")
@@ -361,6 +361,8 @@ namespace ontologenius {
           res->string_values = onto_->individual_graph_.isInferredIndex(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
         else if(req->action == "getInferenceExplanation")
           res->string_values = onto_->individual_graph_.getInferenceExplanationIndex(params());
+        else if(req->action == "getInferenceRule")
+          res->string_values = {onto_->individual_graph_.getInferenceRuleIndex(params())};
         else
           res->code = UNKNOW_ACTION;
 

@@ -18,7 +18,9 @@ namespace ontologenius {
     // not impacted by same as
     for(const auto& indiv : ontology_->individual_graph_.get())
     {
-      if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation())
+      if(first_run_ ||
+         (indiv->isUpdated() && (indiv->same_as_.isUpdated() || indiv->object_relations_.isUpdated())) ||
+         indiv->hasUpdatedObjectRelation())
         for(auto& relation : indiv->object_relations_)
         {
           if(relation.first->properties_.symetric_property_ == true)
@@ -45,6 +47,8 @@ namespace ontologenius {
           }
         }
     }
+
+    first_run_ = false;
   }
 
   bool ReasonerSymmetric::symetricExist(IndividualBranch* indiv_on, ObjectPropertyBranch* sym_prop, IndividualBranch* sym_indiv)

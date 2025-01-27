@@ -1588,6 +1588,21 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButtonExtended" name="Individual_getInferenceRule">
+            <property name="whatsThis">
+              <string>
+                &lt;html&gt;&lt;head/&gt;&lt;body&gt;
+                &lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;getInferenceRule&lt;/span&gt; 
+                gives you all the rule used in the inference of the provided relation of the form `subject|property|object` or `subject|class`.&lt;/p&gt;
+                &lt;/body&gt;&lt;/html&gt;
+              </string>
+            </property>
+            <property name="text">
+             <string>getInferenceRule</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>

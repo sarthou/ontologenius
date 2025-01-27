@@ -71,7 +71,6 @@ namespace ontologenius {
     void computeIndividualsUpdates();
     void computeClassesUpdates();
     void computeIndividualsUpdatesPeriodic();
-    void resetIndividualsUpdates();
 
     QueryInfo_t extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param);
   };

@@ -1,12 +1,12 @@
 flow:
   - ontologenius::ReasonerChain
-  - ontologenius::ReasonerGeneralize
   - ontologenius::ReasonerDictionary
   - ontologenius::ReasonerInverseOf
   - ontologenius::ReasonerRangeDomain
   - ontologenius::ReasonerSymmetric
   - ontologenius::ReasonerAnonymous
   - ontologenius::ReasonerTransitivity
+  - ontologenius::ReasonerRule
 ontologenius::ReasonerGeneralize:
   min_count : 2
   min_percent : 0.7

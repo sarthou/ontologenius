@@ -67,6 +67,8 @@ namespace ontologenius {
       (void)value;
     }
 
+    void activate() { first_run_ = true; }
+
     /// @brief This function is called when a query is submitted.
     /// @param query_info provides information about the submitted query
     /// @return true if modifications have been made onto the ontology
@@ -115,7 +117,8 @@ namespace ontologenius {
     }
 
   protected:
-    ReasonerInterface() : ontology_(nullptr) {}
+    ReasonerInterface() : ontology_(nullptr),
+                          first_run_(true) {}
 
     std::string agent_name_;
     Ontology* ontology_;
@@ -124,6 +127,7 @@ namespace ontologenius {
     std::vector<std::pair<std::string, std::string>> explanations_;
 
     static size_t nb_update;
+    bool first_run_;
   };
 
 } // namespace ontologenius

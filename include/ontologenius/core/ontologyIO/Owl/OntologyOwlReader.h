@@ -12,6 +12,7 @@
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ObjectPropertyGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontologyIO/OntologyReader.h"
 
 namespace ontologenius {
@@ -21,7 +22,7 @@ namespace ontologenius {
   class OntologyOwlReader : public OntologyReader
   {
   public:
-    OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph);
+    OntologyOwlReader(ClassGraph* class_graph, ObjectPropertyGraph* object_property_graph, DataPropertyGraph* data_property_graph, IndividualGraph* individual_graph, AnonymousClassGraph* anonymous_graph, RuleGraph* rule_graph);
     explicit OntologyOwlReader(Ontology& onto);
     ~OntologyOwlReader() = default;
 
@@ -36,28 +37,13 @@ namespace ontologenius {
     bool empty() const { return (nb_loaded_elem_ == 0); }
 
   private:
-    std::unordered_map<std::string, std::string> card_map_;
+    /**********************
+     *      Owl Reader     *
+     **********************/
+
     int read(TiXmlElement* rdf, const std::string& name);
     int readIndividual(TiXmlElement* rdf, const std::string& name);
-
     void readClass(TiXmlElement* elem);
-    void readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name);
-
-    ExpressionMember_t* readRestriction(TiXmlElement* elem);
-    ExpressionMember_t* readClassExpression(TiXmlElement* elem);
-    ExpressionMember_t* readDatatypeExpression(TiXmlElement* elem);
-    ExpressionMember_t* readIntersection(TiXmlElement* elem);
-    ExpressionMember_t* readUnion(TiXmlElement* elem);
-    ExpressionMember_t* readOneOf(TiXmlElement* elem);
-    ExpressionMember_t* readComplement(TiXmlElement* elem);
-    ExpressionMember_t* readComplexDescription(TiXmlElement* elem);
-    ExpressionMember_t* readResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
-
-    void addChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
-
-    bool readCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
-    void readCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
-
     void readIndividual(TiXmlElement* elem);
     void readDescription(TiXmlElement* elem);
     void readIndividualDescription(TiXmlElement* elem);
@@ -66,6 +52,69 @@ namespace ontologenius {
     void readAnnotationProperty(TiXmlElement* elem);
     void readCollection(std::vector<std::string>& vect, TiXmlElement* elem, const std::string& symbol, size_t level = 1);
     std::string readSomeValuesFrom(TiXmlElement* elem);
+    void removeDocType(std::string& txt);
+    void readDisjoint(TiXmlElement* elem, bool is_class);
+
+    /*************************
+     * Anonymous Class Reader *
+     *************************/
+
+    std::unordered_map<std::string, std::string> card_map_;
+
+    void readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name);
+    ExpressionMember_t* readAnonymousRestriction(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousClassExpression(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousDatatypeExpression(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousIntersection(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousUnion(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousOneOf(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousComplement(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousComplexDescription(TiXmlElement* elem);
+    ExpressionMember_t* readAnonymousResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
+
+    void addAnonymousChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
+
+    bool readAnonymousCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
+    void readAnonymousCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
+
+    /**********************
+     *   SWRL Rule Reader  *
+     **********************/
+    void readRuleDescription(Rule_t& rule, TiXmlElement* elem);
+
+    ExpressionMember_t* readRuleRestriction(TiXmlElement* elem);
+    ExpressionMember_t* readRuleClassExpression(TiXmlElement* elem);
+    ExpressionMember_t* readRuleDatatypeExpression(TiXmlElement* elem);
+    ExpressionMember_t* readRuleIntersection(TiXmlElement* elem);
+    ExpressionMember_t* readRuleUnion(TiXmlElement* elem);
+    ExpressionMember_t* readRuleOneOf(TiXmlElement* elem);
+    ExpressionMember_t* readRuleComplement(TiXmlElement* elem);
+    ExpressionMember_t* readRuleComplexDescription(TiXmlElement* elem);
+    ExpressionMember_t* readRuleResource(TiXmlElement* elem, const std::string& attribute_name = "rdf:resource");
+
+    void addRuleChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem);
+
+    bool readRuleCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp);
+    void readRuleCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp);
+
+    void readRuleCollection(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect);
+    void readSwrlRule(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleAtom(TiXmlElement* elem, const std::string& type_atom);
+    std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleClassAtom(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleObjectPropertyAtom(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleDataPropertyAtom(TiXmlElement* elem);
+    std::pair<ExpressionMember_t*, std::vector<Variable_t>> readRuleBuiltinAtom(TiXmlElement* elem);
+
+    void readRestAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect);
+    void readFirstAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect);
+    Variable_t getRuleArgument(TiXmlElement* elem);
+    std::vector<Variable_t> readRuleBuiltinArguments(TiXmlElement* elem);
+    void readSimpleBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables);
+    void readComplexBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables);
+
+    /**********************
+     *        inline       *
+     **********************/
 
     inline void push(std::vector<std::string>& vect, TiXmlElement* sub_elem, const std::string& symbole = "", const std::string& attribute = "rdf:resource");
     inline void push(std::vector<std::string>& vect, const std::string& elem, const std::string& symbole = "");
@@ -86,8 +135,6 @@ namespace ontologenius {
         return getName(std::string(sub_attr));
       return "";
     }
-
-    void removeDocType(std::string& txt);
   };
 
   void OntologyOwlReader::push(std::vector<std::string>& vect, TiXmlElement* sub_elem, const std::string& symbole, const std::string& attribute)
@@ -122,6 +169,7 @@ namespace ontologenius {
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
     }
   }
+
   std::string OntologyOwlReader::getName(const std::string& uri)
   {
     size_t pos = uri.find('#');

@@ -16,3 +16,10 @@
 [X] Transitivity reasoner
 [X] clean prop updates
 [X] verify double transitivity and inverse
+[ ] Store a "save" of the current explorated graph to resume from the current state instead of starting all over again (anonymous)
+[ ] hidden applied to everything, instead of just the classes at one level
+[ ] add SameAs, DifferentFrom atoms in the rules (mostly for consequent purposes) (swrl)
+[ ] add Builtins to perform computations between datatype values (swrl)
+[ ] reorganize the atoms in the antecedents for better performances (swrl)
+[ ] cardinality restriction -> add unqualified restriction (anonymous)
+[ ] adding variable property atom and indiv creation for dispositional match (swrl)

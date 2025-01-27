@@ -20,17 +20,19 @@ namespace ontologenius {
     // flags "range" and "domain" come from the checkers marking warnings and on relation insertion
     postReasonIndividuals();
     postReasonClasses();
+    first_run_ = false;
   }
 
   void ReasonerRangeDomain::postReasonIndividuals()
   {
     const std::lock_guard<std::shared_timed_mutex> lock(ontology_->individual_graph_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_class(ontology_->class_graph_.mutex_);
 
     std::map<std::string, std::vector<std::string>>::iterator it_range;
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
     for(const auto& indiv : ontology_->individual_graph_.get())
-      if(indiv->updated_ == true || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
+      if(first_run_ || indiv->isUpdated() || indiv->hasUpdatedObjectRelation() || indiv->hasUpdatedDataRelation())
       {
         it_range = indiv->flags_.find("range");
         if(it_range != indiv->flags_.end())
@@ -221,7 +223,7 @@ namespace ontologenius {
     std::map<std::string, std::vector<std::string>>::iterator it_domain;
 
     for(auto* class_branch : classes)
-      if(class_branch->updated_ == true)
+      if(first_run_ || class_branch->isUpdated())
       {
         it_range = class_branch->flags_.find("range");
         if(it_range != class_branch->flags_.end())

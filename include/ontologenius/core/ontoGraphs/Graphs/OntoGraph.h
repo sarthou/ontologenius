@@ -70,7 +70,6 @@ namespace ontologenius {
     bool addInheritage(B* branch, B* inherited);
     std::vector<std::pair<std::string, std::string>> removeInheritage(const std::string& branch_base, const std::string& branch_inherited);
     std::vector<std::pair<std::string, std::string>> removeInheritage(B* branch, B* inherited);
-    bool removeInheritage(IndividualBranch* indiv, ClassBranch* class_branch, std::vector<std::pair<std::string, std::string>>& explanations);
 
     template<typename T>
     std::unordered_set<T> select(const std::unordered_set<T>& on, const T& selector)
@@ -98,6 +97,25 @@ namespace ontologenius {
       for(size_t i = 0; i < relations.has_induced_object_relations[relation_index]->triplets.size();)
       {
         auto& triplet = relations.has_induced_object_relations[relation_index]->triplets[i];
+        auto tmp = individual_graph_->removeRelation(triplet.subject,
+                                                     triplet.predicate,
+                                                     triplet.object,
+                                                     true);
+        if(tmp.second)
+        {
+          explanations.emplace_back("[DEL]" + triplet.subject->value() + "|" +
+                                      triplet.predicate->value() + "|" +
+                                      triplet.object->value(),
+                                    "[DEL]" + indiv_from->value() + "|" + property + "|" + indiv_on->value());
+          explanations.insert(explanations.end(), tmp.first.begin(), tmp.first.end());
+        }
+        else
+          i++; // we enter in this case if the induced relation has later been stated and can thus not be removed automatically
+      }
+
+      for(size_t i = 0; i < relations.has_induced_data_relations[relation_index]->triplets.size();)
+      {
+        auto& triplet = relations.has_induced_data_relations[relation_index]->triplets[i];
         auto tmp = individual_graph_->removeRelation(triplet.subject,
                                                      triplet.predicate,
                                                      triplet.object,
@@ -412,7 +430,7 @@ namespace ontologenius {
   template<typename B>
   bool OntoGraph<B>::addInheritage(const std::string& branch_base, const std::string& branch_inherited)
   {
-    std::shared_lock<std::shared_timed_mutex> lock(Graph<B>::mutex_);
+    std::lock_guard<std::shared_timed_mutex> lock(Graph<B>::mutex_);
     B* branch = this->findOrCreateBranch(branch_base);
     if(branch != nullptr)
     {
@@ -425,20 +443,20 @@ namespace ontologenius {
   }
 
   template<typename B>
-  bool OntoGraph<B>::addInheritage(B* branch, B* inherited)
+  bool OntoGraph<B>::addInheritage(B* branch, B* inherited) // TODO propagate update only if updated
   {
     if((branch != nullptr) && (inherited != nullptr))
     {
-      this->conditionalPushBack(branch->mothers_, SingleElement<B*>(inherited));
-      this->conditionalPushBack(inherited->childs_, SingleElement<B*>(branch));
-      branch->updated_ = true;
-      inherited->updated_ = true;
+      if(this->conditionalPushBack(branch->mothers_, SingleElement<B*>(inherited)))
+        branch->setUpdated(true);
+      if(this->conditionalPushBack(inherited->childs_, SingleElement<B*>(branch)))
+        inherited->setUpdated(true);
       mitigate(branch);
 
       std::unordered_set<B*> downs;
       getDownPtr(branch, downs);
       for(auto* down : downs)
-        down->updated_ = true; // propagate update
+        down->setUpdated(true); // propagate update
 
       return true; // TODO verify that multi inheritances are compatible
     }
@@ -477,8 +495,8 @@ namespace ontologenius {
         branch->mothers_.erase(i);
 
         this->removeFromElemVect(inherited->childs_, branch);
-        branch->updated_ = true;
-        inherited->updated_ = true;
+        branch->setUpdated(true);
+        inherited->setUpdated(true);
         return explanations;
       }
     }

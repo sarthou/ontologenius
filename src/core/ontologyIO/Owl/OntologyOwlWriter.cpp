@@ -11,6 +11,7 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/DataPropertiesOwlWriter.h"
 #include "ontologenius/core/ontologyIO/Owl/writers/IndividualOwlWriter.h"
 #include "ontologenius/core/ontologyIO/Owl/writers/ObjectPropertiesOwlWriter.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/RuleOwlWriter.h"
 #include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
@@ -19,12 +20,14 @@ namespace ontologenius {
                                        ObjectPropertyGraph* object_property_graph,
                                        DataPropertyGraph* data_property_graph,
                                        IndividualGraph* individual_graph,
-                                       AnonymousClassGraph* anonymous_graph) : class_graph_(class_graph),
-                                                                               object_property_graph_(object_property_graph),
-                                                                               data_property_graph_(data_property_graph),
-                                                                               individual_graph_(individual_graph),
-                                                                               anonymous_graph_(anonymous_graph),
-                                                                               file_(nullptr)
+                                       AnonymousClassGraph* anonymous_graph,
+                                       RuleGraph* rule_graph) : class_graph_(class_graph),
+                                                                object_property_graph_(object_property_graph),
+                                                                data_property_graph_(data_property_graph),
+                                                                individual_graph_(individual_graph),
+                                                                anonymous_graph_(anonymous_graph),
+                                                                rule_graph_(rule_graph),
+                                                                file_(nullptr)
   {
     (void)anonymous_graph_;
   }
@@ -34,6 +37,7 @@ namespace ontologenius {
                                                          data_property_graph_(&onto.data_property_graph_),
                                                          individual_graph_(&onto.individual_graph_),
                                                          anonymous_graph_(&onto.anonymous_graph_),
+                                                         rule_graph_(&onto.rule_graph_),
                                                          file_(nullptr)
   {
     (void)anonymous_graph_;
@@ -83,6 +87,10 @@ namespace ontologenius {
     classes.writeGeneralAxioms(file_);
     individuals.writeGeneralAxioms(file_);
 
+    writeBanner("Rules");
+    RuleOwlWriter rules(rule_graph_, ns_);
+    rules.write(file_);
+
     writeEnd();
 
     Display::success("ontology loaded in : ", false);
@@ -102,7 +110,9 @@ namespace ontologenius {
      xmlns:xml=\"http://www.w3.org/XML/1998/namespace\"\n\
      xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\"\n\
      xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n\
-     xmlns:onto=\"ontologenius#\">\n\
+     xmlns:swrl=\"http://www.w3.org/2003/11/swrl#\"\n\
+     xmlns:swrlb=\"http://www.w3.org/2003/11/swrlb#\"\n\
+     xmlns:onto=\"" + ns_ + "#\">\n\
     <owl:Ontology rdf:about=\"" +
                             ns_ + "\"/>\n\n\n\n";
     writeString(tmp);

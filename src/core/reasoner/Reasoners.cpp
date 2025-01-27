@@ -77,9 +77,9 @@ namespace ontologenius {
   {
     std::vector<std::string> reasoners = loader_.getDeclaredClasses();
 
-    try
+    for(auto& reasoner : reasoners)
     {
-      for(auto& reasoner : reasoners)
+      try
       {
         loader_.loadLibraryForClass(reasoner);
         ReasonerInterface* tmp = loader_.createUnmanagedInstance(reasoner);
@@ -88,10 +88,10 @@ namespace ontologenius {
         if(tmp->defaultActive())
           active_reasoners_[reasoner] = tmp;
       }
-    }
-    catch(pluginlib::PluginlibException& ex)
-    {
-      Display::error("The plugin failed to load for some reason. Error: " + std::string(ex.what()));
+      catch(pluginlib::PluginlibException& ex)
+      {
+        Display::error("[Reasoners] Failed to load reasoner " + reasoner + ". Error: " + std::string(ex.what()));
+      }
     }
 
     reasoners = loader_.getRegisteredLibraries();
@@ -139,7 +139,7 @@ namespace ontologenius {
       {
         active_reasoners_[plugin] = reasoners_[plugin];
         Display::success(plugin + " has been activated");
-        resetIndividualsUpdates();
+        active_reasoners_[plugin]->activate();
         runPostReasoners();
       }
       else
@@ -326,11 +326,11 @@ namespace ontologenius {
     const std::vector<B*> branches = graph->get();
     for(auto& branch : branches)
       if(branch->nb_updates_ == 0)
-        branch->updated_ = false;
+        branch->setUpdated(false); // use B dedicated function with overload for each type of B
       else
       {
         branch->nb_updates_ = 0;
-        branch->updated_ = true;
+        branch->setUpdated(true);
       }
   }
 
@@ -341,18 +341,8 @@ namespace ontologenius {
       if(indiv->nb_updates_ != 0)
       {
         indiv->nb_updates_ = 0;
-        indiv->updated_ = true;
+        indiv->setUpdated(true);
       }
-  }
-
-  void Reasoners::resetIndividualsUpdates()
-  {
-    const std::vector<IndividualBranch*> indivs = ontology_->individual_graph_.get();
-    for(auto* indiv : indivs)
-    {
-      indiv->nb_updates_ = 0;
-      indiv->updated_ = true;
-    }
   }
 
   QueryInfo_t Reasoners::extractQueryInfo(QueryOrigin_e origin, const std::string& action, const std::string& param)
