@@ -1,6 +1,14 @@
 #ifndef ONTOLOGENIUS_RULEGRAPH_H
 #define ONTOLOGENIUS_RULEGRAPH_H
 
+#include <cstddef>
+#include <cstdint>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/OntoGraph.h"

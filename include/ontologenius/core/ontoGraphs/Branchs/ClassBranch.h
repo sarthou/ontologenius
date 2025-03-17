@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 
 namespace ontologenius {
@@ -29,8 +30,7 @@ namespace ontologenius {
     std::vector<ClassDataRelationElement> data_relations_;
     AnonymousClassBranch* equiv_relations_;
 
-    ClassBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden), equiv_relations_(nullptr){};
-
+    ClassBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden), equiv_relations_(nullptr) {};
   };
 
 } // namespace ontologenius

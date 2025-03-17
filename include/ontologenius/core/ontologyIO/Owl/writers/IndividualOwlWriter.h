@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_INDIVIDUALWRITER_H
 #define ONTOLOGENIUS_INDIVIDUALWRITER_H
 
+#include <cstdio>
 #include <string>
 #include <vector>
 

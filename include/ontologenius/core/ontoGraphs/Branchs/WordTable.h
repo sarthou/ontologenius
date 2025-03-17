@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_WORDTABLE_H
 #define ONTOLOGENIUS_WORDTABLE_H
 
+#include <cstddef>
 #include <cstdint>
 #include <string>
 #include <unordered_set>

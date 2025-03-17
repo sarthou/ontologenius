@@ -1,11 +1,12 @@
 #ifndef ONTOLOGENIUS_ANONYMOUSCLASSBRANCH_H
 #define ONTOLOGENIUS_ANONYMOUSCLASSBRANCH_H
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
-#include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
 namespace ontologenius {

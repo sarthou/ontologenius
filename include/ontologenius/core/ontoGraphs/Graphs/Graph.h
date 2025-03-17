@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_GRAPH_H
 #define ONTOLOGENIUS_GRAPH_H
 
+#include <cstddef>
 #include <exception>
 #include <map>
 #include <mutex> // For std::unique_lock
@@ -8,16 +9,17 @@
 #include <regex>
 #include <shared_mutex>
 #include <string>
+#include <type_traits>
+#include <unordered_set>
 #include <vector>
 
 #include "ontologenius/core/Algorithms/LevenshteinDistance.h"
-#include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerDyn.h"
-#include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerMap.h"
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerSet.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 
 namespace ontologenius {
 

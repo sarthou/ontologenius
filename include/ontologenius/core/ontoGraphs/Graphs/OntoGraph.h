@@ -1,13 +1,19 @@
 #ifndef ONTOLOGENIUS_ONTOGRAPH_H
 #define ONTOLOGENIUS_ONTOGRAPH_H
 
-#include <cstdint>
+#include <cstddef>
 #include <map>
+#include <mutex>
+#include <shared_mutex>
 #include <string>
+#include <type_traits>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
 

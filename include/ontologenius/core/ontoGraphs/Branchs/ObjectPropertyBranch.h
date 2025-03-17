@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 
 namespace ontologenius {
@@ -25,7 +27,7 @@ namespace ontologenius {
     std::vector<std::vector<ObjectPropertyBranch*>> chains_;
     std::vector<std::vector<std::string>> str_chains_;
 
-    ObjectPropertyBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden){};
+    ObjectPropertyBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden) {};
   };
 
 } // namespace ontologenius

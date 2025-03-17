@@ -1,12 +1,18 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYOWLREADER_H
 #define ONTOLOGENIUS_ONTOLOGYOWLREADER_H
 
+#include <cstddef>
 #include <iostream>
 #include <map>
 #include <string>
 #include <tinyxml.h>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
+#include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"

@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
 #include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 

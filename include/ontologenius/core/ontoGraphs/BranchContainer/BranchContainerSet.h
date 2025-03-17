@@ -1,8 +1,10 @@
 #ifndef ONTOLOGENIUS_BRANCHCONTAINERSET_H
 #define ONTOLOGENIUS_BRANCHCONTAINERSET_H
 
-#include <map>
 #include <set>
+#include <string>
+#include <type_traits>
+#include <vector>
 
 #include "ontologenius/core/ontoGraphs/BranchContainer/BranchContainerBase.h"
 

@@ -1,14 +1,17 @@
 #ifndef ONTOLOGENIUS_OBJECTROPERTYGRAPH_H
 #define ONTOLOGENIUS_OBJECTROPERTYGRAPH_H
 
-#include <cstdint>
+#include <cstddef>
 #include <map>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/PropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/OntoGraph.h"
 
 namespace ontologenius {

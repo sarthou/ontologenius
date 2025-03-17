@@ -1,8 +1,15 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYTTLREADER_H
 #define ONTOLOGENIUS_ONTOLOGYTTLREADER_H
 
+#include <array>
+#include <cstddef>
+#include <map>
 #include <regex>
+#include <string>
+#include <utility>
+#include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"
