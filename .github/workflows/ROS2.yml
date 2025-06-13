@@ -38,7 +38,6 @@ jobs:
             sudo apt install -y qtbase5-dev qtdeclarative5-dev
             sudo apt install -y libcppunit-dev libcurl4-openssl-dev
             sudo apt-get install python3-rosdep
-            sudo apt install ros-cmake-modules
             sudo apt install ros-$ROS_DISTRO-std-msgs ros-$ROS_DISTRO-pluginlib
             source /opt/ros/$ROS_DISTRO/setup.bash
 

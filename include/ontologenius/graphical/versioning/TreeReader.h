@@ -2,7 +2,7 @@
 #define ONTOLOGENIUS_TREEREADER_H
 
 #include <string>
-#include <tinyxml.h>
+#include <tinyxml2.h>
 #include <vector>
 
 namespace ontologenius {
@@ -32,10 +32,10 @@ namespace ontologenius {
     Commit* read(const std::string& file_name);
 
   private:
-    Commit* readNode(TiXmlElement* elem);
-    Commit* readNode(TiXmlElement* elem, Commit* prev);
+    Commit* readNode(tinyxml2::XMLElement* elem);
+    Commit* readNode(tinyxml2::XMLElement* elem, Commit* prev);
 
-    std::string getAttribute(TiXmlElement* sub_elem, const std::string& attribute);
+    std::string getAttribute(tinyxml2::XMLElement* sub_elem, const std::string& attribute);
   };
 
 } // namespace ontologenius
