@@ -1,5 +1,5 @@
 #include <string>
-#include <tinyxml.h>
+#include <tinyxml2.h>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
@@ -9,7 +9,7 @@
 
 namespace ontologenius {
 
-  void OntologyOwlReader::readEquivalentClass(AnonymousClassVectors_t& ano, TiXmlElement* elem, const std::string& class_name)
+  void OntologyOwlReader::readEquivalentClass(AnonymousClassVectors_t& ano, tinyxml2::XMLElement* elem, const std::string& class_name)
   {
     ano.class_equiv = class_name;
     ExpressionMember_t* exp = nullptr;
@@ -23,7 +23,7 @@ namespace ontologenius {
     // Expression equivalence :
     else
     {
-      TiXmlElement* sub_elem = elem->FirstChildElement(); // should be the only child element
+      tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); // should be the only child element
       const std::string sub_elem_name = sub_elem->Value();
 
       // Restriction equivalence : Camera Eq to hasComponent some Component
@@ -38,7 +38,7 @@ namespace ontologenius {
     ano.str_equivalences.push_back(exp->toString());
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousRestriction(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousRestriction(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
 
@@ -48,7 +48,7 @@ namespace ontologenius {
       exp->rest.property = getName(property_elem->Attribute("rdf:resource"));
     // get cardinality
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       const std::string sub_elem_name = sub_elem->Value();
       if((sub_elem_name == "owl:maxQualifiedCardinality") ||
@@ -108,9 +108,9 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousClassExpression(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousClassExpression(tinyxml2::XMLElement* elem)
   {
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       const std::string sub_elem_name = sub_elem->Value();
       if(sub_elem_name == "owl:unionOf")
@@ -126,9 +126,9 @@ namespace ontologenius {
     return nullptr;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousDatatypeExpression(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousDatatypeExpression(tinyxml2::XMLElement* elem)
   {
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* exp = nullptr;
       const std::string sub_elem_name = sub_elem->Value();
@@ -149,12 +149,12 @@ namespace ontologenius {
     return nullptr;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousIntersection(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousIntersection(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->logical_type_ = logical_and;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* child_exp = readAnonymousComplexDescription(sub_elem);
       addAnonymousChildMember(exp, child_exp, sub_elem);
@@ -163,12 +163,12 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousUnion(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousUnion(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->logical_type_ = logical_or;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* child_exp = readAnonymousComplexDescription(sub_elem);
       addAnonymousChildMember(exp, child_exp, sub_elem);
@@ -177,12 +177,12 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousOneOf(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousOneOf(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->oneof = true;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* child_exp = readAnonymousResource(sub_elem, "rdf:about");
       addAnonymousChildMember(exp, child_exp, sub_elem);
@@ -191,7 +191,7 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousComplement(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousComplement(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->logical_type_ = logical_not;
@@ -209,7 +209,7 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousComplexDescription(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousComplexDescription(tinyxml2::XMLElement* elem)
   {
     if(elem == nullptr)
       return nullptr;
@@ -227,7 +227,7 @@ namespace ontologenius {
       return nullptr;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readAnonymousResource(TiXmlElement* elem, const std::string& attribute_name)
+  ExpressionMember_t* OntologyOwlReader::readAnonymousResource(tinyxml2::XMLElement* elem, const std::string& attribute_name)
   {
     ExpressionMember_t* exp = nullptr;
 
@@ -249,7 +249,7 @@ namespace ontologenius {
     return exp;
   }
 
-  void OntologyOwlReader::addAnonymousChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem)
+  void OntologyOwlReader::addAnonymousChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, tinyxml2::XMLElement* used_elem)
   {
     if(child != nullptr)
     {
@@ -260,7 +260,7 @@ namespace ontologenius {
     }
   }
 
-  void OntologyOwlReader::readAnonymousCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp)
+  void OntologyOwlReader::readAnonymousCardinalityValue(tinyxml2::XMLElement* elem, ExpressionMember_t* exp)
   {
     const std::string sub_elem_name = elem->Value();
 
@@ -270,7 +270,7 @@ namespace ontologenius {
       exp->rest.card.cardinality_number = elem->GetText();
   }
 
-  bool OntologyOwlReader::readAnonymousCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp)
+  bool OntologyOwlReader::readAnonymousCardinalityRange(tinyxml2::XMLElement* elem, ExpressionMember_t* exp)
   {
     const std::string sub_elem_name = elem->Value();
 

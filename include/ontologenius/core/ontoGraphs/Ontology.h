@@ -1,6 +1,8 @@
 #ifndef ONTOLOGENIUS_ONTOLOGY_H
 #define ONTOLOGENIUS_ONTOLOGY_H
 
+#include <string>
+
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"

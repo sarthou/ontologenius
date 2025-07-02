@@ -1,6 +1,11 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYREADER_H
 #define ONTOLOGENIUS_ONTOLOGYREADER_H
 
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"

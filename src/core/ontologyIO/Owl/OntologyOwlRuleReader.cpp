@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <tinyxml.h>
+#include <tinyxml2.h>
 #include <utility>
 #include <vector>
 
@@ -13,7 +13,7 @@
 
 namespace ontologenius {
 
-  void OntologyOwlReader::readRuleDescription(Rule_t& rule, TiXmlElement* elem)
+  void OntologyOwlReader::readRuleDescription(Rule_t& rule, tinyxml2::XMLElement* elem)
   {
     std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>> exp_body, exp_head;
     // read body
@@ -34,7 +34,7 @@ namespace ontologenius {
     rule.rule_str = rule.toStringRule();
   }
 
-  void OntologyOwlReader::readRuleCollection(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
+  void OntologyOwlReader::readRuleCollection(tinyxml2::XMLElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
   {
     auto* sub_elem = elem->FirstChildElement("rdf:Description");
     if(sub_elem != nullptr)
@@ -78,7 +78,7 @@ namespace ontologenius {
     }
   }
 
-  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleAtom(TiXmlElement* elem, const std::string& type_atom)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleAtom(tinyxml2::XMLElement* elem, const std::string& type_atom)
   {
     std::pair<ExpressionMember_t*, std::vector<Variable_t>> res;
 
@@ -94,12 +94,12 @@ namespace ontologenius {
     return res;
   }
 
-  void OntologyOwlReader::readFirstAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
+  void OntologyOwlReader::readFirstAtom(tinyxml2::XMLElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
   {
     readRuleCollection(elem, exp_vect);
   }
 
-  void OntologyOwlReader::readRestAtom(TiXmlElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
+  void OntologyOwlReader::readRestAtom(tinyxml2::XMLElement* elem, std::vector<std::pair<ExpressionMember_t*, std::vector<Variable_t>>>& exp_vect)
   {
     const char* type_rest = nullptr;
     type_rest = elem->Attribute("rdf:resource");
@@ -113,7 +113,7 @@ namespace ontologenius {
       readRuleCollection(elem, exp_vect);
   }
 
-  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleClassAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleClassAtom(tinyxml2::XMLElement* elem)
   {
     std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = nullptr;
@@ -148,7 +148,7 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleObjectPropertyAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleObjectPropertyAtom(tinyxml2::XMLElement* elem)
   {
     std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
@@ -177,7 +177,7 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleDataPropertyAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleDataPropertyAtom(tinyxml2::XMLElement* elem)
   {
     std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
@@ -209,7 +209,7 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  Variable_t OntologyOwlReader::getRuleArgument(TiXmlElement* elem)
+  Variable_t OntologyOwlReader::getRuleArgument(tinyxml2::XMLElement* elem)
   {
     Variable_t new_var;
     const auto* var_name_resource = elem->Attribute("rdf:resource");
@@ -237,7 +237,7 @@ namespace ontologenius {
     return new_var;
   }
 
-  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleBuiltinAtom(TiXmlElement* elem)
+  std::pair<ExpressionMember_t*, std::vector<Variable_t>> OntologyOwlReader::readRuleBuiltinAtom(tinyxml2::XMLElement* elem)
   {
     std::vector<Variable_t> variables;
     ExpressionMember_t* temp_exp = new ExpressionMember_t();
@@ -276,7 +276,7 @@ namespace ontologenius {
     return {std::make_pair(temp_exp, variables)};
   }
 
-  std::vector<Variable_t> OntologyOwlReader::readRuleBuiltinArguments(TiXmlElement* elem)
+  std::vector<Variable_t> OntologyOwlReader::readRuleBuiltinArguments(tinyxml2::XMLElement* elem)
   {
     std::vector<Variable_t> variables;
 
@@ -288,9 +288,9 @@ namespace ontologenius {
     return variables;
   }
 
-  void OntologyOwlReader::readSimpleBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables)
+  void OntologyOwlReader::readSimpleBuiltinArguments(tinyxml2::XMLElement* elem, std::vector<Variable_t>& variables)
   {
-    for(TiXmlElement* sub_elem = elem->FirstChildElement("rdf:Description");
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement("rdf:Description");
         sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement("rdf:Description"))
     {
       const auto* builtin_arg = elem->Attribute("rdf:about");
@@ -303,7 +303,7 @@ namespace ontologenius {
     }
   }
 
-  void OntologyOwlReader::readComplexBuiltinArguments(TiXmlElement* elem, std::vector<Variable_t>& variables)
+  void OntologyOwlReader::readComplexBuiltinArguments(tinyxml2::XMLElement* elem, std::vector<Variable_t>& variables)
   {
     auto* sub_elem = elem->FirstChildElement("rdf:Description");
 
@@ -340,7 +340,7 @@ namespace ontologenius {
     }
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleRestriction(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleRestriction(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
 
@@ -350,7 +350,7 @@ namespace ontologenius {
       exp->rest.property = getName(property_elem->Attribute("rdf:resource"));
 
     // get cardinality
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       const std::string sub_elem_name = sub_elem->Value();
       if((sub_elem_name == "owl:maxQualifiedCardinality") ||
@@ -408,7 +408,7 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleClassExpression(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleClassExpression(tinyxml2::XMLElement* elem)
   {
     // check for type of node
     auto* union_node = elem->FirstChildElement("owl:unionOf");
@@ -430,7 +430,7 @@ namespace ontologenius {
     return nullptr;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleDatatypeExpression(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleDatatypeExpression(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = nullptr;
     // check for type of node
@@ -454,12 +454,12 @@ namespace ontologenius {
     return nullptr;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleIntersection(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleIntersection(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->logical_type_ = logical_and;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* child_exp = readRuleComplexDescription(sub_elem);
       addRuleChildMember(exp, child_exp, sub_elem);
@@ -468,12 +468,12 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleUnion(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleUnion(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->logical_type_ = logical_or;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* child_exp = readRuleComplexDescription(sub_elem);
       addRuleChildMember(exp, child_exp, sub_elem);
@@ -482,12 +482,12 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleOneOf(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleOneOf(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->oneof = true;
 
-    for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+    for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
     {
       ExpressionMember_t* child_exp = readRuleResource(sub_elem, "rdf:about");
       addRuleChildMember(exp, child_exp, sub_elem);
@@ -496,7 +496,7 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleComplement(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleComplement(tinyxml2::XMLElement* elem)
   {
     ExpressionMember_t* exp = new ExpressionMember_t();
     exp->logical_type_ = logical_not;
@@ -514,7 +514,7 @@ namespace ontologenius {
     return exp;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleComplexDescription(TiXmlElement* elem)
+  ExpressionMember_t* OntologyOwlReader::readRuleComplexDescription(tinyxml2::XMLElement* elem)
   {
     if(elem == nullptr)
       return nullptr;
@@ -532,7 +532,7 @@ namespace ontologenius {
       return nullptr;
   }
 
-  ExpressionMember_t* OntologyOwlReader::readRuleResource(TiXmlElement* elem, const std::string& attribute_name)
+  ExpressionMember_t* OntologyOwlReader::readRuleResource(tinyxml2::XMLElement* elem, const std::string& attribute_name)
   {
     ExpressionMember_t* exp = nullptr;
 
@@ -554,7 +554,7 @@ namespace ontologenius {
     return exp;
   }
 
-  void OntologyOwlReader::addRuleChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, TiXmlElement* used_elem)
+  void OntologyOwlReader::addRuleChildMember(ExpressionMember_t* parent, ExpressionMember_t* child, tinyxml2::XMLElement* used_elem)
   {
     if(child != nullptr)
     {
@@ -565,7 +565,7 @@ namespace ontologenius {
     }
   }
 
-  void OntologyOwlReader::readRuleCardinalityValue(TiXmlElement* elem, ExpressionMember_t* exp)
+  void OntologyOwlReader::readRuleCardinalityValue(tinyxml2::XMLElement* elem, ExpressionMember_t* exp)
   {
     const std::string sub_elem_name = elem->Value();
 
@@ -575,7 +575,7 @@ namespace ontologenius {
       exp->rest.card.cardinality_number = elem->GetText();
   }
 
-  bool OntologyOwlReader::readRuleCardinalityRange(TiXmlElement* elem, ExpressionMember_t* exp)
+  bool OntologyOwlReader::readRuleCardinalityRange(tinyxml2::XMLElement* elem, ExpressionMember_t* exp)
   {
     const std::string sub_elem_name = elem->Value();
 

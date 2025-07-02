@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_RELATIONSWITHINDUCTIONS_H
 #define ONTOLOGENIUS_RELATIONSWITHINDUCTIONS_H
 
+#include <cstddef>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/Triplet.h"

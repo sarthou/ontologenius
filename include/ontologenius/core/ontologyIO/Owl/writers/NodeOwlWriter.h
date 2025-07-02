@@ -1,6 +1,8 @@
 #ifndef ONTOLOGENIUS_NODEOWLWRITER_H
 #define ONTOLOGENIUS_NODEOWLWRITER_H
 
+#include <cstddef>
+#include <cstdio>
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"

@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_OBJECTPROPERTIESOWLWRITER_H
 #define ONTOLOGENIUS_OBJECTPROPERTIESOWLWRITER_H
 
+#include <cstdio>
 #include <string>
 
 #include "ontologenius/core/ontologyIO/Owl/writers/PropertiesOwlWriter.h"

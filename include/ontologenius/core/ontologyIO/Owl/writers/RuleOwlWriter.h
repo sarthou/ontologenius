@@ -1,6 +1,13 @@
 #ifndef ONTOLOGENIUS_RULEOWLWRITER_H
 #define ONTOLOGENIUS_RULEOWLWRITER_H
 
+#include <cstddef>
+#include <cstdio>
+#include <string>
+#include <vector>
+
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/RuleGraph.h"
 #include "ontologenius/core/ontologyIO/Owl/writers/NodeOwlWriter.h"
 

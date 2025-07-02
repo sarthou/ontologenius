@@ -31,13 +31,12 @@ endfunction(add_onto_library)
 # ###############################################
 # #          Find macros and libraries         ##
 # ###############################################
-find_package(cmake_modules REQUIRED)
-find_package(TinyXML REQUIRED)
+find_package(PkgConfig REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport)
-find_package(PkgConfig REQUIRED)
 find_package(OpenCV REQUIRED)
 
+pkg_check_modules(TINYXML2 REQUIRED tinyxml2)
 pkg_search_module(CURL REQUIRED libcurl IMPORTED_TARGET GLOBAL)
 
 if($ENV{ROS_VERSION} STREQUAL "1")
@@ -57,7 +56,6 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
   find_package(ament_cmake REQUIRED)
   find_package(rosidl_default_generators REQUIRED)
   find_package(rclcpp REQUIRED)
-  find_package(TinyXML2 REQUIRED)
   find_package(ament_cmake_python REQUIRED)
   find_package(std_msgs REQUIRED)
 
@@ -125,7 +123,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
     INCLUDE_DIRS include include/ontologenius/API
     LIBRARIES ontologenius_lib ontologenius_interface
     CATKIN_DEPENDS roscpp rospy std_msgs
-    DEPENDS TinyXML OpenCV
+    DEPENDS TINYXML2 OpenCV
     CFG_EXTRAS ontologenius_compatConfigExtras.cmake
   )
 elseif($ENV{ROS_VERSION} STREQUAL "2")
@@ -179,11 +177,11 @@ add_onto_library(ontologenius_ontoGraphs_lib
 )
 target_include_directories(ontologenius_ontoGraphs_lib
   PUBLIC
-  ${TinyXML_INCLUDE_DIRS} ${TinyXML2_INCLUDE_DIR}
+  ${TINYXML2_INCLUDE_DIRS}
 )
 target_link_libraries(ontologenius_ontoGraphs_lib
   PUBLIC
-  ${TinyXML_LIBRARIES} ${TinyXML2_LIBRARIES}
+  ${TINYXML2_LIBRARIES}
   PRIVATE
   PkgConfig::CURL
 )

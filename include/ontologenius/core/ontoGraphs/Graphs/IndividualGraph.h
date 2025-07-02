@@ -1,14 +1,20 @@
 #ifndef ONTOLOGENIUS_INDIVIDUALGRAPH_H
 #define ONTOLOGENIUS_INDIVIDUALGRAPH_H
 
+#include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <map>
-#include <regex>
 #include <string>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 
 namespace ontologenius {

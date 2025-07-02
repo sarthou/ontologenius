@@ -1,6 +1,7 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYOWLWRITER_H
 #define ONTOLOGENIUS_ONTOLOGYOWLWRITER_H
 
+#include <cstdio>
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"

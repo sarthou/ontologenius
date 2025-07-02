@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/OntoGraph.h"
 
 namespace ontologenius {

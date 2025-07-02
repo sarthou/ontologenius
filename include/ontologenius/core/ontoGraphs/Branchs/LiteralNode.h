@@ -1,7 +1,7 @@
 #ifndef ONTOLOGENIUS_LITERALNODE_H
 #define ONTOLOGENIUS_LITERALNODE_H
 
-#include <functional>
+#include <cstddef>
 #include <string>
 
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"

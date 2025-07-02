@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <tinyxml.h>
+#include <tinyxml2.h>
 
 namespace ontologenius {
 
@@ -57,14 +57,14 @@ namespace ontologenius {
       response += tmp;
     }
 
-    TiXmlDocument doc;
-    doc.Parse((const char*)response.c_str(), nullptr, TIXML_ENCODING_UTF8);
-    TiXmlElement* xml = doc.FirstChildElement();
+    tinyxml2::XMLDocument doc;
+    doc.Parse((const char*)response.c_str());
+    tinyxml2::XMLElement* xml = doc.FirstChildElement();
 
     return readNode(xml);
   }
 
-  Commit* TreeReader::readNode(TiXmlElement* elem)
+  Commit* TreeReader::readNode(tinyxml2::XMLElement* elem)
   {
     if(elem == nullptr)
     {
@@ -75,7 +75,7 @@ namespace ontologenius {
     return readNode(elem, nullptr);
   }
 
-  Commit* TreeReader::readNode(TiXmlElement* elem, Commit* prev)
+  Commit* TreeReader::readNode(tinyxml2::XMLElement* elem, Commit* prev)
   {
     std::string elem_value = elem->Value();
     if(elem_value == "Node")
@@ -85,7 +85,7 @@ namespace ontologenius {
       {
         auto* current = new Commit(id);
         std::cout << "create commit " << id << std::endl;
-        for(TiXmlElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
+        for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
         {
           elem_value = sub_elem->Value();
           if(elem_value == "Data")
@@ -123,7 +123,7 @@ namespace ontologenius {
       return nullptr;
   }
 
-  std::string TreeReader::getAttribute(TiXmlElement* sub_elem, const std::string& attribute)
+  std::string TreeReader::getAttribute(tinyxml2::XMLElement* sub_elem, const std::string& attribute)
   {
     const char* sub_attr = sub_elem->Attribute(attribute.c_str());
     if(sub_attr != nullptr)

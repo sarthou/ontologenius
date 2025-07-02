@@ -1,0 +1,14 @@
+<launch>
+  <arg name="language" default="en"/>
+  <arg name="intern_file" default="none"/>
+  <arg name="config_file" default="none"/>
+  <arg name="display" default="false"/>
+  <arg name="files" default="
+  $(find ontologenius)/files/CI/test_anonymous_classes.owl
+  "/>
+  <arg name="tcmalloc_path" default=""/>
+
+  <env name="LD_PRELOAD" value="$(arg tcmalloc_path)"/>
+
+  <node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) $(arg files)"> </node>
+</launch>

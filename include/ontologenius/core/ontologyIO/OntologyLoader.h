@@ -1,6 +1,11 @@
 #ifndef ONTOLOGENIUS_ONTOLOGYLOADER_H
 #define ONTOLOGENIUS_ONTOLOGYLOADER_H
 
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "ontologenius/core/ontoGraphs/Graphs/ClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/IndividualGraph.h"

@@ -1,6 +1,8 @@
 #ifndef ONTOLOGENIUS_CLASSOWLWRITER_H
 #define ONTOLOGENIUS_CLASSOWLWRITER_H
 
+#include <cstddef>
+#include <cstdio>
 #include <set>
 #include <string>
 #include <vector>

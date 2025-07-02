@@ -1,8 +1,12 @@
 #ifndef ONTOLOGENIUS_ANOCLASSGRAPH_H
 #define ONTOLOGENIUS_ANOCLASSGRAPH_H
 
+#include <cstddef>
+#include <string>
+#include <vector>
+
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
-#include "ontologenius/core/ontoGraphs/Graphs/OntoGraph.h"
+#include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 
 namespace ontologenius {
 

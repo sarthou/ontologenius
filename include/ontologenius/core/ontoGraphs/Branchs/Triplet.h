@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_TRIPLET_H
 
 #include <algorithm>
+#include <cstddef>
 #include <string>
 #include <vector>
 

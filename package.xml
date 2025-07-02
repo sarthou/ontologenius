@@ -20,7 +20,7 @@
   <depend condition="$ROS_VERSION == 1">diagnostic_msgs</depend>
   <depend condition="$ROS_VERSION == 1">rospy</depend>
   <depend condition="$ROS_VERSION == 1">roscpp</depend>
-  <depend condition="$ROS_VERSION == 1">tinyxml</depend>
+  <depend condition="$ROS_VERSION == 1">tinyxml2</depend>
   <depend condition="$ROS_VERSION == 1">cv_bridge</depend>
   <depend condition="$ROS_VERSION == 1">cmake_modules</depend>
   <depend condition="$ROS_VERSION == 1">pluginlib</depend>

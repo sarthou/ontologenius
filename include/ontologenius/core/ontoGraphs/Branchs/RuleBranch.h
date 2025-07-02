@@ -1,13 +1,16 @@
 #ifndef ONTOLOGENIUS_RULEBRANCH_H
 #define ONTOLOGENIUS_RULEBRANCH_H
 
+#include <cstddef>
+#include <cstdint>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
-#include "ontologenius/core/ontoGraphs/Branchs/Branch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 
@@ -185,8 +188,8 @@ namespace ontologenius {
     Variable_t() : is_instantiated(false), is_datavalue(false), is_builtin_value(false), var_index(-1) {}
 
     std::string var_name;
-    bool is_instantiated; // for indiv
-    bool is_datavalue; // for literal
+    bool is_instantiated;  // for indiv
+    bool is_datavalue;     // for literal
     bool is_builtin_value; // for builtin data
     int64_t var_index;
 
