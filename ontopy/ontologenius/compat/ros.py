@@ -131,7 +131,7 @@ elif os.environ["ROS_VERSION"] == "2":
             self.node_: Node = node_
             self.srv_name = name
 
-        def call(self, params: SrvTypeRequest, verbose) -> SrvTypeResponse:
+        def call(self, params: SrvTypeRequest, verbose = True) -> SrvTypeResponse:
             future = self.client.call_async(request=params)
             rclpy.spin_until_future_complete(self.node_, future)
             return future.result()
