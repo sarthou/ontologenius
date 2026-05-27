@@ -101,6 +101,7 @@ namespace ontologenius {
     inline std::string getName(const std::string& uri);
     inline float getProbability(tinyxml2::XMLElement* elem);
     inline std::string getAttribute(tinyxml2::XMLElement* elem, const std::string& attribute);
+    inline std::string getAttribute(tinyxml2::XMLElement* elem, const std::vector<std::string>& attributes);
     inline bool testAttribute(tinyxml2::XMLElement* sub_elem, const std::string& attribute);
     inline int getNbChildren(tinyxml2::XMLElement* elem);
 
@@ -171,6 +172,17 @@ namespace ontologenius {
       return getName(std::string(sub_attr));
     else
       return "";
+  }
+
+  inline std::string OntologyOwlReader::getAttribute(tinyxml2::XMLElement* elem, const std::vector<std::string>& attributes)
+  {
+    for(const auto& attribute : attributes)
+    {
+      const char* sub_attr = elem->Attribute(attribute.c_str());
+      if(sub_attr != nullptr)
+        return getName(std::string(sub_attr));
+    }
+    return "";
   }
 
   bool OntologyOwlReader::testAttribute(tinyxml2::XMLElement* sub_elem, const std::string& attribute)

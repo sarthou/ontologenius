@@ -5,6 +5,7 @@
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontologyIO/Owl/OntologyOwlReader.h"
+#include "ontologenius/graphical/Display.h"
 
 namespace ontologenius {
 
@@ -16,7 +17,7 @@ namespace ontologenius {
     {
       class_expression->resource_value = getAttribute(elem, "rdf:resource");
       if(class_expression->resource_value.empty())
-        class_expression->resource_value = getAttribute(elem, "rdf:about");
+        class_expression->resource_value = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
       class_expression->type = ClassExpressionType_e::class_expression_identifier;
       class_expression->is_instanciated = is_instanciated;
     }
@@ -50,7 +51,23 @@ namespace ontologenius {
       bool extract_range = false;
       const std::string sub_elem_name = sub_elem->Value();
       if(sub_elem_name == "owl:onProperty")
-        class_expression->restriction_property = getName(sub_elem->Attribute("rdf:resource"));
+      {
+        class_expression->restriction_property = getAttribute(sub_elem, std::vector<std::string>{"rdf:resource", "rdf:ID"});
+        if(class_expression->restriction_property.empty())
+        {
+          tinyxml2::XMLElement* property_elem = sub_elem->FirstChildElement();
+          if(property_elem != nullptr)
+          {
+            const std::string property_elem_name = property_elem->Value();
+            if(property_elem_name == "owl:ObjectProperty")
+            {
+              class_expression->restriction_property = getAttribute(property_elem, std::vector<std::string>{"rdf:resource", "rdf:ID"});
+            }
+            else
+              Display::warning("Unsupported field " + property_elem_name + " in owl:onProperty");
+          }
+        }
+      }
       else if(sub_elem_name == "owl:allValuesFrom")
         class_expression->restriction_type = RestrictionConstraintType_e::restriction_all_values_from;
       else if(sub_elem_name == "owl:someValuesFrom")
