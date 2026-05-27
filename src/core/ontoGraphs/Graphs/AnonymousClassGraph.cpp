@@ -6,6 +6,8 @@
 #include <mutex>
 #include <shared_mutex>
 #include <string>
+#include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
@@ -15,6 +17,119 @@
 #include "ontologenius/core/ontoGraphs/Graphs/OntologyGraphs.h"
 
 namespace ontologenius {
+
+  struct TreeApplicabilityAnalysis_t
+  {
+    std::unordered_set<ClassBranch*> proved_classes;
+    std::vector<std::pair<ObjectPropertyBranch*, IndividualBranch*>> proved_object_relations;
+    std::vector<std::pair<DataPropertyBranch*, LiteralNode*>> proved_data_relations;
+    std::unordered_set<ObjectPropertyBranch*> initial_required_object_properties;
+    std::unordered_set<DataPropertyBranch*> initial_required_data_properties;
+  };
+
+  // Returns true when a restriction guarantees that the initial individual must hold at least one
+  // instance of the property. someValuesFrom and hasValue require exactly one relation to exist;
+  // min/exact cardinality require one only when the count is > 0.
+  // allValuesFrom and maxCardinality place no lower bound so they contribute nothing.
+  static bool restrictionRequiresInitialProperty(const ClassExpression* node)
+  {
+    switch(node->restriction_type_)
+    {
+    case RestrictionConstraintType_e::restriction_some_values_from:
+    case RestrictionConstraintType_e::restriction_has_value:
+      return true;
+    case RestrictionConstraintType_e::restriction_min_cardinality:
+    case RestrictionConstraintType_e::restriction_cardinality:
+      return node->cardinality_value_ > 0;
+    default:
+      return false;
+    }
+  }
+
+  // Analyses a class expression from the perspective of the initial individual (the one being
+  // classified). Returns which facts are immediately provable on it and which properties it is
+  // guaranteed to hold.
+  static TreeApplicabilityAnalysis_t analyzeTreeForInitialIndividual(ClassExpression* node)
+  {
+    TreeApplicabilityAnalysis_t analysis;
+    if(node == nullptr)
+      return analysis;
+
+    switch(node->type_)
+    {
+    case ClassExpressionType_e::class_expression_identifier:
+      // A plain class identifier: knowing indiv isA A ≡ B lets us immediately assert indiv isA B.
+      // Individual/literal identifiers are fillers inside a restriction — handled by the restriction
+      // case below, not here.
+      if(node->class_involved_ != nullptr)
+        analysis.proved_classes.insert(node->class_involved_);
+      break;
+
+    case ClassExpressionType_e::class_expression_restriction:
+      // The restriction property applies to the initial individual; its filler applies to a related
+      // entity and is NOT propagated upward.
+      //   - proved_*_relations: fully determined only for hasValue (target individual/literal is
+      //     named explicitly). someValuesFrom/cardinality leave the target undetermined.
+      //   - initial_required: the property provably exists for someValuesFrom / hasValue /
+      //     min|exact cardinality > 0, regardless of filler determinism.
+      if(node->restriction_type_ == RestrictionConstraintType_e::restriction_has_value &&
+         !node->sub_elements_.empty())
+      {
+        const ClassExpression* filler = node->sub_elements_.front();
+        if(node->object_property_involved_ != nullptr && filler->individual_involved_ != nullptr)
+          analysis.proved_object_relations.emplace_back(node->object_property_involved_, filler->individual_involved_);
+        else if(node->data_property_involved_ != nullptr && filler->literal_involved_ != nullptr)
+          analysis.proved_data_relations.emplace_back(node->data_property_involved_, filler->literal_involved_);
+      }
+      if(restrictionRequiresInitialProperty(node))
+      {
+        if(node->object_property_involved_ != nullptr)
+          analysis.initial_required_object_properties.insert(node->object_property_involved_);
+        if(node->data_property_involved_ != nullptr)
+          analysis.initial_required_data_properties.insert(node->data_property_involved_);
+      }
+      break;
+
+    case ClassExpressionType_e::class_expression_intersection_of:
+      // ALL branches must hold simultaneously, so every proved fact and every required property
+      // from every branch applies to the initial individual.
+      for(auto* child : node->sub_elements_)
+      {
+        const TreeApplicabilityAnalysis_t child_analysis = analyzeTreeForInitialIndividual(child);
+        analysis.proved_classes.insert(child_analysis.proved_classes.begin(),
+                                       child_analysis.proved_classes.end());
+        analysis.proved_object_relations.insert(analysis.proved_object_relations.end(),
+                                                child_analysis.proved_object_relations.begin(),
+                                                child_analysis.proved_object_relations.end());
+        analysis.proved_data_relations.insert(analysis.proved_data_relations.end(),
+                                              child_analysis.proved_data_relations.begin(),
+                                              child_analysis.proved_data_relations.end());
+        analysis.initial_required_object_properties.insert(child_analysis.initial_required_object_properties.begin(),
+                                                           child_analysis.initial_required_object_properties.end());
+        analysis.initial_required_data_properties.insert(child_analysis.initial_required_data_properties.begin(),
+                                                         child_analysis.initial_required_data_properties.end());
+      }
+      break;
+
+    case ClassExpressionType_e::class_expression_union_of:
+      // Only ONE branch needs to hold; we cannot determine which one, so nothing is provable
+      // about the initial individual from its branches alone.
+      break;
+
+    case ClassExpressionType_e::class_expression_complement_of:
+      // Negation constrains what the individual is NOT; no positive fact can be derived.
+      break;
+
+    case ClassExpressionType_e::class_expression_one_of:
+      // Enumeration over a fixed set; no property obligation is deducible for the initial individual.
+      break;
+
+    default:
+      break;
+    }
+
+    return analysis;
+  }
 
   AnonymousClassGraph::AnonymousClassGraph(OntologyGraphs* graphs) : graphs_(graphs)
   {}
@@ -50,6 +165,22 @@ namespace ontologenius {
   {
     for(size_t i = 0; i < other.all_branchs_.size(); i++)
       cpyBranch(other.all_branchs_[i], all_branchs_[i]);
+  }
+
+  void AnonymousClassGraph::analyseApplicabiltiy()
+  {
+    for(auto* branch : all_branchs_)
+    {
+      for(auto* tree : branch->ano_trees_)
+      {
+        TreeApplicabilityAnalysis_t analysis = analyzeTreeForInitialIndividual(tree->root_node_);
+        tree->proved_classes_ = std::move(analysis.proved_classes);
+        tree->proved_object_relations_ = std::move(analysis.proved_object_relations);
+        tree->proved_data_relations_ = std::move(analysis.proved_data_relations);
+        tree->initial_required_object_properties_ = std::move(analysis.initial_required_object_properties);
+        tree->initial_required_data_properties_ = std::move(analysis.initial_required_data_properties);
+      }
+    }
   }
 
   AnonymousClassTree* AnonymousClassGraph::createTree(ClassExpressionDescriptor_t* class_expression_descriptor)
@@ -236,11 +367,42 @@ namespace ontologenius {
     tree->root_node_ = copyTreeNodes(old_tree->root_node_);
     tree->depth_ = old_tree->depth_;
     tree->id = old_tree->id;
-
     tree->involves_class = old_tree->involves_class;
     tree->involves_data_property = old_tree->involves_data_property;
     tree->involves_individual = old_tree->involves_individual;
     tree->involves_object_property = old_tree->involves_object_property;
+
+    for(auto* cls : old_tree->proved_classes_)
+    {
+      auto* new_cls = graphs_->classes_.container_.find(cls->value());
+      tree->proved_classes_.insert(new_cls);
+    }
+
+    for(const auto& [property, individual] : old_tree->proved_object_relations_)
+    {
+      auto* new_property = graphs_->object_properties_.container_.find(property->value());
+      auto* new_individual = graphs_->individuals_.container_.find(individual->value());
+      tree->proved_object_relations_.emplace_back(new_property, new_individual);
+    }
+
+    for(const auto& [property, literal] : old_tree->proved_data_relations_)
+    {
+      auto* new_property = graphs_->data_properties_.container_.find(property->value());
+      auto* new_literal = graphs_->literals_.find(literal->value());
+      tree->proved_data_relations_.emplace_back(new_property, new_literal);
+    }
+
+    for(auto* property : old_tree->initial_required_object_properties_)
+    {
+      auto* new_property = graphs_->object_properties_.container_.find(property->value());
+      tree->initial_required_object_properties_.insert(new_property);
+    }
+
+    for(auto* property : old_tree->initial_required_data_properties_)
+    {
+      auto* new_property = graphs_->data_properties_.container_.find(property->value());
+      tree->initial_required_data_properties_.insert(new_property);
+    }
 
     return tree;
   }

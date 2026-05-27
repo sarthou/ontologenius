@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
@@ -66,7 +67,8 @@ namespace ontologenius {
   public:
     AnonymousClassTree(const std::string& rule) : InferenceRuleNode(rule),
                                                   involves_class(false), involves_object_property(false), involves_data_property(false), involves_individual(false),
-                                                  involves_close_world_assumption(false), root_node_(nullptr), depth_(0)
+                                                  involves_close_world_assumption(false), root_node_(nullptr),
+                                                  depth_(0)
     {}
 
     bool involves_class;
@@ -76,6 +78,11 @@ namespace ontologenius {
     bool involves_close_world_assumption;
 
     ClassExpression* root_node_;
+    std::unordered_set<ClassBranch*> proved_classes_;                                          // Class assertions immediately provable on the initial individual
+    std::vector<std::pair<ObjectPropertyBranch*, IndividualBranch*>> proved_object_relations_; // Object property assertions with a fully determined target (from hasValue)
+    std::vector<std::pair<DataPropertyBranch*, LiteralNode*>> proved_data_relations_;          // Data property assertions with a fully determined literal target (from hasValue)
+    std::unordered_set<ObjectPropertyBranch*> initial_required_object_properties_;             // Properties the initial individual must hold (value undetermined)
+    std::unordered_set<DataPropertyBranch*> initial_required_data_properties_;                 // Properties the initial individual must hold (value undetermined)
     size_t depth_;
 
     std::string id;
@@ -83,9 +90,9 @@ namespace ontologenius {
     std::string involvesToString() const
     {
       std::string involves_res;
-      involves_res = " c : " + std::to_string(int(involves_class)) + " o : " + std::to_string(int(involves_object_property)) +
-                     " d : " + std::to_string(int(involves_data_property)) + " i : " + std::to_string(int(involves_individual)) +
-                     " cwa : " + std::to_string(int(involves_close_world_assumption));
+      involves_res = " c : " + std::to_string(static_cast<int>(involves_class)) + " o : " + std::to_string(static_cast<int>(involves_object_property)) +
+                     " d : " + std::to_string(static_cast<int>(involves_data_property)) + " i : " + std::to_string(static_cast<int>(involves_individual)) +
+                     " cwa : " + std::to_string(static_cast<int>(involves_close_world_assumption));
       return involves_res;
     }
   };

@@ -59,6 +59,8 @@ namespace ontologenius {
 
     if(err == 0)
     {
+      anonymous_classes_.analyseApplicabiltiy();
+
       loader_.loadIndividuals();
 
       err += individual_checker.check();

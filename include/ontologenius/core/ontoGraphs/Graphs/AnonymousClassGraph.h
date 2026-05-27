@@ -135,11 +135,14 @@ namespace ontologenius {
 
     AnonymousClassBranch* add(EquivalentClassDescriptor_t& equivalence_descriptor, bool hidden_anonymous = false);
     void deepCopy(const AnonymousClassGraph& other);
+    void analyseApplicabiltiy();
 
   private:
     OntologyGraphs* graphs_;
 
     AnonymousClassTree* createTree(ClassExpressionDescriptor_t* class_expression_descriptor);
+
+    // if mark_tree_content is set to true, tree's members named 'involes_X' will be updated.
     ClassExpression* createTreeNodes(ClassExpressionDescriptor_t* class_expression_descriptor, size_t& depth, AnonymousClassTree* related_tree, bool mark_tree_content = true);
     ClassExpression* createNodeContent(ClassExpressionDescriptor_t* expression_leaf, AnonymousClassTree* related_tree, bool mark_tree_content);
 
