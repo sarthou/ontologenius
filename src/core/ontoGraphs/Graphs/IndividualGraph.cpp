@@ -1954,13 +1954,15 @@ namespace ontologenius {
     }
   }
 
-  bool IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
   {
     IndividualBranch* branch = findBranchSafe(indiv);
-    return addInheritage(branch, class_inherited);
+    std::vector<std::pair<std::string, std::string>> explanations;
+    addInheritage(branch, class_inherited, &explanations);
+    return explanations;
   }
 
-  bool IndividualGraph::addInheritage(IndividualBranch* branch, const std::string& class_inherited)
+  bool IndividualGraph::addInheritage(IndividualBranch* branch, const std::string& class_inherited, std::vector<std::pair<std::string, std::string>>* explanations)
   {
     const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
@@ -1976,7 +1978,7 @@ namespace ontologenius {
           const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
                                        [inherited](const auto& is_a) { return is_a.elem == inherited; });
           if(it != branch->is_a_.cend())
-            applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)));
+            applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, explanations);
         }
       }
       return true;
@@ -2022,8 +2024,9 @@ namespace ontologenius {
       return false;
   }
 
-  bool IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
   {
+    std::vector<std::pair<std::string, std::string>> explanations;
     ClassBranch* inherited = graphs_->classes_.findBranchSafe(class_inherited);
     if(inherited != nullptr)
     {
@@ -2042,17 +2045,15 @@ namespace ontologenius {
         const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
                                      [inherited](const auto& is_a) { return is_a.elem == inherited; });
         if(it != branch->is_a_.cend())
-          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)));
+          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, &explanations);
       }
-
-      return true; // TODO verify that multi inheritances are compatible
     }
-    else
-      return false;
+    return explanations;
   }
 
-  bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
   {
+    std::vector<std::pair<std::string, std::string>> explanations;
     IndividualBranch* tmp = findBranchSafe(class_inherited);
     if(tmp != nullptr)
     {
@@ -2072,25 +2073,24 @@ namespace ontologenius {
         const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
                                      [inherited](const auto& is_a) { return is_a.elem == inherited; });
         if(it != branch->is_a_.cend())
-          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)));
+          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, &explanations);
       }
-
-      return true; // TODO verify that multi inheritances are compatible
     }
-    else
-      return false;
+    return explanations;
   }
 
-  size_t IndividualGraph::addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability, bool inferred)
+  size_t IndividualGraph::addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability, bool inferred,
+                                            std::vector<std::pair<std::string, std::string>>* explanations)
   {
     individual->is_a_.emplaceBack(class_branch, probability, inferred); // adding the emplaceBack so that the is_a get in updated mode
     class_branch->individual_childs_.emplace_back(individual);
     const size_t index = individual->is_a_.size() - 1;
-    applyProvedFacts(individual, class_branch, index, probability, inferred);
+    applyProvedFacts(individual, class_branch, index, probability, inferred, explanations);
     return index;
   }
 
-  void IndividualGraph::applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability, bool inferred)
+  void IndividualGraph::applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability, bool inferred,
+                                         std::vector<std::pair<std::string, std::string>>* explanations)
   {
     if(class_branch->equiv_anonymous_class_ == nullptr)
       return;
@@ -2110,6 +2110,9 @@ namespace ontologenius {
     ObjectRelationTriplets* obj_triplet = individual->is_a_.has_induced_object_relations[class_idx];
     DataRelationTriplets* data_triplet = individual->is_a_.has_induced_data_relations[class_idx];
 
+    // Build the explanation string: "individual isA class_branch" is why every proved fact holds.
+    const std::string triggering_fact = individual->value() + "|isA|" + class_branch->value();
+
     // Intersection of proved_classes_
     std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
     for(size_t i = 1; i < trees.size(); i++)
@@ -2122,11 +2125,17 @@ namespace ontologenius {
                                        [proved_class](const auto& is_a) { return is_a.elem == proved_class; });
       if(!already)
       {
-        const size_t proved_idx = addClassAssertion(individual, proved_class, probability, inferred); // recursive; terminates via 'already' check
+        const size_t proved_idx = addClassAssertion(individual, proved_class, probability, inferred, explanations); // recursive; terminates via 'already' check
         if(inherit_triplet->exist(individual, nullptr, proved_class) == false)
         {
           inherit_triplet->push(individual, nullptr, proved_class);
           individual->is_a_.relations[proved_idx].induced_traces.emplace_back(inherit_triplet);
+          individual->is_a_.relations[proved_idx].explanation.push_back(triggering_fact);
+          individual->nb_updates_++;
+          proved_class->nb_updates_++;
+          if(explanations != nullptr && proved_class->isHidden() == false)
+            explanations->emplace_back("[ADD]" + individual->value() + "|isA|" + proved_class->value(),
+                                       "[ADD]" + individual->is_a_.relations[proved_idx].getExplanation());
         }
       }
     }
@@ -2145,6 +2154,11 @@ namespace ontologenius {
         {
           obj_triplet->push(individual, rel.first, rel.second);
           individual->object_relations_.relations[rel_idx].induced_traces.emplace_back(obj_triplet);
+          individual->object_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
+          individual->nb_updates_++;
+          if(explanations != nullptr)
+            explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
+                                       "[ADD]" + individual->object_relations_.relations[rel_idx].getExplanation());
         }
       }
     }
@@ -2163,6 +2177,11 @@ namespace ontologenius {
         {
           data_triplet->push(individual, rel.first, rel.second);
           individual->data_relations_.relations[rel_idx].induced_traces.emplace_back(data_triplet);
+          individual->data_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
+          individual->nb_updates_++;
+          if(explanations != nullptr)
+            explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
+                                       "[ADD]" + individual->data_relations_.relations[rel_idx].getExplanation());
         }
       }
     }

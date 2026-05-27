@@ -130,11 +130,20 @@ namespace ontologenius {
         if(onto_->classes_.findBranchSafe(feed.from_) != nullptr)
           return onto_->classes_.addInheritage(feed.from_, feed.on_);
         else if(onto_->individuals_.findBranchSafe(feed.from_) != nullptr)
-          return onto_->individuals_.addInheritage(feed.from_, feed.on_);
+        {
+          auto tmp = onto_->individuals_.addInheritage(feed.from_, feed.on_);
+          explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        }
         else if(onto_->classes_.findBranchSafe(feed.on_) != nullptr)
-          return onto_->individuals_.addInheritageInvert(feed.from_, feed.on_);
+        {
+          auto tmp = onto_->individuals_.addInheritageInvert(feed.from_, feed.on_);
+          explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        }
         else if(onto_->individuals_.findBranchSafe(feed.on_) != nullptr)
-          return onto_->individuals_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+        {
+          auto tmp = onto_->individuals_.addInheritageInvertUpgrade(feed.from_, feed.on_);
+          explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
+        }
         else if((onto_->data_properties_.findBranchSafe(feed.from_) != nullptr) ||
                 (onto_->data_properties_.findBranchSafe(feed.on_) != nullptr))
           return onto_->data_properties_.addInheritage(feed.from_, feed.on_);

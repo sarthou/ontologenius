@@ -158,7 +158,7 @@ namespace ontologenius {
                                                  AnonymousClassTree* anonymous_tree,
                                                  const std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    const size_t new_idx = ontology_->individuals_.addClassAssertion(indiv, anonymous_branch->class_equiv_, 1.0, true);
+    const size_t new_idx = ontology_->individuals_.addClassAssertion(indiv, anonymous_branch->class_equiv_, 1.0, true, &explanations_);
     indiv->is_a_[new_idx].used_rule = anonymous_tree;
 
     indiv->nb_updates_++;
