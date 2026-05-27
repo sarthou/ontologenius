@@ -111,6 +111,9 @@ namespace ontologenius {
         relation.second->is_a_.emplaceBack(range, 1.0, true);
         range->individual_childs_.emplace_back(relation.second, 1.0, true);
 
+        explanations_.emplace_back("[ADD]" + relation.second->value() + "|isA|" + range->value(),
+                                   "" + relation.first->value() + "|hasRange|" + range->value());
+
         relation.second->nb_updates_++;
         range->nb_updates_++;
         nb_update++;
@@ -159,6 +162,9 @@ namespace ontologenius {
         branch->is_a_.emplaceBack(domain, 1.0, true);
         domain->individual_childs_.emplace_back(branch, 1.0, true);
 
+        explanations_.emplace_back("[ADD]" + relation.second->value() + "|isA|" + domain->value(),
+                                   "" + relation.first->value() + "|hasDomain|" + domain->value());
+
         branch->nb_updates_++;
         domain->nb_updates_++;
         nb_update++;
@@ -206,6 +212,9 @@ namespace ontologenius {
       {
         branch->is_a_.emplaceBack(domain, 1.0, true);
         domain->individual_childs_.emplace_back(branch, 1.0, true);
+
+        explanations_.emplace_back("[ADD]" + relation.second->value() + "|isA|" + domain->value(),
+                                   "" + relation.first->value() + "|hasDomain|" + domain->value());
 
         branch->nb_updates_++;
         domain->nb_updates_++;
