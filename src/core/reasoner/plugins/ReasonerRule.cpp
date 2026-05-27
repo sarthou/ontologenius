@@ -121,8 +121,7 @@ namespace ontologenius {
     {
       if((is_already_a == false) && (checkClassesDisjointess(involved_indiv, triplet.class_predicate) == false))
       {
-        involved_indiv->is_a_.emplaceBack(triplet.class_predicate, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
-        triplet.class_predicate->individual_childs_.emplace_back(involved_indiv, 1.0, true);
+        ontology_->individuals_.addClassAssertion(involved_indiv, triplet.class_predicate, 1.0, true);
 
         involved_indiv->nb_updates_++;
         triplet.class_predicate->nb_updates_++;

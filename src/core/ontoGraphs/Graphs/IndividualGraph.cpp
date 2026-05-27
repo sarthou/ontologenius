@@ -13,12 +13,14 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
@@ -1962,7 +1964,24 @@ namespace ontologenius {
   {
     const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
-    return addInheritageUnsafe(branch, class_inherited);
+    const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
+    if(addInheritageUnsafe(branch, class_inherited))
+    {
+      if(branch != nullptr)
+      {
+        ClassBranch* inherited = graphs_->classes_.findBranch(class_inherited);
+        if(inherited != nullptr)
+        {
+          const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                       [inherited](const auto& is_a) { return is_a.elem == inherited; });
+          if(it != branch->is_a_.cend())
+            applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)));
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   bool IndividualGraph::addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited)
@@ -2011,11 +2030,20 @@ namespace ontologenius {
       IndividualBranch* branch = findOrCreateBranchSafe(indiv);
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
 
       if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
         branch->setUpdated(true);
       if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
         inherited->setUpdated(true);
+
+      {
+        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                     [inherited](const auto& is_a) { return is_a.elem == inherited; });
+        if(it != branch->is_a_.cend())
+          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)));
+      }
 
       return true; // TODO verify that multi inheritances are compatible
     }
@@ -2032,16 +2060,112 @@ namespace ontologenius {
       IndividualBranch* branch = findOrCreateBranchSafe(indiv);
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
 
       if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
         branch->setUpdated(true);
       if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
         inherited->setUpdated(true);
 
+      {
+        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                     [inherited](const auto& is_a) { return is_a.elem == inherited; });
+        if(it != branch->is_a_.cend())
+          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)));
+      }
+
       return true; // TODO verify that multi inheritances are compatible
     }
     else
       return false;
+  }
+
+  size_t IndividualGraph::addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability, bool inferred)
+  {
+    individual->is_a_.emplaceBack(class_branch, probability, inferred); // adding the emplaceBack so that the is_a get in updated mode
+    class_branch->individual_childs_.emplace_back(individual);
+    const size_t index = individual->is_a_.size() - 1;
+    applyProvedFacts(individual, class_branch, index, probability, inferred);
+    return index;
+  }
+
+  void IndividualGraph::applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability, bool inferred)
+  {
+    if(class_branch->equiv_anonymous_class_ == nullptr)
+      return;
+
+    const auto& trees = class_branch->equiv_anonymous_class_->ano_trees_;
+    if(trees.empty())
+      return;
+
+    // Proved facts are the INTERSECTION across all trees: facts that hold regardless of
+    // which owl:equivalentClass expression justified the classification (forward reasoning
+    // uses OR, so we only assert what every expression implies).
+
+    // Triplet containers of the triggering class assertion — fetch before any recursive
+    // call that may reallocate the has_induced_* vectors (the pointed-to heap objects
+    // remain stable even after vector reallocation).
+    InheritedRelationTriplets* inherit_triplet = individual->is_a_.has_induced_inheritance_relations[class_idx];
+    ObjectRelationTriplets* obj_triplet = individual->is_a_.has_induced_object_relations[class_idx];
+    DataRelationTriplets* data_triplet = individual->is_a_.has_induced_data_relations[class_idx];
+
+    // Intersection of proved_classes_
+    std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
+    for(size_t i = 1; i < trees.size(); i++)
+      for(auto it = proved_classes.begin(); it != proved_classes.end();)
+        it = (trees[i]->proved_classes_.count(*it) != 0u) ? std::next(it) : proved_classes.erase(it);
+
+    for(auto* proved_class : proved_classes)
+    {
+      const bool already = std::any_of(individual->is_a_.cbegin(), individual->is_a_.cend(),
+                                       [proved_class](const auto& is_a) { return is_a.elem == proved_class; });
+      if(!already)
+      {
+        const size_t proved_idx = addClassAssertion(individual, proved_class, probability, inferred); // recursive; terminates via 'already' check
+        if(inherit_triplet->exist(individual, nullptr, proved_class) == false)
+        {
+          inherit_triplet->push(individual, nullptr, proved_class);
+          individual->is_a_.relations[proved_idx].induced_traces.emplace_back(inherit_triplet);
+        }
+      }
+    }
+
+    // Intersection of proved_object_relations_ (hasValue with individual filler)
+    for(const auto& rel : trees.front()->proved_object_relations_)
+    {
+      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
+        return std::any_of(tree->proved_object_relations_.cbegin(), tree->proved_object_relations_.cend(),
+                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
+      });
+      if(in_all_trees)
+      {
+        const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
+        if(obj_triplet->exist(individual, rel.first, rel.second) == false)
+        {
+          obj_triplet->push(individual, rel.first, rel.second);
+          individual->object_relations_.relations[rel_idx].induced_traces.emplace_back(obj_triplet);
+        }
+      }
+    }
+
+    // Intersection of proved_data_relations_ (hasValue with literal filler)
+    for(const auto& rel : trees.front()->proved_data_relations_)
+    {
+      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
+        return std::any_of(tree->proved_data_relations_.cbegin(), tree->proved_data_relations_.cend(),
+                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
+      });
+      if(in_all_trees)
+      {
+        const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
+        if(data_triplet->exist(individual, rel.first, rel.second) == false)
+        {
+          data_triplet->push(individual, rel.first, rel.second);
+          individual->data_relations_.relations[rel_idx].induced_traces.emplace_back(data_triplet);
+        }
+      }
+    }
   }
 
   int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existence)
