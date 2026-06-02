@@ -2011,14 +2011,26 @@ namespace ontologenius {
 
       if(disjoint_intersection != nullptr)
         throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + inherited->value());
-      else
+
+      std::unordered_set<ClassBranch*> would_be_proved;
+      getWouldBeProvedClasses(inherited, would_be_proved);
+      for(auto* proved_class : would_be_proved)
       {
-        if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
-          branch->setUpdated(true);
-        if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
-          inherited->setUpdated(true);
-        return true; // TODO verify that multi inheritances are compatible
+        auto* disjoint_induced = graphs_->classes_.isDisjoint(ups_indiv, proved_class);
+        if(disjoint_induced != nullptr)
+          throw GraphException("The individual would have a class disjointess over " + disjoint_induced->value() +
+                               " through " + proved_class->value() + " induced by " + inherited->value());
       }
+
+      checkWouldBeProvedRelations(branch, inherited);
+      for(auto* proved_class : would_be_proved)
+        checkWouldBeProvedRelations(branch, proved_class);
+
+      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
+        branch->setUpdated(true);
+      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
+        inherited->setUpdated(true);
+      return true; // TODO verify that multi inheritances are compatible
     }
     else
       return false;
@@ -2077,6 +2089,59 @@ namespace ontologenius {
       }
     }
     return explanations;
+  }
+
+  void IndividualGraph::getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result)
+  {
+    if(class_branch->equiv_anonymous_class_ == nullptr)
+      return;
+
+    const auto& trees = class_branch->equiv_anonymous_class_->ano_trees_;
+    if(trees.empty())
+      return;
+
+    // Same intersection logic as applyProvedFacts
+    std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
+    for(size_t i = 1; i < trees.size(); i++)
+      for(auto it = proved_classes.begin(); it != proved_classes.end();)
+        it = (trees[i]->proved_classes_.count(*it) != 0u) ? std::next(it) : proved_classes.erase(it);
+
+    for(auto* proved_class : proved_classes)
+      if(result.insert(proved_class).second) // recurse only into newly discovered classes
+        getWouldBeProvedClasses(proved_class, result);
+  }
+
+  void IndividualGraph::checkWouldBeProvedRelations(IndividualBranch* individual, ClassBranch* class_branch)
+  {
+    if(class_branch->equiv_anonymous_class_ == nullptr)
+      return;
+    const auto& trees = class_branch->equiv_anonymous_class_->ano_trees_;
+    if(trees.empty())
+      return;
+
+    // Proved relations are the INTERSECTION across all trees (same logic as applyProvedFacts).
+    // For each candidate, skip if it already exists, then delegate to the shared constraint helpers.
+    for(const auto& rel : trees.front()->proved_object_relations_)
+    {
+      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
+        return std::any_of(tree->proved_object_relations_.cbegin(), tree->proved_object_relations_.cend(),
+                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
+      });
+      if(!in_all_trees || individual->objectRelationExists(rel.first, rel.second) >= 0)
+        continue;
+      checkObjectRelationConstraints(individual, rel.first, rel.second, class_branch->value());
+    }
+
+    for(const auto& rel : trees.front()->proved_data_relations_)
+    {
+      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
+        return std::any_of(tree->proved_data_relations_.cbegin(), tree->proved_data_relations_.cend(),
+                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
+      });
+      if(!in_all_trees || individual->dataRelationExists(rel.first, rel.second) >= 0)
+        continue;
+      checkDataRelationConstraints(individual, rel.first, rel.second, class_branch->value());
+    }
   }
 
   size_t IndividualGraph::addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability, bool inferred,
@@ -2187,29 +2252,59 @@ namespace ontologenius {
     }
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existence)
+  void IndividualGraph::checkObjectRelationConstraints(IndividualBranch* from, ObjectPropertyBranch* property, IndividualBranch* on, const std::string& context)
   {
+    const std::string ctx = context.empty() ? "" : " [induced by " + context + "]";
+
     if(graphs_->object_properties_.isIrreflexive(property))
     {
-      auto ids = getSameId(indiv_from);
-      if(ids.find(indiv_on->get()) != ids.end())
-        throw GraphException("Inconsistency prevented regarding irreflexivity of the property");
+      auto ids = getSameId(from);
+      if(ids.find(on->get()) != ids.end())
+        throw GraphException("Inconsistency prevented regarding irreflexivity of property '" + property->value() + "'" + ctx);
     }
 
     if(graphs_->object_properties_.isAsymetric(property))
     {
-      if(relationExists(indiv_on, property, indiv_from))
-        throw GraphException("Inconsistency prevented regarding asymetry of the property");
+      if(relationExists(on, property, from))
+        throw GraphException("Inconsistency prevented regarding asymmetry of property '" + property->value() + "'" + ctx);
     }
 
+    if(property->properties_.functional_property_)
+    {
+      for(const auto& existing : from->object_relations_)
+        if(existing.first == property && existing.second != on)
+          throw GraphException("Inconsistency prevented regarding functional property '" + property->value() +
+                               "': already has value '" + existing.second->value() + "'" + ctx);
+    }
+
+    if(checkRangeAndDomain(from, property, on) == false)
+      throw GraphException("Inconsistency prevented regarding the range or domain of property '" + property->value() + "'" + ctx);
+  }
+
+  void IndividualGraph::checkDataRelationConstraints(IndividualBranch* from, DataPropertyBranch* property, LiteralNode* data, const std::string& context)
+  {
+    const std::string ctx = context.empty() ? "" : " [induced by " + context + "]";
+
+    if(property->properties_.functional_property_)
+    {
+      for(const auto& existing : from->data_relations_)
+        if(existing.first == property && existing.second != data)
+          throw GraphException("Inconsistency prevented regarding functional data property '" + property->value() +
+                               "': already has value '" + existing.second->value() + "'" + ctx);
+    }
+
+    if(checkRangeAndDomain(from, property, data) == false)
+      throw GraphException("Inconsistency prevented regarding the range or domain of data property '" + property->value() + "'" + ctx);
+  }
+
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existence)
+  {
     int index = -1;
     if(check_existence)
       index = indiv_from->objectRelationExists(property, indiv_on);
     if(index == -1)
     {
-      if(checkRangeAndDomain(indiv_from, property, indiv_on) == false)
-        throw GraphException("Inconsistency prevented regarding the range or domain of the property");
-
+      checkObjectRelationConstraints(indiv_from, property, indiv_on);
       indiv_from->object_relations_.emplaceBack(property, indiv_on);
       index = (int)indiv_from->object_relations_.size() - 1;
       indiv_on->setUpdated(true);
@@ -2229,9 +2324,7 @@ namespace ontologenius {
       index = indiv_from->dataRelationExists(property, data);
     if(index == -1)
     {
-      if(checkRangeAndDomain(indiv_from, property, data) == false)
-        throw GraphException("Inconsistency prevented regarding the range or domain of the property");
-
+      checkDataRelationConstraints(indiv_from, property, data);
       indiv_from->data_relations_.emplaceBack(property, data);
       index = (int)indiv_from->data_relations_.size() - 1;
       indiv_from->setUpdated(true);

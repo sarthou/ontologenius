@@ -147,6 +147,9 @@ namespace ontologenius {
     std::vector<IndividualBranch*> ordered_individuals_; // contains the individuals ordered wrt their index
                                                          // unused indexes have nullptr in
 
+    void getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result);
+    void checkWouldBeProvedRelations(IndividualBranch* individual, ClassBranch* class_branch);
+
     IndividualBranch* getIndividualByIndex(index_t index)
     {
       if(index <= 0)
@@ -213,6 +216,11 @@ namespace ontologenius {
 
     bool checkRangeAndDomain(IndividualBranch* from, ObjectPropertyBranch* prop, IndividualBranch* on);
     bool checkRangeAndDomain(IndividualBranch* from, DataPropertyBranch* prop, LiteralNode* data);
+
+    // Validate all OWL constraints for a (subject, property, object) triple that does not yet exist.
+    // Throws GraphException on any violation. Pass a non-empty context to annotate the message.
+    void checkObjectRelationConstraints(IndividualBranch* from, ObjectPropertyBranch* property, IndividualBranch* on, const std::string& context = "");
+    void checkDataRelationConstraints(IndividualBranch* from, DataPropertyBranch* property, LiteralNode* data, const std::string& context = "");
 
     void cpyBranch(IndividualBranch* old_branch, IndividualBranch* new_branch);
     void insertBranchInVectors(IndividualBranch* branch);
