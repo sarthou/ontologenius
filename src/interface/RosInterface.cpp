@@ -457,8 +457,12 @@ namespace ontologenius {
 #endif
 
         feeder_end = true;
-        msg.data = "end";
-        feeder_end_pub_.publish(msg);
+        auto synchro_msgs = feeder_.getSynchroMsgs();
+        for(auto& synchro_msg : synchro_msgs)
+        {
+          msg.data = synchro_msg;
+          feeder_end_pub_.publish(msg);
+        }
       }
 
       if((run == true) && (run_ == true))

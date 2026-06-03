@@ -52,6 +52,8 @@ class FeederPublisher(ClientBase):
         self._updated = False
         random.seed()
         self._commit_nb = random.randint(1, 100000)
+        self._synchro_nb = random.randint(1, 100000)
+        self._synchro_msg = ""
 
     def __del__(self):
         self._commit_sub.unregister()
@@ -231,18 +233,8 @@ class FeederPublisher(ClientBase):
            The default parameter timeout(int) is the expiration time in milliseconds. The default value is of 100 seconds.
            Returns False if the function returns on a timeout.
         """
-        self._updated = False
-
-        start_time = datetime.now()
-        self._sendNop()
-
-        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            Ontoros.spin_once()
-
-        if self._updated == True:
-            return True
-        else:
-            return False
+        msg = '[nop]' + str(self._synchro_nb) + '|'
+        return self._publishAndWaitSynchro(msg, timeout)
 
     def commitAuto(self, timeout = 100000000):
         """Saves all the modifications from the previous commit and waits until all changes have been applied.
@@ -264,19 +256,8 @@ class FeederPublisher(ClientBase):
            Returns False if the function returns on a timeout.
            This function can only be used on a copied ontology.
         """
-        self._updated = False
         msg = '[commit]' + commit_name + '|'
-
-        start_time = datetime.now()
-        self._publish_stamped(msg, Ontoros.getRosTime())
-
-        while (not Ontoros.isShutdown()) and (not self._updated) and ((self.millis_interval(start_time, datetime.now()) < timeout)) :
-            Ontoros.spin_once()
-
-        if self._updated == True:
-            return True
-        else:
-            return False
+        return self._publishAndWaitSynchro(msg, timeout)
 
     def checkout(self, commit_name, timeout = 100000000):
         """Apply the necessary changes to return to the specified commit_name (str) and waits until all changes have been applied.
@@ -284,18 +265,8 @@ class FeederPublisher(ClientBase):
            Returns False if the function returns on a timeout.
            This function can only be used on a copied ontology.
         """
-        self._updated = False
-
-        start_time = datetime.now()
-        self._publish_stamped('[checkout]' + commit_name + '|', Ontoros.getRosTime())
-
-        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
-            Ontoros.spin_once()
-
-        if self._updated == True:
-            return True
-        else:
-            return False
+        msg = '[checkout]' + commit_name + '|'
+        return self._publishAndWaitSynchro(msg, timeout)
         
     def registerNotificationCallback(self, callback):
         """Register a callback function to get notifications from the reasoners.
@@ -305,6 +276,21 @@ class FeederPublisher(ClientBase):
 
     def _sendNop(self):
         self._publish_stamped('[nop]nop|', Ontoros.getRosTime())
+
+    def _publishAndWaitSynchro(self, msg, timeout):
+        self._synchro_msg = msg
+        self._updated = False
+
+        start_time = datetime.now()
+        self._publish_stamped(msg, Ontoros.getRosTime())
+
+        while not Ontoros.isShutdown() and not self._updated and (self.millis_interval(start_time, datetime.now()) < timeout) :
+            Ontoros.spin_once()
+
+        if self._updated == True:
+            return True
+        else:
+            return False
 
     def _publish(self, data):
         self._pub.publish(data)
@@ -317,7 +303,7 @@ class FeederPublisher(ClientBase):
         self._stamped_pub.publish(msg)
 
     def commitCallback(self, data):
-        if data.data == 'end':
+        if data.data == self._synchro_msg:
             self._updated = True
 
     def _notifCallback(self, msg):

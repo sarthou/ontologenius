@@ -30,6 +30,7 @@ namespace onto {
                                                         reasoners_notification_callback_([](auto& msg) { (void)msg; }),
                                                         commit_nb_((time(nullptr), rand() % 100000 + 1)),
                                                         updated_(false),
+                                                        synchro_nb_((time(nullptr), rand() % 100000 + 1)),
                                                         pub_(name.empty() ? "ontologenius/insert" : "ontologenius/insert/" + name, 1000),
                                                         stamped_pub_((name.empty()) ? "ontologenius/insert_stamped" : "ontologenius/insert_stamped/" + name, 1000),
                                                         commit_sub_(name_.empty() ? "ontologenius/end" : "ontologenius/end/" + name_, 1000, &FeederPublisher::commitCallback, this),
@@ -185,7 +186,6 @@ namespace onto {
     /// @param callback is the callback function taking a string.
     void registerReasonersNotificationCallback(const std::function<void(const std::string&)>& callback) { reasoners_notification_callback_ = callback; }
 
-
     /// @brief Exports the current modification tree in an absolute path.
     /// This function has no effect on non copied ontologies.
     /// @param path is the path where the modification tree will be saved. It must be of the form: my/path/to/file.xml
@@ -203,6 +203,8 @@ namespace onto {
 
     size_t commit_nb_;
     std::atomic<bool> updated_;
+    std::string synchro_msg_;
+    size_t synchro_nb_;
 
     onto_ros::Publisher<std_msgs_compat::String> pub_;
     onto_ros::Publisher<OntologeniusStampedString> stamped_pub_;
@@ -210,7 +212,7 @@ namespace onto {
     onto_ros::Subscriber<std_msgs_compat::String> feeder_notif_sub_;
     onto_ros::Subscriber<std_msgs_compat::String> reasoners_notif_sub_;
 
-    void sendNop();
+    bool publishAndWaitSynchro(const std::string& msg, int32_t timeout);
 
     void publish(const std::string& str);
     void publishStamped(const std::string& str, const onto_ros::Time& stamp);

@@ -42,11 +42,17 @@ namespace ontologenius {
         {
           if(!versionor_.commit(feed.from_))
             notifications_.push_back("[FAIL][commit]" + feed.from_);
+          synchro_msgs_.emplace_back(feed.raw_feed_);
         }
         else if(feed.action_ == action_checkout)
         {
           if(!versionor_.checkout(feed.from_))
             notifications_.push_back("[FAIL][checkout]" + feed.from_);
+          synchro_msgs_.emplace_back(feed.raw_feed_);
+        }
+        else if(feed.action_ == action_nop)
+        {
+          synchro_msgs_.emplace_back(feed.raw_feed_);
         }
         continue;
       }

@@ -34,6 +34,7 @@ namespace ontologenius {
     std::string prop_;
     std::string on_;
     bool checkout_;
+    std::string raw_feed_;
 
     Feed_t() : action_(action_nop), checkout_(false) {}
 
