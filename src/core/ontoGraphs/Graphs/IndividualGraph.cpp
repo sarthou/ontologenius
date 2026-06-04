@@ -2212,7 +2212,9 @@ namespace ontologenius {
         return std::any_of(tree->proved_object_relations_.cbegin(), tree->proved_object_relations_.cend(),
                            [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
       });
-      if(in_all_trees)
+      // Skip relations that already exist to avoid corrupting stated facts (overwriting
+      // inferred=false with inferred=true, or injecting induced_traces into stated relations).
+      if(in_all_trees && individual->objectRelationExists(rel.first, rel.second) < 0)
       {
         const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
         if(obj_triplet->exist(individual, rel.first, rel.second) == false)
@@ -2235,7 +2237,8 @@ namespace ontologenius {
         return std::any_of(tree->proved_data_relations_.cbegin(), tree->proved_data_relations_.cend(),
                            [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
       });
-      if(in_all_trees)
+      // Skip relations that already exist (same reasoning as for object relations above).
+      if(in_all_trees && individual->dataRelationExists(rel.first, rel.second) < 0)
       {
         const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
         if(data_triplet->exist(individual, rel.first, rel.second) == false)
