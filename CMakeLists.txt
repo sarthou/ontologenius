@@ -631,6 +631,7 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     DESTINATION lib/${PROJECT_NAME})
 
   install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
+  install(DIRECTORY launch/tests/launch DESTINATION share/${PROJECT_NAME}/)
   install(DIRECTORY include/ DESTINATION include)
 
   install(DIRECTORY files DESTINATION share/${PROJECT_NAME}/)
