@@ -217,7 +217,19 @@ namespace ontologenius {
         if(class_expression->resource_value.empty() == false)
           class_expression->data_usage = true;
         else
-          return false;
+        {
+          const auto* datavalue = elem->GetText();
+          if(datavalue != nullptr)
+          {
+            data_type = "string";
+            class_expression->resource_value = data_type + "#" + std::string(datavalue);
+            class_expression->data_usage = true;
+            class_expression->is_instanciated = true;
+            return true;
+          }
+          else
+            return false;
+        }
       }
       class_expression->is_instanciated = is_instanciated;
       return true;
