@@ -204,6 +204,7 @@ namespace ontologenius {
   {
     ClassDescriptor_t class_descriptor;
     EquivalentClassDescriptor_t anonymous_descriptor;
+    EquivalentClassDescriptor_t sub_anonymous_descriptor;
     std::string node_name = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
     if(node_name.empty() == false)
     {
@@ -216,7 +217,13 @@ namespace ontologenius {
         const float probability = getProbability(sub_elem);
 
         if(sub_elem_name == "rdfs:subClassOf")
-          push(class_descriptor.mothers_, sub_elem, probability, "+");
+        {
+          // Distinguish complex (anonymous) from simple (named) subClassOf
+          if(sub_elem->FirstChildElement() != nullptr && !testAttribute(sub_elem, "rdf:resource"))
+            sub_anonymous_descriptor.expression_members.emplace_back(readEquivalentClass(sub_elem));
+          else
+            push(class_descriptor.mothers_, sub_elem, probability, "+");
+        }
         else if(sub_elem_name == "owl:disjointWith")
           push(class_descriptor.disjoints_, sub_elem, probability, "-");
         else if(sub_elem_name == "rdfs:label")
@@ -251,7 +258,15 @@ namespace ontologenius {
       anonymous_descriptor.class_name = node_name;
       graphs_->anonymous_classes_.add(anonymous_descriptor);
       for(auto* expression_elem : anonymous_descriptor.expression_members)
-        push(class_descriptor.equivalences_, expression_elem->toString(), "=");
+        display(expression_elem->toString(), "=");
+    }
+
+    if(sub_anonymous_descriptor.expression_members.empty() == false)
+    {
+      sub_anonymous_descriptor.class_name = node_name;
+      graphs_->anonymous_classes_.addSubClass(sub_anonymous_descriptor);
+      for(auto* expression_elem : sub_anonymous_descriptor.expression_members)
+        display(expression_elem->toString(), "+");
     }
 
     graphs_->classes_.add(node_name, class_descriptor);

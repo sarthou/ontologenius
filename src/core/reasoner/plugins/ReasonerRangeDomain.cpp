@@ -159,7 +159,7 @@ namespace ontologenius {
       if(up.find(domain) == up.end())
       {
         ontology_->individuals_.addClassAssertion(branch, domain, 1.0, true);
-        explanations_.emplace_back("[ADD]" + relation.second->value() + "|isA|" + domain->value(),
+        explanations_.emplace_back("[ADD]" + branch->value() + "|isA|" + domain->value(),
                                    "" + relation.first->value() + "|hasDomain|" + domain->value());
 
         branch->nb_updates_++;

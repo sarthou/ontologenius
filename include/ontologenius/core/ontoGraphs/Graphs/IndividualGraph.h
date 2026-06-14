@@ -107,7 +107,7 @@ namespace ontologenius {
     void redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* class_branch);
     std::vector<std::pair<std::string, std::string>> addInheritage(const std::string& indiv, const std::string& class_inherited);
     bool addInheritage(IndividualBranch* branch, const std::string& class_inherited, std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
-    bool addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
+    ClassBranch* addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
     std::vector<std::pair<std::string, std::string>> addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
     std::vector<std::pair<std::string, std::string>> addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
     size_t addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability = 1.0, bool inferred = false,
@@ -147,8 +147,16 @@ namespace ontologenius {
     std::vector<IndividualBranch*> ordered_individuals_; // contains the individuals ordered wrt their index
                                                          // unused indexes have nullptr in
 
+    /// @brief  Collectes all the class branches that will be infered because of class expressions,
+    ///         both from equivalence and subClassOf.
+    /// @param class_branch the branch ro be tested
+    /// @param result set of class branch that have to be inferred because of equivalence or subClassOf class_branch
     void getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result);
     void checkWouldBeProvedRelations(IndividualBranch* individual, ClassBranch* class_branch);
+    // Apply proved facts from one anonymous branch (equiv or sub); called twice in applyProvedFacts.
+    void applyProvedFactsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch, size_t class_idx,
+                                    float probability, bool inferred, std::vector<std::pair<std::string, std::string>>* explanations);
+    void checkWouldBeProvedRelationsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch);
 
     IndividualBranch* getIndividualByIndex(index_t index)
     {

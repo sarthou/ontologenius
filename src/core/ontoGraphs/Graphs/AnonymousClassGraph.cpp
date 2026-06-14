@@ -144,7 +144,7 @@ namespace ontologenius {
   {
     const std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch>::mutex_);
     const std::string ano_name = "anonymous_" + equivalence_descriptor.class_name;
-    AnonymousClassBranch* anonymous_branch = new AnonymousClassBranch(ano_name);
+    AnonymousClassBranch* anonymous_branch = new AnonymousClassBranch(ano_name, false, true); // is_equivalence = true
     ClassBranch* class_branch = graphs_->classes_.findOrCreateBranch(equivalence_descriptor.class_name, hidden_anonymous);
 
     anonymous_branch->class_equiv_ = class_branch;
@@ -155,6 +155,27 @@ namespace ontologenius {
     {
       AnonymousClassTree* tree = createTree(equivalence_descriptor.expression_members[i]);
       tree->id = ano_name + "_" + std::to_string(i);
+      anonymous_branch->ano_trees_.push_back(tree);
+    }
+
+    return anonymous_branch;
+  }
+
+  AnonymousClassBranch* AnonymousClassGraph::addSubClass(EquivalentClassDescriptor_t& sub_descriptor, bool hidden_anonymous)
+  {
+    const std::lock_guard<std::shared_timed_mutex> lock(Graph<AnonymousClassBranch>::mutex_);
+    const std::string sub_name = "sub_" + sub_descriptor.class_name;
+    AnonymousClassBranch* anonymous_branch = new AnonymousClassBranch(sub_name, false, false); // is_equivalence = false
+    ClassBranch* class_branch = graphs_->classes_.findOrCreateBranch(sub_descriptor.class_name, hidden_anonymous);
+
+    anonymous_branch->class_equiv_ = class_branch;
+    all_branchs_.push_back(anonymous_branch);
+    class_branch->sub_anonymous_class_ = anonymous_branch;
+
+    for(size_t i = 0; i < sub_descriptor.expression_members.size(); i++)
+    {
+      AnonymousClassTree* tree = createTree(sub_descriptor.expression_members[i]);
+      tree->id = sub_name + "_" + std::to_string(i);
       anonymous_branch->ano_trees_.push_back(tree);
     }
 
@@ -350,11 +371,16 @@ namespace ontologenius {
     new_branch->dictionary_ = old_branch->dictionary_;
     new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
 
-    // fisrt we find the equivalent ClassBranch that has been copied by the ClassGraph, even if hidden
+    new_branch->is_equivalence_ = old_branch->is_equivalence_;
+
+    // find the associated ClassBranch that has been copied by the ClassGraph
     auto* equiv_class = graphs_->classes_.container_.find(old_branch->class_equiv_->value());
-    // we then link this equivalent class with our new anonymous class in both directions
     new_branch->class_equiv_ = equiv_class;
-    equiv_class->equiv_anonymous_class_ = new_branch;
+    // link to the appropriate field based on whether this is an equivalence or subclass expression
+    if(old_branch->is_equivalence_)
+      equiv_class->equiv_anonymous_class_ = new_branch;
+    else
+      equiv_class->sub_anonymous_class_ = new_branch;
 
     // copying the old class expressions that are equivalent to the class_equiv (e.g., 'Agent and (hasComponent some Camera)')
     for(auto* old_tree : old_branch->ano_trees_)

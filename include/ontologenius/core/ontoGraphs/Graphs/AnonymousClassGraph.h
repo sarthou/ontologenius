@@ -134,6 +134,7 @@ namespace ontologenius {
     ~AnonymousClassGraph() override = default;
 
     AnonymousClassBranch* add(EquivalentClassDescriptor_t& equivalence_descriptor, bool hidden_anonymous = false);
+    AnonymousClassBranch* addSubClass(EquivalentClassDescriptor_t& sub_descriptor, bool hidden_anonymous = false);
     void deepCopy(const AnonymousClassGraph& other);
     void analyseApplicabiltiy();
 

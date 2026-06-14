@@ -112,6 +112,12 @@ namespace ontologenius {
         return getName(std::string(sub_attr));
       return "";
     }
+
+    inline void display(const std::string& data, const std::string& symbole)
+    {
+      if(symbole.empty() == false && display_)
+        std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
+    }
   };
 
   void OntologyOwlReader::push(std::vector<std::string>& vect, tinyxml2::XMLElement* sub_elem, const std::string& symbole, const std::string& attribute)
@@ -120,8 +126,7 @@ namespace ontologenius {
     if(data.empty() == false)
     {
       vect.push_back(data);
-      if(symbole.empty() == false && display_)
-        std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
+      display(data, symbole);
     }
   }
 
@@ -131,8 +136,7 @@ namespace ontologenius {
     if(data.empty() == false)
     {
       vect.emplace_back(data, probability);
-      if(symbole.empty() == false && display_)
-        std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
+      display(data, symbole);
     }
   }
 
@@ -142,8 +146,7 @@ namespace ontologenius {
     if(data.empty() == false)
     {
       vect.push_back(data);
-      if((symbole.empty() == false) && display_)
-        std::cout << "│   │   ├── " << symbole << " " << data << std::endl;
+      display(data, symbole);
     }
   }
 

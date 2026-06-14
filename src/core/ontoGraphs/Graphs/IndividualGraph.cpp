@@ -1968,28 +1968,27 @@ namespace ontologenius {
     const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
     const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
-    if(addInheritageUnsafe(branch, class_inherited))
+
+    ClassBranch* inherited = addInheritageUnsafe(branch, class_inherited);
+    if(inherited != nullptr)
     {
-      if(branch != nullptr)
-      {
-        ClassBranch* inherited = graphs_->classes_.findBranch(class_inherited);
-        if(inherited != nullptr)
-        {
-          const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
-                                       [inherited](const auto& is_a) { return is_a.elem == inherited; });
-          if(it != branch->is_a_.cend())
-            applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, explanations);
-        }
-      }
+      const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                   [inherited](const auto& is_a) { return is_a.elem == inherited; });
+
+      // TODO what append with we add it several times ?
+      if(it != branch->is_a_.cend())
+        applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, explanations);
+
       return true;
     }
     return false;
   }
 
-  bool IndividualGraph::addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited)
+  ClassBranch* IndividualGraph::addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited)
   {
     if(branch != nullptr)
     {
+      // 1 - finding the corresponding class branch as a pointer
       ClassBranch* inherited = graphs_->classes_.findBranch(class_inherited);
       if(inherited == nullptr)
       {
@@ -2004,14 +2003,15 @@ namespace ontologenius {
         }
       }
 
+      // 2 - Checking if the new inheritage is compatible with the existing hierarchy
       std::unordered_set<ClassBranch*> ups_indiv;
       this->getUpPtr(branch, ups_indiv);
 
       auto* disjoint_intersection = graphs_->classes_.isDisjoint(ups_indiv, inherited);
-
       if(disjoint_intersection != nullptr)
         throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + inherited->value());
 
+      // 3 - Cheking if the new inheritages from equivalent class are compatible with the existing hierarchy
       std::unordered_set<ClassBranch*> would_be_proved;
       getWouldBeProvedClasses(inherited, would_be_proved);
       for(auto* proved_class : would_be_proved)
@@ -2022,18 +2022,21 @@ namespace ontologenius {
                                " through " + proved_class->value() + " induced by " + inherited->value());
       }
 
+      // 4 - Checking if the new relations from equivalent class are compatible with the existing class and relations
       checkWouldBeProvedRelations(branch, inherited);
       for(auto* proved_class : would_be_proved)
         checkWouldBeProvedRelations(branch, proved_class);
 
+      // 5 - Apply the new heritage
       if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
         branch->setUpdated(true);
       if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
         inherited->setUpdated(true);
-      return true; // TODO verify that multi inheritances are compatible
+
+      return inherited; // TODO verify that multi inheritances are compatible
     }
     else
-      return false;
+      return nullptr;
   }
 
   std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
@@ -2093,54 +2096,57 @@ namespace ontologenius {
 
   void IndividualGraph::getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result)
   {
-    if(class_branch->equiv_anonymous_class_ == nullptr)
-      return;
+    // Collect from both the equivalence and subclass anonymous expressions.
+    for(AnonymousClassBranch* anon : {class_branch->equiv_anonymous_class_, class_branch->sub_anonymous_class_})
+    {
+      if(anon == nullptr)
+        continue;
+      const auto& trees = anon->ano_trees_;
+      if(trees.empty())
+        continue;
 
-    const auto& trees = class_branch->equiv_anonymous_class_->ano_trees_;
-    if(trees.empty())
-      return;
+      std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
+      for(size_t i = 1; i < trees.size(); i++)
+        for(auto it = proved_classes.begin(); it != proved_classes.end();)
+          it = (trees[i]->proved_classes_.count(*it) != 0u) ? std::next(it) : proved_classes.erase(it);
 
-    // Same intersection logic as applyProvedFacts
-    std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
-    for(size_t i = 1; i < trees.size(); i++)
-      for(auto it = proved_classes.begin(); it != proved_classes.end();)
-        it = (trees[i]->proved_classes_.count(*it) != 0u) ? std::next(it) : proved_classes.erase(it);
-
-    for(auto* proved_class : proved_classes)
-      if(result.insert(proved_class).second) // recurse only into newly discovered classes
-        getWouldBeProvedClasses(proved_class, result);
+      for(auto* proved_class : proved_classes)
+        if(result.insert(proved_class).second)
+          getWouldBeProvedClasses(proved_class, result);
+    }
   }
 
   void IndividualGraph::checkWouldBeProvedRelations(IndividualBranch* individual, ClassBranch* class_branch)
   {
-    if(class_branch->equiv_anonymous_class_ == nullptr)
+    // For each candidate, skip if it already exists, then delegate to the shared constraint helpers.
+    checkWouldBeProvedRelationsFromBranch(individual, class_branch->equiv_anonymous_class_);
+    checkWouldBeProvedRelationsFromBranch(individual, class_branch->sub_anonymous_class_);
+  }
+
+  void IndividualGraph::checkWouldBeProvedRelationsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch)
+  {
+    if(anon_branch == nullptr)
       return;
-    const auto& trees = class_branch->equiv_anonymous_class_->ano_trees_;
+
+    const auto& trees = anon_branch->ano_trees_;
     if(trees.empty())
       return;
 
-    // Proved relations are the INTERSECTION across all trees (same logic as applyProvedFacts).
-    // For each candidate, skip if it already exists, then delegate to the shared constraint helpers.
-    for(const auto& rel : trees.front()->proved_object_relations_)
-    {
-      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
-        return std::any_of(tree->proved_object_relations_.cbegin(), tree->proved_object_relations_.cend(),
-                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
-      });
-      if(!in_all_trees || individual->objectRelationExists(rel.first, rel.second) >= 0)
-        continue;
-      checkObjectRelationConstraints(individual, rel.first, rel.second, class_branch->value());
-    }
+    const std::string ctx = anon_branch->class_equiv_->value();
 
-    for(const auto& rel : trees.front()->proved_data_relations_)
+    for(const auto& tree : trees)
     {
-      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
-        return std::any_of(tree->proved_data_relations_.cbegin(), tree->proved_data_relations_.cend(),
-                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
-      });
-      if(!in_all_trees || individual->dataRelationExists(rel.first, rel.second) >= 0)
-        continue;
-      checkDataRelationConstraints(individual, rel.first, rel.second, class_branch->value());
+      for(const auto& rel : tree->proved_object_relations_)
+      {
+        if(individual->objectRelationExists(rel.first, rel.second) < 0)
+          checkObjectRelationConstraints(individual, rel.first, rel.second, ctx);
+      }
+
+      for(const auto& rel : tree->proved_data_relations_)
+      {
+        if(individual->dataRelationExists(rel.first, rel.second) < 0)
+          checkDataRelationConstraints(individual, rel.first, rel.second, ctx);
+      }
     }
   }
 
@@ -2157,10 +2163,18 @@ namespace ontologenius {
   void IndividualGraph::applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability, bool inferred,
                                          std::vector<std::pair<std::string, std::string>>* explanations)
   {
-    if(class_branch->equiv_anonymous_class_ == nullptr)
+    // Apply proved facts from both the equivalence expression and the subclass expression.
+    applyProvedFactsFromBranch(individual, class_branch->equiv_anonymous_class_, class_idx, probability, inferred, explanations);
+    applyProvedFactsFromBranch(individual, class_branch->sub_anonymous_class_, class_idx, probability, inferred, explanations);
+  }
+
+  void IndividualGraph::applyProvedFactsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch, size_t class_idx, float probability, bool inferred,
+                                                   std::vector<std::pair<std::string, std::string>>* explanations)
+  {
+    if(anon_branch == nullptr)
       return;
 
-    const auto& trees = class_branch->equiv_anonymous_class_->ano_trees_;
+    const auto& trees = anon_branch->ano_trees_;
     if(trees.empty())
       return;
 
@@ -2175,81 +2189,71 @@ namespace ontologenius {
     ObjectRelationTriplets* obj_triplet = individual->is_a_.has_induced_object_relations[class_idx];
     DataRelationTriplets* data_triplet = individual->is_a_.has_induced_data_relations[class_idx];
 
-    // Build the explanation string: "individual isA class_branch" is why every proved fact holds.
-    const std::string triggering_fact = individual->value() + "|isA|" + class_branch->value();
+    // Build the explanation string: "individual isA class" is why every proved fact holds.
+    const std::string triggering_fact = individual->value() + "|isA|" + anon_branch->class_equiv_->value();
 
-    // Intersection of proved_classes_
-    std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
-    for(size_t i = 1; i < trees.size(); i++)
-      for(auto it = proved_classes.begin(); it != proved_classes.end();)
-        it = (trees[i]->proved_classes_.count(*it) != 0u) ? std::next(it) : proved_classes.erase(it);
-
-    for(auto* proved_class : proved_classes)
+    // Apply all proven classes of all trees
+    for(const auto& tree : trees)
     {
-      const bool already = std::any_of(individual->is_a_.cbegin(), individual->is_a_.cend(),
-                                       [proved_class](const auto& is_a) { return is_a.elem == proved_class; });
-      if(!already)
+      for(auto* proved_class : tree->proved_classes_)
       {
-        const size_t proved_idx = addClassAssertion(individual, proved_class, probability, inferred, explanations); // recursive; terminates via 'already' check
-        if(inherit_triplet->exist(individual, nullptr, proved_class) == false)
+        const bool already = std::any_of(individual->is_a_.cbegin(), individual->is_a_.cend(),
+                                         [proved_class](const auto& is_a) { return is_a.elem == proved_class; });
+        if(!already)
         {
-          inherit_triplet->push(individual, nullptr, proved_class);
-          individual->is_a_.relations[proved_idx].induced_traces.emplace_back(inherit_triplet);
-          individual->is_a_.relations[proved_idx].explanation.push_back(triggering_fact);
-          individual->nb_updates_++;
-          proved_class->nb_updates_++;
-          if(explanations != nullptr && proved_class->isHidden() == false)
-            explanations->emplace_back("[ADD]" + individual->value() + "|isA|" + proved_class->value(),
-                                       "[ADD]" + individual->is_a_.relations[proved_idx].getExplanation());
+          const size_t proved_idx = addClassAssertion(individual, proved_class, probability, inferred, explanations); // recursive; terminates via 'already' check
+          if(inherit_triplet->exist(individual, nullptr, proved_class) == false)
+          {
+            inherit_triplet->push(individual, nullptr, proved_class);
+            individual->is_a_.relations[proved_idx].induced_traces.emplace_back(inherit_triplet);
+            individual->is_a_.relations[proved_idx].explanation.push_back(triggering_fact);
+            individual->nb_updates_++;
+            proved_class->nb_updates_++;
+            if(explanations != nullptr && proved_class->isHidden() == false)
+              explanations->emplace_back("[ADD]" + individual->value() + "|isA|" + proved_class->value(),
+                                         "[ADD]" + individual->is_a_.relations[proved_idx].getExplanation());
+          }
         }
       }
-    }
 
-    // Intersection of proved_object_relations_ (hasValue with individual filler)
-    for(const auto& rel : trees.front()->proved_object_relations_)
-    {
-      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
-        return std::any_of(tree->proved_object_relations_.cbegin(), tree->proved_object_relations_.cend(),
-                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
-      });
-      // Skip relations that already exist to avoid corrupting stated facts (overwriting
-      // inferred=false with inferred=true, or injecting induced_traces into stated relations).
-      if(in_all_trees && individual->objectRelationExists(rel.first, rel.second) < 0)
+      // Application of proved_object_relations_ (hasValue with individual filler)
+      for(const auto& rel : tree->proved_object_relations_)
       {
-        const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
-        if(obj_triplet->exist(individual, rel.first, rel.second) == false)
+        // Skip relations that already exist to avoid corrupting stated facts (overwriting
+        // inferred=false with inferred=true, or injecting induced_traces into stated relations).
+        if(individual->objectRelationExists(rel.first, rel.second) < 0)
         {
-          obj_triplet->push(individual, rel.first, rel.second);
-          individual->object_relations_.relations[rel_idx].induced_traces.emplace_back(obj_triplet);
-          individual->object_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
-          individual->nb_updates_++;
-          if(explanations != nullptr)
-            explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
-                                       "[ADD]" + individual->object_relations_.relations[rel_idx].getExplanation());
+          const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
+          if(obj_triplet->exist(individual, rel.first, rel.second) == false)
+          {
+            obj_triplet->push(individual, rel.first, rel.second);
+            individual->object_relations_.relations[rel_idx].induced_traces.emplace_back(obj_triplet);
+            individual->object_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
+            individual->nb_updates_++;
+            if(explanations != nullptr)
+              explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
+                                         "[ADD]" + individual->object_relations_.relations[rel_idx].getExplanation());
+          }
         }
       }
-    }
 
-    // Intersection of proved_data_relations_ (hasValue with literal filler)
-    for(const auto& rel : trees.front()->proved_data_relations_)
-    {
-      const bool in_all_trees = std::all_of(trees.cbegin() + 1, trees.cend(), [&rel](const AnonymousClassTree* tree) {
-        return std::any_of(tree->proved_data_relations_.cbegin(), tree->proved_data_relations_.cend(),
-                           [&rel](const auto& r) { return r.first == rel.first && r.second == rel.second; });
-      });
-      // Skip relations that already exist (same reasoning as for object relations above).
-      if(in_all_trees && individual->dataRelationExists(rel.first, rel.second) < 0)
+      // Application of proved_data_relations_ (hasValue with literal filler)
+      for(const auto& rel : tree->proved_data_relations_)
       {
-        const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
-        if(data_triplet->exist(individual, rel.first, rel.second) == false)
+        // Skip relations that already exist (same reasoning as for object relations above).
+        if(individual->dataRelationExists(rel.first, rel.second) < 0)
         {
-          data_triplet->push(individual, rel.first, rel.second);
-          individual->data_relations_.relations[rel_idx].induced_traces.emplace_back(data_triplet);
-          individual->data_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
-          individual->nb_updates_++;
-          if(explanations != nullptr)
-            explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
-                                       "[ADD]" + individual->data_relations_.relations[rel_idx].getExplanation());
+          const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
+          if(data_triplet->exist(individual, rel.first, rel.second) == false)
+          {
+            data_triplet->push(individual, rel.first, rel.second);
+            individual->data_relations_.relations[rel_idx].induced_traces.emplace_back(data_triplet);
+            individual->data_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
+            individual->nb_updates_++;
+            if(explanations != nullptr)
+              explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
+                                         "[ADD]" + individual->data_relations_.relations[rel_idx].getExplanation());
+          }
         }
       }
     }

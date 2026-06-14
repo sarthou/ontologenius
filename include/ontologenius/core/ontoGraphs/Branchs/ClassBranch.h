@@ -28,9 +28,10 @@ namespace ontologenius {
     std::vector<IndividualElement> individual_childs_;
     std::vector<ClassObjectRelationElement> object_relations_;
     std::vector<ClassDataRelationElement> data_relations_;
-    AnonymousClassBranch* equiv_anonymous_class_;
+    AnonymousClassBranch* equiv_anonymous_class_; // anonymous class from owl:equivalentClass
+    AnonymousClassBranch* sub_anonymous_class_;   // anonymous class from rdfs:subClassOf with expression
 
-    ClassBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden), equiv_anonymous_class_(nullptr) {};
+    ClassBranch(const std::string& value = "", bool hidden = false) : Branch(value, hidden), equiv_anonymous_class_(nullptr), sub_anonymous_class_(nullptr) {};
   };
 
 } // namespace ontologenius

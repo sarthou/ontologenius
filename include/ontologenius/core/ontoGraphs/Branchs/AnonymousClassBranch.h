@@ -100,7 +100,8 @@ namespace ontologenius {
   class AnonymousClassBranch : public ValuedNode
   {
   public:
-    explicit AnonymousClassBranch(const std::string& value, bool hidden = false) : ValuedNode(value, hidden), class_equiv_(nullptr) {}
+    explicit AnonymousClassBranch(const std::string& value, bool hidden = false, bool is_equivalence = true)
+      : ValuedNode(value, hidden), class_equiv_(nullptr), is_equivalence_(is_equivalence) {}
     AnonymousClassBranch(const AnonymousClassBranch& other) = delete;
     ~AnonymousClassBranch()
     {
@@ -108,7 +109,8 @@ namespace ontologenius {
         delete tree;
     }
 
-    ClassBranch* class_equiv_;
+    ClassBranch* class_equiv_; // the class this expression is associated with (equiv or sub)
+    bool is_equivalence_;      // true = owl:equivalentClass; false = rdfs:subClassOf with expression
     std::vector<AnonymousClassTree*> ano_trees_;
   };
 

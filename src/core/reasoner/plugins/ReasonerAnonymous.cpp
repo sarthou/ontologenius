@@ -57,6 +57,8 @@ namespace ontologenius {
         // Loop over every classes which includes equivalence relations
         for(auto* anonymous_branch : ontology_->anonymous_classes_.get())
         {
+          if(anonymous_branch->is_equivalence_ == false)
+            continue; // subClass expressions drive proved facts only, not classification
           bool trees_evaluation_result = false;
           bool has_been_evaluated = false;
           bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch](const auto& is_a) { return is_a.elem == anonymous_branch->class_equiv_; }); // same as not done // need to test if same_as is_already_a
@@ -112,11 +114,12 @@ namespace ontologenius {
                     if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
                     {
                       addInferredInheritance(indiv, anonymous_branch, anonymous_tree, used);
+                      is_already_a = true;
                       nb_update++;
                       if(anonymous_branch->class_equiv_->isHidden() == false)
                       {
                         explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
-                                                   "[ADD]" + indiv->is_a_.back().getExplanation());
+                                                   "[ADD] " + indiv->is_a_.back().getExplanation());
                       }
                     }
                   }
