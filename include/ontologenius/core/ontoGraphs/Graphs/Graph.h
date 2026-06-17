@@ -124,7 +124,7 @@ namespace ontologenius {
       {
         for(size_t i = 0; i < dictionary[lang].size();)
           if(dictionary[lang][i] == word)
-            dictionary[lang].erase(dictionary[lang].begin() + (int)i);
+            dictionary[lang].erase(dictionary[lang].begin() + static_cast<int>(i));
           else
             i++;
       }
@@ -408,7 +408,7 @@ namespace ontologenius {
   std::string Graph<B>::getIdentifier(index_t index)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    if((index > 0) && (index < (index_t)ValuedNode::table.size()))
+    if((index > 0) && (index < static_cast<index_t>(ValuedNode::table.size())))
       return ValuedNode::table[index];
     else
       return "";
@@ -494,7 +494,7 @@ namespace ontologenius {
           std::mt19937 gen(rd());
 
           size_t dic_size = branch->dictionary_.spoken_[language_].size();
-          std::uniform_int_distribution<> dis(0, (int)dic_size - 1);
+          std::uniform_int_distribution<> dis(0, static_cast<int>(dic_size) - 1);
 
           while(tested.size() < dic_size)
           {

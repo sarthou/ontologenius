@@ -401,7 +401,7 @@ namespace ontologenius {
     end_feed_ = false;
 #endif
 
-    compat::onto_ros::Rate wait((double)feeder_rate_);
+    compat::onto_ros::Rate wait(static_cast<double>(feeder_rate_));
     while(compat::onto_ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
     {
       wait.sleep();

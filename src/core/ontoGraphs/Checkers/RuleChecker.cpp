@@ -195,7 +195,7 @@ namespace ontologenius {
         {
           std::unordered_set<ClassBranch*> disjoints;
           graphs_->classes_.getDisjoint(class_element.elem, disjoints);
-          ClassBranch* intersection = graphs_->classes_.firstIntersection(variables_classes, disjoints);
+          const ClassBranch* intersection = graphs_->classes_.firstIntersection(variables_classes, disjoints);
           if(intersection != nullptr)
             err = class_element.elem->value() + " and " + intersection->value();
         }

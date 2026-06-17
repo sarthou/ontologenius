@@ -140,7 +140,7 @@ namespace ontologenius {
     auto var_it = rule_branch->variables_.find(resource.name);
     if(var_it == rule_branch->variables_.end()) // if the variable doesn't already exist in the variables_ vector of the rule
     {
-      int64_t index = std::int64_t(rule_branch->variables_.size());
+      int64_t index = static_cast<std::int64_t>(rule_branch->variables_.size());
       rule_branch->variables_[resource.name] = index;
       resource.variable_id = index;
       variable_names_.insert(resource.name); // to rewrite the variables

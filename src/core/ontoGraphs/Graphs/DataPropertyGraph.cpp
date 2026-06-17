@@ -214,7 +214,7 @@ namespace ontologenius {
   void DataPropertyGraph::getDomainPtr(DataPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<DataPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
-      graphs_->classes_.getDownPtr(domain.elem, res, (int)depth);
+      graphs_->classes_.getDownPtr(domain.elem, res, static_cast<int>(depth));
 
     for(auto& mother : branch->mothers_)
       if(up_trace.insert(mother.elem).second)

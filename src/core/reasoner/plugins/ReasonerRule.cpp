@@ -586,7 +586,7 @@ namespace ontologenius {
     {
       for(size_t s = 0; s < indiv->same_as_.size(); s++)
       {
-        IndividualBranch* same = indiv->same_as_[s].elem;
+        const IndividualBranch* same = indiv->same_as_[s].elem;
         const auto& relations = same->object_relations_;
         for(size_t i = 0; i < relations.size(); i++)
         {
@@ -739,7 +739,7 @@ namespace ontologenius {
     {
       for(size_t s = 0; s < indiv->same_as_.size(); s++)
       {
-        IndividualBranch* same = indiv->same_as_[s].elem;
+        const IndividualBranch* same = indiv->same_as_[s].elem;
         const auto& relations = same->data_relations_;
         for(size_t i = 0; i < relations.size(); i++)
         {

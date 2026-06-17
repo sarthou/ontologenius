@@ -113,7 +113,7 @@ namespace ontologenius {
       return "";
     }
 
-    inline void display(const std::string& data, const std::string& symbole)
+    void display(const std::string& data, const std::string& symbole)
     {
       if(symbole.empty() == false && display_)
         std::cout << "│   │   ├── " << symbole << " " << data << std::endl;

@@ -39,7 +39,7 @@ namespace ontologenius {
     removeDocType(content);
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)content.c_str());
+    doc.Parse(static_cast<const char*>(content.c_str()));
     tinyxml2::XMLElement* rdf = doc.FirstChildElement();
     if(individual == false)
       return read(rdf, uri);
@@ -66,7 +66,7 @@ namespace ontologenius {
     removeDocType(response);
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)response.c_str());
+    doc.Parse(static_cast<const char*>(response.c_str()));
     tinyxml2::XMLElement* rdf = doc.FirstChildElement();
     if(individual == false)
       return read(rdf, file_name);
@@ -80,7 +80,7 @@ namespace ontologenius {
     removeDocType(content);
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)content.c_str());
+    doc.Parse(static_cast<const char*>(content.c_str()));
     tinyxml2::XMLElement* rdf = doc.FirstChildElement();
 
     if(rdf == nullptr)

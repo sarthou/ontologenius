@@ -233,7 +233,7 @@ namespace ontologenius {
   void ObjectPropertyGraph::getDomainPtr(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
-      graphs_->classes_.getDownPtr(domain.elem, res, (int)depth);
+      graphs_->classes_.getDownPtr(domain.elem, res, static_cast<int>(depth));
 
     for(auto& mother : branch->mothers_)
       if(up_trace.insert(mother.elem).second)
@@ -287,7 +287,7 @@ namespace ontologenius {
   void ObjectPropertyGraph::getRangePtr(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& range : branch->ranges_)
-      graphs_->classes_.getDownPtr(range.elem, res, (int)depth);
+      graphs_->classes_.getDownPtr(range.elem, res, static_cast<int>(depth));
 
     for(auto& mother : branch->mothers_)
       if(up_trace.insert(mother.elem).second)
@@ -304,10 +304,10 @@ namespace ontologenius {
   void ObjectPropertyGraph::getDomainAndRangePtr(ObjectPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& domains, std::unordered_set<ClassBranch*>& ranges, std::unordered_set<ObjectPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
-      graphs_->classes_.getDownPtr(domain.elem, domains, (int)depth);
+      graphs_->classes_.getDownPtr(domain.elem, domains, static_cast<int>(depth));
 
     for(auto& range : branch->ranges_)
-      graphs_->classes_.getDownPtr(range.elem, ranges, (int)depth);
+      graphs_->classes_.getDownPtr(range.elem, ranges, static_cast<int>(depth));
 
     for(auto& mother : branch->mothers_)
       if(up_trace.insert(mother.elem).second)
@@ -348,7 +348,7 @@ namespace ontologenius {
     {
       if(from_branch->inverses_[i].elem == on_branch)
       {
-        from_branch->inverses_.erase(from_branch->inverses_.begin() + (long)i);
+        from_branch->inverses_.erase(from_branch->inverses_.begin() + static_cast<long>(i));
         break;
       }
     }
@@ -357,7 +357,7 @@ namespace ontologenius {
     {
       if(on_branch->inverses_[i].elem == from_branch)
       {
-        on_branch->inverses_.erase(on_branch->inverses_.begin() + (long)i);
+        on_branch->inverses_.erase(on_branch->inverses_.begin() + static_cast<long>(i));
         break;
       }
     }

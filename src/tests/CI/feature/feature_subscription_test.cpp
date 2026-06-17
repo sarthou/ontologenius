@@ -1,10 +1,10 @@
-#include <algorithm>
+#include <atomic>
 #include <cstddef>
 #include <gtest/gtest.h>
 #include <rclcpp/rclcpp.hpp>
-#include <sstream>
+#include <rclcpp/utilities.hpp>
 #include <string>
-#include <vector>
+#include <unistd.h>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 

@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <shared_mutex>
-#include <string>
 #include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
@@ -41,11 +40,11 @@ namespace ontologenius {
 
   void IndividualChecker::checkDisjointInheritance(IndividualBranch* indiv, const std::unordered_set<ClassBranch*>& ups)
   {
-    ClassBranch* intersection = nullptr;
-    ClassBranch* disjoint_with = nullptr;
-    for(ClassBranch* it : ups)
+    const ClassBranch* intersection = nullptr;
+    const ClassBranch* disjoint_with = nullptr;
+    for(const ClassBranch* it : ups)
     {
-      ClassBranch* tmp_intersection = graphs_->classes_.firstIntersection(ups, it->disjoints_);
+      const ClassBranch* tmp_intersection = graphs_->classes_.firstIntersection(ups, it->disjoints_);
       if(tmp_intersection != nullptr)
       {
         intersection = tmp_intersection;
@@ -72,7 +71,7 @@ namespace ontologenius {
       graphs_->individuals_.getSame(indiv, sames);
       for(auto& same : indiv->same_as_)
       {
-        IndividualBranch* intersection = graphs_->individuals_.firstIntersection(sames, same.elem->distinct_);
+        const IndividualBranch* intersection = graphs_->individuals_.firstIntersection(sames, same.elem->distinct_);
         if(intersection != nullptr)
         {
           if((same.elem == intersection) || (indiv == intersection))

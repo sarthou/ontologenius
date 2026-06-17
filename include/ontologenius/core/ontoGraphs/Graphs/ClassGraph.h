@@ -152,7 +152,7 @@ namespace ontologenius {
   {
     if(class_branch != nullptr)
     {
-      if(current_depth >= (uint32_t)found_depth)
+      if(current_depth >= static_cast<uint32_t>(found_depth))
         return;
 
       std::unordered_set<T> tmp_res;
@@ -179,7 +179,7 @@ namespace ontologenius {
         if(data_properties.empty() == false)
         {
           res = std::move(tmp_res);
-          found_depth = (int)current_depth;
+          found_depth = static_cast<int>(current_depth);
           return;
         }
         else

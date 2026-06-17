@@ -62,7 +62,7 @@ namespace onto {
         req->param = param;
       }(ontologenius::compat::onto_ros::getServicePointer(req));
 
-      using ResultTy = typename decltype(client_)::Status_e;
+      using ResultTy = decltype(client_)::Status_e;
 
       switch(client_.call(req, res))
       {
@@ -109,7 +109,7 @@ namespace onto {
         req->param = param;
       }(ontologenius::compat::onto_ros::getServicePointer(req));
 
-      using ResultTy = typename decltype(client_)::Status_e;
+      using ResultTy = decltype(client_)::Status_e;
 
       switch(client_.call(req, res))
       {

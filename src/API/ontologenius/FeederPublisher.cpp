@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <cstdlib>
 #include <string>
 #include <unistd.h>
 
@@ -237,7 +238,7 @@ namespace onto {
     start = std::chrono::system_clock::now();
     publishStamped(msg, ontologenius::compat::onto_ros::Node::get().currentTime());
 
-    while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < (unsigned int)timeout)
+    while((!updated_) && (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count()) < static_cast<unsigned int>(timeout))
     {
       ontologenius::compat::onto_ros::Node::spinOnce();
       usleep(1);

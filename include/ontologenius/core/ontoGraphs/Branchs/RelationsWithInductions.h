@@ -68,11 +68,11 @@ namespace ontologenius {
     {
       relations.erase(relations.begin() + index);
       delete has_induced_object_relations.at(index);
-      has_induced_object_relations.erase(has_induced_object_relations.begin() + (int)index);
+      has_induced_object_relations.erase(has_induced_object_relations.begin() + static_cast<int>(index));
       delete has_induced_data_relations.at(index);
-      has_induced_data_relations.erase(has_induced_data_relations.begin() + (int)index);
+      has_induced_data_relations.erase(has_induced_data_relations.begin() + static_cast<int>(index));
       delete has_induced_inheritance_relations.at(index);
-      has_induced_inheritance_relations.erase(has_induced_inheritance_relations.begin() + (int)index);
+      has_induced_inheritance_relations.erase(has_induced_inheritance_relations.begin() + static_cast<int>(index));
     }
 
     void clear()

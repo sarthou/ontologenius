@@ -124,7 +124,7 @@ namespace ontologenius {
                O* object)
     {
       size_t index = this->find(subject, predicate, object);
-      if(index != size_t(-1))
+      if(index != static_cast<size_t>(-1))
       {
         triplets.erase(triplets.begin() + index);
         return true;

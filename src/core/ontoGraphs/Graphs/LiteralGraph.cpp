@@ -116,7 +116,7 @@ namespace ontologenius {
     std::vector<std::string> res;
     for(auto value : values)
     {
-      if((value < 0) && (-value < (index_t)all_literals_.size()))
+      if((value < 0) && (-value < static_cast<index_t>(all_literals_.size())))
         res.push_back(all_literals_[-value]->value());
       else
         res.emplace_back("");

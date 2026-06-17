@@ -24,7 +24,7 @@ namespace ontologenius {
 
   void Commit::setOrderId(size_t order)
   {
-    order_ = (int)order;
+    order_ = static_cast<int>(order);
   }
 
   void Commit::insertData(const std::string& data)
@@ -58,7 +58,7 @@ namespace ontologenius {
     }
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)response.c_str());
+    doc.Parse(static_cast<const char*>(response.c_str()));
     tinyxml2::XMLElement* xml = doc.FirstChildElement();
 
     return readNode(xml);

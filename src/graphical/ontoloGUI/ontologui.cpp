@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "ontologenius/OntologyManipulator.h"
+#include "ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
@@ -275,7 +276,7 @@ void OntoloGUI::init()
   if(ontos_.waitInit(1) == false)
   {
     onto_ = new onto::OntologyManipulator();
-    onto_->feeder.registerFeederNotificationCallback([this](auto msg) { this->feederCallback(msg); });
+    onto_->feeder.registerFeederNotificationCallback([this](const auto& msg) { this->feederCallback(msg); });
     multi_usage_ = false;
   }
   else
@@ -762,7 +763,7 @@ void OntoloGUI::addOntologySlot()
     else
     {
       ui_->ResultArea->setText(QString::fromStdString(""));
-      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](auto msg) { this->feederCallback(msg); });
+      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](const auto& msg) { this->feederCallback(msg); });
     }
 
     displayOntologiesList();
@@ -847,7 +848,7 @@ void OntoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
   {
     const size_t equal_pose = text.toStdString().find('=');
     if(equal_pose != std::string::npos)
-      ui_->OntologyName->setText(text.mid(0, (int)equal_pose));
+      ui_->OntologyName->setText(text.mid(0, static_cast<int>(equal_pose)));
     else
       ui_->OntologyName->setText(text);
   }

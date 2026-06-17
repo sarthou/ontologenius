@@ -85,7 +85,7 @@ namespace ontologenius {
       for(auto idx : indexs)
         if(datas_[idx] == data)
         {
-          index = (int)idx;
+          index = static_cast<int>(idx);
           break;
         }
 
@@ -116,7 +116,7 @@ namespace ontologenius {
         for(size_t j = 0; j < properties_set.size(); j++)
           if(properties_set[j] == properties_[i])
           {
-            index = (int)j;
+            index = static_cast<int>(j);
             break;
           }
 
@@ -139,8 +139,8 @@ namespace ontologenius {
       {
         for(size_t j = 0; j < index_set[i].size(); j++)
           if(counts_[index_set[i][j]] >= min_count_)
-            if(counts_[index_set[i][j]] / (double)counts_set[i] >= min_percent_)
-              res.emplace_back(properties_set[i], datas_[index_set[i][j]], counts_[index_set[i][j]] / (double)counts_set[i]);
+            if(counts_[index_set[i][j]] / static_cast<double>(counts_set[i]) >= min_percent_)
+              res.emplace_back(properties_set[i], datas_[index_set[i][j]], counts_[index_set[i][j]] / static_cast<double>(counts_set[i]));
       }
     }
 

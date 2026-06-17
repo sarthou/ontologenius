@@ -31,9 +31,9 @@ namespace ontologenius {
         std::unordered_set<std::string> set_res;
 
         if(req->action == "getDown")
-          set_res = onto_->classes_.getDown(params(), (int)params.depth);
+          set_res = onto_->classes_.getDown(params(), static_cast<int>(params.depth));
         else if(req->action == "getUp")
-          set_res = onto_->classes_.getUp(params(), (int)params.depth);
+          set_res = onto_->classes_.getUp(params(), static_cast<int>(params.depth));
         else if(req->action == "getDisjoint")
           set_res = onto_->classes_.getDisjoint(params());
         else if(req->action == "getName")
@@ -47,11 +47,11 @@ namespace ontologenius {
         else if(req->action == "getEveryNames")
           res->values = onto_->classes_.getEveryNames(params(), params.take_id);
         else if(req->action == "getRelationFrom")
-          set_res = onto_->classes_.getRelationFrom(params(), (int)params.depth);
+          set_res = onto_->classes_.getRelationFrom(params(), static_cast<int>(params.depth));
         else if(req->action == "getRelatedFrom")
           set_res = onto_->classes_.getRelatedFrom(params());
         else if(req->action == "getRelationOn")
-          set_res = onto_->classes_.getRelationOn(params(), (int)params.depth);
+          set_res = onto_->classes_.getRelationOn(params(), static_cast<int>(params.depth));
         else if(req->action == "getRelatedOn")
           set_res = onto_->classes_.getRelatedOn(params());
         else if(req->action == "getRelationWith")
@@ -63,11 +63,11 @@ namespace ontologenius {
         else if(req->action == "getFrom")
           set_res = onto_->classes_.getFrom(params());
         else if(req->action == "getWith")
-          set_res = onto_->classes_.getWith(params(), (int)params.depth);
+          set_res = onto_->classes_.getWith(params(), static_cast<int>(params.depth));
         else if(req->action == "getDomainOf")
-          set_res = onto_->classes_.getDomainOf(params(), (int)params.depth);
+          set_res = onto_->classes_.getDomainOf(params(), static_cast<int>(params.depth));
         else if(req->action == "getRangeOf")
-          set_res = onto_->classes_.getRangeOf(params(), (int)params.depth);
+          set_res = onto_->classes_.getRangeOf(params(), static_cast<int>(params.depth));
         else if(req->action == "find")
           set2vector(onto_->classes_.find<std::string>(params(), params.take_id), res->values);
         else if(req->action == "findSub")
@@ -133,9 +133,9 @@ namespace ontologenius {
         std::unordered_set<std::string> set_res;
 
         if(req->action == "getDown")
-          set_res = onto_->object_properties_.getDown(params(), (int)params.depth);
+          set_res = onto_->object_properties_.getDown(params(), static_cast<int>(params.depth));
         else if(req->action == "getUp")
-          set_res = onto_->object_properties_.getUp(params(), (int)params.depth);
+          set_res = onto_->object_properties_.getUp(params(), static_cast<int>(params.depth));
         else if(req->action == "getDisjoint")
           set_res = onto_->object_properties_.getDisjoint(params());
         else if(req->action == "getInverse")
@@ -217,9 +217,9 @@ namespace ontologenius {
         std::unordered_set<std::string> set_res;
 
         if(req->action == "getDown")
-          set_res = onto_->data_properties_.getDown(params(), (int)params.depth);
+          set_res = onto_->data_properties_.getDown(params(), static_cast<int>(params.depth));
         else if(req->action == "getUp")
-          set_res = onto_->data_properties_.getUp(params(), (int)params.depth);
+          set_res = onto_->data_properties_.getUp(params(), static_cast<int>(params.depth));
         else if(req->action == "getDisjoint")
           set_res = onto_->data_properties_.getDisjoint(params());
         else if(req->action == "getDomain")
@@ -302,11 +302,11 @@ namespace ontologenius {
         else if(req->action == "getDistincts")
           set_res = onto_->individuals_.getDistincts(params());
         else if(req->action == "getRelationFrom")
-          set_res = onto_->individuals_.getRelationFrom(params(), (int)params.depth);
+          set_res = onto_->individuals_.getRelationFrom(params(), static_cast<int>(params.depth));
         else if(req->action == "getRelatedFrom")
           set_res = onto_->individuals_.getRelatedFrom(params());
         else if(req->action == "getRelationOn")
-          set_res = onto_->individuals_.getRelationOn(params(), (int)params.depth);
+          set_res = onto_->individuals_.getRelationOn(params(), static_cast<int>(params.depth));
         else if(req->action == "getRelatedOn")
           set_res = onto_->individuals_.getRelatedOn(params());
         else if(req->action == "getRelationWith")
@@ -314,17 +314,17 @@ namespace ontologenius {
         else if(req->action == "getRelatedWith")
           set_res = onto_->individuals_.getRelatedWith(params());
         else if(req->action == "getUp")
-          set_res = onto_->individuals_.getUp(params(), (int)params.depth, false);
+          set_res = onto_->individuals_.getUp(params(), static_cast<int>(params.depth), false);
         else if(req->action == "getOn")
           set_res = onto_->individuals_.getOn(params());
         else if(req->action == "getFrom")
           set_res = onto_->individuals_.getFrom(params());
         else if(req->action == "getWith")
-          set_res = onto_->individuals_.getWith(params(), (int)params.depth);
+          set_res = onto_->individuals_.getWith(params(), static_cast<int>(params.depth));
         else if(req->action == "getDomainOf")
-          set_res = onto_->individuals_.getDomainOf(params(), (int)params.depth);
+          set_res = onto_->individuals_.getDomainOf(params(), static_cast<int>(params.depth));
         else if(req->action == "getRangeOf")
-          set_res = onto_->individuals_.getRangeOf(params(), (int)params.depth);
+          set_res = onto_->individuals_.getRangeOf(params(), static_cast<int>(params.depth));
         else if(req->action == "getName")
         {
           auto tmp = onto_->individuals_.getName(params(), params.take_id);

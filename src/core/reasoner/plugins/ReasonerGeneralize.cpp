@@ -49,7 +49,7 @@ namespace ontologenius {
         std::shared_lock<std::shared_timed_mutex> lock_indiv_shared(ontology_->individuals_.mutex_);
         std::shared_lock<std::shared_timed_mutex> lock_shared(ontology_->classes_.mutex_);
 
-        PropertiesCounter<DataPropertyBranch*, LiteralNode*> data_counter((int)min_count_, min_percent_);
+        PropertiesCounter<DataPropertyBranch*, LiteralNode*> data_counter(static_cast<int>(min_count_), min_percent_);
         PropertiesCounter<ObjectPropertyBranch*, ClassBranch*> object_counter;
 
         for(auto* down : down_set)
@@ -103,7 +103,7 @@ namespace ontologenius {
       for(size_t prop_i = 0; prop_i < me->data_relations_.size(); prop_i++)
         if(me->data_relations_[prop_i].first == std::get<0>(property))
         {
-          index = (int)prop_i;
+          index = static_cast<int>(prop_i);
           deduced_indexs.erase(index);
 
           if(me->data_relations_[prop_i].probability < 1.0)
@@ -112,14 +112,14 @@ namespace ontologenius {
               notifications_.emplace_back(notification_info, "[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
 
             me->data_relations_[prop_i].second = std::get<1>(property);
-            me->data_relations_[prop_i].probability = (float)std::get<2>(property) - 0.01f;
+            me->data_relations_[prop_i].probability = static_cast<float>(std::get<2>(property)) - 0.01f;
           }
         }
 
       if(index == -1)
       {
         notifications_.emplace_back(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
-        me->data_relations_.emplace_back(std::get<0>(property), std::get<1>(property), (float)std::get<2>(property) - 0.01);
+        me->data_relations_.emplace_back(std::get<0>(property), std::get<1>(property), static_cast<float>(std::get<2>(property)) - 0.01);
         std::get<0>(property)->annotation_usage_ = true;
       }
     }
@@ -130,7 +130,7 @@ namespace ontologenius {
       for(auto i : deduced_indexs)
       {
         notifications_.emplace_back(notification_info, "[DELETE]" + me->value() + ">" + me->data_relations_[i - deleted].first->value() + ":" + me->data_relations_[i - deleted].second->value());
-        me->data_relations_.erase(me->data_relations_.begin() + (int)i - (int)deleted);
+        me->data_relations_.erase(me->data_relations_.begin() + static_cast<int>(i) - static_cast<int>(deleted));
         deleted++;
       }
     }
@@ -150,7 +150,7 @@ namespace ontologenius {
       for(size_t prop_i = 0; prop_i < me->object_relations_.size(); prop_i++)
         if(me->object_relations_[prop_i].first == std::get<0>(property))
         {
-          index = (int)prop_i;
+          index = static_cast<int>(prop_i);
           deduced_indexs.erase(index);
           if(me->object_relations_[prop_i].probability < 1.0)
           {
@@ -158,14 +158,14 @@ namespace ontologenius {
               notifications_.emplace_back(notification_info, "[CHANGE]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
 
             me->object_relations_[prop_i].second = std::get<1>(property);
-            me->object_relations_[prop_i].probability = (float)std::get<2>(property) - 0.01f;
+            me->object_relations_[prop_i].probability = static_cast<float>(std::get<2>(property)) - 0.01f;
           }
         }
 
       if(index == -1)
       {
         notifications_.emplace_back(notification_info, "[NEW]" + me->value() + ">" + std::get<0>(property)->value() + ":" + std::get<1>(property)->value());
-        me->object_relations_.emplace_back(std::get<0>(property), std::get<1>(property), (float)std::get<2>(property) - 0.01);
+        me->object_relations_.emplace_back(std::get<0>(property), std::get<1>(property), static_cast<float>(std::get<2>(property)) - 0.01);
       }
     }
 
@@ -175,7 +175,7 @@ namespace ontologenius {
       for(auto i : deduced_indexs)
       {
         notifications_.emplace_back(notification_info, "[DELETE]" + me->value() + ">" + me->object_relations_[i - deleted].first->value() + ":" + me->object_relations_[i - deleted].second->value());
-        me->object_relations_.erase(me->object_relations_.begin() + (int)i - (int)deleted);
+        me->object_relations_.erase(me->object_relations_.begin() + static_cast<int>(i) - static_cast<int>(deleted));
         deleted++;
       }
     }

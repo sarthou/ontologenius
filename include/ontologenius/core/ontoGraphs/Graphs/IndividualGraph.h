@@ -162,7 +162,7 @@ namespace ontologenius {
     {
       if(index <= 0)
         return nullptr;
-      else if(index <= (index_t)ordered_individuals_.size())
+      else if(index <= static_cast<index_t>(ordered_individuals_.size()))
         return ordered_individuals_[index];
       else
         return nullptr;

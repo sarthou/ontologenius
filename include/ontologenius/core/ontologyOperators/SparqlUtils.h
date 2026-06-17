@@ -231,8 +231,8 @@ namespace ontologenius {
       std::vector<int64_t> index_to_remove;
       if(res.empty() == false)
       {
-        auto front = res.front();
-        for(int64_t i = 0; i < (int64_t)front.size(); i++)
+        const auto& front = res.front();
+        for(int64_t i = 0; i < static_cast<int64_t>(front.size()); i++)
           if(var_index.find(i) == var_index.end())
             index_to_remove.push_back(i);
       }

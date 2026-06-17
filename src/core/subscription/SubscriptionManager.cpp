@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <mutex>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "ontologenius/compat/ros.h"
@@ -35,11 +36,11 @@ namespace ontologenius {
           for(auto id : ids)
           {
             compat::OntologeniusSubscriptionAnswer msg;
-            msg.id = (int)id;
+            msg.id = static_cast<int>(id);
             msg.data = triplet.toString();
             msg.last = subscription_.isFinished(id);
             if(msg.last)
-              subscription_.unsubscribe((int)id);
+              subscription_.unsubscribe(static_cast<int>(id));
             pub_.publish(msg);
           }
         }

@@ -38,7 +38,7 @@ namespace ontologenius {
   {
     for(auto* individual : all_branchs_)
     {
-      if((size_t)individual->get() >= ordered_individuals_.size())
+      if(static_cast<size_t>(individual->get()) >= ordered_individuals_.size())
         ordered_individuals_.resize(individual->get() + 1, nullptr);
       ordered_individuals_[individual->get()] = individual;
     }
@@ -474,7 +474,7 @@ namespace ontologenius {
         {
           getSame(relation.second, res);
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->value());
         }
@@ -483,7 +483,7 @@ namespace ontologenius {
         {
           res.insert(relation.second->value());
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->value());
         }
@@ -520,7 +520,7 @@ namespace ontologenius {
         {
           getSame(relation.second, res);
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->get());
         }
@@ -529,7 +529,7 @@ namespace ontologenius {
         {
           res.insert(relation.second->get());
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->get());
         }
@@ -977,7 +977,7 @@ namespace ontologenius {
     IndividualBranch* indiv = getIndividualByIndex(first_individual);
     if(second_individual > 0)
     {
-      if((size_t)second_individual >= ordered_individuals_.size())
+      if(static_cast<size_t>(second_individual) >= ordered_individuals_.size())
       {
         getWith(indiv, {second_individual}, res, depth); // class
       }
@@ -1650,7 +1650,7 @@ namespace ontologenius {
     auto token = split(param, "|");
     if(token.size() > 1)
     {
-      std::vector<int> index_token(0, (int)token.size());
+      std::vector<int> index_token(0, static_cast<int>(token.size()));
       try
       {
         for(size_t i = 0; i < token.size(); i++)
@@ -1852,7 +1852,7 @@ namespace ontologenius {
     IndividualBranch* indiv = Graph::findOrCreateBranch(name);
     if(indiv != nullptr)
     {
-      if((size_t)indiv->get() >= ordered_individuals_.size())
+      if(static_cast<size_t>(indiv->get()) >= ordered_individuals_.size())
         ordered_individuals_.resize(indiv->get() + 1, nullptr);
       ordered_individuals_[indiv->get()] = indiv;
     }
@@ -1881,7 +1881,7 @@ namespace ontologenius {
         for(size_t i = 0; i < up->individual_childs_.size();)
         {
           if(up->individual_childs_[i] == indiv)
-            up->individual_childs_.erase(up->individual_childs_.begin() + (int)i);
+            up->individual_childs_.erase(up->individual_childs_.begin() + static_cast<int>(i));
           else
             i++;
         }
@@ -1925,7 +1925,7 @@ namespace ontologenius {
         {
           if(up->individual_childs_[i] == indiv)
           {
-            up->individual_childs_.erase(up->individual_childs_.begin() + (int)i);
+            up->individual_childs_.erase(up->individual_childs_.begin() + static_cast<int>(i));
             up->childs_.emplace_back(class_branch);
           }
           else
@@ -2313,12 +2313,12 @@ namespace ontologenius {
     {
       checkObjectRelationConstraints(indiv_from, property, indiv_on);
       indiv_from->object_relations_.emplaceBack(property, indiv_on);
-      index = (int)indiv_from->object_relations_.size() - 1;
+      index = static_cast<int>(indiv_from->object_relations_.size()) - 1;
       indiv_on->setUpdated(true);
       indiv_from->setUpdated(true);
     }
 
-    indiv_from->object_relations_[index].probability = (float)proba;
+    indiv_from->object_relations_[index].probability = static_cast<float>(proba);
     indiv_from->object_relations_[index].inferred = inferred;
 
     return index;
@@ -2333,11 +2333,11 @@ namespace ontologenius {
     {
       checkDataRelationConstraints(indiv_from, property, data);
       indiv_from->data_relations_.emplaceBack(property, data);
-      index = (int)indiv_from->data_relations_.size() - 1;
+      index = static_cast<int>(indiv_from->data_relations_.size()) - 1;
       indiv_from->setUpdated(true);
     }
 
-    indiv_from->data_relations_[index].probability = (float)proba;
+    indiv_from->data_relations_[index].probability = static_cast<float>(proba);
     indiv_from->data_relations_[index].inferred = inferred;
 
     return index;
@@ -2927,7 +2927,7 @@ namespace ontologenius {
   void IndividualGraph::insertBranchInVectors(IndividualBranch* branch)
   {
     all_branchs_.push_back(branch);
-    if((size_t)branch->get() >= ordered_individuals_.size())
+    if(static_cast<size_t>(branch->get()) >= ordered_individuals_.size())
       ordered_individuals_.resize(branch->get() + 1, nullptr);
     ordered_individuals_[branch->get()] = branch;
   }
@@ -2935,7 +2935,7 @@ namespace ontologenius {
   void IndividualGraph::removeBranchInVectors(size_t vector_index)
   {
     const index_t index = all_branchs_[vector_index]->get();
-    all_branchs_.erase(all_branchs_.begin() + (int)vector_index);
+    all_branchs_.erase(all_branchs_.begin() + static_cast<int>(vector_index));
     ordered_individuals_[index] = nullptr;
   }
 

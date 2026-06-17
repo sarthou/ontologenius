@@ -1,6 +1,7 @@
 #include "ontologenius/compat/ros.h"
 
 #include <string>
+#include <thread>
 
 namespace ontologenius::compat::onto_ros {
 

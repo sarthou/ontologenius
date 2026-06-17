@@ -111,7 +111,7 @@ namespace ontologenius {
       }
       process_name_ = " " + process_name_ + " ";
 
-      for(size_t i = 1; i < (size_t)argc; i++)
+      for(size_t i = 1; i < static_cast<size_t>(argc); i++)
       {
         std::string str_argv = std::string(argv[i]);
         if(str_argv[0] == '-')
@@ -131,7 +131,7 @@ namespace ontologenius {
             Display::warning("unknow option " + str_argv);
           else
           {
-            if(i + 1 < (size_t)argc)
+            if(i + 1 < static_cast<size_t>(argc))
             {
               i++;
               str_argv = std::string(argv[i]);

@@ -38,7 +38,7 @@ namespace ontologenius {
     TInteger res = current_id_;
     current_id_++;
 
-    return (res);
+    return res;
   }
 
   template<typename TInteger>
