@@ -63,6 +63,8 @@ namespace ontologenius {
 
       loader_.loadIndividuals();
 
+      individual_checker = IndividualChecker(&individuals_, this); // We need to re-init the checker with the read graph
+
       err += individual_checker.check();
 
       is_init_ = true;
