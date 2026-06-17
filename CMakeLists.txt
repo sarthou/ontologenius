@@ -682,6 +682,7 @@ if($ENV{ROS_VERSION} STREQUAL "2")
     add_onto_launch_test(reasoning chain)
     add_onto_launch_test(reasoning mechanism)
     add_onto_launch_test(reasoning rule)
+    add_onto_launch_test(reasoning subclass_expression)
     add_onto_launch_test(reasoning transitivity)
 
     # Special case: no launch test, links against a different library
