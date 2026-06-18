@@ -63,7 +63,6 @@ namespace ontologenius {
     for(auto& domain : property_descriptor.domains_)
     {
       ClassBranch* domain_branch = graphs_->classes_.findOrCreateBranch(domain.elem);
-
       conditionalPushBack(me->domains_, ClassElement(domain_branch, domain.probability));
     }
 
@@ -123,10 +122,10 @@ namespace ontologenius {
     /**********************
     ** Mothers
     **********************/
-    DataPropertyBranch* me = this->container_.find(value);
+    const DataPropertyBranch* me = this->container_.find(value);
     if(me == nullptr)
     {
-      DataPropertyBranch* mother_branch = nullptr;
+      const DataPropertyBranch* mother_branch = nullptr;
       for(auto& mother : property_descriptor.mothers_)
       {
         mother_branch = this->container_.find(mother.elem);
@@ -142,7 +141,7 @@ namespace ontologenius {
       }
       else
       {
-        ClassBranch* range_branch = nullptr;
+        const ClassBranch* range_branch = nullptr;
         for(auto& range : property_descriptor.ranges_)
         {
           range_branch = graphs_->classes_.container_.find(range);
@@ -226,9 +225,9 @@ namespace ontologenius {
     std::unordered_set<std::string> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch* branch = container_.find(value);
+    const DataPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
-      for(auto& range : branch->ranges_)
+      for(const auto* range : branch->ranges_)
         res.insert(range->value());
 
     return res;
@@ -239,9 +238,9 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
+    const DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
-      for(auto& range : branch->ranges_)
+      for(const auto* range : branch->ranges_)
         res.insert(range->get());
 
     return res;

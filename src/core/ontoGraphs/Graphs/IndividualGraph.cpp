@@ -2097,7 +2097,7 @@ namespace ontologenius {
   void IndividualGraph::getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result)
   {
     // Collect from both the equivalence and subclass anonymous expressions.
-    for(AnonymousClassBranch* anon : {class_branch->equiv_anonymous_class_, class_branch->sub_anonymous_class_})
+    for(const AnonymousClassBranch* anon : {class_branch->equiv_anonymous_class_, class_branch->sub_anonymous_class_})
     {
       if(anon == nullptr)
         continue;
@@ -2351,7 +2351,7 @@ namespace ontologenius {
       IndividualBranch* branch_on = findBranchSafe(indiv_on);
       if(branch_on == nullptr)
       {
-        ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_on);
+        const ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_on);
         if(test != nullptr)
           throw GraphException("object entity does not exists");
 
@@ -2362,7 +2362,7 @@ namespace ontologenius {
       ObjectPropertyBranch* branch_prop = graphs_->object_properties_.findBranchSafe(property);
       if(branch_prop == nullptr)
       {
-        DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
+        const DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
         if(test != nullptr)
           throw GraphException(property + " is a data property");
 
@@ -2386,7 +2386,7 @@ namespace ontologenius {
       DataPropertyBranch* branch_prop = graphs_->data_properties_.findBranchSafe(property);
       if(branch_prop == nullptr)
       {
-        ObjectPropertyBranch* test = graphs_->object_properties_.findBranchSafe(property);
+        const ObjectPropertyBranch* test = graphs_->object_properties_.findBranchSafe(property);
         if(test != nullptr)
           throw GraphException(property + " is an object property");
 
@@ -2414,7 +2414,7 @@ namespace ontologenius {
       IndividualBranch* branch_from = findBranchSafe(indiv_from);
       if(branch_from == nullptr)
       {
-        ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_from);
+        const ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_from);
         if(test != nullptr)
           throw GraphException("The individual to apply the relation does not exist");
 
@@ -2425,7 +2425,7 @@ namespace ontologenius {
       ObjectPropertyBranch* branch_prop = graphs_->object_properties_.findBranchSafe(property);
       if(branch_prop == nullptr)
       {
-        DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
+        const DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
         if(test != nullptr)
           throw GraphException(property + " is a data property");
 

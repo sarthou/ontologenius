@@ -67,7 +67,7 @@ namespace ontologenius {
 
   void ClassOwlWriter::writeEquivalentClass(ClassBranch* branch)
   {
-    AnonymousClassBranch* equiv = branch->equiv_anonymous_class_;
+    const AnonymousClassBranch* equiv = branch->equiv_anonymous_class_;
 
     if(equiv != nullptr)
     {
@@ -101,7 +101,7 @@ namespace ontologenius {
       writeSingleResource("rdfs:subClassOf", mother);
 
     // write complex subClassOf expressions (rdfs:subClassOf with anonymous restriction)
-    AnonymousClassBranch* sub = branch->sub_anonymous_class_;
+    const AnonymousClassBranch* sub = branch->sub_anonymous_class_;
     if(sub != nullptr)
     {
       for(auto* tree : sub->ano_trees_)

@@ -549,7 +549,7 @@ namespace ontologenius {
       }
       else
       {
-        const size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
+        const size_t min_pose = std::min({query.size(), first_keyword_pose, first_block_pose});
         SparqlBlock_t block;
         block.raw = query.substr(0, min_pose);
         block.op = sparql_none;

@@ -165,9 +165,9 @@ namespace ontologenius {
     std::unordered_set<std::string> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch* branch = container_.find(value);
+    const ObjectPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
-      for(auto& inverse : branch->inverses_)
+      for(const auto& inverse : branch->inverses_)
         getDown(inverse.elem, res);
 
     return res;
@@ -178,9 +178,9 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<ObjectPropertyBranch>::mutex_);
 
-    ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
+    const ObjectPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
-      for(auto& inverse : branch->inverses_)
+      for(const auto& inverse : branch->inverses_)
         getDown(inverse.elem, res);
 
     return res;

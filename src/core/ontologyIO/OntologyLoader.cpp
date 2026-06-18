@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <curl/curl.h>
+#include <curl/easy.h>
 #include <string>
 #include <utility>
 #include <vector>
