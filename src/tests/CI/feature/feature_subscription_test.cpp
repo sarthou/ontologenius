@@ -13,8 +13,6 @@ std::atomic<int> done_add;
 std::atomic<int> done_del;
 std::atomic<int> done_any;
 
-#define NB_TIME 20 // 2s
-
 void callbackAdd(const std::string& fact)
 {
   (void)fact;
@@ -43,14 +41,16 @@ TEST(feature_subscription, exact_one_pattern)
   auto id = onto_ptr->subscriber.subscribe("[add]cube1|isOn|table1", &callbackAdd, 1);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   for(size_t i = 0; i < 2; i++)
   {
     onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
     onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
+
   usleep(500000);
 
   EXPECT_EQ(done_add, 1);
@@ -69,14 +69,15 @@ TEST(feature_subscription, exact_invert_pattern)
   auto id = onto_ptr->subscriber.subscribe("[add]table1|isUnder|cube1", &callbackAdd, 2);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   for(size_t i = 0; i < 2; i++)
   {
     onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
     onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -98,20 +99,23 @@ TEST(feature_subscription, exact_two_pattern)
   id = onto_ptr->subscriber.subscribe("[del]cube1|isOn|table1", &callbackDel, 1);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   for(size_t i = 0; i < 2; i++)
   {
     onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
     onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
-  onto_ptr->feeder.waitUpdate(500);
+  bool updated = onto_ptr->feeder.waitUpdate(500);
+  EXPECT_TRUE(updated);
+
   for(size_t i = 0; i < 2; i++)
   {
     onto_ptr->feeder.removeRelation("cube1", "isOn", "table1");
     onto_ptr->feeder.removeRelation("cube2", "isOn", "table1");
   }
-  onto_ptr->feeder.waitUpdate(1000);
+  updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -131,11 +135,12 @@ TEST(feature_subscription, abstract_pattern)
   auto id = onto_ptr->subscriber.subscribe("[add]Cube|isOn|table1", &callbackAdd, 2);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
   onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -155,12 +160,13 @@ TEST(feature_subscription, variable_pattern)
   auto id = onto_ptr->subscriber.subscribe("[add]?|isOn|table1", &callbackAdd, 3);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
   onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -180,12 +186,13 @@ TEST(feature_subscription, variable_abstract_pattern)
   auto id = onto_ptr->subscriber.subscribe("[add]?|isOn|Table", &callbackAdd, 3);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
   onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -204,13 +211,12 @@ TEST(feature_subscription, any_pattern)
   auto id = onto_ptr->subscriber.subscribe("[?]cube1|isOn|table1", &callbackAny, 1);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.waitUpdate(500);
-
   onto_ptr->feeder.removeRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
