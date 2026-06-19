@@ -1,7 +1,9 @@
 #ifndef ONTOLOGENIUS_STRING_H
 #define ONTOLOGENIUS_STRING_H
 
+#include <cstdint>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace ontologenius {
@@ -53,6 +55,25 @@ namespace ontologenius {
   inline bool isIn(const std::string& substring, const std::string& string)
   {
     return (string.find(substring) != std::string::npos);
+  }
+
+  /// FNV-1a 64-bit hash of a string. Suitable for use in switch-case dispatch.
+  constexpr uint64_t hashStr(std::string_view sv) noexcept
+  {
+    uint64_t hash = 14695981039346656037ULL;
+    for(const char c : sv)
+    {
+      hash ^= static_cast<uint64_t>(static_cast<unsigned char>(c));
+      hash *= 1099511628211ULL;
+    }
+    return hash;
+  }
+
+  /// User-defined literal for compile-time action string hashing.
+  /// Usage: switch(hashStr(str)) { case "action"_act: ... }
+  constexpr uint64_t operator""_act(const char* str, std::size_t len) noexcept
+  {
+    return hashStr({str, len});
   }
 
 } // namespace ontologenius

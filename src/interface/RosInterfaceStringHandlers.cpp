@@ -8,6 +8,7 @@
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/interface/InterfaceParams.h"
 #include "ontologenius/interface/RosInterface.h"
+#include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
@@ -30,79 +31,115 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<std::string> set_res;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getDown")
+        switch(action_hash)
+        {
+        case "getDown"_act:
           set_res = onto_->classes_.getDown(params(), static_cast<int>(params.depth));
-        else if(req->action == "getUp")
+          break;
+        case "getUp"_act:
           set_res = onto_->classes_.getUp(params(), static_cast<int>(params.depth));
-        else if(req->action == "getDisjoint")
+          break;
+        case "getDisjoint"_act:
           set_res = onto_->classes_.getDisjoint(params());
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->classes_.getName(params(), params.take_id);
           if(tmp.empty() == false)
             res->values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->values = onto_->classes_.getNames(params(), params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->values = onto_->classes_.getEveryNames(params(), params.take_id);
-        else if(req->action == "getRelationFrom")
+          break;
+        case "getRelationFrom"_act:
           set_res = onto_->classes_.getRelationFrom(params(), static_cast<int>(params.depth));
-        else if(req->action == "getRelatedFrom")
+          break;
+        case "getRelatedFrom"_act:
           set_res = onto_->classes_.getRelatedFrom(params());
-        else if(req->action == "getRelationOn")
+          break;
+        case "getRelationOn"_act:
           set_res = onto_->classes_.getRelationOn(params(), static_cast<int>(params.depth));
-        else if(req->action == "getRelatedOn")
+          break;
+        case "getRelatedOn"_act:
           set_res = onto_->classes_.getRelatedOn(params());
-        else if(req->action == "getRelationWith")
+          break;
+        case "getRelationWith"_act:
           set_res = onto_->classes_.getRelationWith(params());
-        else if(req->action == "getRelatedWith")
+          break;
+        case "getRelatedWith"_act:
           set_res = onto_->classes_.getRelatedWith(params());
-        else if(req->action == "getOn")
+          break;
+        case "getOn"_act:
           set_res = onto_->classes_.getOn(params());
-        else if(req->action == "getFrom")
+          break;
+        case "getFrom"_act:
           set_res = onto_->classes_.getFrom(params());
-        else if(req->action == "getWith")
+          break;
+        case "getWith"_act:
           set_res = onto_->classes_.getWith(params(), static_cast<int>(params.depth));
-        else if(req->action == "getDomainOf")
+          break;
+        case "getDomainOf"_act:
           set_res = onto_->classes_.getDomainOf(params(), static_cast<int>(params.depth));
-        else if(req->action == "getRangeOf")
+          break;
+        case "getRangeOf"_act:
           set_res = onto_->classes_.getRangeOf(params(), static_cast<int>(params.depth));
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set2vector(onto_->classes_.find<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set2vector(onto_->classes_.findSub<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set2vector(onto_->classes_.findRegex<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->classes_.findFuzzy(params(), params.take_id, params.threshold), res->values);
           else
             set2vector(onto_->classes_.findFuzzy(params(), params.take_id), res->values);
-        }
-        else if(req->action == "exist")
-        {
+          break;
+        case "exist"_act:
           if(onto_->classes_.touch(params()))
             res->values.push_back(params());
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->values = onto_->classes_.getAll();
-        else if(req->action == "getComments")
+          break;
+        case "getComments"_act:
           res->values = onto_->classes_.getComments(params());
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector.empty() == false)
         {
-          if((req->action == "getUp") || (req->action == "getDown") ||
-             (req->action == "getDisjoint") || (req->action == "getOn") ||
-             (req->action == "getFrom"))
+          switch(action_hash)
+          {
+          case "getUp"_act: [[fallthrough]];
+          case "getDown"_act: [[fallthrough]];
+          case "getDisjoint"_act: [[fallthrough]];
+          case "getOn"_act: [[fallthrough]];
+          case "getFrom"_act:
             set_res = onto_->classes_.select(set_res, params.selector);
-          else if((req->action == "getRelationFrom") || (req->action == "getRelationOn") || (req->action == "getWith") ||
-                  (req->action == "getDomainOf") || (req->action == "getRangeOf"))
+            break;
+          case "getRelationFrom"_act: [[fallthrough]];
+          case "getRelationOn"_act: [[fallthrough]];
+          case "getWith"_act: [[fallthrough]];
+          case "getDomainOf"_act: [[fallthrough]];
+          case "getRangeOf"_act:
             set_res = onto_->object_properties_.select(set_res, params.selector);
+            break;
+          default:
+            break;
+          }
         }
 
         if(res->values.empty())
@@ -132,61 +169,87 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<std::string> set_res;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getDown")
+        switch(action_hash)
+        {
+        case "getDown"_act:
           set_res = onto_->object_properties_.getDown(params(), static_cast<int>(params.depth));
-        else if(req->action == "getUp")
+          break;
+        case "getUp"_act:
           set_res = onto_->object_properties_.getUp(params(), static_cast<int>(params.depth));
-        else if(req->action == "getDisjoint")
+          break;
+        case "getDisjoint"_act:
           set_res = onto_->object_properties_.getDisjoint(params());
-        else if(req->action == "getInverse")
+          break;
+        case "getInverse"_act:
           set_res = onto_->object_properties_.getInverse(params());
-        else if(req->action == "getDomain")
+          break;
+        case "getDomain"_act:
           set_res = onto_->object_properties_.getDomain(params(), params.depth);
-        else if(req->action == "getRange")
+          break;
+        case "getRange"_act:
           set_res = onto_->object_properties_.getRange(params(), params.depth);
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->object_properties_.getName(params(), params.take_id);
           if(tmp.empty() == false)
             res->values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->values = onto_->object_properties_.getNames(params(), params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->values = onto_->object_properties_.getEveryNames(params(), params.take_id);
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set2vector(onto_->object_properties_.find<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set2vector(onto_->object_properties_.findSub<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set2vector(onto_->object_properties_.findRegex<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->object_properties_.findFuzzy(params(), params.take_id, params.threshold), res->values);
           else
             set2vector(onto_->object_properties_.findFuzzy(params(), params.take_id), res->values);
-        }
-        else if(req->action == "exist")
-        {
+          break;
+        case "exist"_act:
           if(onto_->object_properties_.touch(params()))
             res->values.push_back(params());
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->values = onto_->object_properties_.getAll();
-        else if(req->action == "getComments")
+          break;
+        case "getComments"_act:
           res->values = onto_->object_properties_.getComments(params());
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector.empty() == false)
         {
-          if((req->action == "getUp") || (req->action == "getDown") ||
-             (req->action == "getDisjoint") || (req->action == "getInverse"))
+          switch(action_hash)
+          {
+          case "getUp"_act: [[fallthrough]];
+          case "getDown"_act: [[fallthrough]];
+          case "getDisjoint"_act: [[fallthrough]];
+          case "getInverse"_act:
             set_res = onto_->object_properties_.select(set_res, params.selector);
-          else if((req->action == "getDomain") || (req->action == "getRange"))
+            break;
+          case "getDomain"_act: [[fallthrough]];
+          case "getRange"_act:
             set_res = onto_->classes_.select(set_res, params.selector);
+            break;
+          default:
+            break;
+          }
         }
 
         if(res->values.empty())
@@ -216,58 +279,82 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<std::string> set_res;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getDown")
+        switch(action_hash)
+        {
+        case "getDown"_act:
           set_res = onto_->data_properties_.getDown(params(), static_cast<int>(params.depth));
-        else if(req->action == "getUp")
+          break;
+        case "getUp"_act:
           set_res = onto_->data_properties_.getUp(params(), static_cast<int>(params.depth));
-        else if(req->action == "getDisjoint")
+          break;
+        case "getDisjoint"_act:
           set_res = onto_->data_properties_.getDisjoint(params());
-        else if(req->action == "getDomain")
+          break;
+        case "getDomain"_act:
           set_res = onto_->data_properties_.getDomain(params(), params.depth);
-        else if(req->action == "getRange")
+          break;
+        case "getRange"_act:
           set2vector(onto_->data_properties_.getRange(params()), res->values);
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->data_properties_.getName(params(), params.take_id);
           if(tmp.empty() == false)
             res->values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->values = onto_->data_properties_.getNames(params(), params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->values = onto_->data_properties_.getEveryNames(params(), params.take_id);
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set2vector(onto_->data_properties_.find<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set2vector(onto_->data_properties_.findSub<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set2vector(onto_->data_properties_.findRegex<std::string>(params(), params.take_id), res->values);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->data_properties_.findFuzzy(params(), params.take_id, params.threshold), res->values);
           else
             set2vector(onto_->data_properties_.findFuzzy(params(), params.take_id), res->values);
-        }
-        else if(req->action == "exist")
-        {
+          break;
+        case "exist"_act:
           if(onto_->data_properties_.touch(params()))
             res->values.push_back(params());
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->values = onto_->data_properties_.getAll();
-        else if(req->action == "getComments")
+          break;
+        case "getComments"_act:
           res->values = onto_->data_properties_.getComments(params());
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector.empty() == false)
         {
-          if((req->action == "getUp") || (req->action == "getDown") || (req->action == "getDisjoint"))
+          switch(action_hash)
+          {
+          case "getUp"_act: [[fallthrough]];
+          case "getDown"_act: [[fallthrough]];
+          case "getDisjoint"_act:
             set_res = onto_->data_properties_.select(set_res, params.selector);
-          else if(req->action == "getDomain")
+            break;
+          case "getDomain"_act:
             set_res = onto_->classes_.select(set_res, params.selector);
+            break;
+          default:
+            break;
+          }
         }
 
         if(res->values.empty())
@@ -298,93 +385,137 @@ namespace ontologenius {
 
         std::unordered_set<std::string> set_res;
 
-        if(req->action == "getSame")
+        const auto action_hash = hashStr(req->action);
+
+        switch(action_hash)
+        {
+        case "getSame"_act:
           set_res = onto_->individuals_.getSame(params());
-        else if(req->action == "getDistincts")
+          break;
+        case "getDistincts"_act:
           set_res = onto_->individuals_.getDistincts(params());
-        else if(req->action == "getRelationFrom")
+          break;
+        case "getRelationFrom"_act:
           set_res = onto_->individuals_.getRelationFrom(params(), static_cast<int>(params.depth));
-        else if(req->action == "getRelatedFrom")
+          break;
+        case "getRelatedFrom"_act:
           set_res = onto_->individuals_.getRelatedFrom(params());
-        else if(req->action == "getRelationOn")
+          break;
+        case "getRelationOn"_act:
           set_res = onto_->individuals_.getRelationOn(params(), static_cast<int>(params.depth));
-        else if(req->action == "getRelatedOn")
+          break;
+        case "getRelatedOn"_act:
           set_res = onto_->individuals_.getRelatedOn(params());
-        else if(req->action == "getRelationWith")
+          break;
+        case "getRelationWith"_act:
           set_res = onto_->individuals_.getRelationWith(params());
-        else if(req->action == "getRelatedWith")
+          break;
+        case "getRelatedWith"_act:
           set_res = onto_->individuals_.getRelatedWith(params());
-        else if(req->action == "getUp")
+          break;
+        case "getUp"_act:
           set_res = onto_->individuals_.getUp(params(), static_cast<int>(params.depth), false);
-        else if(req->action == "getOn")
+          break;
+        case "getOn"_act:
           set_res = onto_->individuals_.getOn(params());
-        else if(req->action == "getFrom")
+          break;
+        case "getFrom"_act:
           set_res = onto_->individuals_.getFrom(params());
-        else if(req->action == "getWith")
+          break;
+        case "getWith"_act:
           set_res = onto_->individuals_.getWith(params(), static_cast<int>(params.depth));
-        else if(req->action == "getDomainOf")
+          break;
+        case "getDomainOf"_act:
           set_res = onto_->individuals_.getDomainOf(params(), static_cast<int>(params.depth));
-        else if(req->action == "getRangeOf")
+          break;
+        case "getRangeOf"_act:
           set_res = onto_->individuals_.getRangeOf(params(), static_cast<int>(params.depth));
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->individuals_.getName(params(), params.take_id);
           if(tmp.empty() == false)
             res->values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->values = onto_->individuals_.getNames(params(), params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->values = onto_->individuals_.getEveryNames(params(), params.take_id);
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set_res = onto_->individuals_.find<std::string>(params(), params.take_id);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set_res = onto_->individuals_.findSub<std::string>(params(), params.take_id);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set_res = onto_->individuals_.findRegex<std::string>(params(), params.take_id);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set_res = onto_->individuals_.findFuzzy(params(), params.take_id, params.threshold);
           else
             set_res = onto_->individuals_.findFuzzy(params(), params.take_id);
-        }
-        else if(req->action == "getType")
+          break;
+        case "getType"_act:
           set_res = onto_->individuals_.getType(params());
-        else if(req->action == "exist")
-        {
+          break;
+        case "exist"_act:
           if(onto_->individuals_.touch(params()))
             res->values.push_back(params());
-        }
-        else if(req->action == "relationExists")
-        {
+          break;
+        case "relationExists"_act:
           if(onto_->individuals_.relationExists(params()))
             res->values.push_back(params());
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->values = onto_->individuals_.getAll();
-        else if(req->action == "isInferred")
+          break;
+        case "isInferred"_act:
           res->values = onto_->individuals_.isInferred(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
-        else if(req->action == "getInferenceExplanation")
+          break;
+        case "getInferenceExplanation"_act:
           res->values = onto_->individuals_.getInferenceExplanation(params());
-        else if(req->action == "getInferenceRule")
+          break;
+        case "getInferenceRule"_act:
           res->values = {onto_->individuals_.getInferenceRule(params())};
-        else if(req->action == "getComments")
+          break;
+        case "getComments"_act:
           res->values = onto_->individuals_.getComments(params());
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector.empty() == false)
         {
-          if(req->action == "getUp")
+          switch(action_hash)
+          {
+          case "getUp"_act:
             set_res = onto_->classes_.select(set_res, params.selector);
-          else if((req->action == "getRelationFrom") || (req->action == "getRelationOn") || (req->action == "getWith") ||
-                  (req->action == "getDomainOf") || (req->action == "getRangeOf"))
+            break;
+          case "getRelationFrom"_act: [[fallthrough]];
+          case "getRelationOn"_act: [[fallthrough]];
+          case "getWith"_act: [[fallthrough]];
+          case "getDomainOf"_act: [[fallthrough]];
+          case "getRangeOf"_act:
             set_res = onto_->object_properties_.select(set_res, params.selector);
-          else if((req->action != "find") || (req->action != "findRegex") || (req->action != "findSub") ||
-                  (req->action != "findFuzzy") || (req->action != "getFrom") || (req->action != "getOn") ||
-                  (req->action != "getRelationWith") || (req->action != "getRelatedWith"))
+            break;
+          case "find"_act: [[fallthrough]];
+          case "findRegex"_act: [[fallthrough]];
+          case "findSub"_act: [[fallthrough]];
+          case "findFuzzy"_act: [[fallthrough]];
+          case "getFrom"_act: [[fallthrough]];
+          case "getOn"_act: [[fallthrough]];
+          case "getRelationWith"_act: [[fallthrough]];
+          case "getRelatedWith"_act:
+            break;
+          default:
             set_res = onto_->individuals_.select(set_res, params.selector);
+            break;
+          }
         }
 
         if(res->values.empty())
