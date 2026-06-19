@@ -21,12 +21,6 @@ namespace ontologenius {
   size_t DrawerNode::current_row = 0;
   size_t DrawerNode::current_column = 0;
 
-  TreeDrawer::~TreeDrawer()
-  {
-    for(auto& node : nodes_)
-      delete node;
-  }
-
   void TreeDrawer::draw(const std::string& file_name, Commit* root, bool commit_only)
   {
     createNode(root, commit_only);

@@ -31,7 +31,7 @@ namespace ontologenius {
     std::pair<std::vector<std::string>, std::vector<std::vector<T>>> run(const std::string& query);
 
     template<typename T>
-    std::vector<std::vector<T>> resolve(std::vector<SparqlTriplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res);
+    std::vector<std::vector<T>> resolve(const std::vector<SparqlTriplet_t<T>>& query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res);
     template<typename T>
     std::vector<std::vector<T>> resolve(const std::vector<SparqlTriplet_t<T>>& query, const std::vector<T>& accu);
     template<typename T>

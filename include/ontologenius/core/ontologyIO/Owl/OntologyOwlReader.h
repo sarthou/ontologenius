@@ -32,9 +32,7 @@ namespace ontologenius {
     std::vector<std::string> getImportsFromRaw(std::string content);
     std::vector<std::string> getImportsFromFile(const std::string& file_name);
 
-    void setDisplay(bool display) { display_ = display; }
     void displayIndividualRules();
-    bool empty() const { return (nb_loaded_elem_ == 0); }
 
   private:
     /**********************

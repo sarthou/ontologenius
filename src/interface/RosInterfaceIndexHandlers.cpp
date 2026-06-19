@@ -5,6 +5,7 @@
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/interface/InterfaceParams.h"
 #include "ontologenius/interface/RosInterface.h"

@@ -116,7 +116,7 @@ namespace ontologenius {
 
     bool eraseGeneric(void* s, void* p, void* o) override
     {
-      return erase((S*)s, (P*)p, (O*)o);
+      return erase(static_cast<S*>(s), static_cast<P*>(p), static_cast<O*>(o));
     }
 
     bool erase(S* subject,

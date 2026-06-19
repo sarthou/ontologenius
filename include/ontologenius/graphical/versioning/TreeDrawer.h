@@ -29,7 +29,7 @@ namespace ontologenius {
   {
   public:
     TreeDrawer() : image_(nullptr) {}
-    ~TreeDrawer();
+    ~TreeDrawer() = default;
 
     void draw(const std::string& file_name, Commit* root, bool commit_only = false);
 

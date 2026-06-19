@@ -77,7 +77,7 @@ namespace ontologenius {
     std::vector<std::string> toValuedFirst(const std::vector<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
-      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.first->value(); });
+      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](const auto& it) { return it.first->value(); });
       return res;
     }
 
@@ -85,7 +85,7 @@ namespace ontologenius {
     std::vector<std::string> toValuedSecond(const std::vector<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
-      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.second->value(); });
+      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](const auto& it) { return it.second->value(); });
       return res;
     }
 
@@ -93,7 +93,7 @@ namespace ontologenius {
     std::vector<std::string> toValued(const RelationsWithInductions<SingleElement<T>>& vect)
     {
       std::vector<std::string> res;
-      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.elem->value(); });
+      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](const auto& it) { return it.elem->value(); });
       return res;
     }
 
@@ -101,7 +101,7 @@ namespace ontologenius {
     std::vector<std::string> toValuedFirst(const RelationsWithInductions<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
-      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.first->value(); });
+      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](const auto& it) { return it.first->value(); });
       return res;
     }
 
@@ -109,7 +109,7 @@ namespace ontologenius {
     std::vector<std::string> toValuedSecond(const RelationsWithInductions<PairElement<T, U>>& vect)
     {
       std::vector<std::string> res;
-      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](auto it) { return it.second->value(); });
+      std::transform(vect.cbegin(), vect.cend(), std::back_inserter(res), [](const auto& it) { return it.second->value(); });
       return res;
     }
   };

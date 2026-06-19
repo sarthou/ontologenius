@@ -691,7 +691,9 @@ namespace ontologenius {
         continue;
 
       if(use_default)
-        if((tmp_cost = dist.get(branch->value(), value)) <= lower_cost)
+      {
+        tmp_cost = dist.get(branch->value(), value);
+        if(tmp_cost <= lower_cost)
         {
           if(tmp_cost != lower_cost)
           {
@@ -700,10 +702,13 @@ namespace ontologenius {
           }
           res.insert(branch->value());
         }
+      }
 
       if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
         for(auto& word : branch->dictionary_.spoken_[language_])
-          if((tmp_cost = dist.get(word, value)) <= lower_cost)
+        {
+          tmp_cost = dist.get(word, value);
+          if(tmp_cost <= lower_cost)
           {
             if(tmp_cost != lower_cost)
             {
@@ -712,10 +717,13 @@ namespace ontologenius {
             }
             res.insert(word);
           }
+        }
 
       if(branch->dictionary_.muted_.find(language_) != branch->dictionary_.muted_.end())
         for(auto& word : branch->dictionary_.muted_[language_])
-          if((tmp_cost = dist.get(word, value)) <= lower_cost)
+        {
+          tmp_cost = dist.get(word, value);
+          if(tmp_cost <= lower_cost)
           {
             if(tmp_cost != lower_cost)
             {
@@ -724,6 +732,7 @@ namespace ontologenius {
             }
             res.insert(word);
           }
+        }
     }
 
     if(lower_cost > threshold)

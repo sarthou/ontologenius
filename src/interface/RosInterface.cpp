@@ -10,6 +10,7 @@
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/core/subscription/SubscriptionManager.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"

@@ -107,7 +107,7 @@ namespace ontologenius {
   }
 
   template<typename T>
-  std::vector<std::vector<T>> Sparql::resolve(std::vector<SparqlTriplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
+  std::vector<std::vector<T>> Sparql::resolve(const std::vector<SparqlTriplet_t<T>>& query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
   {
     std::vector<std::vector<T>> res;
     if(prev_res.empty() == false)
