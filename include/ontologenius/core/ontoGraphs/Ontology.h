@@ -33,7 +33,6 @@ namespace ontologenius {
     OntologyLoader loader_;
     OntologyOwlWriter writer_;
 
-    bool is_preloaded_;
     bool is_init_;
   };
 
