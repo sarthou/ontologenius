@@ -8,6 +8,9 @@ if(WITH_CLANG_TIDY)
   include(cmake/ClangTidy.cmake)
 endif()
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(cmake/Sanitizers.cmake)
 
 function(add_onto_library TARGET)
