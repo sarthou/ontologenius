@@ -22,7 +22,7 @@ function(add_onto_library TARGET)
   add_library(${TARGET} ${ARGN})
   target_include_directories(${TARGET} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
-  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
   target_compile_options(${TARGET} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-frelaxed-template-template-args>)
   target_enable_sanitizers(${TARGET})
@@ -285,7 +285,7 @@ function(add_ros_library TARGET)
     ament_export_libraries(${TARGET})
   endif()
 
-  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-frelaxed-template-template-args>)
   target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
@@ -421,7 +421,7 @@ function(add_ros_executable TARGET)
     target_link_libraries(${TARGET} PUBLIC ${cpp_typesupport_target})
   endif()
 
-  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
   target_enable_sanitizers(${TARGET})
@@ -507,7 +507,7 @@ set(QT_SOURCES
 # Binaries
 # #############################################################################
 add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-set_target_properties(ontoloGUI PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(ontoloGUI PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 target_compile_options(ontoloGUI PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
 target_link_libraries(ontoloGUI
   Qt5::Core
