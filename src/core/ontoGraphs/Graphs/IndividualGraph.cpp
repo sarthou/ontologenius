@@ -2108,7 +2108,7 @@ namespace ontologenius {
       std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
       for(size_t i = 1; i < trees.size(); i++)
         for(auto it = proved_classes.begin(); it != proved_classes.end();)
-          it = (trees[i]->proved_classes_.count(*it) != 0u) ? std::next(it) : proved_classes.erase(it);
+          it = (trees[i]->proved_classes_.contains(*it)) ? std::next(it) : proved_classes.erase(it);
 
       for(auto* proved_class : proved_classes)
         if(result.insert(proved_class).second)

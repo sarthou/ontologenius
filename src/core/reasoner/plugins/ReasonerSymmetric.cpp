@@ -72,7 +72,7 @@ namespace ontologenius {
     {
       std::unordered_set<ObjectPropertyBranch*> down_properties;
       ontology_->object_properties_.getDownPtr(sym_prop, down_properties);
-      if(down_properties.count(relation.first) != 0)
+      if(down_properties.contains(relation.first))
         if(relation.second->get() == indiv_on->get())
           return true;
     }

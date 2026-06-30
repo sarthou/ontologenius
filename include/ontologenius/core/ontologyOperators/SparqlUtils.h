@@ -2,6 +2,7 @@
 #define ONTOLOGENIUS_SPARQLUTILS_H
 
 #include <map>
+#include <ranges>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -233,13 +234,13 @@ namespace ontologenius {
       {
         const auto& front = res.front();
         for(int64_t i = 0; i < static_cast<int64_t>(front.size()); i++)
-          if(var_index.find(i) == var_index.end())
+          if(var_index.contains(i) == false)
             index_to_remove.push_back(i);
       }
 
       for(auto& sub_res : res)
       {
-        for(auto it = index_to_remove.rbegin(); it != index_to_remove.rend(); ++it)
+        for(auto it = index_to_remove.rbegin(); it != index_to_remove.rend(); ++it) // NOLINT // TODO should be replaced by std::ranges::reverse_view in later versions
           sub_res.erase(sub_res.begin() + *it);
       }
 
