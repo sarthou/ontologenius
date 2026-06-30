@@ -25,23 +25,24 @@ body {
   width: 100%;
 }
 
-.banner h1, .banner h2, .banner img{
+.banner h1,
+.banner h2,
+.banner img {
   padding: 0;
   margin: 0px 20px;
   vertical-align: middle;
   text-align: center;
 }
 
-.banner h1{
+.banner h1 {
   font-size: 300%;
 }
 
-.banner h2{
+.banner h2 {
   font-size: 150%;
 }
 
-.onto_container
-{
+.onto_container {
   margin-right: auto;
   margin-left: auto;
   padding-left: 20px;
@@ -66,10 +67,10 @@ body {
   min-height: 50px;
   margin-bottom: 20px;
   border: 1px solid transparent;
-      border-top-color: transparent;
-      border-right-color: transparent;
-      border-bottom-color: transparent;
-      border-left-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
 }
 
 .navbar-default {
@@ -78,12 +79,12 @@ body {
 }
 
 .navbar-default .navbar-brand,
-.navbar-default .navbar-nav > li > a  {
+.navbar-default .navbar-nav>li>a {
   color: #fff;
 }
 
 .navbar-default .navbar-brand:hover,
-.navbar-default .navbar-nav > li > a:hover  {
+.navbar-default .navbar-nav>li>a:hover {
   color: #ccc;
 }
 
@@ -91,15 +92,15 @@ body {
   width: auto;
   height: 20px;
   -webkit-filter: invert(1);
-   filter: invert(1);
+  filter: invert(1);
 }
 
-.navbar-brand > img {
+.navbar-brand>img {
   display: inline;
   margin-right: 10px;
 }
 
-.nav > li > a {
+.nav>li>a {
   position: relative;
   display: block;
   padding: 10px 15px;
@@ -112,7 +113,7 @@ body {
 
 .jumbotron {
   background: url(../images/background.png) no-repeat center center;
-      background-size: auto;
+  background-size: auto;
   background-size: cover;
   padding-bottom: 5px;
   padding: 0;
@@ -142,7 +143,7 @@ body {
   width: 18px;
   height: 20px;
   -webkit-filter: invert(1);
-   filter: invert(1);
+  filter: invert(1);
 }
 
 .btn {
@@ -175,10 +176,10 @@ body {
 }
 
 .onto-content {
-  max-width:1280px;
-  width:95%;
-  margin:auto;
-  margin-top:10px;
+  max-width: 1280px;
+  width: 95%;
+  margin: auto;
+  margin-top: 10px;
 }
 
 .onto-content h1 {
@@ -199,18 +200,18 @@ body {
 }
 
 .onto-grid-item:hover .onto-grid-item-title {
-    right: -190px;
+  right: -190px;
 }
 
 .onto-grid-item:hover .onto-grid-item-menu {
-    left: 0px;
+  left: 0px;
 }
 
 .onto-grid-item-content {
-    width: 100%;
-    background-color: rgba(150, 150, 150, 0.3);
-    height: 100%;
-    transition: all 0.5s ease;
+  width: 100%;
+  background-color: rgba(150, 150, 150, 0.3);
+  height: 100%;
+  transition: all 0.5s ease;
 }
 
 .onto-grid-print-img {
@@ -277,14 +278,94 @@ body {
   display: block;
 }
 
+/* ── Quick-navigation card strip ── */
+.quicknav {
+  max-width: 1280px;
+  width: 95%;
+  margin: 20px auto 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.quicknav-card {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid #dde3e8;
+  border-top: 4px solid #3d5a72;
+  border-radius: 4px;
+  padding: 18px 20px 16px 20px;
+  text-decoration: none;
+  color: #222;
+  transition: box-shadow 0.2s ease, border-top-color 0.2s ease;
+}
+
+.quicknav-card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  border-top-color: #00b8e6;
+  color: #222;
+  text-decoration: none;
+}
+
+.quicknav-card.highlighted {
+  border-top-color: #e65100;
+  background: #fff8f5;
+}
+
+.quicknav-card.highlighted:hover {
+  box-shadow: 0 4px 18px rgba(230, 81, 0, 0.18);
+}
+
+.quicknav-card i {
+  font-size: 1.7em;
+  color: #3d5a72;
+  margin-bottom: 10px;
+}
+
+.quicknav-card.highlighted i {
+  color: #e65100;
+}
+
+.quicknav-card h3 {
+  font-size: 1em;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  padding: 0;
+  border: none;
+}
+
+.quicknav-card p {
+  font-size: 0.85em;
+  color: #555;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.quicknav-card .badge-new {
+  display: inline-block;
+  background: #e65100;
+  color: #fff;
+  font-size: 0.7em;
+  font-weight: bold;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 footer {
-  line-height:1;
-  font-family:Arial, Helvetica, sans-serif;
-  font-weight:400;
-  transition-duration:1s;
+  line-height: 1;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  transition-duration: 1s;
   font-size: 16px;
-  background-color:#3d5a72;
-  color:#ffffff;
+  background-color: #3d5a72;
+  color: #ffffff;
   height: 80px;
   padding: 10px;
 
@@ -294,9 +375,9 @@ footer {
 }
 
 a.laas_logo {
-  color:#ffffff;
+  color: #ffffff;
   margin: auto auto auto auto;
-  position:relative;
+  position: relative;
 }
 
 @media (min-width: 768px) {
@@ -314,7 +395,7 @@ a.laas_logo {
     border-radius: 0;
   }
 
-  .navbar-nav > li > a {
+  .navbar-nav>li>a {
     padding-top: 15px;
     padding-bottom: 15px;
   }

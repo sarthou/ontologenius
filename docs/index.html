@@ -83,6 +83,16 @@
                 </li>
 
                 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown">
+                  <a title="Overview" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">Overview <span class="caret"></span></a>
+                  <ul role="menu" class=" dropdown-menu">
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Launchers" href="overview/launchers.html">Launchers</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="OntoloGUI" href="overview/ontoloGUI.html">OntoloGUI</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Reasoners configuration" href="overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Reasoning capabilities" href="overview/reasoningCapabilities.html">Reasoning capabilities</a></li>
+                  </ul>
+                </li>
+
+                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown">
                   <a title="API" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">API <span class="caret"></span></a>
                   <ul role="menu" class=" dropdown-menu">
                     <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Cpp API" href="cpp_API/CppAPI.html">Cpp API</a></li>
@@ -140,6 +150,40 @@
     </div> <!-- row -->
   </div>
 
+  <!-- Quick-navigation card strip -->
+  <div class="quicknav">
+    <a class="quicknav-card" href="overview/reasoningCapabilities.html">
+      <i class="fas fa-brain"></i>
+      <h3>Reasoning capabilities</h3>
+      <p>Discover all built-in OWL and SWRL reasoners: what they infer, their parameters, and their limitations.</p>
+    </a>
+    <a class="quicknav-card" href="overview/reasonersConfiguration.html">
+      <i class="fas fa-sliders-h"></i>
+      <h3>Reasoners configuration</h3>
+      <p>Select and configure which reasoners are active via a simple YAML file.</p>
+    </a>
+    <a class="quicknav-card" href="cpp_Tutorials/Tutorials.html">
+      <i class="fas fa-code"></i>
+      <h3>C++ Tutorials</h3>
+      <p>Step-by-step guides to integrate Ontologenius in your C++ robotic application.</p>
+    </a>
+    <a class="quicknav-card" href="python_Tutorials/Tutorials.html">
+      <i class="fab fa-python"></i>
+      <h3>Python Tutorials</h3>
+      <p>Step-by-step guides to integrate Ontologenius in your Python robotic application.</p>
+    </a>
+    <a class="quicknav-card" href="cpp_API/CppAPI.html">
+      <i class="fas fa-book"></i>
+      <h3>C++ API</h3>
+      <p>Full reference for all C++ client classes and methods.</p>
+    </a>
+    <a class="quicknav-card" href="python_API/PythonAPI.html">
+      <i class="fas fa-book-open"></i>
+      <h3>Python API</h3>
+      <p>Full reference for all Python client classes and methods.</p>
+    </a>
+  </div>
+
   <div class="onto-content">
     <div class="container">
       <div class="row">
@@ -156,6 +200,12 @@
 
               <p>Two API (C++ and Python) are available to integrate Ontologenius in a simple way.
                 Do not hesitate to check our tutorials for few examples on both API.
+              </p>
+
+              <p>Ontologenius ships with a rich set of built-in reasoners covering OWL property axioms
+                (transitivity, symmetry, inverse, chains), range/domain inference, OWL class expressions,
+                and SWRL rules. All inferred facts come with a full explanation trace.
+                &rarr; <a href="overview/reasoningCapabilities.html"><b>Explore the reasoning capabilities</b></a>
               </p>
 
               <img src="images/ros1-and-ros2.jpg" height="90">
