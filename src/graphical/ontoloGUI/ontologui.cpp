@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "ontologenius/OntologyManipulator.h"
+#include "ontologenius/graphical/ontoloGUI/QCheckBoxExtended.h"
 #include "ontologenius/graphical/ontoloGUI/QLineEditExtended.h"
 #include "ontologenius/graphical/ontoloGUI/qpushbuttonextended.h"
 #include "ui_ontologui.h"
@@ -275,7 +276,7 @@ void OntoloGUI::init()
   if(ontos_.waitInit(1) == false)
   {
     onto_ = new onto::OntologyManipulator();
-    onto_->feeder.registerFeederNotificationCallback([this](auto msg) { this->feederCallback(msg); });
+    onto_->feeder.registerFeederNotificationCallback([this](const auto& msg) { this->feederCallback(msg); });
     multi_usage_ = false;
   }
   else
@@ -762,7 +763,7 @@ void OntoloGUI::addOntologySlot()
     else
     {
       ui_->ResultArea->setText(QString::fromStdString(""));
-      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](auto msg) { this->feederCallback(msg); });
+      ontos_.get(onto_name)->feeder.registerFeederNotificationCallback([this](const auto& msg) { this->feederCallback(msg); });
     }
 
     displayOntologiesList();
@@ -818,9 +819,9 @@ void OntoloGUI::differenceOntologySlot()
 {
   const std::string param1 = ui_->OntologyDiffName1->text().toStdString();
   const std::string param2 = ui_->OntologyDiffName2->text().toStdString();
-  const std::string concept = ui_->OntologyDiffConcept->text().toStdString();
+  const std::string concept_name = ui_->OntologyDiffConcept->text().toStdString();
 
-  auto diff = ontos_.getDifference(param1, param2, concept);
+  auto diff = ontos_.getDifference(param1, param2, concept_name);
   const int err = ontos_.getErrorCode();
 
   if(err == -1)
@@ -847,7 +848,7 @@ void OntoloGUI::ontologyNameAddDelChangedSlot(const QString& text)
   {
     const size_t equal_pose = text.toStdString().find('=');
     if(equal_pose != std::string::npos)
-      ui_->OntologyName->setText(text.mid(0, (int)equal_pose));
+      ui_->OntologyName->setText(text.mid(0, static_cast<int>(equal_pose)));
     else
       ui_->OntologyName->setText(text);
   }
@@ -925,7 +926,7 @@ void OntoloGUI::feederGetNbUncommitSlot()
     ui_->ResultArea->setText(QString::fromStdString(std::to_string(nb)));
   }
   else
-    displayErrorInfo("This instance has no versionning activated."); 
+    displayErrorInfo("This instance has no versionning activated.");
 }
 
 bool OntoloGUI::updateOntoPtr()

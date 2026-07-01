@@ -72,4 +72,20 @@ namespace ontologenius {
     }
   }
 
+  void GraphOwlWriter::writeCommentDictionary(ValuedNode* node) const
+  {
+    for(const auto& it : node->comments_)
+    {
+      for(const auto& label : it.second)
+      {
+        const std::string tmp = "<rdfs:comment xml:lang=\"" +
+                                it.first +
+                                "\">" +
+                                label +
+                                +"</rdfs:comment>\n";
+        writeString(tmp, 2);
+      }
+    }
+  }
+
 } // namespace ontologenius

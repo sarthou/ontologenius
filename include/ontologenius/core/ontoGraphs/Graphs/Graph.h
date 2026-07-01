@@ -106,6 +106,8 @@ namespace ontologenius {
     template<typename T>
     std::unordered_set<T> findRegex(const std::string& regex, bool use_default = true);
     std::unordered_set<std::string> findFuzzy(const std::string& value, bool use_default = true, double threshold = 0.5);
+    template<typename T>
+    std::vector<std::string> getComments(const T& value);
 
     BranchContainerSet<B> container_;
     std::vector<B*> all_branchs_;
@@ -122,7 +124,7 @@ namespace ontologenius {
       {
         for(size_t i = 0; i < dictionary[lang].size();)
           if(dictionary[lang][i] == word)
-            dictionary[lang].erase(dictionary[lang].begin() + (int)i);
+            dictionary[lang].erase(dictionary[lang].begin() + static_cast<int>(i));
           else
             i++;
       }
@@ -406,7 +408,7 @@ namespace ontologenius {
   std::string Graph<B>::getIdentifier(index_t index)
   {
     std::shared_lock<std::shared_timed_mutex> lock(mutex_);
-    if((index > 0) && (index < (index_t)ValuedNode::table.size()))
+    if((index > 0) && (index < static_cast<index_t>(ValuedNode::table.size())))
       return ValuedNode::table[index];
     else
       return "";
@@ -492,7 +494,7 @@ namespace ontologenius {
           std::mt19937 gen(rd());
 
           size_t dic_size = branch->dictionary_.spoken_[language_].size();
-          std::uniform_int_distribution<> dis(0, (int)dic_size - 1);
+          std::uniform_int_distribution<> dis(0, static_cast<int>(dic_size) - 1);
 
           while(tested.size() < dic_size)
           {
@@ -689,7 +691,9 @@ namespace ontologenius {
         continue;
 
       if(use_default)
-        if((tmp_cost = dist.get(branch->value(), value)) <= lower_cost)
+      {
+        tmp_cost = dist.get(branch->value(), value);
+        if(tmp_cost <= lower_cost)
         {
           if(tmp_cost != lower_cost)
           {
@@ -698,10 +702,13 @@ namespace ontologenius {
           }
           res.insert(branch->value());
         }
+      }
 
       if(branch->dictionary_.spoken_.find(language_) != branch->dictionary_.spoken_.end())
         for(auto& word : branch->dictionary_.spoken_[language_])
-          if((tmp_cost = dist.get(word, value)) <= lower_cost)
+        {
+          tmp_cost = dist.get(word, value);
+          if(tmp_cost <= lower_cost)
           {
             if(tmp_cost != lower_cost)
             {
@@ -710,10 +717,13 @@ namespace ontologenius {
             }
             res.insert(word);
           }
+        }
 
       if(branch->dictionary_.muted_.find(language_) != branch->dictionary_.muted_.end())
         for(auto& word : branch->dictionary_.muted_[language_])
-          if((tmp_cost = dist.get(word, value)) <= lower_cost)
+        {
+          tmp_cost = dist.get(word, value);
+          if(tmp_cost <= lower_cost)
           {
             if(tmp_cost != lower_cost)
             {
@@ -722,6 +732,7 @@ namespace ontologenius {
             }
             res.insert(word);
           }
+        }
     }
 
     if(lower_cost > threshold)
@@ -730,6 +741,22 @@ namespace ontologenius {
     return res;
   }
 
+  template<typename B>
+  template<typename T>
+  std::vector<std::string> Graph<B>::getComments(const T& value)
+  {
+    std::shared_lock<std::shared_timed_mutex> lock(mutex_);
+    B* branch = findBranch(value);
+
+    std::vector<std::string> res;
+    if(branch != nullptr)
+    {
+      if(branch->comments_.find(language_) != branch->comments_.end())
+        res = branch->comments_[language_];
+    }
+
+    return res;
+  }
 } // namespace ontologenius
 
 #endif // ONTOLOGENIUS_GRAPH_H

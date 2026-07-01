@@ -30,6 +30,7 @@ namespace ontologenius {
     // TODO : add vector distinct
     std::map<std::string, std::vector<std::string>> dictionary_;
     std::map<std::string, std::vector<std::string>> muted_dictionary_;
+    std::map<std::string, std::vector<std::string>> comments_;
   };
 
   class OntologyGraphs;
@@ -104,11 +105,15 @@ namespace ontologenius {
     IndividualBranch* findOrCreateBranch(const std::string& name);
     void deleteIndividual(IndividualBranch* indiv);
     void redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* class_branch);
-    bool addInheritage(const std::string& indiv, const std::string& class_inherited);
-    bool addInheritage(IndividualBranch* branch, const std::string& class_inherited);
-    bool addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
-    bool addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
-    bool addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
+    std::vector<std::pair<std::string, std::string>> addInheritage(const std::string& indiv, const std::string& class_inherited);
+    bool addInheritage(IndividualBranch* branch, const std::string& class_inherited, std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
+    ClassBranch* addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
+    std::vector<std::pair<std::string, std::string>> addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
+    std::vector<std::pair<std::string, std::string>> addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
+    size_t addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability = 1.0, bool inferred = false,
+                             std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
+    void applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability = 1.0, bool inferred = true,
+                          std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
     int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existence = true);
     int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false, bool check_existence = true);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& indiv_on);
@@ -142,11 +147,22 @@ namespace ontologenius {
     std::vector<IndividualBranch*> ordered_individuals_; // contains the individuals ordered wrt their index
                                                          // unused indexes have nullptr in
 
+    /// @brief  Collectes all the class branches that will be infered because of class expressions,
+    ///         both from equivalence and subClassOf.
+    /// @param class_branch the branch ro be tested
+    /// @param result set of class branch that have to be inferred because of equivalence or subClassOf class_branch
+    void getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result);
+    void checkWouldBeProvedRelations(IndividualBranch* individual, ClassBranch* class_branch);
+    // Apply proved facts from one anonymous branch (equiv or sub); called twice in applyProvedFacts.
+    void applyProvedFactsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch, size_t class_idx,
+                                    float probability, bool inferred, std::vector<std::pair<std::string, std::string>>* explanations);
+    void checkWouldBeProvedRelationsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch);
+
     IndividualBranch* getIndividualByIndex(index_t index)
     {
       if(index <= 0)
         return nullptr;
-      else if(index <= (index_t)ordered_individuals_.size())
+      else if(index <= static_cast<index_t>(ordered_individuals_.size()))
         return ordered_individuals_[index];
       else
         return nullptr;
@@ -208,6 +224,11 @@ namespace ontologenius {
 
     bool checkRangeAndDomain(IndividualBranch* from, ObjectPropertyBranch* prop, IndividualBranch* on);
     bool checkRangeAndDomain(IndividualBranch* from, DataPropertyBranch* prop, LiteralNode* data);
+
+    // Validate all OWL constraints for a (subject, property, object) triple that does not yet exist.
+    // Throws GraphException on any violation. Pass a non-empty context to annotate the message.
+    void checkObjectRelationConstraints(IndividualBranch* from, ObjectPropertyBranch* property, IndividualBranch* on, const std::string& context = "");
+    void checkDataRelationConstraints(IndividualBranch* from, DataPropertyBranch* property, LiteralNode* data, const std::string& context = "");
 
     void cpyBranch(IndividualBranch* old_branch, IndividualBranch* new_branch);
     void insertBranchInVectors(IndividualBranch* branch);

@@ -39,7 +39,7 @@ namespace ontologenius {
     removeDocType(content);
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)content.c_str());
+    doc.Parse(static_cast<const char*>(content.c_str()));
     tinyxml2::XMLElement* rdf = doc.FirstChildElement();
     if(individual == false)
       return read(rdf, uri);
@@ -66,7 +66,7 @@ namespace ontologenius {
     removeDocType(response);
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)response.c_str());
+    doc.Parse(static_cast<const char*>(response.c_str()));
     tinyxml2::XMLElement* rdf = doc.FirstChildElement();
     if(individual == false)
       return read(rdf, file_name);
@@ -80,7 +80,7 @@ namespace ontologenius {
     removeDocType(content);
 
     tinyxml2::XMLDocument doc;
-    doc.Parse((const char*)content.c_str());
+    doc.Parse(static_cast<const char*>(content.c_str()));
     tinyxml2::XMLElement* rdf = doc.FirstChildElement();
 
     if(rdf == nullptr)
@@ -202,13 +202,12 @@ namespace ontologenius {
 
   void OntologyOwlReader::readClass(tinyxml2::XMLElement* elem)
   {
-    std::string node_name;
     ClassDescriptor_t class_descriptor;
     EquivalentClassDescriptor_t anonymous_descriptor;
-    const char* attr = elem->Attribute("rdf:about");
-    if(attr != nullptr)
+    EquivalentClassDescriptor_t sub_anonymous_descriptor;
+    std::string node_name = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
+    if(node_name.empty() == false)
     {
-      node_name = getName(std::string(attr));
       if(display_)
         std::cout << "│   ├──" << node_name << std::endl;
       for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -218,13 +217,21 @@ namespace ontologenius {
         const float probability = getProbability(sub_elem);
 
         if(sub_elem_name == "rdfs:subClassOf")
-          push(class_descriptor.mothers_, sub_elem, probability, "+");
+        {
+          // Distinguish complex (anonymous) from simple (named) subClassOf
+          if(sub_elem->FirstChildElement() != nullptr && !testAttribute(sub_elem, "rdf:resource"))
+            sub_anonymous_descriptor.expression_members.emplace_back(readEquivalentClass(sub_elem));
+          else
+            push(class_descriptor.mothers_, sub_elem, probability, "+");
+        }
         else if(sub_elem_name == "owl:disjointWith")
           push(class_descriptor.disjoints_, sub_elem, probability, "-");
         else if(sub_elem_name == "rdfs:label")
           pushLang(class_descriptor.dictionary_, sub_elem);
         else if(sub_elem_name == "onto:label")
           pushLang(class_descriptor.muted_dictionary_, sub_elem);
+        else if(sub_elem_name == "rdfs:comment")
+          pushComment(class_descriptor.comments_, sub_elem);
         else if(sub_elem_name == "owl:equivalentClass")
           anonymous_descriptor.expression_members.emplace_back(readEquivalentClass(sub_elem));
         else
@@ -251,7 +258,15 @@ namespace ontologenius {
       anonymous_descriptor.class_name = node_name;
       graphs_->anonymous_classes_.add(anonymous_descriptor);
       for(auto* expression_elem : anonymous_descriptor.expression_members)
-        push(class_descriptor.equivalences_, expression_elem->toString(), "=");
+        display(expression_elem->toString(), "=");
+    }
+
+    if(sub_anonymous_descriptor.expression_members.empty() == false)
+    {
+      sub_anonymous_descriptor.class_name = node_name;
+      graphs_->anonymous_classes_.addSubClass(sub_anonymous_descriptor);
+      for(auto* expression_elem : sub_anonymous_descriptor.expression_members)
+        display(expression_elem->toString(), "+");
     }
 
     graphs_->classes_.add(node_name, class_descriptor);
@@ -260,12 +275,10 @@ namespace ontologenius {
 
   void OntologyOwlReader::readIndividual(tinyxml2::XMLElement* elem)
   {
-    std::string node_name;
     IndividualDescriptor_t individual_descriptor;
-    const char* attr = elem->Attribute("rdf:about");
-    if(attr != nullptr)
+    std::string node_name = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
+    if(node_name.empty() == false)
     {
-      node_name = getName(std::string(attr));
       if(display_)
         std::cout << "│   ├──" << node_name << std::endl;
       for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -281,6 +294,8 @@ namespace ontologenius {
           pushLang(individual_descriptor.dictionary_, sub_elem);
         else if(sub_elem_name == "onto:label")
           pushLang(individual_descriptor.muted_dictionary_, sub_elem);
+        else if(sub_elem_name == "rdfs:comment")
+          pushComment(individual_descriptor.comments_, sub_elem);
         else
         {
           const std::string ns = sub_elem_name.substr(0, sub_elem_name.find(':'));
@@ -383,13 +398,11 @@ namespace ontologenius {
 
   void OntologyOwlReader::readObjectProperty(tinyxml2::XMLElement* elem)
   {
-    std::string node_name;
     ObjectPropertyDescriptor_t property_vector;
     property_vector.annotation_usage_ = false;
-    const char* attr = elem->Attribute("rdf:about");
-    if(attr != nullptr)
+    std::string node_name = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
+    if(node_name.empty() == false)
     {
-      node_name = getName(std::string(attr));
       if(display_)
         std::cout << "│   ├──" << node_name << std::endl;
       for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -413,6 +426,8 @@ namespace ontologenius {
           pushLang(property_vector.dictionary_, sub_elem);
         else if(sub_elem_name == "onto:label")
           pushLang(property_vector.muted_dictionary_, sub_elem);
+        else if(sub_elem_name == "rdfs:comment")
+          pushComment(property_vector.comments_, sub_elem);
         else if(sub_elem_name == "owl:propertyChainAxiom")
         {
           std::vector<std::string> tmp;
@@ -428,13 +443,11 @@ namespace ontologenius {
 
   void OntologyOwlReader::readDataProperty(tinyxml2::XMLElement* elem)
   {
-    std::string node_name;
     DataPropertyDescriptor_t property_vector;
     property_vector.annotation_usage_ = false;
-    const char* attr = elem->Attribute("rdf:about");
-    if(attr != nullptr)
+    std::string node_name = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
+    if(node_name.empty() == false)
     {
-      node_name = getName(std::string(attr));
       if(display_)
         std::cout << "│   ├──" << node_name << std::endl;
       for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -454,6 +467,8 @@ namespace ontologenius {
           pushLang(property_vector.dictionary_, sub_elem);
         else if(sub_elem_name == "onto:label")
           pushLang(property_vector.muted_dictionary_, sub_elem);
+        else if(sub_elem_name == "rdfs:comment")
+          pushComment(property_vector.comments_, sub_elem);
       }
     }
 
@@ -463,14 +478,12 @@ namespace ontologenius {
 
   void OntologyOwlReader::readAnnotationProperty(tinyxml2::XMLElement* elem)
   {
-    std::string node_name;
     DataPropertyDescriptor_t property_vector; // we use a DataPropertyDescriptor_t that is sufficient to represent an annotation property
     property_vector.annotation_usage_ = true;
     std::vector<SingleElement<std::string>> ranges;
-    const char* attr = elem->Attribute("rdf:about");
-    if(attr != nullptr)
+    std::string node_name = getAttribute(elem, std::vector<std::string>{"rdf:about", "rdf:ID"});
+    if(node_name.empty() == false)
     {
-      node_name = getName(std::string(attr));
       if(display_)
         std::cout << "│   ├──" << node_name << std::endl;
       for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
@@ -523,6 +536,8 @@ namespace ontologenius {
       if(sub_elem_name == "rdf:Description")
       {
         const char* sub_attr = sub_elem->Attribute("rdf:about");
+        if(sub_attr == nullptr)
+          sub_attr = elem->Attribute("rdf:ID");
         if(sub_attr != nullptr)
         {
           if(display_)
@@ -597,7 +612,24 @@ namespace ontologenius {
         dictionary[lang].emplace_back(value);
 
         if((lang.empty() == false) && (std::string(value).empty() == false) && display_)
-          std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
+          std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang].back() << std::endl;
+      }
+    }
+  }
+
+  void OntologyOwlReader::pushComment(std::map<std::string, std::vector<std::string>>& dictionary, tinyxml2::XMLElement* sub_elem)
+  {
+    const char* sub_attr = sub_elem->Attribute("xml:lang");
+    if(sub_attr != nullptr)
+    {
+      const std::string lang = std::string(sub_attr);
+
+      const char* value = sub_elem->GetText();
+      if(value != nullptr)
+      {
+        dictionary[lang].emplace_back(value);
+        if((lang.empty() == false) && (std::string(value).empty() == false) && display_)
+          std::cout << "│   │   ├── " << "#" << lang << " : " << dictionary[lang].back() << std::endl;
       }
     }
   }

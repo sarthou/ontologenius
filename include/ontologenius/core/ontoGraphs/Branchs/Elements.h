@@ -50,18 +50,17 @@ namespace ontologenius {
   public:
     T elem;
 
-    explicit SingleElement(const T& elem,
+    explicit SingleElement(const T& element,
                            float probability = 1.0,
-                           bool inferred = false)
+                           bool inferred = false) : elem(element)
     {
-      this->elem = elem;
       this->probability = probability;
       this->inferred = inferred;
     }
 
-    SingleElement(const SingleElement& other, const T& elem)
+    SingleElement(const SingleElement& other,
+                  const T& element) : elem(element)
     {
-      this->elem = elem;
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
@@ -69,11 +68,10 @@ namespace ontologenius {
       this->explanation = other.explanation;
     }
 
-    SingleElement(const SingleElement& other)
+    SingleElement(const SingleElement& other) : elem(other.elem)
     {
       // A copy constructor with a pointer is dangerous, never delete it
       // it should be managed by a Graph class
-      this->elem = other.elem;
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
@@ -110,18 +108,21 @@ namespace ontologenius {
     T first;
     U second;
 
-    PairElement(const T& first, const U& second, float probability = 1.0, bool inferred = false)
+    PairElement(const T& first_elem,
+                const U& second_elem,
+                float probability = 1.0,
+                bool inferred = false) : first(first_elem),
+                                         second(second_elem)
     {
-      this->first = first;
-      this->second = second;
       this->probability = probability;
       this->inferred = inferred;
     }
 
-    PairElement(const PairElement& other, const T& first, const U& second)
+    PairElement(const PairElement& other,
+                const T& first_elem,
+                const U& second_elem) : first(first_elem),
+                                        second(second_elem)
     {
-      this->first = first;
-      this->second = second;
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;
@@ -129,12 +130,11 @@ namespace ontologenius {
       this->explanation = other.explanation;
     }
 
-    PairElement(const PairElement& other)
+    PairElement(const PairElement& other) : first(other.first),
+                                            second(other.second)
     {
       // A copy constructor with a pointer is dangerous, never delete it
       // it should be managed by a Graph class
-      this->first = other.first;
-      this->second = other.second;
       this->probability = other.probability;
       this->inferred = other.inferred;
       this->induced_traces = other.induced_traces;

@@ -477,7 +477,7 @@ namespace ontologenius {
     dictionary[lang].emplace_back(label.first);
 
     if(display_ && (label.first.empty() == false))
-      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang][dictionary[lang].size() - 1] << std::endl;
+      std::cout << "│   │   ├── " << "@" << lang << " : " << dictionary[lang].back() << std::endl;
   }
 
 } // namespace ontologenius

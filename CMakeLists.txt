@@ -8,6 +8,9 @@ if(WITH_CLANG_TIDY)
   include(cmake/ClangTidy.cmake)
 endif()
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(cmake/Sanitizers.cmake)
 
 function(add_onto_library TARGET)
@@ -22,7 +25,7 @@ function(add_onto_library TARGET)
   add_library(${TARGET} ${ARGN})
   target_include_directories(${TARGET} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
-  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
   target_compile_options(${TARGET} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-frelaxed-template-template-args>)
   target_enable_sanitizers(${TARGET})
@@ -57,7 +60,7 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
   find_package(rosidl_default_generators REQUIRED)
   find_package(rclcpp REQUIRED)
   find_package(ament_cmake_python REQUIRED)
-  find_package(launch_testing_ament_cmake REQUIRED) 
+  find_package(launch_testing_ament_cmake REQUIRED)
   find_package(std_msgs REQUIRED)
 
   # install(PROGRAMS
@@ -203,6 +206,7 @@ target_link_libraries(ontologenius_OntologyIO_lib
   ontologenius_Graphs_lib
   PRIVATE
   ${TINYXML2_LIBRARIES}
+  PkgConfig::CURL
 )
 
 add_onto_library(ontologenius_ontoGraphs_lib
@@ -213,8 +217,6 @@ target_link_libraries(ontologenius_ontoGraphs_lib
   ontologenius_Graphs_lib
   ontologenius_Checkers_lib
   ontologenius_OntologyIO_lib
-  PRIVATE
-  PkgConfig::CURL
 )
 
 add_onto_library(ontologenius_feeder_lib
@@ -236,11 +238,13 @@ add_onto_library(ontologenius_drawer_lib
 target_include_directories(ontologenius_drawer_lib
   PUBLIC
   ${OpenCV_INCLUDE_DIRS}
+  ${TINYXML2_INCLUDE_DIRS}
 )
 target_link_libraries(ontologenius_drawer_lib
   PUBLIC
   ontologenius_ontoGraphs_lib
   ${OpenCV_LIBS}
+  ${TINYXML2_LIBRARIES}
 )
 
 # # OPERATORS
@@ -284,7 +288,7 @@ function(add_ros_library TARGET)
     ament_export_libraries(${TARGET})
   endif()
 
-  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PRIVATE $<$<CXX_COMPILER_ID:Clang>:-frelaxed-template-template-args>)
   target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
@@ -420,7 +424,7 @@ function(add_ros_executable TARGET)
     target_link_libraries(${TARGET} PUBLIC ${cpp_typesupport_target})
   endif()
 
-  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
   target_compile_options(${TARGET} PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra)
   target_enable_sanitizers(${TARGET})
@@ -506,7 +510,7 @@ set(QT_SOURCES
 # Binaries
 # #############################################################################
 add_executable(ontoloGUI ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
-set_target_properties(ontoloGUI PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+set_target_properties(ontoloGUI PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 target_compile_options(ontoloGUI PUBLIC -DONTO_ROS_VERSION=$ENV{ROS_VERSION})
 target_link_libraries(ontoloGUI
   Qt5::Core
@@ -630,6 +634,7 @@ elseif($ENV{ROS_VERSION} STREQUAL "2")
     DESTINATION lib/${PROJECT_NAME})
 
   install(DIRECTORY launch/ros2/launch DESTINATION share/${PROJECT_NAME}/)
+  install(DIRECTORY launch/tests/launch DESTINATION share/${PROJECT_NAME}/)
   install(DIRECTORY include/ DESTINATION include)
 
   install(DIRECTORY files DESTINATION share/${PROJECT_NAME}/)
@@ -656,62 +661,37 @@ if($ENV{ROS_VERSION} STREQUAL "2")
       install(TARGETS ${target} DESTINATION lib/${PROJECT_NAME})
     endfunction()
 
-    add_gtest_executable(onto_api_connection_test src/tests/CI/api_connection_test.cpp)
-    target_link_libraries(onto_api_connection_test ontologenius_lib)
-    add_launch_test(test/api_connection_test.py)
+    function(add_onto_launch_test feature test_name)
+      set(target "onto_${feature}_${test_name}_test")
+      set(src "src/tests/CI/${feature}/${feature}_${test_name}_test.cpp")
+      set(test_path "test/${feature}/${feature}_${test_name}_test.py")
 
-    add_gtest_executable(onto_api_inheritage_test src/tests/CI/api_inheritage_test.cpp)
-    target_link_libraries(onto_api_inheritage_test ontologenius_lib)
-    add_launch_test(test/api_inheritage_test.py)
+      add_gtest_executable(${target} ${src})
+      target_link_libraries(${target} ontologenius_lib)
+      add_launch_test(${test_path})
+    endfunction()
 
-    add_gtest_executable(onto_api_relations_index_test src/tests/CI/api_relations_index_test.cpp)
-    target_link_libraries(onto_api_relations_index_test ontologenius_lib)
-    add_launch_test(test/api_relations_index_test.py)
+    add_onto_launch_test(api connection)
+    add_onto_launch_test(api inheritage)
+    add_onto_launch_test(api relations_index)
+    add_onto_launch_test(api relations)
 
-    add_gtest_executable(onto_api_relations_test src/tests/CI/api_relations_test.cpp)
-    target_link_libraries(onto_api_relations_test ontologenius_lib)
-    add_launch_test(test/api_relations_test.py)
+    add_onto_launch_test(feature branching)
+    add_onto_launch_test(feature loading)
+    add_onto_launch_test(feature multi)
+    add_onto_launch_test(feature subscription)
 
-    add_gtest_executable(onto_feature_branching_test src/tests/CI/feature_branching_test.cpp)
-    target_link_libraries(onto_feature_branching_test ontologenius_lib)
-    add_launch_test(test/feature_branching_test.py)
+    add_onto_launch_test(reasoning anonymous_class)
+    add_onto_launch_test(reasoning chain)
+    add_onto_launch_test(reasoning mechanism)
+    add_onto_launch_test(reasoning rule)
+    add_onto_launch_test(reasoning subclass_expression)
+    add_onto_launch_test(reasoning transitivity)
 
-    ament_add_gtest(feature_deep_copy_test src/tests/CI/feature_deep_copy_test.cpp TIMEOUT 10)
+    # Special case: no launch test, links against a different library
+    ament_add_gtest(feature_deep_copy_test src/tests/CI/feature/feature_deep_copy_test.cpp)
     target_include_directories(feature_deep_copy_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-    target_link_libraries(feature_deep_copy_test gtest gtest_main pthread)
-    target_link_libraries(feature_deep_copy_test ontologenius_ontoGraphs_lib)
-
-    add_gtest_executable(onto_feature_loading_test src/tests/CI/feature_loading_test.cpp)
-    target_link_libraries(onto_feature_loading_test ontologenius_lib)
-    add_launch_test(test/feature_loading_test.py)
-
-    add_gtest_executable(onto_feature_multi_test src/tests/CI/feature_multi_test.cpp)
-    target_link_libraries(onto_feature_multi_test ontologenius_lib)
-    add_launch_test(test/feature_multi_test.py)
-
-    add_gtest_executable(onto_feature_subscription_test src/tests/CI/feature_subscription_test.cpp)
-    target_link_libraries(onto_feature_subscription_test ontologenius_lib)
-    add_launch_test(test/feature_subscription_test.py)
-
-    add_gtest_executable(onto_reasoning_anonymous_class_test src/tests/CI/reasoning_anonymous_class_test.cpp)
-    target_link_libraries(onto_reasoning_anonymous_class_test ontologenius_lib)
-    add_launch_test(test/reasoning_anonymous_class_test.py)
-
-    add_gtest_executable(onto_reasoning_chain_test src/tests/CI/reasoning_chain_test.cpp)
-    target_link_libraries(onto_reasoning_chain_test ontologenius_lib)
-    add_launch_test(test/reasoning_chain_test.py)
-
-    add_gtest_executable(onto_reasoning_mechanism_test src/tests/CI/reasoning_mechanism_test.cpp)
-    target_link_libraries(onto_reasoning_mechanism_test ontologenius_lib)
-    add_launch_test(test/reasoning_mechanism_test.py)
-
-    add_gtest_executable(onto_reasoning_rule_test src/tests/CI/reasoning_rule_test.cpp)
-    target_link_libraries(onto_reasoning_rule_test ontologenius_lib)
-    add_launch_test(test/reasoning_rule_test.py)
-
-    add_gtest_executable(onto_reasoning_transitivity_test src/tests/CI/reasoning_transitivity_test.cpp)
-    target_link_libraries(onto_reasoning_transitivity_test ontologenius_lib)
-    add_launch_test(test/reasoning_transitivity_test.py)
+    target_link_libraries(feature_deep_copy_test gtest gtest_main pthread ontologenius_ontoGraphs_lib)
   endif()
 endif()
 

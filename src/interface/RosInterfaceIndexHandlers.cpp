@@ -5,9 +5,11 @@
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/interface/InterfaceParams.h"
 #include "ontologenius/interface/RosInterface.h"
+#include "ontologenius/utils/String.h"
 
 namespace ontologenius {
 
@@ -30,77 +32,115 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<index_t> set_res_index;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getDown")
-          set_res_index = onto_->classes_.getDown(params.main_index, (int)params.depth);
-        else if(req->action == "getUp")
-          set_res_index = onto_->classes_.getUp(params.main_index, (int)params.depth);
-        else if(req->action == "getDisjoint")
+        switch(action_hash)
+        {
+        case "getDown"_act:
+          set_res_index = onto_->classes_.getDown(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getUp"_act:
+          set_res_index = onto_->classes_.getUp(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getDisjoint"_act:
           set_res_index = onto_->classes_.getDisjoint(params.main_index);
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->classes_.getName(params.main_index, params.take_id);
           if(tmp.empty() == false)
             res->string_values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->string_values = onto_->classes_.getNames(params.main_index, params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->string_values = onto_->classes_.getEveryNames(params.main_index, params.take_id);
-        else if(req->action == "getRelationFrom")
-          set_res_index = onto_->classes_.getRelationFrom(params.main_index, (int)params.depth);
-        else if(req->action == "getRelatedFrom")
+          break;
+        case "getRelationFrom"_act:
+          set_res_index = onto_->classes_.getRelationFrom(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getRelatedFrom"_act:
           set_res_index = onto_->classes_.getRelatedFrom(params.main_index);
-        else if(req->action == "getRelationOn")
-          set_res_index = onto_->classes_.getRelationOn(params.main_index, (int)params.depth);
-        else if(req->action == "getRelatedOn")
+          break;
+        case "getRelationOn"_act:
+          set_res_index = onto_->classes_.getRelationOn(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getRelatedOn"_act:
           set_res_index = onto_->classes_.getRelatedOn(params.main_index);
-        else if(req->action == "getRelationWith")
+          break;
+        case "getRelationWith"_act:
           set_res_index = onto_->classes_.getRelationWith(params.main_index);
-        else if(req->action == "getRelatedWith")
+          break;
+        case "getRelatedWith"_act:
           set_res_index = onto_->classes_.getRelatedWith(params.main_index);
-        else if(req->action == "getOn")
+          break;
+        case "getOn"_act:
           set_res_index = onto_->classes_.getOn(params.main_index, params.optional_index);
-        else if(req->action == "getFrom")
+          break;
+        case "getFrom"_act:
           set_res_index = onto_->classes_.getFrom(params.main_index, params.optional_index);
-        else if(req->action == "getWith")
-          set_res_index = onto_->classes_.getWith(params.main_index, params.optional_index, (int)params.depth);
-        else if(req->action == "getDomainOf")
-          set_res_index = onto_->classes_.getDomainOf(params.main_index, (int)params.depth);
-        else if(req->action == "getRangeOf")
-          set_res_index = onto_->classes_.getRangeOf(params.main_index, (int)params.depth);
-        else if(req->action == "find")
+          break;
+        case "getWith"_act:
+          set_res_index = onto_->classes_.getWith(params.main_index, params.optional_index, static_cast<int>(params.depth));
+          break;
+        case "getDomainOf"_act:
+          set_res_index = onto_->classes_.getDomainOf(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getRangeOf"_act:
+          set_res_index = onto_->classes_.getRangeOf(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "find"_act:
           set2vector(onto_->classes_.find<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set2vector(onto_->classes_.findSub<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set2vector(onto_->classes_.findRegex<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->classes_.findFuzzy(params(), params.take_id, params.threshold), res->string_values);
           else
             set2vector(onto_->classes_.findFuzzy(params(), params.take_id), res->string_values);
-        }
-        else if(req->action == "exist")
-        {
+          break;
+        case "getComments"_act:
+          res->string_values = onto_->classes_.getComments(params.main_index);
+          break;
+        case "exist"_act:
           if(onto_->classes_.touch(params.main_index))
             res->index_values.push_back(params.main_index);
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->index_values = onto_->classes_.getAllIndex();
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector_index != 0)
         {
-          if((req->action == "getUp") || (req->action == "getDown") ||
-             (req->action == "getDisjoint") || (req->action == "getOn") ||
-             (req->action == "getFrom"))
+          switch(action_hash)
+          {
+          case "getUp"_act: [[fallthrough]];
+          case "getDown"_act: [[fallthrough]];
+          case "getDisjoint"_act: [[fallthrough]];
+          case "getOn"_act: [[fallthrough]];
+          case "getFrom"_act:
             set_res_index = onto_->classes_.select(set_res_index, params.selector_index);
-          else if((req->action == "getRelationFrom") || (req->action == "getRelationOn") || (req->action == "getWith") ||
-                  (req->action == "getDomainOf") || (req->action == "getRangeOf"))
+            break;
+          case "getRelationFrom"_act: [[fallthrough]];
+          case "getRelationOn"_act: [[fallthrough]];
+          case "getWith"_act: [[fallthrough]];
+          case "getDomainOf"_act: [[fallthrough]];
+          case "getRangeOf"_act:
             set_res_index = onto_->object_properties_.select(set_res_index, params.selector_index);
+            break;
+          default:
+            break;
+          }
         }
 
         if(res->index_values.empty())
@@ -130,59 +170,87 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<index_t> set_res_index;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getDown")
-          set_res_index = onto_->object_properties_.getDown(params.main_index, (int)params.depth);
-        else if(req->action == "getUp")
-          set_res_index = onto_->object_properties_.getUp(params.main_index, (int)params.depth);
-        else if(req->action == "getDisjoint")
+        switch(action_hash)
+        {
+        case "getDown"_act:
+          set_res_index = onto_->object_properties_.getDown(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getUp"_act:
+          set_res_index = onto_->object_properties_.getUp(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getDisjoint"_act:
           set_res_index = onto_->object_properties_.getDisjoint(params.main_index);
-        else if(req->action == "getInverse")
+          break;
+        case "getInverse"_act:
           set_res_index = onto_->object_properties_.getInverse(params.main_index);
-        else if(req->action == "getDomain")
+          break;
+        case "getDomain"_act:
           set_res_index = onto_->object_properties_.getDomain(params.main_index, params.depth);
-        else if(req->action == "getRange")
+          break;
+        case "getRange"_act:
           set_res_index = onto_->object_properties_.getRange(params.main_index, params.depth);
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->object_properties_.getName(params.main_index, params.take_id);
           if(tmp.empty() == false)
             res->string_values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->string_values = onto_->object_properties_.getNames(params.main_index, params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->string_values = onto_->object_properties_.getEveryNames(params.main_index, params.take_id);
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set2vector(onto_->object_properties_.find<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set2vector(onto_->object_properties_.findSub<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set2vector(onto_->object_properties_.findRegex<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->object_properties_.findFuzzy(params(), params.take_id, params.threshold), res->string_values);
           else
             set2vector(onto_->object_properties_.findFuzzy(params(), params.take_id), res->string_values);
-        }
-        else if(req->action == "exist")
-        {
+          break;
+        case "getComments"_act:
+          res->string_values = onto_->object_properties_.getComments(params.main_index);
+          break;
+        case "exist"_act:
           if(onto_->object_properties_.touch(params.main_index))
             res->index_values.push_back(params.main_index);
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->index_values = onto_->object_properties_.getAllIndex();
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector_index != 0)
         {
-          if((req->action == "getUp") || (req->action == "getDown") ||
-             (req->action == "getDisjoint") || (req->action == "getInverse"))
+          switch(action_hash)
+          {
+          case "getUp"_act: [[fallthrough]];
+          case "getDown"_act: [[fallthrough]];
+          case "getDisjoint"_act: [[fallthrough]];
+          case "getInverse"_act:
             set_res_index = onto_->object_properties_.select(set_res_index, params.selector_index);
-          else if((req->action == "getDomain") || (req->action == "getRange"))
+            break;
+          case "getDomain"_act: [[fallthrough]];
+          case "getRange"_act:
             set_res_index = onto_->classes_.select(set_res_index, params.selector_index);
+            break;
+          default:
+            break;
+          }
         }
 
         if(res->index_values.empty())
@@ -212,56 +280,82 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<index_t> set_res_index;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getDown")
-          set_res_index = onto_->data_properties_.getDown(params.main_index, (int)params.depth);
-        else if(req->action == "getUp")
-          set_res_index = onto_->data_properties_.getUp(params.main_index, (int)params.depth);
-        else if(req->action == "getDisjoint")
+        switch(action_hash)
+        {
+        case "getDown"_act:
+          set_res_index = onto_->data_properties_.getDown(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getUp"_act:
+          set_res_index = onto_->data_properties_.getUp(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getDisjoint"_act:
           set_res_index = onto_->data_properties_.getDisjoint(params.main_index);
-        else if(req->action == "getDomain")
+          break;
+        case "getDomain"_act:
           set_res_index = onto_->data_properties_.getDomain(params.main_index, params.depth);
-        else if(req->action == "getRange")
+          break;
+        case "getRange"_act:
           set2vector(onto_->data_properties_.getRange(params.main_index), res->index_values);
-        else if(req->action == "getName")
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->data_properties_.getName(params.main_index, params.take_id);
           if(tmp.empty() == false)
             res->string_values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->string_values = onto_->data_properties_.getNames(params.main_index, params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->string_values = onto_->data_properties_.getEveryNames(params.main_index, params.take_id);
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set2vector(onto_->data_properties_.find<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set2vector(onto_->data_properties_.findSub<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set2vector(onto_->data_properties_.findRegex<index_t>(params(), params.take_id), res->index_values);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->data_properties_.findFuzzy(params(), params.take_id, params.threshold), res->string_values);
           else
             set2vector(onto_->data_properties_.findFuzzy(params(), params.take_id), res->string_values);
-        }
-        else if(req->action == "exist")
-        {
+          break;
+        case "getComments"_act:
+          res->string_values = onto_->data_properties_.getComments(params.main_index);
+          break;
+        case "exist"_act:
           if(onto_->data_properties_.touch(params.main_index))
             res->index_values.push_back(params.main_index);
-        }
-        else if(req->action == "getAll")
+          break;
+        case "getAll"_act:
           res->index_values = onto_->data_properties_.getAllIndex();
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector_index != 0)
         {
-          if((req->action == "getUp") || (req->action == "getDown") || (req->action == "getDisjoint"))
+          switch(action_hash)
+          {
+          case "getUp"_act: [[fallthrough]];
+          case "getDown"_act: [[fallthrough]];
+          case "getDisjoint"_act:
             set_res_index = onto_->data_properties_.select(set_res_index, params.selector_index);
-          else if(req->action == "getDomain")
+            break;
+          case "getDomain"_act:
             set_res_index = onto_->classes_.select(set_res_index, params.selector_index);
+            break;
+          default:
+            break;
+          }
         }
 
         if(res->index_values.empty())
@@ -291,91 +385,137 @@ namespace ontologenius {
         reasoner_mutex_.unlock();
 
         std::unordered_set<index_t> set_res_index;
+        const auto action_hash = hashStr(req->action);
 
-        if(req->action == "getSame")
+        switch(action_hash)
+        {
+        case "getSame"_act:
           set_res_index = onto_->individuals_.getSame(params.main_index);
-        else if(req->action == "getDistincts")
+          break;
+        case "getDistincts"_act:
           set_res_index = onto_->individuals_.getDistincts(params.main_index);
-        else if(req->action == "getRelationFrom")
-          set_res_index = onto_->individuals_.getRelationFrom(params.main_index, (int)params.depth);
-        else if(req->action == "getRelatedFrom")
+          break;
+        case "getRelationFrom"_act:
+          set_res_index = onto_->individuals_.getRelationFrom(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getRelatedFrom"_act:
           set_res_index = onto_->individuals_.getRelatedFrom(params.main_index);
-        else if(req->action == "getRelationOn")
-          set_res_index = onto_->individuals_.getRelationOn(params.main_index, (int)params.depth);
-        else if(req->action == "getRelatedOn")
+          break;
+        case "getRelationOn"_act:
+          set_res_index = onto_->individuals_.getRelationOn(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getRelatedOn"_act:
           set_res_index = onto_->individuals_.getRelatedOn(params.main_index);
-        else if(req->action == "getRelationWith")
+          break;
+        case "getRelationWith"_act:
           set_res_index = onto_->individuals_.getRelationWith(params.main_index);
-        else if(req->action == "getRelatedWith")
+          break;
+        case "getRelatedWith"_act:
           set_res_index = onto_->individuals_.getRelatedWith(params.main_index);
-        else if(req->action == "getUp")
-          set_res_index = onto_->individuals_.getUp(params.main_index, (int)params.depth, false);
-        else if(req->action == "getOn")
+          break;
+        case "getUp"_act:
+          set_res_index = onto_->individuals_.getUp(params.main_index, static_cast<int>(params.depth), false);
+          break;
+        case "getOn"_act:
           set_res_index = onto_->individuals_.getOn(params.main_index, params.optional_index);
-        else if(req->action == "getFrom")
+          break;
+        case "getFrom"_act:
           set_res_index = onto_->individuals_.getFrom(params.main_index, params.optional_index);
-        else if(req->action == "getWith")
-          set_res_index = onto_->individuals_.getWith(params.main_index, params.optional_index, (int)params.depth);
-        else if(req->action == "getDomainOf")
-          set_res_index = onto_->individuals_.getDomainOf(params.main_index, (int)params.depth);
-        else if(req->action == "getRangeOf")
-          set_res_index = onto_->individuals_.getRangeOf(params.main_index, (int)params.depth);
-        else if(req->action == "getName")
+          break;
+        case "getWith"_act:
+          set_res_index = onto_->individuals_.getWith(params.main_index, params.optional_index, static_cast<int>(params.depth));
+          break;
+        case "getDomainOf"_act:
+          set_res_index = onto_->individuals_.getDomainOf(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getRangeOf"_act:
+          set_res_index = onto_->individuals_.getRangeOf(params.main_index, static_cast<int>(params.depth));
+          break;
+        case "getName"_act:
         {
           auto tmp = onto_->individuals_.getName(params.main_index, params.take_id);
           if(tmp.empty() == false)
             res->string_values.push_back(tmp);
+          break;
         }
-        else if(req->action == "getNames")
+        case "getNames"_act:
           res->string_values = onto_->individuals_.getNames(params.main_index, params.take_id);
-        else if(req->action == "getEveryNames")
+          break;
+        case "getEveryNames"_act:
           res->string_values = onto_->individuals_.getEveryNames(params.main_index, params.take_id);
-        else if(req->action == "find")
+          break;
+        case "find"_act:
           set_res_index = onto_->individuals_.find<index_t>(params(), params.take_id);
-        else if(req->action == "findSub")
+          break;
+        case "findSub"_act:
           set_res_index = onto_->individuals_.findSub<index_t>(params(), params.take_id);
-        else if(req->action == "findRegex")
+          break;
+        case "findRegex"_act:
           set_res_index = onto_->individuals_.findRegex<index_t>(params(), params.take_id);
-        else if(req->action == "findFuzzy")
-        {
+          break;
+        case "findFuzzy"_act:
           if(params.threshold != -1)
             set2vector(onto_->individuals_.findFuzzy(params(), params.take_id, params.threshold), res->string_values);
           else
             set2vector(onto_->individuals_.findFuzzy(params(), params.take_id), res->string_values);
-        }
-        else if(req->action == "getType")
+          break;
+        case "getComments"_act:
+          res->string_values = onto_->individuals_.getComments(params.main_index);
+          break;
+        case "getType"_act:
           set_res_index = onto_->individuals_.getType(params.main_index);
-        else if(req->action == "exist")
-        {
+          break;
+        case "exist"_act:
           if(onto_->individuals_.touch(params.main_index))
             res->index_values.push_back(params.main_index);
-        }
-        /*else if(req->action == "relationExists")
-        {
+          break;
+        /*case "relationExists"_act:
           if(onto_->individuals_.relationExists(params()))
             res->values.push_back(params());
-        }*/
-        else if(req->action == "getAll")
+          break;*/
+        case "getAll"_act:
           res->index_values = onto_->individuals_.getAllIndex();
-        else if(req->action == "isInferred")
+          break;
+        case "isInferred"_act:
           res->string_values = onto_->individuals_.isInferredIndex(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
-        else if(req->action == "getInferenceExplanation")
+          break;
+        case "getInferenceExplanation"_act:
           res->string_values = onto_->individuals_.getInferenceExplanationIndex(params());
-        else if(req->action == "getInferenceRule")
+          break;
+        case "getInferenceRule"_act:
           res->string_values = {onto_->individuals_.getInferenceRuleIndex(params())};
-        else
+          break;
+        default:
           res->code = UNKNOW_ACTION;
+        }
 
         if(params.selector_index != 0)
         {
-          if(req->action == "getUp")
+          switch(action_hash)
+          {
+          case "getUp"_act:
             set_res_index = onto_->classes_.select(set_res_index, params.selector_index);
-          else if((req->action == "getRelationFrom") || (req->action == "getRelationOn") || (req->action == "getWith") ||
-                  (req->action == "getDomainOf") || (req->action == "getRangeOf"))
+            break;
+          case "getRelationFrom"_act: [[fallthrough]];
+          case "getRelationOn"_act: [[fallthrough]];
+          case "getWith"_act: [[fallthrough]];
+          case "getDomainOf"_act: [[fallthrough]];
+          case "getRangeOf"_act:
             set_res_index = onto_->object_properties_.select(set_res_index, params.selector_index);
-          else if((req->action != "find") || (req->action != "findRegex") || (req->action != "findSub") ||
-                  (req->action != "getFrom") || (req->action != "getOn"))
+            break;
+          case "find"_act: [[fallthrough]];
+          case "findRegex"_act: [[fallthrough]];
+          case "findSub"_act: [[fallthrough]];
+          case "findFuzzy"_act: [[fallthrough]];
+          case "getFrom"_act: [[fallthrough]];
+          case "getOn"_act: [[fallthrough]];
+          case "getRelationWith"_act: [[fallthrough]];
+          case "getRelatedWith"_act:
+            break;
+          default:
             set_res_index = onto_->individuals_.select(set_res_index, params.selector_index);
+            break;
+          }
         }
 
         if(res->index_values.empty())

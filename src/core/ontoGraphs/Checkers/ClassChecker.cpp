@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <shared_mutex>
-#include <string>
 #include <unordered_set>
 
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
@@ -42,7 +41,7 @@ namespace ontologenius {
     auto* intersection = graphs_->classes_.isDisjoint(up, up);
     if(intersection != nullptr)
     {
-      ClassBranch* disjoint_with = graphs_->classes_.firstIntersection(up, intersection->disjoints_);
+      const ClassBranch* disjoint_with = graphs_->classes_.firstIntersection(up, intersection->disjoints_);
 
       if(disjoint_with != nullptr)
         printError("'" + branch->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between classes '" + intersection->value() + "' and '" + disjoint_with->value() + "'");

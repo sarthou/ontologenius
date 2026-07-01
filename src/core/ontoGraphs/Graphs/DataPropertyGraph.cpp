@@ -63,7 +63,6 @@ namespace ontologenius {
     for(auto& domain : property_descriptor.domains_)
     {
       ClassBranch* domain_branch = graphs_->classes_.findOrCreateBranch(domain.elem);
-
       conditionalPushBack(me->domains_, ClassElement(domain_branch, domain.probability));
     }
 
@@ -84,6 +83,11 @@ namespace ontologenius {
     me->annotation_usage_ = me->annotation_usage_ || property_descriptor.annotation_usage_;
     me->setSteadyDictionary(property_descriptor.dictionary_);
     me->setSteadyMutedDictionary(property_descriptor.muted_dictionary_);
+
+    /**********************
+    ** Comment
+    **********************/
+    me->setCommentDictionary(property_descriptor.comments_);
 
     mitigate(me);
     return me;
@@ -118,10 +122,10 @@ namespace ontologenius {
     /**********************
     ** Mothers
     **********************/
-    DataPropertyBranch* me = this->container_.find(value);
+    const DataPropertyBranch* me = this->container_.find(value);
     if(me == nullptr)
     {
-      DataPropertyBranch* mother_branch = nullptr;
+      const DataPropertyBranch* mother_branch = nullptr;
       for(auto& mother : property_descriptor.mothers_)
       {
         mother_branch = this->container_.find(mother.elem);
@@ -137,7 +141,7 @@ namespace ontologenius {
       }
       else
       {
-        ClassBranch* range_branch = nullptr;
+        const ClassBranch* range_branch = nullptr;
         for(auto& range : property_descriptor.ranges_)
         {
           range_branch = graphs_->classes_.container_.find(range);
@@ -209,7 +213,7 @@ namespace ontologenius {
   void DataPropertyGraph::getDomainPtr(DataPropertyBranch* branch, size_t depth, std::unordered_set<ClassBranch*>& res, std::unordered_set<DataPropertyBranch*>& up_trace)
   {
     for(auto& domain : branch->domains_)
-      graphs_->classes_.getDownPtr(domain.elem, res, (int)depth);
+      graphs_->classes_.getDownPtr(domain.elem, res, static_cast<int>(depth));
 
     for(auto& mother : branch->mothers_)
       if(up_trace.insert(mother.elem).second)
@@ -221,9 +225,9 @@ namespace ontologenius {
     std::unordered_set<std::string> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch* branch = container_.find(value);
+    const DataPropertyBranch* branch = container_.find(value);
     if(branch != nullptr)
-      for(auto& range : branch->ranges_)
+      for(const auto* range : branch->ranges_)
         res.insert(range->value());
 
     return res;
@@ -234,9 +238,9 @@ namespace ontologenius {
     std::unordered_set<index_t> res;
     const std::shared_lock<std::shared_timed_mutex> lock(Graph<DataPropertyBranch>::mutex_);
 
-    DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
+    const DataPropertyBranch* branch = container_.find(ValuedNode::table.get(value));
     if(branch != nullptr)
-      for(auto& range : branch->ranges_)
+      for(const auto* range : branch->ranges_)
         res.insert(range->get());
 
     return res;
@@ -267,6 +271,7 @@ namespace ontologenius {
 
     new_branch->dictionary_ = old_branch->dictionary_;
     new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
+    new_branch->comments_ = old_branch->comments_;
 
     for(const auto& child : old_branch->childs_)
       new_branch->childs_.emplace_back(child, container_.find(child.elem->value()));

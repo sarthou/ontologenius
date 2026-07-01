@@ -98,6 +98,11 @@ namespace onto {
     return call("findFuzzy", param);
   }
 
+  std::vector<std::string> OntologyIndexClient::getComments(int64_t index)
+  {
+    return call("getNames", std::to_string(index));
+  }
+
   bool OntologyIndexClient::exist(int64_t index)
   {
     const std::string param = std::to_string(index);

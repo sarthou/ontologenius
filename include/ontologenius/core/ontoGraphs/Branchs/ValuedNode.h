@@ -50,6 +50,7 @@ namespace ontologenius {
 
     Dictionary dictionary_;
     Dictionary steady_dictionary_;
+    std::map<std::string, std::vector<std::string>> comments_;
 
     template<typename C>
     void conditionalPushBack(std::vector<C>& vect, const C& data)
@@ -62,6 +63,7 @@ namespace ontologenius {
     void setSteadyMutedDictionary(const std::string& lang, const std::string& word);
     void setSteadyDictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
     void setSteadyMutedDictionary(const std::map<std::string, std::vector<std::string>>& dictionary);
+    void setCommentDictionary(const std::map<std::string, std::vector<std::string>>& comment_dictionary);
 
     bool operator==(const std::string& other) const
     {

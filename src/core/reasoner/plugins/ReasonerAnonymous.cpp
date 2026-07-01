@@ -57,6 +57,8 @@ namespace ontologenius {
         // Loop over every classes which includes equivalence relations
         for(auto* anonymous_branch : ontology_->anonymous_classes_.get())
         {
+          if(anonymous_branch->is_equivalence_ == false)
+            continue; // subClass expressions drive proved facts only, not classification
           bool trees_evaluation_result = false;
           bool has_been_evaluated = false;
           bool is_already_a = std::any_of(indiv->is_a_.cbegin(), indiv->is_a_.cend(), [anonymous_branch](const auto& is_a) { return is_a.elem == anonymous_branch->class_equiv_; }); // same as not done // need to test if same_as is_already_a
@@ -112,11 +114,12 @@ namespace ontologenius {
                     if(is_already_a == false) // the indiv is checked to still be of the same class so we can break out of the loop
                     {
                       addInferredInheritance(indiv, anonymous_branch, anonymous_tree, used);
+                      is_already_a = true;
                       nb_update++;
                       if(anonymous_branch->class_equiv_->isHidden() == false)
                       {
                         explanations_.emplace_back("[ADD]" + indiv->value() + "|isA|" + anonymous_branch->class_equiv_->value(),
-                                                   "[ADD]" + indiv->is_a_.back().getExplanation());
+                                                   "[ADD] " + indiv->is_a_.back().getExplanation());
                       }
                     }
                   }
@@ -158,23 +161,22 @@ namespace ontologenius {
                                                  AnonymousClassTree* anonymous_tree,
                                                  const std::vector<std::pair<std::string, InheritedRelationTriplets*>>& used)
   {
-    auto& new_relation = indiv->is_a_.emplaceBack(anonymous_branch->class_equiv_, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
-    new_relation.used_rule = anonymous_tree;
-    anonymous_branch->class_equiv_->individual_childs_.emplace_back(IndividualElement(indiv, 1.0, true));
+    const size_t new_idx = ontology_->individuals_.addClassAssertion(indiv, anonymous_branch->class_equiv_, 1.0, true, &explanations_);
+    indiv->is_a_[new_idx].used_rule = anonymous_tree;
 
     indiv->nb_updates_++;
     anonymous_branch->class_equiv_->nb_updates_++;
 
     for(const auto& induced_vector : used)
     {
-      indiv->is_a_.back().explanation.push_back(induced_vector.first);
+      indiv->is_a_[new_idx].explanation.push_back(induced_vector.first);
       // check for nullptr because OneOf returns a (string, nullptr)
       if(induced_vector.second != nullptr)
       {
         if(induced_vector.second->exist(indiv, nullptr, anonymous_branch->class_equiv_) == false)
         {
           induced_vector.second->push(indiv, nullptr, anonymous_branch->class_equiv_);
-          indiv->is_a_.relations.back().induced_traces.emplace_back(induced_vector.second);
+          indiv->is_a_.relations[new_idx].induced_traces.emplace_back(induced_vector.second);
         }
       }
     }

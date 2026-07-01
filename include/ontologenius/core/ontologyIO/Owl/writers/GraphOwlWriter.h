@@ -40,6 +40,7 @@ namespace ontologenius {
 
     void writeDictionary(ValuedNode* node) const;
     void writeMutedDictionary(ValuedNode* node) const;
+    void writeCommentDictionary(ValuedNode* node) const;
 
     void writeString(const std::string& text, size_t level = 0) const;
 

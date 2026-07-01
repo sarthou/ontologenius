@@ -74,8 +74,8 @@ namespace ontologenius {
     std::string xml;
     xml += getSpaces(level) + "<Node id=\"" + id_ + "\">\n";
     xml += getSpaces(level + 1) + orderIdToXml() + "\n";
-    xml = std::accumulate(datas_.begin(), datas_.end(), xml, [level, this](auto base, const Feed_t& data) { return base + this->getSpaces(level + 1) + this->dataToXml(data) + "\n"; });
-    xml = std::accumulate(nexts_.begin(), nexts_.end(), xml, [level](auto base, auto next) { return base + next->toXml(level + 1); });
+    xml = std::accumulate(datas_.begin(), datas_.end(), xml, [level, this](const auto& base, const Feed_t& data) { return base + this->getSpaces(level + 1) + this->dataToXml(data) + "\n"; });
+    xml = std::accumulate(nexts_.begin(), nexts_.end(), xml, [level](const auto& base, auto next) { return base + next->toXml(level + 1); });
     xml += getSpaces(level) + "</Node>\n";
     return xml;
   }

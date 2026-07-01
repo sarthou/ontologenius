@@ -48,9 +48,12 @@ namespace onto {
     return callIndexes("getRelatedOn", param);
   }
 
-  std::vector<int64_t> IndividualIndexClient::getRelatedWith(int64_t index)
+  std::vector<int64_t> IndividualIndexClient::getRelatedWith(int64_t index, int64_t selector)
   {
-    const std::string param = std::to_string(index);
+    std::string param = std::to_string(index);
+    if(selector != 0)
+      param += " -s " + std::to_string(selector);
+
     return callIndexes("getRelatedWith", param);
   }
 
@@ -72,9 +75,12 @@ namespace onto {
     return callIndexes("getRelationOn", param);
   }
 
-  std::vector<int64_t> IndividualIndexClient::getRelationWith(int64_t index)
+  std::vector<int64_t> IndividualIndexClient::getRelationWith(int64_t index, int64_t selector)
   {
-    const std::string param = std::to_string(index);
+    std::string param = std::to_string(index);
+    if(selector != 0)
+      param += " -s " + std::to_string(selector);
+
     return callIndexes("getRelationWith", param);
   }
 

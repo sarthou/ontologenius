@@ -1,10 +1,9 @@
-#include <algorithm>
+#include <atomic>
 #include <cstddef>
 #include <gtest/gtest.h>
-#include <rclcpp/rclcpp.hpp>
-#include <sstream>
+#include <rclcpp/utilities.hpp>
 #include <string>
-#include <vector>
+#include <unistd.h>
 
 #include "ontologenius/API/ontologenius/OntologyManipulator.h"
 
@@ -12,8 +11,6 @@ onto::OntologyManipulator* onto_ptr;
 std::atomic<int> done_add;
 std::atomic<int> done_del;
 std::atomic<int> done_any;
-
-#define NB_TIME 20 // 2s
 
 void callbackAdd(const std::string& fact)
 {
@@ -35,22 +32,22 @@ void callbackAny(const std::string& fact)
 
 TEST(feature_subscription, exact_one_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
   onto_ptr->feeder.waitConnected();
   done_add = 0;
   done_del = 0;
   auto id = onto_ptr->subscriber.subscribe("[add]cube1|isOn|table1", &callbackAdd, 1);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   for(size_t i = 0; i < 2; i++)
   {
     onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
     onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
   }
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
+
   usleep(500000);
 
   EXPECT_EQ(done_add, 1);
@@ -61,22 +58,20 @@ TEST(feature_subscription, exact_one_pattern)
 
 TEST(feature_subscription, exact_invert_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
-
   done_add = 0;
   done_del = 0;
-  auto id = onto_ptr->subscriber.subscribe("[add]table1|isUnder|cube1", &callbackAdd, 2);
+  auto id = onto_ptr->subscriber.subscribe("[add]table2|isUnder|cube1", &callbackAdd, 2);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-    onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube1", "isOn", "table2");
+    onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
   }
-  onto_ptr->feeder.waitUpdate(1000);
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -88,30 +83,30 @@ TEST(feature_subscription, exact_invert_pattern)
 
 TEST(feature_subscription, exact_two_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
-
   done_add = 0;
   done_del = 0;
-  auto id = onto_ptr->subscriber.subscribe("[add]cube1|isOn|table1", &callbackAdd, 1);
+  auto id = onto_ptr->subscriber.subscribe("[add]cube1|isOn|table3", &callbackAdd, 1);
   EXPECT_NE(id, -1);
-  id = onto_ptr->subscriber.subscribe("[del]cube1|isOn|table1", &callbackDel, 1);
+  id = onto_ptr->subscriber.subscribe("[del]cube1|isOn|table3", &callbackDel, 1);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-    onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
+    onto_ptr->feeder.addRelation("cube1", "isOn", "table3");
+    onto_ptr->feeder.addRelation("cube2", "isOn", "table3");
   }
-  onto_ptr->feeder.waitUpdate(500);
+  bool updated = onto_ptr->feeder.waitUpdate(500);
+  EXPECT_TRUE(updated);
+
   for(size_t i = 0; i < 2; i++)
   {
-    onto_ptr->feeder.removeRelation("cube1", "isOn", "table1");
-    onto_ptr->feeder.removeRelation("cube2", "isOn", "table1");
+    onto_ptr->feeder.removeRelation("cube1", "isOn", "table3");
+    onto_ptr->feeder.removeRelation("cube2", "isOn", "table3");
   }
-  onto_ptr->feeder.waitUpdate(1000);
+  updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -123,19 +118,17 @@ TEST(feature_subscription, exact_two_pattern)
 
 TEST(feature_subscription, abstract_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
-
   done_add = 0;
   done_del = 0;
-  auto id = onto_ptr->subscriber.subscribe("[add]Cube|isOn|table1", &callbackAdd, 2);
+  auto id = onto_ptr->subscriber.subscribe("[add]Cube|isOn|table4", &callbackAdd, 2);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
-  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table4");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table4");
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -147,20 +140,18 @@ TEST(feature_subscription, abstract_pattern)
 
 TEST(feature_subscription, variable_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
-
   done_add = 0;
   done_del = 0;
-  auto id = onto_ptr->subscriber.subscribe("[add]?|isOn|table1", &callbackAdd, 3);
+  auto id = onto_ptr->subscriber.subscribe("[add]?|isOn|table5", &callbackAdd, 3);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
-  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
-  onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table5");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table5");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table6");
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 
@@ -172,24 +163,23 @@ TEST(feature_subscription, variable_pattern)
 
 TEST(feature_subscription, variable_abstract_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
-
   done_add = 0;
   done_del = 0;
   auto id = onto_ptr->subscriber.subscribe("[add]?|isOn|Table", &callbackAdd, 3);
   EXPECT_NE(id, -1);
 
+  usleep(100000);
+
+  onto_ptr->feeder.addInheritage("table7", "Table");
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table7");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table7");
+  onto_ptr->feeder.addRelation("cube2", "isOn", "table8");
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
+
   usleep(500000);
 
-  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.addRelation("cube2", "isOn", "table1");
-  onto_ptr->feeder.addRelation("cube2", "isOn", "table2");
-  onto_ptr->feeder.waitUpdate(1000);
-
-  usleep(500000);
-
-  EXPECT_EQ(done_add, 3);
+  EXPECT_EQ(done_add, 2);
   EXPECT_EQ(done_del, 0);
 
   onto_ptr->subscriber.cancel(id);
@@ -197,20 +187,17 @@ TEST(feature_subscription, variable_abstract_pattern)
 
 TEST(feature_subscription, any_pattern)
 {
-  onto_ptr->actions.reset();
-  onto_ptr->actions.close();
   done_any = 0;
 
-  auto id = onto_ptr->subscriber.subscribe("[?]cube1|isOn|table1", &callbackAny, 1);
+  auto id = onto_ptr->subscriber.subscribe("[?]cube1|isOn|table9", &callbackAny, 1);
   EXPECT_NE(id, -1);
 
-  usleep(500000);
+  usleep(100000);
 
-  onto_ptr->feeder.addRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.waitUpdate(500);
-
-  onto_ptr->feeder.removeRelation("cube1", "isOn", "table1");
-  onto_ptr->feeder.waitUpdate(1000);
+  onto_ptr->feeder.addRelation("cube1", "isOn", "table9");
+  onto_ptr->feeder.removeRelation("cube1", "isOn", "table9");
+  bool updated = onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(updated);
 
   usleep(500000);
 

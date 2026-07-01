@@ -45,9 +45,13 @@ namespace onto {
     return call("getRelatedOn", property);
   }
 
-  std::vector<std::string> IndividualClient::getRelatedWith(const std::string& name)
+  std::vector<std::string> IndividualClient::getRelatedWith(const std::string& name, const std::string& selector)
   {
-    return call("getRelatedWith", name);
+    std::string param = name;
+    if(selector.empty() == false)
+      param += " -s " + selector;
+
+    return call("getRelatedWith", param);
   }
 
   std::vector<std::string> IndividualClient::getRelationFrom(const std::string& name, int depth)
@@ -68,9 +72,13 @@ namespace onto {
     return call("getRelationOn", param);
   }
 
-  std::vector<std::string> IndividualClient::getRelationWith(const std::string& name)
+  std::vector<std::string> IndividualClient::getRelationWith(const std::string& name, const std::string& selector)
   {
-    return call("getRelationWith", name);
+    std::string param = name;
+    if(selector.empty() == false)
+      param += " -s " + selector;
+
+    return call("getRelationWith", param);
   }
 
   std::vector<std::string> IndividualClient::getDomainOf(const std::string& name, const std::string& selector, int depth)

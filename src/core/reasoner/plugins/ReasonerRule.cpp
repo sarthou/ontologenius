@@ -121,8 +121,7 @@ namespace ontologenius {
     {
       if((is_already_a == false) && (checkClassesDisjointess(involved_indiv, triplet.class_predicate) == false))
       {
-        involved_indiv->is_a_.emplaceBack(triplet.class_predicate, 1.0, true); // adding the emplaceBack so that the is_a get in updated mode
-        triplet.class_predicate->individual_childs_.emplace_back(involved_indiv, 1.0, true);
+        ontology_->individuals_.addClassAssertion(involved_indiv, triplet.class_predicate, 1.0, true);
 
         involved_indiv->nb_updates_++;
         triplet.class_predicate->nb_updates_++;
@@ -399,11 +398,11 @@ namespace ontologenius {
     }
   }
 
-  void ReasonerRule::constructResult(const std::string& concept,
+  void ReasonerRule::constructResult(const std::string& concept_name,
                                      const RelationsWithInductions<IndividualElement>& relation,
                                      size_t index, IndivResult_t& res)
   {
-    std::string explanation = concept + "|sameAs|" + relation.at(index).elem->value();
+    std::string explanation = concept_name + "|sameAs|" + relation.at(index).elem->value();
     res.explanations.emplace_back(explanation);
 
     res.used_triplets.emplace_back(relation.has_induced_inheritance_relations[index],
@@ -587,7 +586,7 @@ namespace ontologenius {
     {
       for(size_t s = 0; s < indiv->same_as_.size(); s++)
       {
-        IndividualBranch* same = indiv->same_as_[s].elem;
+        const IndividualBranch* same = indiv->same_as_[s].elem;
         const auto& relations = same->object_relations_;
         for(size_t i = 0; i < relations.size(); i++)
         {
@@ -740,7 +739,7 @@ namespace ontologenius {
     {
       for(size_t s = 0; s < indiv->same_as_.size(); s++)
       {
-        IndividualBranch* same = indiv->same_as_[s].elem;
+        const IndividualBranch* same = indiv->same_as_[s].elem;
         const auto& relations = same->data_relations_;
         for(size_t i = 0; i < relations.size(); i++)
         {

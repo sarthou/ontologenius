@@ -13,6 +13,8 @@
 
 #include "include/ontologenius/graphical/ontoloGUI/DarkStyle.h"
 
+#include <qcolor.h>
+
 #include "qapplication.h"
 #include "qfont.h"
 #include "qiodevice.h"

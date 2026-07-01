@@ -13,12 +13,14 @@
 #include <utility>
 #include <vector>
 
+#include "ontologenius/core/ontoGraphs/Branchs/AnonymousClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/DataPropertyBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/Elements.h"
 #include "ontologenius/core/ontoGraphs/Branchs/IndividualBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ObjectPropertyBranch.h"
+#include "ontologenius/core/ontoGraphs/Branchs/RelationsWithInductions.h"
 #include "ontologenius/core/ontoGraphs/Branchs/ValuedNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
@@ -36,7 +38,7 @@ namespace ontologenius {
   {
     for(auto* individual : all_branchs_)
     {
-      if((size_t)individual->get() >= ordered_individuals_.size())
+      if(static_cast<size_t>(individual->get()) >= ordered_individuals_.size())
         ordered_individuals_.resize(individual->get() + 1, nullptr);
       ordered_individuals_[individual->get()] = individual;
     }
@@ -96,6 +98,11 @@ namespace ontologenius {
 
     me->setSteadyDictionary(individual_descriptor.dictionary_);
     me->setSteadyMutedDictionary(individual_descriptor.muted_dictionary_);
+
+    /**********************
+    ** Comment
+    **********************/
+    me->setCommentDictionary(individual_descriptor.comments_);
 
     return me;
   }
@@ -467,7 +474,7 @@ namespace ontologenius {
         {
           getSame(relation.second, res);
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->value());
         }
@@ -476,7 +483,7 @@ namespace ontologenius {
         {
           res.insert(relation.second->value());
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->value());
         }
@@ -513,7 +520,7 @@ namespace ontologenius {
         {
           getSame(relation.second, res);
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->get());
         }
@@ -522,7 +529,7 @@ namespace ontologenius {
         {
           res.insert(relation.second->get());
 
-          properties[relation.first->get()] = (int)tmp_res.size();
+          properties[relation.first->get()] = static_cast<int>(tmp_res.size());
           depths.push_back(0);
           tmp_res.push_back(relation.second->get());
         }
@@ -970,7 +977,7 @@ namespace ontologenius {
     IndividualBranch* indiv = getIndividualByIndex(first_individual);
     if(second_individual > 0)
     {
-      if((size_t)second_individual >= ordered_individuals_.size())
+      if(static_cast<size_t>(second_individual) >= ordered_individuals_.size())
       {
         getWith(indiv, {second_individual}, res, depth); // class
       }
@@ -1643,7 +1650,7 @@ namespace ontologenius {
     auto token = split(param, "|");
     if(token.size() > 1)
     {
-      std::vector<int> index_token(0, (int)token.size());
+      std::vector<int> index_token(0, static_cast<int>(token.size()));
       try
       {
         for(size_t i = 0; i < token.size(); i++)
@@ -1845,7 +1852,7 @@ namespace ontologenius {
     IndividualBranch* indiv = Graph::findOrCreateBranch(name);
     if(indiv != nullptr)
     {
-      if((size_t)indiv->get() >= ordered_individuals_.size())
+      if(static_cast<size_t>(indiv->get()) >= ordered_individuals_.size())
         ordered_individuals_.resize(indiv->get() + 1, nullptr);
       ordered_individuals_[indiv->get()] = indiv;
     }
@@ -1874,7 +1881,7 @@ namespace ontologenius {
         for(size_t i = 0; i < up->individual_childs_.size();)
         {
           if(up->individual_childs_[i] == indiv)
-            up->individual_childs_.erase(up->individual_childs_.begin() + (int)i);
+            up->individual_childs_.erase(up->individual_childs_.begin() + static_cast<int>(i));
           else
             i++;
         }
@@ -1918,7 +1925,7 @@ namespace ontologenius {
         {
           if(up->individual_childs_[i] == indiv)
           {
-            up->individual_childs_.erase(up->individual_childs_.begin() + (int)i);
+            up->individual_childs_.erase(up->individual_childs_.begin() + static_cast<int>(i));
             up->childs_.emplace_back(class_branch);
           }
           else
@@ -1947,23 +1954,41 @@ namespace ontologenius {
     }
   }
 
-  bool IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
   {
     IndividualBranch* branch = findBranchSafe(indiv);
-    return addInheritage(branch, class_inherited);
+    std::vector<std::pair<std::string, std::string>> explanations;
+    addInheritage(branch, class_inherited, &explanations);
+    return explanations;
   }
 
-  bool IndividualGraph::addInheritage(IndividualBranch* branch, const std::string& class_inherited)
+  bool IndividualGraph::addInheritage(IndividualBranch* branch, const std::string& class_inherited, std::vector<std::pair<std::string, std::string>>* explanations)
   {
     const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
     const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
-    return addInheritageUnsafe(branch, class_inherited);
+    const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
+    const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
+
+    ClassBranch* inherited = addInheritageUnsafe(branch, class_inherited);
+    if(inherited != nullptr)
+    {
+      const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                   [inherited](const auto& is_a) { return is_a.elem == inherited; });
+
+      // TODO what append with we add it several times ?
+      if(it != branch->is_a_.cend())
+        applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, explanations);
+
+      return true;
+    }
+    return false;
   }
 
-  bool IndividualGraph::addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited)
+  ClassBranch* IndividualGraph::addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited)
   {
     if(branch != nullptr)
     {
+      // 1 - finding the corresponding class branch as a pointer
       ClassBranch* inherited = graphs_->classes_.findBranch(class_inherited);
       if(inherited == nullptr)
       {
@@ -1978,48 +2003,72 @@ namespace ontologenius {
         }
       }
 
+      // 2 - Checking if the new inheritage is compatible with the existing hierarchy
       std::unordered_set<ClassBranch*> ups_indiv;
       this->getUpPtr(branch, ups_indiv);
 
       auto* disjoint_intersection = graphs_->classes_.isDisjoint(ups_indiv, inherited);
-
       if(disjoint_intersection != nullptr)
         throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + inherited->value());
-      else
+
+      // 3 - Cheking if the new inheritages from equivalent class are compatible with the existing hierarchy
+      std::unordered_set<ClassBranch*> would_be_proved;
+      getWouldBeProvedClasses(inherited, would_be_proved);
+      for(auto* proved_class : would_be_proved)
       {
-        if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
-          branch->setUpdated(true);
-        if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
-          inherited->setUpdated(true);
-        return true; // TODO verify that multi inheritances are compatible
+        auto* disjoint_induced = graphs_->classes_.isDisjoint(ups_indiv, proved_class);
+        if(disjoint_induced != nullptr)
+          throw GraphException("The individual would have a class disjointess over " + disjoint_induced->value() +
+                               " through " + proved_class->value() + " induced by " + inherited->value());
       }
+
+      // 4 - Checking if the new relations from equivalent class are compatible with the existing class and relations
+      checkWouldBeProvedRelations(branch, inherited);
+      for(auto* proved_class : would_be_proved)
+        checkWouldBeProvedRelations(branch, proved_class);
+
+      // 5 - Apply the new heritage
+      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
+        branch->setUpdated(true);
+      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
+        inherited->setUpdated(true);
+
+      return inherited; // TODO verify that multi inheritances are compatible
     }
     else
-      return false;
+      return nullptr;
   }
 
-  bool IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
   {
+    std::vector<std::pair<std::string, std::string>> explanations;
     ClassBranch* inherited = graphs_->classes_.findBranchSafe(class_inherited);
     if(inherited != nullptr)
     {
       IndividualBranch* branch = findOrCreateBranchSafe(indiv);
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
 
       if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
         branch->setUpdated(true);
       if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
         inherited->setUpdated(true);
 
-      return true; // TODO verify that multi inheritances are compatible
+      {
+        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                     [inherited](const auto& is_a) { return is_a.elem == inherited; });
+        if(it != branch->is_a_.cend())
+          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, &explanations);
+      }
     }
-    else
-      return false;
+    return explanations;
   }
 
-  bool IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
   {
+    std::vector<std::pair<std::string, std::string>> explanations;
     IndividualBranch* tmp = findBranchSafe(class_inherited);
     if(tmp != nullptr)
     {
@@ -2027,48 +2076,249 @@ namespace ontologenius {
       IndividualBranch* branch = findOrCreateBranchSafe(indiv);
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
+      const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
 
       if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
         branch->setUpdated(true);
       if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
         inherited->setUpdated(true);
 
-      return true; // TODO verify that multi inheritances are compatible
+      {
+        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                     [inherited](const auto& is_a) { return is_a.elem == inherited; });
+        if(it != branch->is_a_.cend())
+          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, &explanations);
+      }
     }
-    else
-      return false;
+    return explanations;
   }
 
-  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existence)
+  void IndividualGraph::getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result)
   {
+    // Collect from both the equivalence and subclass anonymous expressions.
+    for(const AnonymousClassBranch* anon : {class_branch->equiv_anonymous_class_, class_branch->sub_anonymous_class_})
+    {
+      if(anon == nullptr)
+        continue;
+      const auto& trees = anon->ano_trees_;
+      if(trees.empty())
+        continue;
+
+      std::unordered_set<ClassBranch*> proved_classes = trees.front()->proved_classes_;
+      for(size_t i = 1; i < trees.size(); i++)
+        for(auto it = proved_classes.begin(); it != proved_classes.end();)
+          it = (trees[i]->proved_classes_.contains(*it)) ? std::next(it) : proved_classes.erase(it);
+
+      for(auto* proved_class : proved_classes)
+        if(result.insert(proved_class).second)
+          getWouldBeProvedClasses(proved_class, result);
+    }
+  }
+
+  void IndividualGraph::checkWouldBeProvedRelations(IndividualBranch* individual, ClassBranch* class_branch)
+  {
+    // For each candidate, skip if it already exists, then delegate to the shared constraint helpers.
+    checkWouldBeProvedRelationsFromBranch(individual, class_branch->equiv_anonymous_class_);
+    checkWouldBeProvedRelationsFromBranch(individual, class_branch->sub_anonymous_class_);
+  }
+
+  void IndividualGraph::checkWouldBeProvedRelationsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch)
+  {
+    if(anon_branch == nullptr)
+      return;
+
+    const auto& trees = anon_branch->ano_trees_;
+    if(trees.empty())
+      return;
+
+    const std::string ctx = anon_branch->class_equiv_->value();
+
+    for(const auto& tree : trees)
+    {
+      for(const auto& rel : tree->proved_object_relations_)
+      {
+        if(individual->objectRelationExists(rel.first, rel.second) < 0)
+          checkObjectRelationConstraints(individual, rel.first, rel.second, ctx);
+      }
+
+      for(const auto& rel : tree->proved_data_relations_)
+      {
+        if(individual->dataRelationExists(rel.first, rel.second) < 0)
+          checkDataRelationConstraints(individual, rel.first, rel.second, ctx);
+      }
+    }
+  }
+
+  size_t IndividualGraph::addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability, bool inferred,
+                                            std::vector<std::pair<std::string, std::string>>* explanations)
+  {
+    individual->is_a_.emplaceBack(class_branch, probability, inferred); // adding the emplaceBack so that the is_a get in updated mode
+    class_branch->individual_childs_.emplace_back(individual);
+    const size_t index = individual->is_a_.size() - 1;
+    applyProvedFacts(individual, class_branch, index, probability, inferred, explanations);
+    return index;
+  }
+
+  void IndividualGraph::applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability, bool inferred,
+                                         std::vector<std::pair<std::string, std::string>>* explanations)
+  {
+    // Apply proved facts from both the equivalence expression and the subclass expression.
+    applyProvedFactsFromBranch(individual, class_branch->equiv_anonymous_class_, class_idx, probability, inferred, explanations);
+    applyProvedFactsFromBranch(individual, class_branch->sub_anonymous_class_, class_idx, probability, inferred, explanations);
+  }
+
+  void IndividualGraph::applyProvedFactsFromBranch(IndividualBranch* individual, AnonymousClassBranch* anon_branch, size_t class_idx, float probability, bool inferred,
+                                                   std::vector<std::pair<std::string, std::string>>* explanations)
+  {
+    if(anon_branch == nullptr)
+      return;
+
+    const auto& trees = anon_branch->ano_trees_;
+    if(trees.empty())
+      return;
+
+    // Proved facts are the INTERSECTION across all trees: facts that hold regardless of
+    // which owl:equivalentClass expression justified the classification (forward reasoning
+    // uses OR, so we only assert what every expression implies).
+
+    // Triplet containers of the triggering class assertion — fetch before any recursive
+    // call that may reallocate the has_induced_* vectors (the pointed-to heap objects
+    // remain stable even after vector reallocation).
+    InheritedRelationTriplets* inherit_triplet = individual->is_a_.has_induced_inheritance_relations[class_idx];
+    ObjectRelationTriplets* obj_triplet = individual->is_a_.has_induced_object_relations[class_idx];
+    DataRelationTriplets* data_triplet = individual->is_a_.has_induced_data_relations[class_idx];
+
+    // Build the explanation string: "individual isA class" is why every proved fact holds.
+    const std::string triggering_fact = individual->value() + "|isA|" + anon_branch->class_equiv_->value();
+
+    // Apply all proven classes of all trees
+    for(const auto& tree : trees)
+    {
+      for(auto* proved_class : tree->proved_classes_)
+      {
+        const bool already = std::any_of(individual->is_a_.cbegin(), individual->is_a_.cend(),
+                                         [proved_class](const auto& is_a) { return is_a.elem == proved_class; });
+        if(!already)
+        {
+          const size_t proved_idx = addClassAssertion(individual, proved_class, probability, inferred, explanations); // recursive; terminates via 'already' check
+          if(inherit_triplet->exist(individual, nullptr, proved_class) == false)
+          {
+            inherit_triplet->push(individual, nullptr, proved_class);
+            individual->is_a_.relations[proved_idx].induced_traces.emplace_back(inherit_triplet);
+            individual->is_a_.relations[proved_idx].explanation.push_back(triggering_fact);
+            individual->nb_updates_++;
+            proved_class->nb_updates_++;
+            if(explanations != nullptr && proved_class->isHidden() == false)
+              explanations->emplace_back("[ADD]" + individual->value() + "|isA|" + proved_class->value(),
+                                         "[ADD]" + individual->is_a_.relations[proved_idx].getExplanation());
+          }
+        }
+      }
+
+      // Application of proved_object_relations_ (hasValue with individual filler)
+      for(const auto& rel : tree->proved_object_relations_)
+      {
+        // Skip relations that already exist to avoid corrupting stated facts (overwriting
+        // inferred=false with inferred=true, or injecting induced_traces into stated relations).
+        if(individual->objectRelationExists(rel.first, rel.second) < 0)
+        {
+          const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
+          if(obj_triplet->exist(individual, rel.first, rel.second) == false)
+          {
+            obj_triplet->push(individual, rel.first, rel.second);
+            individual->object_relations_.relations[rel_idx].induced_traces.emplace_back(obj_triplet);
+            individual->object_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
+            individual->nb_updates_++;
+            if(explanations != nullptr)
+              explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
+                                         "[ADD]" + individual->object_relations_.relations[rel_idx].getExplanation());
+          }
+        }
+      }
+
+      // Application of proved_data_relations_ (hasValue with literal filler)
+      for(const auto& rel : tree->proved_data_relations_)
+      {
+        // Skip relations that already exist (same reasoning as for object relations above).
+        if(individual->dataRelationExists(rel.first, rel.second) < 0)
+        {
+          const int rel_idx = addRelation(individual, rel.first, rel.second, probability, inferred);
+          if(data_triplet->exist(individual, rel.first, rel.second) == false)
+          {
+            data_triplet->push(individual, rel.first, rel.second);
+            individual->data_relations_.relations[rel_idx].induced_traces.emplace_back(data_triplet);
+            individual->data_relations_.relations[rel_idx].explanation.push_back(triggering_fact);
+            individual->nb_updates_++;
+            if(explanations != nullptr)
+              explanations->emplace_back("[ADD]" + individual->value() + "|" + rel.first->value() + "|" + rel.second->value(),
+                                         "[ADD]" + individual->data_relations_.relations[rel_idx].getExplanation());
+          }
+        }
+      }
+    }
+  }
+
+  void IndividualGraph::checkObjectRelationConstraints(IndividualBranch* from, ObjectPropertyBranch* property, IndividualBranch* on, const std::string& context)
+  {
+    const std::string ctx = context.empty() ? "" : " [induced by " + context + "]";
+
     if(graphs_->object_properties_.isIrreflexive(property))
     {
-      auto ids = getSameId(indiv_from);
-      if(ids.find(indiv_on->get()) != ids.end())
-        throw GraphException("Inconsistency prevented regarding irreflexivity of the property");
+      auto ids = getSameId(from);
+      if(ids.find(on->get()) != ids.end())
+        throw GraphException("Inconsistency prevented regarding irreflexivity of property '" + property->value() + "'" + ctx);
     }
 
     if(graphs_->object_properties_.isAsymetric(property))
     {
-      if(relationExists(indiv_on, property, indiv_from))
-        throw GraphException("Inconsistency prevented regarding asymetry of the property");
+      if(relationExists(on, property, from))
+        throw GraphException("Inconsistency prevented regarding asymmetry of property '" + property->value() + "'" + ctx);
     }
 
+    if(property->properties_.functional_property_)
+    {
+      for(const auto& existing : from->object_relations_)
+        if(existing.first == property && existing.second != on)
+          throw GraphException("Inconsistency prevented regarding functional property '" + property->value() +
+                               "': already has value '" + existing.second->value() + "'" + ctx);
+    }
+
+    if(checkRangeAndDomain(from, property, on) == false)
+      throw GraphException("Inconsistency prevented regarding the range or domain of property '" + property->value() + "'" + ctx);
+  }
+
+  void IndividualGraph::checkDataRelationConstraints(IndividualBranch* from, DataPropertyBranch* property, LiteralNode* data, const std::string& context)
+  {
+    const std::string ctx = context.empty() ? "" : " [induced by " + context + "]";
+
+    if(property->properties_.functional_property_)
+    {
+      for(const auto& existing : from->data_relations_)
+        if(existing.first == property && existing.second != data)
+          throw GraphException("Inconsistency prevented regarding functional data property '" + property->value() +
+                               "': already has value '" + existing.second->value() + "'" + ctx);
+    }
+
+    if(checkRangeAndDomain(from, property, data) == false)
+      throw GraphException("Inconsistency prevented regarding the range or domain of data property '" + property->value() + "'" + ctx);
+  }
+
+  int IndividualGraph::addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba, bool inferred, bool check_existence)
+  {
     int index = -1;
     if(check_existence)
       index = indiv_from->objectRelationExists(property, indiv_on);
     if(index == -1)
     {
-      if(checkRangeAndDomain(indiv_from, property, indiv_on) == false)
-        throw GraphException("Inconsistency prevented regarding the range or domain of the property");
-
+      checkObjectRelationConstraints(indiv_from, property, indiv_on);
       indiv_from->object_relations_.emplaceBack(property, indiv_on);
-      index = (int)indiv_from->object_relations_.size() - 1;
+      index = static_cast<int>(indiv_from->object_relations_.size()) - 1;
       indiv_on->setUpdated(true);
       indiv_from->setUpdated(true);
     }
 
-    indiv_from->object_relations_[index].probability = (float)proba;
+    indiv_from->object_relations_[index].probability = static_cast<float>(proba);
     indiv_from->object_relations_[index].inferred = inferred;
 
     return index;
@@ -2081,15 +2331,13 @@ namespace ontologenius {
       index = indiv_from->dataRelationExists(property, data);
     if(index == -1)
     {
-      if(checkRangeAndDomain(indiv_from, property, data) == false)
-        throw GraphException("Inconsistency prevented regarding the range or domain of the property");
-
+      checkDataRelationConstraints(indiv_from, property, data);
       indiv_from->data_relations_.emplaceBack(property, data);
-      index = (int)indiv_from->data_relations_.size() - 1;
+      index = static_cast<int>(indiv_from->data_relations_.size()) - 1;
       indiv_from->setUpdated(true);
     }
 
-    indiv_from->data_relations_[index].probability = (float)proba;
+    indiv_from->data_relations_[index].probability = static_cast<float>(proba);
     indiv_from->data_relations_[index].inferred = inferred;
 
     return index;
@@ -2103,7 +2351,7 @@ namespace ontologenius {
       IndividualBranch* branch_on = findBranchSafe(indiv_on);
       if(branch_on == nullptr)
       {
-        ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_on);
+        const ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_on);
         if(test != nullptr)
           throw GraphException("object entity does not exists");
 
@@ -2114,7 +2362,7 @@ namespace ontologenius {
       ObjectPropertyBranch* branch_prop = graphs_->object_properties_.findBranchSafe(property);
       if(branch_prop == nullptr)
       {
-        DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
+        const DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
         if(test != nullptr)
           throw GraphException(property + " is a data property");
 
@@ -2138,7 +2386,7 @@ namespace ontologenius {
       DataPropertyBranch* branch_prop = graphs_->data_properties_.findBranchSafe(property);
       if(branch_prop == nullptr)
       {
-        ObjectPropertyBranch* test = graphs_->object_properties_.findBranchSafe(property);
+        const ObjectPropertyBranch* test = graphs_->object_properties_.findBranchSafe(property);
         if(test != nullptr)
           throw GraphException(property + " is an object property");
 
@@ -2166,7 +2414,7 @@ namespace ontologenius {
       IndividualBranch* branch_from = findBranchSafe(indiv_from);
       if(branch_from == nullptr)
       {
-        ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_from);
+        const ClassBranch* test = graphs_->classes_.findBranchSafe(indiv_from);
         if(test != nullptr)
           throw GraphException("The individual to apply the relation does not exist");
 
@@ -2177,7 +2425,7 @@ namespace ontologenius {
       ObjectPropertyBranch* branch_prop = graphs_->object_properties_.findBranchSafe(property);
       if(branch_prop == nullptr)
       {
-        DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
+        const DataPropertyBranch* test = graphs_->data_properties_.findBranchSafe(property);
         if(test != nullptr)
           throw GraphException(property + " is a data property");
 
@@ -2633,6 +2881,7 @@ namespace ontologenius {
 
     new_branch->dictionary_ = old_branch->dictionary_;
     new_branch->steady_dictionary_ = old_branch->steady_dictionary_;
+    new_branch->comments_ = old_branch->comments_;
 
     for(const auto& is_a : old_branch->is_a_)
     {
@@ -2678,7 +2927,7 @@ namespace ontologenius {
   void IndividualGraph::insertBranchInVectors(IndividualBranch* branch)
   {
     all_branchs_.push_back(branch);
-    if((size_t)branch->get() >= ordered_individuals_.size())
+    if(static_cast<size_t>(branch->get()) >= ordered_individuals_.size())
       ordered_individuals_.resize(branch->get() + 1, nullptr);
     ordered_individuals_[branch->get()] = branch;
   }
@@ -2686,7 +2935,7 @@ namespace ontologenius {
   void IndividualGraph::removeBranchInVectors(size_t vector_index)
   {
     const index_t index = all_branchs_[vector_index]->get();
-    all_branchs_.erase(all_branchs_.begin() + (int)vector_index);
+    all_branchs_.erase(all_branchs_.begin() + static_cast<int>(vector_index));
     ordered_individuals_[index] = nullptr;
   }
 

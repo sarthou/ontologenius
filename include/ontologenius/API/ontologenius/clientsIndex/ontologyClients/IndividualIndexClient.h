@@ -24,21 +24,21 @@ namespace onto {
     /// @param index is the identifier of the individual being the subject of the triplet.
     /// @param property is the identifier of the property being the predicat of the triplet.
     /// @param selector can be set to only get results inheriting from the selector class.
-    /// The default value "" represents no restriction on the result.
+    /// The default value 0 represents no restriction on the result.
     /// @return a vector of identifiers of individuals.
     std::vector<int64_t> getOn(int64_t index, int64_t property, int64_t selector = 0);
     /// @brief Gives all the individuals having the specified property pointing to the specified individual.
     /// @param property is the identifier of the property being the predicat of the triplet.
     /// @param index is the identifier of the individual being the object of the triplet.
     /// @param selector can be set to only get results inheriting from the selector class.
-    /// The default value "" represents no restriction on the result.
+    /// The default value 0 represents no restriction on the result.
     /// @return a vector of identifiers of individuals.
     std::vector<int64_t> getFrom(int64_t property, int64_t index, int64_t selector = 0);
     /// @brief Gives all the properties linking the two specified individuals.
     /// @param indiv_from is the identifier of the individual being the subject of the triplet.
     /// @param indiv_to is the identifier of the individual being the object of the triplet.
     /// @param selector can be set to only get results inheriting from the selector property.
-    /// The default value "" represents no restriction on the result.
+    /// The default value 0 represents no restriction on the result.
     /// @param depth can be set to limit tree propagation to a specific value.
     /// The default value -1 represents no propagation limitation.
     /// @return a vector of identifiers of properties.
@@ -54,8 +54,10 @@ namespace onto {
     std::vector<int64_t> getRelatedOn(int64_t property);
     /// @brief Gives all the individuals having a property pointing to the specified individual.
     /// @param index is the identifier of the individual being the subject of the triplet.
+    /// @param selector can be set to only get results inheriting from the selector class.
+    /// The default value 0 represents no restriction on the result.
     /// @return a vector of identifiers of individuals.
-    std::vector<int64_t> getRelatedWith(int64_t index);
+    std::vector<int64_t> getRelatedWith(int64_t index, int64_t selector = 0);
 
     /// @brief Gives all the properties applied to the specified individual.
     /// @param index is the identifier of the individual being the subject of the triplet.
@@ -69,10 +71,10 @@ namespace onto {
     std::vector<int64_t> getRelationOn(int64_t index, int depth = -1);
     /// @brief Gives all the individuals pointed by a property applied to the specified individual.
     /// @param index is the identifier of the individual being the object of the triplet.
-    /// @param depth can be set to limit tree propagation to a specific value.
-    /// The default value -1 represents no propagation limitation.
+    /// @param selector can be set to only get results inheriting from the selector class.
+    /// The default value 0 represents no restriction on the result.
     /// @return a vector of identifiers of individuals.
-    std::vector<int64_t> getRelationWith(int64_t index);
+    std::vector<int64_t> getRelationWith(int64_t index, int64_t selector = 0);
 
     /// @brief Gives all the properties for which the specified individual is part of the domain.
     /// @param index is the identifier of an individual.
@@ -85,7 +87,7 @@ namespace onto {
     /// @brief Gives all the properties for which the specified individual is part of the range.
     /// @param index is the identifier of an individual.
     /// @param selector can be set to only get results inheriting from the selector property.
-    /// The default value "" represents no restriction on the result.
+    /// The default value 0 represents no restriction on the result.
     /// @param depth can be set to limit tree propagation of the individual to a specific value.
     /// The default value -1 represents no propagation limitation.
     /// @return a vector of identifiers of object properties.

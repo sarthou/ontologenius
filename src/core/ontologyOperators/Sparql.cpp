@@ -107,7 +107,7 @@ namespace ontologenius {
   }
 
   template<typename T>
-  std::vector<std::vector<T>> Sparql::resolve(std::vector<SparqlTriplet_t<T>> query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
+  std::vector<std::vector<T>> Sparql::resolve(const std::vector<SparqlTriplet_t<T>>& query, SparqlOperator_e op, const std::vector<std::vector<T>>& prev_res)
   {
     std::vector<std::vector<T>> res;
     if(prev_res.empty() == false)
@@ -463,7 +463,7 @@ namespace ontologenius {
       }
       else
       {
-        const size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
+        const size_t min_pose = std::min({query.size(), first_keyword_pose, first_block_pose});
         SparqlBlock_t block;
         block.raw = query.substr(0, min_pose);
         block.op = sparql_none;

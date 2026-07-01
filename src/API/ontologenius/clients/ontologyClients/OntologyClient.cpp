@@ -102,4 +102,9 @@ namespace onto {
     return (callStr("exist", name).empty() == false);
   }
 
+  std::vector<std::string> OntologyClient::getComments(const std::string& name)
+  {
+    return call("getComments", name);
+  }
+
 } // namespace onto

@@ -276,7 +276,7 @@ namespace ontologenius {
   template<typename T>
   void OntoGraph<B>::getDown(B* branch, std::unordered_set<T>& res, int depth, unsigned int current_depth)
   {
-    if(current_depth <= (unsigned int)depth)
+    if(current_depth <= static_cast<unsigned int>(depth))
     {
       current_depth++;
       if(this->insert(res, branch))
@@ -297,7 +297,7 @@ namespace ontologenius {
   template<typename T>
   void OntoGraph<B>::getUp(B* branch, std::unordered_set<T>& res, int depth, unsigned int current_depth)
   {
-    if(current_depth <= (unsigned int)depth)
+    if(current_depth <= static_cast<unsigned int>(depth))
     {
       current_depth++;
 
@@ -319,7 +319,7 @@ namespace ontologenius {
   template<typename B>
   void OntoGraph<B>::getDownPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth)
   {
-    if(current_depth <= (unsigned int)depth)
+    if(current_depth <= static_cast<unsigned int>(depth))
     {
       current_depth++;
       if(res.insert(branch).second)
@@ -349,14 +349,14 @@ namespace ontologenius {
   template<typename B>
   void OntoGraph<B>::getUpPtr(B* branch, std::unordered_set<B*>& res, int depth, unsigned int current_depth)
   {
-    if(current_depth < (unsigned int)depth)
+    if(current_depth < static_cast<unsigned int>(depth))
     {
       current_depth++;
       if(res.insert(branch).second)
         for(auto& mother : branch->mothers_)
           getUpPtr(mother.elem, res, depth, current_depth);
     }
-    else if(current_depth == (unsigned int)depth)
+    else if(current_depth == static_cast<unsigned int>(depth))
       res.insert(branch);
   }
 
@@ -515,7 +515,7 @@ namespace ontologenius {
   void OntoGraph<B>::mitigate(B* branch)
   {
     std::vector<SingleElement<B*>> childs = branch->childs_;
-    for(SingleElement<B*>& child : childs)
+    for(const SingleElement<B*>& child : childs)
     {
       std::unordered_set<B*> up;
       getUpPtr(child.elem, up);
@@ -528,7 +528,7 @@ namespace ontologenius {
     }
 
     RelationsWithInductions<SingleElement<B*>>& mothers = branch->mothers_;
-    for(SingleElement<B*>& mother : mothers)
+    for(const SingleElement<B*>& mother : mothers)
     {
       std::unordered_set<B*> down;
       getDownPtr(mother.elem, down);

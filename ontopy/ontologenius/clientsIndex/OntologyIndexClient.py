@@ -100,7 +100,7 @@ class OntologyIndexClient(ClientBaseIndex):
         return self.callIndexes("findSub", param)
 
     def findRegex(self, name, take_id = True, selector = 0):
-        """Give all concepts (integer[]) with a label matching the regular expression regex(str).
+        """Gives all concepts (integer[]) with a label matching the regular expression regex(str).
            The default take_id(bool) argument can be set to false if you do not want to consider
            the concept identifier as a possible default name.
            The optional selector(integer) parameter can be set to only get results inheriting from the selector(integer) concept.
@@ -115,7 +115,7 @@ class OntologyIndexClient(ClientBaseIndex):
         return self.callIndexes("findRegex", param)
 
     def findFuzzy(self, name, threshold = 0.5, take_id = True, selector = 0):
-        """Give all the names of concepts (str[]) with the lowest
+        """Gives all the names of concepts (str[]) with the lowest
            edit distance with parameter name(str).
            The default take_id(bool) argument can be set to false if you do not want to
            consider the concept identifier as a possible default name.
@@ -133,6 +133,15 @@ class OntologyIndexClient(ClientBaseIndex):
         if selector != 0:
             param += " -s " + str(selector)
         return self.call("findFuzzy", param)
+
+    def getComments(self, index):
+        """Gives the comments (str[]) associated to the concept referenced by the 
+            provided parameter index(integeer) 
+            (i.e. class, individual, object property, data property).
+           The result of this function depends on the setting of the working language.
+        """
+        param = str(index)
+        return self.callStr("getName", param)
 
     def exist(self, index):
         """Returns True if the concept index(str) exists in the subpart of the ontology 

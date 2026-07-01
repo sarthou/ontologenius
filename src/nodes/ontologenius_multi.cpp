@@ -38,7 +38,7 @@ void removeUselessSpace(std::string& text)
   while((text[0] == ' ') && (text.empty() == false))
     text.erase(0, 1);
 
-  while((text[text.size() - 1] == ' ') && (text.empty() == false))
+  while((text.back() == ' ') && (text.empty() == false))
     text.erase(text.size() - 1, 1);
 }
 
@@ -128,8 +128,8 @@ std::vector<std::string> getDiff(const std::string& param, int* res_code)
       else
         onto2_ptr = interfaces[onto2]->getOntology();
 
-      const std::string concept = base_match[3].str();
-      res = diff.getDiff(onto1_ptr, onto2_ptr, concept);
+      const std::string concept_name = base_match[3].str();
+      res = diff.getDiff(onto1_ptr, onto2_ptr, concept_name);
     }
   }
   else

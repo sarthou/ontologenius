@@ -25,9 +25,9 @@ namespace onto {
     return callNR("delete", name);
   }
 
-  std::vector<std::string> ManagerClient::getDifference(const std::string& onto1, const std::string& onto2, const std::string& concept)
+  std::vector<std::string> ManagerClient::getDifference(const std::string& onto1, const std::string& onto2, const std::string& concept_name)
   {
-    const std::string param = onto1 + "|" + onto2 + "|" + concept;
+    const std::string param = onto1 + "|" + onto2 + "|" + concept_name;
     return call("difference", param);
   }
 

@@ -116,7 +116,7 @@ namespace ontologenius {
 
     bool eraseGeneric(void* s, void* p, void* o) override
     {
-      return erase((S*)s, (P*)p, (O*)o);
+      return erase(static_cast<S*>(s), static_cast<P*>(p), static_cast<O*>(o));
     }
 
     bool erase(S* subject,
@@ -124,7 +124,7 @@ namespace ontologenius {
                O* object)
     {
       size_t index = this->find(subject, predicate, object);
-      if(index != size_t(-1))
+      if(index != static_cast<size_t>(-1))
       {
         triplets.erase(triplets.begin() + index);
         return true;

@@ -1,0 +1,591 @@
+<html lang="en_US">
+
+<head>
+  <title>Reasoning Capabilities | Ontologenius 0.4.7</title>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../style/reasoning_capabilities.css" rel="stylesheet" type="text/css">
+  <link href="../images/favicon.ico" rel="shortcut icon">
+  <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
+  <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="header" id="header">
+    <header class="fixed" id="navbar">
+      <div class="container">
+          <div class="navbar-header">
+            <div id="header-buttons">
+                <ul id="header-ul" data-event="hover_intent" data-effect="fade" data-effect-speed="500">
+                    <li class="header-item"><a class="header-link" href="https://github.com/sarthou/ontologenius" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="55px" height="55px" style="fill:currentColor"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></a></li>
+                </ul>
+            </div>
+            <a class="navbar-icon" href="../index.html">
+              <img src="../images/ontologenius_light.png " alt="ontologenius" width="65px" height="65px"/>
+            </a>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="main">
+
+    <div class="navigationbar">
+      <ul class="sub-navigation">
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
+      </ul>
+      <h1>Ontologenius Documentation</h1>
+    </div>
+
+    <div class="content">
+      <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
+
+        <div class="contents class-content">
+          <div id="contents-toggle" class=""></div>
+          <h3>Contents</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="#anonymous">OWL Class Expressions</a></li>
+            <li class="level1"><a href="#chain">Property Chains</a></li>
+            <li class="level1"><a href="#inverse">Inverse Properties</a></li>
+            <li class="level1"><a href="#symmetric">Symmetric Properties</a></li>
+            <li class="level1"><a href="#transitivity">Transitive Properties</a></li>
+            <li class="level1"><a href="#range-domain">Range and Domain</a></li>
+            <li class="level1"><a href="#rules">SWRL Rules</a></li>
+            <li class="level1"><a href="#dictionary">Dictionary Normalization</a></li>
+            <li class="level1"><a href="#generalize">Property Generalization</a></li>
+          </ul>
+        </div>
+
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Getting Start</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="../Download.html">Download</a></li>
+            <li class="level1">Install Ontologenius</li>
+            <li class="level2"><a href="../InstallOntologeniusROS1.html">- Install with ROS1</a></li>
+            <li class="level2"><a href="../InstallOntologeniusROS2.html">- Install with ROS2</a></li>
+            <li class="level1"><a href="../SetUp.html">Set Up Your Environnement</a></li>
+            <li class="level1"><a href="../cpp_Tutorials/Tutorials.html">Cpp Tutorials</a></li>
+            <li class="level1"><a href="../python_Tutorials/Tutorials.html">Python Tutorials</a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <div id="contents-toggle" class=""></div>
+          <h3>Overview</h3>
+          <ul style="display: block;">
+            <li class="level1"><a href="launchers.html">Launchers</a></li>
+            <li class="level1"><a href="ontoloGUI.html">OntoloGUI</a></li>
+            <li class="level1"><a href="reasonersConfiguration.html">Reasoners configuration</a></li>
+            <li class="level1"><a href="reasoningCapabilities.html"><b>Reasoning capabilities</b></a></li>
+          </ul>
+        </div>
+
+        <div class="contents">
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../cpp_API/CppAPI.html">
+              All C++ Classes
+            </a>
+          </h3>
+          <h3>
+            <i class="fas fa-angle-right"></i>
+            <a href="../python_API/PythonAPI.html">
+              All Python Classes
+            </a>
+          </h3>
+        </div>
+      </div>
+
+      <div class="context">
+        <h1 class="title">Reasoning Capabilities</h1>
+
+        <p>
+          Ontologenius comes with a set of built-in reasoner plugins that automatically infer new knowledge
+          from the ontology at run time. Understanding what each reasoner does (and where its boundaries lie) is
+          key to designing ontologies that take full advantage of the system.
+        </p>
+        <p>
+          All reasoners are implemented as <b>pluginlib plugins</b>, meaning they can be loaded, activated, and
+          deactivated dynamically without restarting the node. You can also write your own reasoner plugin by
+          inheriting from <span class="plugin-name">ontologenius::ReasonerInterface</span>.
+          Refer to the <a href="reasonersConfiguration.html">Reasoners configuration</a> page for how to
+          select and configure them.
+        </p>
+
+        <!-- ===== Architecture ===== -->
+        <h2 id="execution-model"><i class="fas fa-angle-right"></i> Reasoning Execution Model</h2>
+
+        <p>Each reasoner can implement one or more of the following reasoning hooks:</p>
+
+        <table class="reasoner-table">
+          <tr>
+            <th>Hook</th>
+            <th>When it runs</th>
+            <th>Typical use</th>
+          </tr>
+          <tr>
+            <td><b>postReason()</b></td>
+            <td>After every ontology modification batch (insert, delete, …)</td>
+            <td>Propagate consequences of a change as soon as it occurs</td>
+          </tr>
+          <tr>
+            <td><b>preReason()</b></td>
+            <td>Before a query is answered</td>
+            <td>Ensure the knowledge is up to date before replying. Can be used to call external processes to create "computables".</td>
+          </tr>
+          <tr>
+            <td><b>periodicReason()</b></td>
+            <td>At a regular frequency (~100 Hz)</td>
+            <td>Expensive background inference that does not need to be instantaneous</td>
+          </tr>
+          <tr>
+            <td><b>postBranchingReason()</b></td>
+            <td>After a commit or checkout operation</td>
+            <td>Ensure the ontology closure is correct after versioning operations</td>
+          </tr>
+        </table>
+
+        <p>All inferred facts are tagged as <em>inferred</em> and carry an <em>explanation</em> (a chain of
+        triplets that justify the inference) which can be retrieved through the API.</p>
+
+        <!-- ===== Summary table ===== -->
+        <h2 id="at-a-glance"><i class="fas fa-angle-right"></i> Reasoners at a Glance</h2>
+
+        <table class="reasoner-table">
+          <tr>
+            <th>Plugin name</th>
+            <th>OWL / SWRL feature</th>
+            <th>Hook</th>
+            <th>On by default</th>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerAnonymous</span></td>
+            <td>OWL class expressions &amp; equivalentClass</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerChain</span></td>
+            <td>owl:propertyChainAxiom</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerInverseOf</span></td>
+            <td>owl:inverseOf</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerSymmetric</span></td>
+            <td>owl:SymmetricProperty</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerTransitivity</span></td>
+            <td>owl:TransitiveProperty</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerRangeDomain</span></td>
+            <td>rdfs:range / rdfs:domain</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerRule</span></td>
+            <td>SWRL rules</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerDictionary</span></td>
+            <td>Label normalization</td>
+            <td><span class="badge badge-post">post</span></td>
+            <td><span class="badge badge-default">yes</span></td>
+          </tr>
+          <tr>
+            <td><span class="plugin-name">ontologenius::ReasonerGeneralize</span></td>
+            <td>Property generalization (non-standard)</td>
+            <td><span class="badge badge-periodic">periodic</span></td>
+            <td><span class="badge badge-optional">no</span></td>
+          </tr>
+        </table>
+
+        <!-- ===== ReasonerAnonymous ===== -->
+        <h2 id="anonymous"><i class="fas fa-angle-right"></i> OWL Class Expressions (ReasonerAnonymous)</h2>
+
+        <p>
+          This is the most feature-rich built-in reasoner. It evaluates OWL <b>equivalentClass</b> axioms defined
+          in the ontology and classifies individuals accordingly: when an individual satisfies the class expression
+          associated with a named class, that individual is automatically asserted as a member of that class.
+        </p>
+
+        <h3 class="reasoner-title">Supported OWL constructors</h3>
+        <ul>
+          <li><b>owl:intersectionOf</b> : individual must satisfy all member expressions (logical AND)</li>
+          <li><b>owl:unionOf</b> : individual must satisfy at least one member expression (logical OR)</li>
+          <li><b>owl:complementOf</b> : individual must <em>not</em> satisfy the expression (logical NOT)</li>
+          <li><b>owl:oneOf</b> : individual must be one of the enumerated individuals</li>
+          <li><b>owl:someValuesFrom</b> : individual has at least one relation of the given property to an individual of the given class</li>
+          <li><b>owl:allValuesFrom</b> : all values of the given property are of the given class (requires CWA, see below)</li>
+          <li><b>owl:hasValue</b> : individual has a specific value for the given property</li>
+          <li><b>owl:minCardinality</b> : individual has at least <em>n</em> values for the given property</li>
+          <li><b>owl:maxCardinality</b> : individual has at most <em>n</em> values for the given property (requires CWA)</li>
+          <li><b>owl:cardinality</b> : individual has exactly <em>n</em> values for the given property (requires CWA)</li>
+        </ul>
+
+        <p>These constructors can be freely nested to form complex class expressions.</p>
+
+        <p>
+          <code>owl:subClassOf</code> expressions with class expressions are also fully supported, following
+          standard OWL semantics: since <code>C ⊑ E</code> means every member of <code>C</code> must satisfy
+          <code>E</code> (but not the converse), they do <em>not</em> classify individuals into the class by
+          evaluating the expression. However, when an individual is asserted as a member of the class by any
+          other means, all <em>proved facts</em> deterministically implied by the expression (class memberships
+          and property relations) are automatically applied to that individual, just as for
+          <code>owl:equivalentClass</code>.
+        </p>
+
+        <h3 class="reasoner-title">Parameter</h3>
+        <table class="param-table">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>standard_mode</code></td>
+            <td>bool</td>
+            <td>false</td>
+            <td>
+              When set to <code>true</code>, disables the evaluation of <code>allValuesFrom</code>,
+              <code>maxCardinality</code>, and <code>cardinality</code> constraints.
+              This makes the reasoner purely Open-World Assumption (OWA) compliant, at the cost of losing
+              those constraint types.
+            </td>
+          </tr>
+        </table>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Only individuals can be classified; class-level subsumption (classifying a class as a
+            subclass of another based on anonymous expressions) is not performed.</p>
+          <p>&#8226; <code>owl:allValuesFrom</code>, <code>owl:maxCardinality</code>, and
+            <code>owl:cardinality</code> implicitly rely on a <b>Closed-World Assumption</b> (CWA):
+            they assume that relations not present in the ontology simply do not exist.
+            Use <code>standard_mode</code> if your ontology follows strict OWA.</p>
+          <p>&#8226; Disjoint class axioms (<code>owl:disjointWith</code>) are used as a guard to prevent
+            contradictory classification, but they do not trigger inferences themselves.</p>
+        </div>
+
+        <!-- ===== ReasonerChain ===== -->
+        <h2 id="chain"><i class="fas fa-angle-right"></i> Property Chains (ReasonerChain)</h2>
+
+        <p>
+          Implements <b>owl:propertyChainAxiom</b> inference. When a sequence of object properties connects
+          two individuals, and that sequence matches a declared chain axiom, the corresponding composed
+          property is asserted directly between the two endpoints. Chain can be of any size.
+        </p>
+        <p>
+          <b>Example:</b> if <code>hasParent o hasSibling → hasUncle</code> is declared and
+          <em>Alice</em> <code>hasParent</code> <em>Bob</em>, and <em>Bob</em> <code>hasSibling</code>
+          <em>Charlie</em>, then <em>Alice</em> <code>hasUncle</code> <em>Charlie</em> is inferred.
+        </p>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Only applies to <b>object properties</b> between named individuals.</p>
+          <p>&#8226; The composed property is added incrementally: each postReason pass can extend chains
+            that were created by a previous pass. This means that chains of chains may take more than one
+            reasoning cycle to fully materialise after a single ontology update.</p>
+        </div>
+
+        <!-- ===== ReasonerInverseOf ===== -->
+        <h2 id="inverse"><i class="fas fa-angle-right"></i> Inverse Properties (ReasonerInverseOf)</h2>
+
+        <p>
+          Implements <b>owl:inverseOf</b> inference. Whenever an object property relation is asserted between
+          two individuals, the reasoner automatically adds the inverse relation.
+        </p>
+        <p>
+          <b>Example:</b> if <code>isPartOf owl:inverseOf hasPart</code> is declared, asserting
+          <em>wheel</em> <code>isPartOf</code> <em>car</em> will also infer
+          <em>car</em> <code>hasPart</code> <em>wheel</em>.
+        </p>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Only applies to <b>object properties</b> between named individuals.</p>
+          <p>&#8226; When a property has no direct <code>owl:inverseOf</code> declaration but inherits one
+            from a parent property, the reasoner walks up the hierarchy to find the lowest declared inverse.
+            If the hierarchy is deep, the inverse used may be a more general property than expected.</p>
+        </div>
+
+        <!-- ===== ReasonerSymmetric ===== -->
+        <h2 id="symmetric"><i class="fas fa-angle-right"></i> Symmetric Properties (ReasonerSymmetric)</h2>
+
+        <p>
+          Implements <b>owl:SymmetricProperty</b> inference. For every relation asserted through a symmetric
+          property, the reversed relation is automatically added.
+        </p>
+        <p>
+          <b>Example:</b> if <code>isSiblingOf</code> is declared as symmetric, asserting
+          <em>Alice</em> <code>isSiblingOf</code> <em>Bob</em> will also infer
+          <em>Bob</em> <code>isSiblingOf</code> <em>Alice</em>.
+        </p>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Only applies to <b>object properties</b> between named individuals.</p>
+          <p>&#8226; When a property is not directly declared as symmetric but has a symmetric ancestor
+            in the property hierarchy, the reasoner walks up the hierarchy and applies the symmetric
+            ancestor property, not the original property.</p>
+        </div>
+
+        <!-- ===== ReasonerTransitivity ===== -->
+        <h2 id="transitivity"><i class="fas fa-angle-right"></i> Transitive Properties (ReasonerTransitivity)</h2>
+
+        <p>
+          Implements <b>owl:TransitiveProperty</b> inference. Given a chain of relations through a transitive
+          property, all shortcut relations are materialised.
+        </p>
+        <p>
+          <b>Example:</b> if <code>isLocatedIn</code> is transitive, and
+          <em>Paris</em> <code>isLocatedIn</code> <em>France</em> and
+          <em>France</em> <code>isLocatedIn</code> <em>Europe</em>, then
+          <em>Paris</em> <code>isLocatedIn</code> <em>Europe</em> is inferred.
+        </p>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Only applies to <b>object properties</b> between named individuals.</p>
+          <p>&#8226; Just like property chains, transitive closure is computed incrementally: a chain
+            that grows step by step may need several reasoning cycles after a single update.</p>
+          <p>&#8226; In a deeply nested transitivity graph, the number of inferred relations can grow
+            quadratically with the chain length. Keep transitivity chains short when performance matters.</p>
+        </div>
+
+        <!-- ===== ReasonerRangeDomain ===== -->
+        <h2 id="range-domain"><i class="fas fa-angle-right"></i> Range and Domain (ReasonerRangeDomain)</h2>
+
+        <p>
+          Implements <b>rdfs:domain</b> and <b>rdfs:range</b> inference. When an object or data property
+          relation is asserted on an individual, the reasoner uses the property's declared domain and range
+          to infer class memberships.
+        </p>
+        <p>
+          <b>Example:</b> if <code>hasChild rdfs:domain Person</code> and
+          <code>hasChild rdfs:range Person</code> are declared, asserting
+          <em>Alice</em> <code>hasChild</code> <em>Bob</em> will infer
+          both <em>Alice</em> and <em>Bob</em> are instances of <code>Person</code>.
+        </p>
+        <p>
+          Domain and range inference also works for <b>data properties</b>: if a data property has a declared
+          domain, assigning any literal value to an individual through that property will infer the individual's
+          class membership.
+        </p>
+        <p>
+          Domain and range constraints are applied for the property <em>and all its ancestor properties</em>
+          in the property hierarchy, using the most specific applicable constraint found.
+        </p>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Only <b>class memberships of individuals</b> are inferred. No cross-property inference
+            is performed (e.g., inferring a new property from a domain/range violation).</p>
+          <p>&#8226; Range inference is only applied to <b>object properties</b>. Data property range
+            (the datatype itself) is not used to infer individual classifications.</p>
+          <p>&#8226; <code>rdfs:domain</code> / <code>rdfs:range</code> axioms that reference complex
+            class expressions (anonymous classes) are not resolved by this reasoner alone, the
+            <em>ReasonerAnonymous</em> reasoner handles those.</p>
+        </div>
+
+        <!-- ===== ReasonerRule ===== -->
+        <h2 id="rules"><i class="fas fa-angle-right"></i> SWRL Rules (ReasonerRule)</h2>
+
+        <p>
+          Evaluates <b>SWRL (Semantic Web Rule Language)</b> rules embedded in the ontology. Rules consist
+          of a <em>body</em> (antecedent) and a <em>head</em> (consequent). The reasoner finds all
+          variable bindings that satisfy the body and applies the consequent for each solution.
+        </p>
+        <p>Three types of atoms are supported in both the body and the head:</p>
+        <ul>
+          <li><b>Class atoms</b> : <code>ClassName(?x)</code> tests or asserts individual class membership</li>
+          <li><b>Object property atoms</b> : <code>propName(?x, ?y)</code> tests or asserts an object relation</li>
+          <li><b>Data property atoms</b>  <code>dataPropName(?x, ?v)</code> tests or asserts a data relation</li>
+        </ul>
+        <p>The following <b>built-in predicates</b> are available for use in the rule body:</p>
+        <ul>
+          <li>Numerical comparisons: <code>swrlb:greaterThan</code>, <code>swrlb:greaterThanOrEqual</code>,
+            <code>swrlb:lessThan</code>, <code>swrlb:lessThanOrEqual</code>,
+            <code>swrlb:equal</code>, <code>swrlb:notEqual</code></li>
+          <li>String comparisons: <code>swrlb:equal</code>, <code>swrlb:notEqual</code></li>
+        </ul>
+        <p>Inference supports the full property hierarchy: a rule matching
+          <code>hasAnimal(?x, ?y)</code> will also fire for relations asserted through any sub-property
+          of <code>hasAnimal</code>.</p>
+
+        <h3 class="reasoner-title">Parameter</h3>
+        <table class="param-table">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>standard_mode</code></td>
+            <td>bool</td>
+            <td>false</td>
+            <td>Reserved for future use (mirrors the parameter of ReasonerAnonymous for consistency).</td>
+          </tr>
+        </table>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Rules operate on <b>named individuals only</b>. There is no support for blank nodes
+            or variable-length paths in the rule body.</p>
+          <p>&#8226; Only a <b>subset of SWRL built-ins</b> is currently implemented: numerical and
+            string equality/inequality and ordering. Built-ins such as
+            <code>swrlb:stringConcat</code>, <code>swrlb:matches</code>, etc. are not supported.</p>
+          <p>&#8226; The rule head can assert <b>class memberships, object relations, and data relations</b>.
+            It cannot retract facts, assert same-as, or fire actions outside the ontology.</p>
+          <p>&#8226; Rule evaluation is exhaustive over every stored rule on every postReason cycle.
+            Rules with wide-ranging patterns (e.g., free variables ranging over all individuals) can
+            become expensive at scale.</p>
+        </div>
+
+        <!-- ===== ReasonerDictionary ===== -->
+        <h2 id="dictionary"><i class="fas fa-angle-right"></i> Dictionary Normalization (ReasonerDictionary)</h2>
+
+        <p>
+          This reasoner is not an OWL inference engine in the traditional sense, but it is a key component
+          for natural-language-based querying. It automatically derives <b>normalized alternative labels</b>
+          for every entity (classes, individuals, and properties) from their declared
+          <code>rdfs:label</code> annotations.
+        </p>
+        <p>The following transformations are applied:</p>
+        <ul>
+          <li><b>CamelCase splitting</b> : <code>redApple</code> → <code>red apple</code></li>
+          <li><b>Underscore splitting</b> : <code>red_apple</code> → <code>red apple</code></li>
+          <li><b>Lower-case variant</b> : <code>RedApple</code> → <code>redapple</code></li>
+          <li><b>Quote normalisation</b> : replaces typographic quotes with standard ASCII quotes</li>
+        </ul>
+
+        <h3 class="reasoner-title">Parameter</h3>
+        <table class="param-table">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>use_id</code></td>
+            <td>bool</td>
+            <td>false</td>
+            <td>
+              When set to <code>true</code>, the entity's local IRI identifier is also registered as
+              an English label when no <code>rdfs:label</code> is declared. Useful for ontologies that
+              rely on meaningful identifiers rather than annotations.
+            </td>
+          </tr>
+        </table>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; Transformations are applied <b>once per entity</b> (flagged to avoid re-processing).
+            Labels added after the first reasoning pass will not receive the normalized variants unless
+            the flag is cleared.</p>
+          <p>&#8226; The splitting heuristics are based on character-level rules. They work well for
+            standard CamelCase and snake_case identifiers but may produce unexpected splits on abbreviations
+            or identifiers with mixed conventions.</p>
+        </div>
+
+        <!-- ===== ReasonerGeneralize ===== -->
+        <h2 id="generalize"><i class="fas fa-angle-right"></i> Property Generalization (ReasonerGeneralize)</h2>
+
+        <p>
+          This is a <b>non-standard, heuristic reasoner</b> that is <em>not active by default</em>.
+          It observes the property usage of individuals belonging to a class and infers
+          <b>class-level property assertions</b> when enough individuals share the same pattern.
+        </p>
+        <p>
+          Concretely, it works as follows: for a given class, it collects all data and object
+          property relations declared on the individuals and sub-classes of that class.
+          If a property/value pair appears in at least <code>min_count</code> sub-members
+          <em>and</em> in at least <code>min_percent</code> of them, the relation is promoted to the
+          class level as an inferred fact.
+        </p>
+        <p>
+          This is useful for acquiring knowledge about typical class behaviour from instance-level data,
+          analogous to a simple form of inductive learning.
+        </p>
+
+        <h3 class="reasoner-title">Parameters</h3>
+        <table class="param-table">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>min_count</code></td>
+            <td>integer</td>
+            <td>2</td>
+            <td>Minimum number of sub-members that must exhibit the property/value pair for it to be generalised.</td>
+          </tr>
+          <tr>
+            <td><code>min_percent</code></td>
+            <td>float [0–1]</td>
+            <td>0.75</td>
+            <td>Minimum proportion of sub-members (among those considered) that must exhibit the pair.</td>
+          </tr>
+        </table>
+
+        <div class="limitation-box">
+          <p><b>Limitations</b></p>
+          <p>&#8226; The reasoner should be considered as an example of custom reasoning process that 
+            can be created with Ontoogenius.</p>
+          <p>&#8226; This reasoner is <b>not logically sound</b> in the OWL sense: it performs
+            statistical generalisation, not deductive inference. Inferred facts at the class level
+            reflect a <em>tendency</em>, not a guarantee.</p>
+          <p>&#8226; It runs <b>periodically</b> (processing a small batch of classes per cycle) rather
+            than reactively. New individuals or relations may take several seconds before the
+            generalization is applied.</p>
+          <p>&#8226; Only direct sub-members (individuals and immediate sub-classes at depth 1) are
+            considered. Deep inheritance trees are not fully taken into account.</p>
+          <p>&#8226; Object property generalisation groups relations by property only (not by the
+            specific target individual), so the generalised fact records the most common target class,
+            not a specific individual.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+<footer>
+  <div align="center">
+    <p>
+      Brought to you by:
+      <a class="laas_logo" href="https://www.laas.fr/public/">
+        <img src="../images/LogoLAAS-2016_BW.png " alt="LAAS-CNRS" height="60px"/>
+      </a>
+    </p>
+  </div>
+</footer>
+
+</html>

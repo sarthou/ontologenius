@@ -40,6 +40,7 @@ namespace ontologenius {
     std::vector<std::pair<RuleAtomDescriptor_t, std::vector<RuleVariableDescriptor_t>>> antecedents;
     std::vector<std::pair<RuleAtomDescriptor_t, std::vector<RuleVariableDescriptor_t>>> consequents;
     std::string rule_str;
+    std::map<std::string, std::vector<std::string>> comments_;
 
     std::string toString() const
     {

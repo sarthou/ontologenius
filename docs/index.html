@@ -1,7 +1,7 @@
 <html lang="en_US">
 
 <head>
-  <title>Ontologenius 0.4.6</title>
+  <title>Ontologenius 0.4.7</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
   <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,6 +83,16 @@
                 </li>
 
                 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown">
+                  <a title="Overview" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">Overview <span class="caret"></span></a>
+                  <ul role="menu" class=" dropdown-menu">
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Launchers" href="overview/launchers.html">Launchers</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="OntoloGUI" href="overview/ontoloGUI.html">OntoloGUI</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Reasoners configuration" href="overview/reasonersConfiguration.html">Reasoners configuration</a></li>
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Reasoning capabilities" href="overview/reasoningCapabilities.html">Reasoning capabilities</a></li>
+                  </ul>
+                </li>
+
+                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown">
                   <a title="API" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">API <span class="caret"></span></a>
                   <ul role="menu" class=" dropdown-menu">
                     <li class="menu-item menu-item-type-post_type menu-item-object-page"><a title="Cpp API" href="cpp_API/CppAPI.html">Cpp API</a></li>
@@ -109,8 +119,8 @@
             <div class="row">
               <div class="text-center">
                 <p>
-                  <a href="https://github.com/sarthou/ontologenius/archive/v0.4.6.zip" class="btn btn-primary btn-lg anchorLink jumbo-button" role="button"><span class="glyphicon glyphicon-download-alt"></span> Download <small>(0.4.6)</small></a>
-                  <a href="https://github.com/sarthou/ontologenius" target="_blank" class="btn btn-custom btn-lg anchorLink jumbo-button" role="button"><span><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="github" class="github-icon"></span> View on Github</a>
+                  <a href="https://github.com/sarthou/ontologenius/archive/v0.4.7.zip" class="btn btn-primary btn-lg anchorLink jumbo-button" role="button"><span class="glyphicon glyphicon-download-alt"></span> Download <small>(0.4.7)</small></a>
+                  <a href="https://github.com/sarthou/ontologenius" target="_blank" class="btn btn-custom btn-lg anchorLink jumbo-button" role="button"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" class="github-icon" style="fill:currentColor"><path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/></svg></span> View on Github</a>
                 </p>
               </div> <!-- col-md-6 text-center -->
             </div> <!-- row -->
@@ -140,6 +150,40 @@
     </div> <!-- row -->
   </div>
 
+  <!-- Quick-navigation card strip -->
+  <div class="quicknav">
+    <a class="quicknav-card" href="overview/reasoningCapabilities.html">
+      <i class="fas fa-brain"></i>
+      <h3>Reasoning capabilities</h3>
+      <p>Discover all built-in OWL and SWRL reasoners: what they infer, their parameters, and their limitations.</p>
+    </a>
+    <a class="quicknav-card" href="overview/reasonersConfiguration.html">
+      <i class="fas fa-sliders-h"></i>
+      <h3>Reasoners configuration</h3>
+      <p>Select and configure which reasoners are active via a simple YAML file.</p>
+    </a>
+    <a class="quicknav-card" href="cpp_Tutorials/Tutorials.html">
+      <i class="fas fa-code"></i>
+      <h3>C++ Tutorials</h3>
+      <p>Step-by-step guides to integrate Ontologenius in your C++ robotic application.</p>
+    </a>
+    <a class="quicknav-card" href="python_Tutorials/Tutorials.html">
+      <i class="fab fa-python"></i>
+      <h3>Python Tutorials</h3>
+      <p>Step-by-step guides to integrate Ontologenius in your Python robotic application.</p>
+    </a>
+    <a class="quicknav-card" href="cpp_API/CppAPI.html">
+      <i class="fas fa-book"></i>
+      <h3>C++ API</h3>
+      <p>Full reference for all C++ client classes and methods.</p>
+    </a>
+    <a class="quicknav-card" href="python_API/PythonAPI.html">
+      <i class="fas fa-book-open"></i>
+      <h3>Python API</h3>
+      <p>Full reference for all Python client classes and methods.</p>
+    </a>
+  </div>
+
   <div class="onto-content">
     <div class="container">
       <div class="row">
@@ -156,6 +200,12 @@
 
               <p>Two API (C++ and Python) are available to integrate Ontologenius in a simple way.
                 Do not hesitate to check our tutorials for few examples on both API.
+              </p>
+
+              <p>Ontologenius ships with a rich set of built-in reasoners covering OWL property axioms
+                (transitivity, symmetry, inverse, chains), range/domain inference, OWL class expressions,
+                and SWRL rules. All inferred facts come with a full explanation trace.
+                &rarr; <a href="overview/reasoningCapabilities.html"><b>Explore the reasoning capabilities</b></a>
               </p>
 
               <img src="images/ros1-and-ros2.jpg" height="90">

@@ -213,7 +213,7 @@ namespace ontologenius {
       }
     }
 
-    const bool is_last = (index >= (int)(solution.ordered_variables_.size() - 1));
+    const bool is_last = (index >= static_cast<int>(solution.ordered_variables_.size() - 1));
     while(candidates.empty() == false)
     {
       solution.solution_full_[variable] = *candidates.begin();
@@ -235,7 +235,7 @@ namespace ontologenius {
 
   void SparqlSolver::nextSolution(SparqlSolution_t& solution)
   {
-    for(int i = (int)solution.ordered_variables_.size() - 1; i >= 0; i--)
+    for(int i = static_cast<int>(solution.ordered_variables_.size()) - 1; i >= 0; i--)
     {
       auto variable = solution.ordered_variables_[i];
       if(solution.candidates_[variable].empty() == false)
@@ -549,7 +549,7 @@ namespace ontologenius {
       }
       else
       {
-        const size_t min_pose = std::min(query.size(), std::min(first_keyword_pose, first_block_pose));
+        const size_t min_pose = std::min({query.size(), first_keyword_pose, first_block_pose});
         SparqlBlock_t block;
         block.raw = query.substr(0, min_pose);
         block.op = sparql_none;

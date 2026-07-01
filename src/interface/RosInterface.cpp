@@ -10,10 +10,12 @@
 
 #include "ontologenius/compat/ros.h"
 #include "ontologenius/core/ontoGraphs/Ontology.h"
+#include "ontologenius/core/reasoner/plugins/ReasonerInterface.h"
 #include "ontologenius/core/subscription/SubscriptionManager.h"
 #include "ontologenius/core/utility/error_code.h"
 #include "ontologenius/graphical/Display.h"
 #include "ontologenius/interface/InterfaceParams.h"
+#include "ontologenius/utils/String.h"
 
 #define PUB_QUEU_SIZE 1000
 #define SUB_QUEU_SIZE 10000
@@ -41,8 +43,6 @@ namespace ontologenius {
     feeder_.link(onto_);
     subscriber_.link(onto_);
     sparql_.link(onto_);
-
-    // n_.setCallbackQueue(&callback_queue_);
   }
 
   RosInterface::RosInterface(RosInterface& other, const std::string& name) : onto_(new Ontology(*other.onto_)),
@@ -54,7 +54,7 @@ namespace ontologenius {
 #endif
                                                                              name_(name),
                                                                              run_(true),
-                                                                             feeder_rate_(FEEDER_DEFAULT_RATE),
+                                                                             feeder_rate_(FEEDER_COPY_RATE),
                                                                              feeder_end_pub_(getTopicName("end", name), PUB_QUEU_SIZE),
                                                                              display_(true)
   {
@@ -95,8 +95,6 @@ namespace ontologenius {
     reasoners_.configure(config_path);
     reasoners_.load();
     Display::info("Plugins loaded : " + reasoners_.list());
-
-    feeder_rate_ = FEEDER_DEFAULT_RATE;
   }
 
   void RosInterface::init(const std::string& lang, const std::string& config_path)
@@ -108,7 +106,6 @@ namespace ontologenius {
     Display::info("Plugins loaded : " + reasoners_.list());
 
     feeder_.activateVersionning(true);
-    feeder_rate_ = FEEDER_COPY_RATE;
   }
 
   void RosInterface::run()
@@ -172,10 +169,7 @@ namespace ontologenius {
 
   void RosInterface::stop()
   {
-    // node_handle->now();
     run_ = false;
-    /*callback_queue_.disable();
-    callback_queue_.clear();*/
   }
 
   void RosInterface::lock()
@@ -237,20 +231,25 @@ namespace ontologenius {
       removeUselessSpace(req->action);
       removeUselessSpace(req->param);
 
-      if(req->action == "add")
-        res->code = onto_->readFromUri(req->param);
-      else if(req->action == "fadd")
-        res->code = onto_->readFromFile(req->param);
-      else if(req->action == "save")
-        onto_->save(req->param);
-      else if(req->action == "export")
-        feeder_.exportToXml(req->param);
-      else if(req->action == "close")
+      switch(hashStr(req->action))
       {
+      case "add"_act:
+        res->code = onto_->readFromUri(req->param);
+        break;
+      case "fadd"_act:
+        res->code = onto_->readFromFile(req->param);
+        break;
+      case "save"_act:
+        onto_->save(req->param);
+        break;
+      case "export"_act:
+        feeder_.exportToXml(req->param);
+        break;
+      case "close"_act:
         if(close() == false)
           res->code = REQUEST_ERROR;
-      }
-      else if(req->action == "reset")
+        break;
+      case "reset"_act:
       {
         lock();
         delete onto_;
@@ -265,8 +264,9 @@ namespace ontologenius {
           for(auto& file : files_)
             onto_->readFromFile(file);
         release();
+        break;
       }
-      else if(req->action == "clear")
+      case "clear"_act:
       {
         lock();
         delete onto_;
@@ -277,13 +277,17 @@ namespace ontologenius {
         subscriber_.link(onto_);
         sparql_.link(onto_);
         release();
+        break;
       }
-      else if(req->action == "setLang")
+      case "setLang"_act:
         onto_->setLanguage(req->param);
-      else if(req->action == "getLang")
+        break;
+      case "getLang"_act:
         res->values.push_back(onto_->getLanguage());
-      else
+        break;
+      default:
         res->code = UNKNOW_ACTION;
+      }
 
       return true;
     }(compat::onto_ros::getServicePointer(req), compat::onto_ros::getServicePointer(res));
@@ -296,18 +300,26 @@ namespace ontologenius {
       res->code = 0;
 
       reasoner_mutex_.lock();
-      if(req->action == "activate")
+      switch(hashStr(req->action))
+      {
+      case "activate"_act:
         res->code = reasoners_.activate(req->param);
-      else if(req->action == "deactivate")
+        break;
+      case "deactivate"_act:
         res->code = reasoners_.deactivate(req->param);
-      else if(req->action == "list")
+        break;
+      case "list"_act:
         res->values = reasoners_.listVector();
-      else if(req->action == "activeList")
+        break;
+      case "activeList"_act:
         res->values = reasoners_.activeListVector();
-      else if(req->action == "getDescription")
+        break;
+      case "getDescription"_act:
         res->values.push_back(reasoners_.getDescription(req->param));
-      else
+        break;
+      default:
         res->code = UNKNOW_ACTION;
+      }
       reasoner_mutex_.unlock();
 
       return true;
@@ -324,23 +336,29 @@ namespace ontologenius {
       InterfaceParams params;
       params.extractStringParams(req->param);
 
-      if(req->action == "export")
-        feeder_.exportToXml(params());
-      else if(req->action == "compare")
+      switch(hashStr(req->action))
       {
+      case "export"_act:
+        feeder_.exportToXml(params());
+        break;
+      case "compare"_act:
         if(feeder_.areSameStates(params(), params.selector))
           res->values.push_back("true");
         else
           res->values.push_back("false");
-      }
-      else if(req->action == "currentCommit")
+        break;
+      case "currentCommit"_act:
         res->values.push_back(feeder_.getCurrentCommit());
-      else if(req->action == "nbUncommitData")
+        break;
+      case "nbUncommitData"_act:
         res->values.push_back(std::to_string(feeder_.getNbUncommitedData()));
-      else if(req->action == "versioning")
+        break;
+      case "versioning"_act:
         res->values.push_back(feeder_.versioning() ? "true" : "false");
-      else
+        break;
+      default:
         res->code = UNKNOW_ACTION;
+      }
 
       return true;
     }(compat::onto_ros::getServicePointer(req), compat::onto_ros::getServicePointer(res));
@@ -401,7 +419,7 @@ namespace ontologenius {
     end_feed_ = false;
 #endif
 
-    compat::onto_ros::Rate wait((double)feeder_rate_);
+    compat::onto_ros::Rate wait(static_cast<double>(feeder_rate_));
     while(compat::onto_ros::Node::ok() && (onto_->isInit(false) == false) && (run_ == true))
     {
       wait.sleep();
@@ -457,8 +475,12 @@ namespace ontologenius {
 #endif
 
         feeder_end = true;
-        msg.data = "end";
-        feeder_end_pub_.publish(msg);
+        auto synchro_msgs = feeder_.getSynchroMsgs();
+        for(auto& synchro_msg : synchro_msgs)
+        {
+          msg.data = synchro_msg;
+          feeder_end_pub_.publish(msg);
+        }
       }
 
       if((run == true) && (run_ == true))
@@ -534,7 +556,7 @@ namespace ontologenius {
     while((text[0] == ' ') && (text.empty() == false))
       text.erase(0, 1);
 
-    while((text[text.size() - 1] == ' ') && (text.empty() == false))
+    while((text.back() == ' ') && (text.empty() == false))
       text.erase(text.size() - 1, 1);
   }
 

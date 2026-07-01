@@ -21,6 +21,7 @@ namespace ontologenius {
     std::smatch base_match;
     Feed_t feed;
     feed.stamp = stamp;
+    feed.raw_feed_ = regex;
     if(std::regex_match(regex, base_match, base_regex_))
     {
       if(base_match.size() == 5)

@@ -41,11 +41,11 @@ namespace onto {
     /// @brief Returns the difference of knowledge between two instances regarding a concept (class or individual).
     /// @param onto1 is the name of the instance of reference.
     /// @param onto2 is the name of the instance to compare.
-    /// @param concept is the name of the concept on which the difference have to be computed.
+    /// @param concept_name is the name of the concept on which the difference have to be computed.
     /// @return The elements of the returned vector are formated as : [+]concept_from|property|concept_on OR [-]concept_from|property|concept_on.
     /// An element is positive if it is present in onto_1 and not in onto_2 and negative in reverse.
     /// The difference in inheritance knowledge between concepts is returned with the property isA.
-    std::vector<std::string> getDifference(const std::string& onto1, const std::string& onto2, const std::string& concept);
+    std::vector<std::string> getDifference(const std::string& onto1, const std::string& onto2, const std::string& concept_name);
     /// @brief Tests if a root has been setted.
     /// @return true if a root has been setted.
     bool hasRoot();

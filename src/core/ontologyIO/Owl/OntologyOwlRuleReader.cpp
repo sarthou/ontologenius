@@ -15,6 +15,12 @@ namespace ontologenius {
   RuleDescriptor_t OntologyOwlReader::readRuleDescription(tinyxml2::XMLElement* elem)
   {
     RuleDescriptor_t rule;
+
+    // read comment
+    auto* rule_comment = elem->FirstChildElement("rdfs:comment");
+    if(rule_comment != nullptr)
+      pushComment(rule.comments_, rule_comment);
+
     // read body
     auto* rule_body = elem->FirstChildElement("swrl:body");
     if(rule_body == nullptr)

@@ -1,11 +1,13 @@
 #include "ontologenius/core/ontologyIO/Owl/writers/DataPropertiesOwlWriter.h"
 
+#include <algorithm>
 #include <cstdio>
 #include <shared_mutex>
 #include <string>
 #include <vector>
 
 #include "ontologenius/core/ontoGraphs/Graphs/DataPropertyGraph.h"
+#include "ontologenius/core/ontologyIO/Owl/writers/PropertiesOwlWriter.h"
 
 namespace ontologenius {
 
@@ -45,6 +47,8 @@ namespace ontologenius {
 
     writeDictionary(branch);
     writeMutedDictionary(branch);
+
+    writeCommentDictionary(branch);
 
     writeBranchEnd();
   }

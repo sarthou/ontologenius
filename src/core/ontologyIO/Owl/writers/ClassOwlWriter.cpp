@@ -60,12 +60,14 @@ namespace ontologenius {
     writeDictionary(branch);
     writeMutedDictionary(branch);
 
+    writeCommentDictionary(branch);
+
     writeBranchEnd();
   }
 
   void ClassOwlWriter::writeEquivalentClass(ClassBranch* branch)
   {
-    AnonymousClassBranch* equiv = branch->equiv_anonymous_class_;
+    const AnonymousClassBranch* equiv = branch->equiv_anonymous_class_;
 
     if(equiv != nullptr)
     {
@@ -97,6 +99,31 @@ namespace ontologenius {
   {
     for(auto& mother : branch->mothers_)
       writeSingleResource("rdfs:subClassOf", mother);
+
+    // write complex subClassOf expressions (rdfs:subClassOf with anonymous restriction)
+    const AnonymousClassBranch* sub = branch->sub_anonymous_class_;
+    if(sub != nullptr)
+    {
+      for(auto* tree : sub->ano_trees_)
+      {
+        const size_t level = 2;
+        auto* tree_root_node = tree->root_node_;
+
+        // single named-class expression: <rdfs:subClassOf rdf:resource="..."/>
+        if(tree_root_node->sub_elements_.empty() &&
+           tree_root_node->class_involved_ != nullptr &&
+           tree_root_node->object_property_involved_ == nullptr)
+        {
+          writeString("<rdfs:subClassOf " + getRdfResource(tree_root_node->class_involved_->value()) + "/>\n", level);
+        }
+        else
+        {
+          writeString("<rdfs:subClassOf>\n", level);
+          writeClassExpression(tree_root_node, level + 1);
+          writeString("</rdfs:subClassOf>\n", level);
+        }
+      }
+    }
   }
 
   void ClassOwlWriter::writeDisjointWith(ClassBranch* branch)

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <curl/curl.h>
+#include <curl/easy.h>
 #include <string>
 #include <utility>
 #include <vector>
@@ -174,7 +175,7 @@ namespace ontologenius {
   std::string OntologyLoader::downlaodFileCurl(const std::string& uri)
   {
     std::string res;
-    res.reserve((size_t)1024 * (size_t)1024);
+    res.reserve(static_cast<size_t>(1024) * static_cast<size_t>(1024));
     curl_global_init(CURL_GLOBAL_ALL);
     CURL* curl_handle = curl_easy_init();
     curl_easy_setopt(curl_handle, CURLOPT_URL, uri.c_str());

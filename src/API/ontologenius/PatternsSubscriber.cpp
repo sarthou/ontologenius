@@ -38,13 +38,13 @@ namespace onto {
       req->count = count;
     }(ontologenius::compat::onto_ros::getServicePointer(req));
 
-    using ResultTy = typename decltype(client_subscribe_)::Status_e;
+    using ResultTy = decltype(client_subscribe_)::Status_e;
 
     if(client_subscribe_.call(req, res) != ResultTy::ros_status_failure)
     {
       size_t id = ontologenius::compat::onto_ros::getServicePointer(res)->id;
       ids_.emplace(ontologenius::compat::onto_ros::getServicePointer(res)->id, callback);
-      return (int)id;
+      return static_cast<int>(id);
     }
     else
       return -1;
@@ -61,11 +61,11 @@ namespace onto {
       req->id = id;
     }(ontologenius::compat::onto_ros::getServicePointer(req));
 
-    using ResultTy = typename decltype(client_cancel_)::Status_e;
+    using ResultTy = decltype(client_cancel_)::Status_e;
 
     if(client_cancel_.call(req, res) != ResultTy::ros_status_failure)
     {
-      if(ontologenius::compat::onto_ros::getServicePointer(res)->id != (int)id)
+      if(ontologenius::compat::onto_ros::getServicePointer(res)->id != static_cast<int>(id))
         done = false;
     }
     else

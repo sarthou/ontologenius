@@ -30,7 +30,7 @@ namespace ontologenius {
 
   void AnonymousClassChecker::checkDisjoint()
   {
-    for(AnonymousClassBranch* branch_vect : graph_vect_)
+    for(const AnonymousClassBranch* branch_vect : graph_vect_)
     {
       std::unordered_set<ClassBranch*> disjoints;
       std::unordered_set<ClassBranch*> uppers;
@@ -148,7 +148,7 @@ namespace ontologenius {
       {
         if(ano_elem->individual_involved_->same_as_.empty() == true)
         {
-          ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, ano_elem->individual_involved_->is_a_.relations);
+          const ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, ano_elem->individual_involved_->is_a_.relations);
           if(conflict != nullptr)
             errors.emplace_back("individual " + ano_elem->individual_involved_->value() + " has type " + conflict->value() + " which is disjoint to a previous element");
         }
@@ -156,7 +156,7 @@ namespace ontologenius {
         {
           for(auto& same : ano_elem->individual_involved_->same_as_)
           {
-            ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, same.elem->is_a_.relations);
+            const ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, same.elem->is_a_.relations);
 
             if(conflict != nullptr)
             {
@@ -172,7 +172,7 @@ namespace ontologenius {
       // check that the class of the individual is not a part of the uppers (only in the complement mode)
       if(complement_mode == true && uppers.empty() == false)
       {
-        ClassBranch* conflict = graphs_->classes_.firstIntersection(uppers, ano_elem->individual_involved_->is_a_.relations);
+        const ClassBranch* conflict = graphs_->classes_.firstIntersection(uppers, ano_elem->individual_involved_->is_a_.relations);
         if(conflict != nullptr)
           errors.emplace_back("unsatisfiable expression with individual " + ano_elem->individual_involved_->value() + " which has type " + conflict->value() + ", which is in the upper classes");
       }
@@ -273,7 +273,7 @@ namespace ontologenius {
 
     if(ano_elem->object_property_involved_ != nullptr)
     {
-      ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, ano_elem->object_property_involved_->domains_);
+      const ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, ano_elem->object_property_involved_->domains_);
       if(conflict != nullptr)
         errors.emplace_back(err_restriction + " property " + ano_elem->object_property_involved_->value() + " has domain " + conflict->value() + " which is disjoint to a previous element");
 
@@ -282,7 +282,7 @@ namespace ontologenius {
     }
     else if(ano_elem->data_property_involved_ != nullptr)
     {
-      ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, ano_elem->data_property_involved_->domains_);
+      const ClassBranch* conflict = graphs_->classes_.firstIntersection(disjoints, ano_elem->data_property_involved_->domains_);
       if(conflict != nullptr)
         errors.emplace_back(err_restriction + " property " + ano_elem->data_property_involved_->value() + " has domain " + conflict->value() + " which is disjoint to a previous element");
 
@@ -297,7 +297,7 @@ namespace ontologenius {
       {
         if(uppers.empty() == false)
         {
-          ClassBranch* conflict = graphs_->classes_.firstIntersection(uppers, ano_elem->object_property_involved_->domains_);
+          const ClassBranch* conflict = graphs_->classes_.firstIntersection(uppers, ano_elem->object_property_involved_->domains_);
           if(conflict != nullptr)
             errors.emplace_back(err_restriction + "unsatisfiable expression with property " + ano_elem->object_property_involved_->value() + " that has domain " + conflict->value() + ", which is in the negative classes");
         }
@@ -309,7 +309,7 @@ namespace ontologenius {
       {
         if(uppers.empty() == false)
         {
-          ClassBranch* conflict = graphs_->classes_.firstIntersection(uppers, ano_elem->data_property_involved_->domains_);
+          const ClassBranch* conflict = graphs_->classes_.firstIntersection(uppers, ano_elem->data_property_involved_->domains_);
           if(conflict != nullptr)
             errors.emplace_back(err_restriction + "unsatisfiable expression with property " + ano_elem->data_property_involved_->value() + " that has domain " + conflict->value() + ", which is in the negative classes");
         }

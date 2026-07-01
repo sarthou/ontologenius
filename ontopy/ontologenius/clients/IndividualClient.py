@@ -60,9 +60,14 @@ class IndividualClient(OntologyClient):
         """Gives all the individuals (str[]) pointed to by the property property(str)."""
         return self.call("getRelatedOn", property)
 
-    def getRelatedWith(self, name):
-        """Gives all the individuals (str[]) having a property pointing to the individual name(str)."""
-        return self.call("getRelatedWith", name)
+    def getRelatedWith(self, name, selector = ''):
+        """Gives all the individuals (str[]) having a property pointing to the individual name(str).
+           The optional selector(str) parameter can be set to only get results inheriting from the selector class.
+           The default value '' represents no restriction on the result."""
+        param = name
+        if selector != '':
+            param += " -s " + selector
+        return self.call("getRelatedWith", param)
 
     def getRelationFrom(self, name, depth = -1):
         """Gives all the properties (str[]) applied to the individual name(str).
@@ -84,9 +89,14 @@ class IndividualClient(OntologyClient):
             param += " -d " + str(depth)
         return self.call("getRelationOn", param)
 
-    def getRelationWith(self, name):
-        """Gives all the individuals (str[]) pointed by a property applied to the individual name(str)."""
-        return self.call("getRelationWith", name)
+    def getRelationWith(self, name, selector = ''):
+        """Gives all the individuals (str[]) pointed by a property applied to the individual name(str).
+           The optional selector(str) parameter can be set to only get results inheriting from the selector class.
+           The default value '' represents no restriction on the result."""
+        param = name
+        if selector != '':
+            param += " -s " + selector
+        return self.call("getRelationWith", param)
 
     def getDomainOf(self, name, selector = '', depth = -1):
         """Gives all the properties (str[]) for which the individual name(str) is part of the domain.

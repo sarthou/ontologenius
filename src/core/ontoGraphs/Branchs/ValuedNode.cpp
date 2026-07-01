@@ -66,4 +66,14 @@ namespace ontologenius {
     }
   }
 
+  void ValuedNode::setCommentDictionary(const std::map<std::string, std::vector<std::string>>& comment_dictionary)
+  {
+    for(const auto& lang_comment : comment_dictionary)
+    {
+      auto lang = lang_comment.first;
+      for(const auto& comment : lang_comment.second)
+        conditionalPushBack(comments_[lang], comment);
+    }
+  }
+
 } // namespace ontologenius

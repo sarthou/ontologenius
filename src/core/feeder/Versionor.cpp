@@ -122,9 +122,9 @@ namespace ontologenius {
     {
       if(used[i])
         continue;
-        
+
       int count = 1;
-      for(size_t j = i+1; j < datas.size(); j++)
+      for(size_t j = i + 1; j < datas.size(); j++)
       {
         if((used[j] == false) && datas[i].sameData(datas[j]))
         {
@@ -179,11 +179,11 @@ namespace ontologenius {
     }
 
     std::vector<Feed_t> datas;
-    for(auto& current_prev : current_prevs)
+    for(auto* current_prev : current_prevs)
       current_prev->appendDatasInvert(datas);
 
     bool found_pivot = false;
-    for(auto& node : goal_prevs)
+    for(auto* node : goal_prevs)
     {
       if(node == pivot)
         found_pivot = true;

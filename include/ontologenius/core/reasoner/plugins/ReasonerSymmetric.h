@@ -21,6 +21,8 @@ namespace ontologenius {
     bool defaultActive() override { return true; }
 
   private:
+    void runOnHierarchy(IndividualBranch* first_indiv, ObjectPropertyBranch* property, IndividualBranch* second_indiv);
+    void addSymetricRelation(IndividualBranch* indiv_on, ObjectPropertyBranch* sym_prop, IndividualBranch* sym_indiv);
     bool symetricExist(IndividualBranch* indiv_on, ObjectPropertyBranch* sym_prop, IndividualBranch* sym_indiv);
   };
 

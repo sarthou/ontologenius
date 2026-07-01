@@ -21,18 +21,12 @@ namespace ontologenius {
   size_t DrawerNode::current_row = 0;
   size_t DrawerNode::current_column = 0;
 
-  TreeDrawer::~TreeDrawer()
-  {
-    for(auto& node : nodes_)
-      delete node;
-  }
-
   void TreeDrawer::draw(const std::string& file_name, Commit* root, bool commit_only)
   {
     createNode(root, commit_only);
 
-    const int width = (int)(DrawerNode::current_column + 1) * SPACE + TEXT_WIDTH;
-    const int height = (int)(DrawerNode::current_row + 1) * SPACE;
+    const int width = (static_cast<int>(DrawerNode::current_column + 1) * SPACE) + TEXT_WIDTH;
+    const int height = static_cast<int>(DrawerNode::current_row + 1) * SPACE;
 
     std::cout << "image size = " << width << " : " << height << std::endl;
     image_ = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, 3);
@@ -135,8 +129,8 @@ namespace ontologenius {
 
   void TreeDrawer::drawNode(DrawerNode* node)
   {
-    const int x = SPACE / 2 + (int)node->column_ * SPACE;
-    const int y = SPACE / 2 + (int)node->row_ * SPACE;
+    const int x = (SPACE / 2) + (static_cast<int>(node->column_) * SPACE);
+    const int y = (SPACE / 2) + (static_cast<int>(node->row_) * SPACE);
 
     auto color_1 = cvScalar(89, 26, 16);
     auto color_2 = cvScalar(149, 86, 86);
@@ -152,8 +146,8 @@ namespace ontologenius {
 
   void TreeDrawer::drawNodeText(DrawerNode* node)
   {
-    const int width_base = (int)(DrawerNode::current_column + 1) * SPACE;
-    const int y = SPACE / 2 + (int)node->row_ * SPACE;
+    const int width_base = static_cast<int>(DrawerNode::current_column + 1) * SPACE;
+    const int y = (SPACE / 2) + (static_cast<int>(node->row_) * SPACE);
 
     auto color = cvScalar(89, 26, 16);
     if(node->is_data_ == false)
@@ -161,52 +155,58 @@ namespace ontologenius {
 
     CvFont font;
     cvInitFont(&font, CV_FONT_HERSHEY_COMPLEX, 1, 1, 0, 2);
-    cvPutText(image_, node->text_.c_str(), cvPoint(width_base + SPACE / 2, y + NODE_RADIUS), &font,
+    cvPutText(image_, node->text_.c_str(), cvPoint(width_base + (SPACE / 2), y + NODE_RADIUS), &font,
               color);
   }
 
   void TreeDrawer::drawLink(DrawerNode* node_from, DrawerNode* node_to)
   {
-    const int x_from = SPACE / 2 + (int)node_from->column_ * SPACE;
-    const int y_from = SPACE / 2 + (int)node_from->row_ * SPACE;
+    const int x_from = (SPACE / 2) + (static_cast<int>(node_from->column_) * SPACE);
+    const int y_from = (SPACE / 2) + (static_cast<int>(node_from->row_) * SPACE);
 
-    const int x_to = SPACE / 2 + (int)node_to->column_ * SPACE;
-    const int y_to = SPACE / 2 + (int)node_to->row_ * SPACE;
+    const int x_to = (SPACE / 2) + (static_cast<int>(node_to->column_) * SPACE);
+    const int y_to = (SPACE / 2) + (static_cast<int>(node_to->row_) * SPACE);
 
     if(node_from->column_ == node_to->column_)
     {
-      cvLine(image_, cvPoint(x_from, y_from + NODE_RADIUS / 2),
-             cvPoint(x_to, y_to - NODE_RADIUS / 2),
+      cvLine(image_, cvPoint(x_from, y_from + (NODE_RADIUS / 2)),
+             cvPoint(x_to, y_to - (NODE_RADIUS / 2)),
              cvScalar(50, 50, 50), 2);
     }
     else
     {
-      drawElipseRight(x_from, y_from + SPACE / 2);
-      static_assert(SPACE - EDGE_RADIUS * 2 > 0, "TreeDrawer has bad SPACE and EDGE_RADIUS values");
-      cvLine(image_, cvPoint(x_from + EDGE_RADIUS, y_from + SPACE / 2),
-             cvPoint(x_to - EDGE_RADIUS, y_from + SPACE / 2),
+      drawElipseRight(x_from, y_from + (SPACE / 2));
+      static_assert(SPACE - (EDGE_RADIUS * 2) > 0, "TreeDrawer has bad SPACE and EDGE_RADIUS values");
+      cvLine(image_, cvPoint(x_from + EDGE_RADIUS, y_from + (SPACE / 2)),
+             cvPoint(x_to - EDGE_RADIUS, y_from + (SPACE / 2)),
              cvScalar(50, 50, 50), 2);
-      drawElipseBottom(x_to, y_from + SPACE / 2);
-      cvLine(image_, cvPoint(x_to, y_from + SPACE / 2 + EDGE_RADIUS),
-             cvPoint(x_to, y_to - NODE_RADIUS / 2),
+      drawElipseBottom(x_to, y_from + (SPACE / 2));
+      cvLine(image_, cvPoint(x_to, y_from + (SPACE / 2) + EDGE_RADIUS),
+             cvPoint(x_to, y_to - (NODE_RADIUS / 2)),
              cvScalar(50, 50, 50), 2);
     }
   }
 
   void TreeDrawer::drawElipseRight(size_t x, size_t y)
   {
-    cvEllipse(image_, cvPoint((int)x + EDGE_RADIUS, (int)y - EDGE_RADIUS), cvSize(EDGE_RADIUS, EDGE_RADIUS), 180, 0, -90, cvScalar(50, 50, 50), 2);
+    cvEllipse(image_,
+              cvPoint(static_cast<int>(x) + EDGE_RADIUS, static_cast<int>(y) - EDGE_RADIUS),
+              cvSize(EDGE_RADIUS, EDGE_RADIUS), 180, 0, -90,
+              cvScalar(50, 50, 50), 2);
   }
 
   void TreeDrawer::drawElipseBottom(size_t x, size_t y)
   {
-    cvEllipse(image_, cvPoint((int)x - EDGE_RADIUS, (int)y + EDGE_RADIUS), cvSize(EDGE_RADIUS, EDGE_RADIUS), -90, 0, 90, cvScalar(50, 50, 50), 2);
+    cvEllipse(image_,
+              cvPoint(static_cast<int>(x) - EDGE_RADIUS, static_cast<int>(y) + EDGE_RADIUS),
+              cvSize(EDGE_RADIUS, EDGE_RADIUS), -90, 0, 90,
+              cvScalar(50, 50, 50), 2);
   }
 
   void TreeDrawer::drawDelim()
   {
-    const int width = (int)(DrawerNode::current_column + 1) * SPACE;
-    const int height = (int)(DrawerNode::current_row + 1) * SPACE;
+    const int width = static_cast<int>(DrawerNode::current_column + 1) * SPACE;
+    const int height = static_cast<int>(DrawerNode::current_row + 1) * SPACE;
     cvLine(image_, cvPoint(width, 0),
            cvPoint(width, height),
            cvScalar(50, 50, 50), 3);

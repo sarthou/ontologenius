@@ -54,8 +54,10 @@ namespace onto {
     std::vector<std::string> getRelatedOn(const std::string& property);
     /// @brief Gives all the individuals having a property pointing to the specified individual.
     /// @param name is the identifier of the individual being the subject of the triplet.
+    /// @param selector can be set to only get results inheriting from the selector class.
+    /// The default value "" represents no restriction on the result.
     /// @return a vector of identifiers of individuals.
-    std::vector<std::string> getRelatedWith(const std::string& name);
+    std::vector<std::string> getRelatedWith(const std::string& name, const std::string& selector = "");
 
     /// @brief Gives all the properties applied to the specified individual.
     /// @param name is the identifier of the individual being the subject of the triplet.
@@ -69,10 +71,10 @@ namespace onto {
     std::vector<std::string> getRelationOn(const std::string& name, int depth = -1);
     /// @brief Gives all the individuals pointed by a property applied to the specified individual.
     /// @param name is the identifier of the individual being the object of the triplet.
-    /// @param depth can be set to limit tree propagation to a specific value.
-    /// The default value -1 represents no propagation limitation.
+    /// @param selector can be set to only get results inheriting from the selector class.
+    /// The default value "" represents no restriction on the result.
     /// @return a vector of identifiers of individuals.
-    std::vector<std::string> getRelationWith(const std::string& name);
+    std::vector<std::string> getRelationWith(const std::string& name, const std::string& selector = "");
 
     /// @brief Gives all the properties for which the specified individual is part of the domain.
     /// @param name is the identifier of an individual.

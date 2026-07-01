@@ -60,9 +60,14 @@ class IndividualIndexClient(OntologyIndexClient):
         """Gives all the individuals (integer[]) pointed to by the property(integer)."""
         return self.callIndexes("getRelatedOn", str(property))
 
-    def getRelatedWith(self, index):
-        """Gives all the individuals (integer[]) having a property pointing to the individual index(integer)."""
-        return self.callIndexes("getRelatedWith", str(index))
+    def getRelatedWith(self, index, selector = 0):
+        """Gives all the individuals (integer[]) having a property pointing to the individual index(integer).
+           The optional selector(integer) parameter can be set to only get results inheriting from the selector property.
+           The default value 0 represents no restriction on the result."""
+        param = str(index)
+        if selector != '':
+            param += " -s " + str(selector)
+        return self.callIndexes("getRelatedWith", param)
 
     def getRelationFrom(self, index, depth = -1):
         """Gives all the properties (integer[]) applied to the individual index(integer).
@@ -84,9 +89,14 @@ class IndividualIndexClient(OntologyIndexClient):
             param += " -d " + str(depth)
         return self.callIndexes("getRelationOn", param)
 
-    def getRelationWith(self, index):
-        """Gives all the individuals (integer[]) pointed by a property applied to the individual index(integer)."""
-        return self.callIndexes("getRelationWith", str(index))
+    def getRelationWith(self, index, selector = 0):
+        """Gives all the individuals (integer[]) pointed by a property applied to the individual index(integer).
+           The optional selector(integer) parameter can be set to only get results inheriting from the selector property.
+           The default value 0 represents no restriction on the result."""
+        param = str(index)
+        if selector != '':
+            param += " -s " + str(selector)
+        return self.callIndexes("getRelationWith", param)
 
     def getDomainOf(self, index, selector = 0, depth = -1):
         """Gives all the properties (integer[]) for which the individual index(integer) is part of the domain.

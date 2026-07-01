@@ -1,6 +1,5 @@
-#include <algorithm>
 #include <gtest/gtest.h>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/utilities.hpp>
 #include <string>
 #include <vector>
 
@@ -12,7 +11,6 @@ TEST(feature_branching, copy)
 {
   std::vector<std::string> res;
   bool res_bool = true;
-  std::string test_word = "Robot";
 
   EXPECT_TRUE(onto_ptr->add("paul"));
 

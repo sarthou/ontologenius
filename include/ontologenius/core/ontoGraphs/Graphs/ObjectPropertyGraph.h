@@ -27,6 +27,7 @@ namespace ontologenius {
     Properties_t properties_;
     std::map<std::string, std::vector<std::string>> dictionary_;
     std::map<std::string, std::vector<std::string>> muted_dictionary_;
+    std::map<std::string, std::vector<std::string>> comments_;
     bool annotation_usage_;
 
     ObjectPropertyDescriptor_t() : annotation_usage_(false) {}

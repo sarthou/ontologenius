@@ -17,7 +17,6 @@ namespace ontologenius {
 
   Ontology::Ontology(const std::string& language) : loader_(this),
                                                     writer_(this),
-                                                    is_preloaded_(false),
                                                     is_init_(false)
   {
     classes_.setLanguage(language);
@@ -30,7 +29,6 @@ namespace ontologenius {
   Ontology::Ontology(const Ontology& other) : OntologyGraphs(other),
                                               loader_(this),
                                               writer_(this),
-                                              is_preloaded_(true),
                                               is_init_(true)
   {
     writer_.setFileName("none");
@@ -59,7 +57,11 @@ namespace ontologenius {
 
     if(err == 0)
     {
+      anonymous_classes_.analyseApplicabiltiy();
+
       loader_.loadIndividuals();
+
+      individual_checker = IndividualChecker(&individuals_, this); // We need to re-init the checker with the read graph
 
       err += individual_checker.check();
 
@@ -108,7 +110,6 @@ namespace ontologenius {
         if(loader_.loadIndividuals() == NO_ERROR)
           if(loader_.isEmpty() == false)
           {
-            is_preloaded_ = true;
             Display::success("Ontology has been preloaded");
             Display::success("Ontologenius will NOT consider your default files");
             return true;

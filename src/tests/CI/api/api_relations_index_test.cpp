@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <gtest/gtest.h>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/utilities.hpp>
 #include <vector>
 
 #include "ontologenius/API/ontologenius/OntologyManipulatorIndex.h"
@@ -88,13 +88,13 @@ TEST(api_relations_index, class_getRelationOn)
   test_word = onto_ptr->conversion.literalsId2Index("integer#2");
   res = onto_ptr->classes.getRelationOn(test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end()));
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.literalsId2Index("integer#0");
   res = onto_ptr->classes.getRelationOn(test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end()));
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.dataPropertiesId2Index("hasLeg")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("Human");
@@ -252,7 +252,7 @@ TEST(api_relations_index, class_getFrom)
   test_word2 = onto_ptr->conversion.dataPropertiesId2Index("hasLeg");
   res = onto_ptr->classes.getFrom(test_word2, test_word);
   EXPECT_EQ(res.size(), 1);
-  res_bool = ((std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end()));
+  res_bool = (std::find(res.begin(), res.end(), onto_ptr->conversion.classesId2Index("Man")) != res.end());
   EXPECT_TRUE(res_bool);
 
   test_word = onto_ptr->conversion.classesId2Index("Man");

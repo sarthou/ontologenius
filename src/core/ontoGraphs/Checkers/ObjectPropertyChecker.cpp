@@ -33,7 +33,7 @@ namespace ontologenius {
       auto* intersection = graphs_->object_properties_.isDisjoint(up, up);
       if(intersection != nullptr)
       {
-        ObjectPropertyBranch* disjoint_with = graphs_->object_properties_.firstIntersection(up, intersection->disjoints_);
+        const ObjectPropertyBranch* disjoint_with = graphs_->object_properties_.firstIntersection(up, intersection->disjoints_);
 
         if(disjoint_with != nullptr)
           printError("'" + property->value() + "' can't be a '" + intersection->value() + "' and a '" + disjoint_with->value() + "' because of disjonction between properties '" + intersection->value() + "' and '" + disjoint_with->value() + "'");

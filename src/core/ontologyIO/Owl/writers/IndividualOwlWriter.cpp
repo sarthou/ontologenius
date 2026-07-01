@@ -51,6 +51,8 @@ namespace ontologenius {
     writeDictionary(branch);
     writeMutedDictionary(branch);
 
+    writeCommentDictionary(branch);
+
     writeBranchEnd();
   }
 

@@ -13,9 +13,9 @@
 #include "ontologenius/core/ontoGraphs/Branchs/ClassBranch.h"
 #include "ontologenius/core/ontoGraphs/Branchs/LiteralNode.h"
 #include "ontologenius/core/ontoGraphs/Branchs/RuleBranch.h"
+#include "ontologenius/core/ontoGraphs/Graphs/AnonymousClassGraph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/OntologyGraphs.h"
-#include "ontologenius/utils/String.h"
 
 // #define DEBUG
 
@@ -43,6 +43,9 @@ namespace ontologenius {
     const std::string rule_name = "rule_" + std::to_string(all_branchs_.size());
     RuleBranch* rule_branch = new RuleBranch(rule_name, rule.rule_str);
     all_branchs_.push_back(rule_branch);
+
+    // add comment
+    rule_branch->setCommentDictionary(rule.comments_);
 
     size_t elem_id = 0;
 
@@ -137,7 +140,7 @@ namespace ontologenius {
     auto var_it = rule_branch->variables_.find(resource.name);
     if(var_it == rule_branch->variables_.end()) // if the variable doesn't already exist in the variables_ vector of the rule
     {
-      int64_t index = std::int64_t(rule_branch->variables_.size());
+      int64_t index = static_cast<std::int64_t>(rule_branch->variables_.size());
       rule_branch->variables_[resource.name] = index;
       resource.variable_id = index;
       variable_names_.insert(resource.name); // to rewrite the variables
@@ -157,6 +160,8 @@ namespace ontologenius {
     new_branch->nb_updates_ = old_branch->nb_updates_;
     new_branch->setUpdated(old_branch->isUpdated());
     new_branch->flags_ = old_branch->flags_;
+
+    new_branch->comments_ = old_branch->comments_;
 
     // addon
     new_branch->involves_class = old_branch->involves_class;

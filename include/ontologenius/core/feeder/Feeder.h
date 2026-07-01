@@ -43,12 +43,19 @@ namespace ontologenius {
       return tmp;
     }
 
+    std::vector<std::string> getSynchroMsgs()
+    {
+      auto tmp = std::move(synchro_msgs_);
+      synchro_msgs_.clear();
+      return tmp;
+    }
+
     void activateVersionning(bool activated) { versionor_.activate(activated); }
     void exportToXml(const std::string& path) { versionor_.exportToXml(path); }
 
     std::string getCurrentCommit()
     {
-       return versionor_.getCurrentCommit();
+      return versionor_.getCurrentCommit();
     }
 
     size_t getNbUncommitedData()
@@ -73,8 +80,10 @@ namespace ontologenius {
     std::vector<std::string> notifications_;
     // Here the explanations are about relations removed because of FOL
     std::vector<std::pair<std::string, std::string>> explanations_;
-    // Here the valid realtions added to the ontology
+    // Here the valid relations added to the ontology
     std::vector<std::pair<std::string, RosTime_t>> valid_relations_;
+    // Here are the synchro messages to be sent to the client
+    std::vector<std::string> synchro_msgs_;
 
     std::string current_str_feed_;
 

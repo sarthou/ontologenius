@@ -41,6 +41,8 @@ namespace ontologenius {
     const std::string field = "rdf:Description";
 
     writeString("<" + field + ">\n", level);
+    writeCommentDictionary(branch);
+
     writeString("<rdf:type rdf:resource=\"http://www.w3.org/2003/11/swrl#Imp\"/>\n", level + 1);
 
     // write the body of the rule

@@ -39,7 +39,7 @@ namespace ontologenius {
 
   void ReasonerInverseOf::insertInverse(IndividualBranch* indiv_on, ObjectPropertyBranch* base_prop, ObjectPropertyBranch* inv_prop, IndividualBranch* inv_indiv)
   {
-    for(auto it = indiv_on->object_relations_.rbegin(); it != indiv_on->object_relations_.rend(); ++it)
+    for(auto it = indiv_on->object_relations_.rbegin(); it != indiv_on->object_relations_.rend(); ++it) // NOLINT // Should be replaced by reverse_view in later versions
     {
       if(it->second == inv_indiv)
       {

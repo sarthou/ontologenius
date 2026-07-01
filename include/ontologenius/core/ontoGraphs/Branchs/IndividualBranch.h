@@ -53,8 +53,8 @@ namespace ontologenius {
     std::string updatesToString()
     {
       std::string involves_res;
-      involves_res = " is_a: " + std::to_string(int(is_a_.isUpdated())) + "|obj: " + std::to_string(int(object_relations_.isUpdated())) +
-                     "|data: " + std::to_string(int(data_relations_.isUpdated())) + "|same: " + std::to_string(int(same_as_.isUpdated()));
+      involves_res = " is_a: " + std::to_string(static_cast<int>(is_a_.isUpdated())) + "|obj: " + std::to_string(static_cast<int>(object_relations_.isUpdated())) +
+                     "|data: " + std::to_string(static_cast<int>(data_relations_.isUpdated())) + "|same: " + std::to_string(static_cast<int>(same_as_.isUpdated()));
       return involves_res;
     }
   };

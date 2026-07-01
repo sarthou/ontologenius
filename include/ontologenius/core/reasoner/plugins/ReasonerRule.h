@@ -119,12 +119,12 @@ namespace ontologenius {
     std::vector<IndivResult_t> getFromData(const RuleTriplet_t& triplet);
     std::vector<IndivResult_t> getOnData(const RuleTriplet_t& triplet, index_t selector);
 
-    void constructResult(const std::string& concept,
+    void constructResult(const std::string& concept_name,
                          const RelationsWithInductions<IndividualElement>& relation,
                          size_t index, IndivResult_t& res);
 
     template<typename T>
-    void constructResult(const std::string& concept,
+    void constructResult(const std::string& concept_name,
                          const RelationsWithInductions<SingleElement<T*>>& relation,
                          size_t index, IndivResult_t& res, bool write_expl)
     {
@@ -132,7 +132,7 @@ namespace ontologenius {
       {
         if(relation.at(index).elem->isHidden() == false)
         {
-          std::string explanation = concept + "|isA|" + relation.at(index).elem->value();
+          std::string explanation = concept_name + "|isA|" + relation.at(index).elem->value();
           res.explanations.emplace_back(explanation);
         }
         else
@@ -150,11 +150,11 @@ namespace ontologenius {
     }
 
     template<typename T, typename D>
-    void constructResult(const std::string& concept,
+    void constructResult(const std::string& concept_name,
                          const RelationsWithInductions<PairElement<T*, D*>>& relation,
                          size_t index, IndivResult_t& res)
     {
-      std::string explanation = concept + "|" + relation.at(index).first->value() + "|" + relation.at(index).second->value();
+      std::string explanation = concept_name + "|" + relation.at(index).first->value() + "|" + relation.at(index).second->value();
       res.explanations.emplace_back(explanation);
 
       res.used_triplets.emplace_back(relation.has_induced_inheritance_relations[index],
@@ -163,7 +163,7 @@ namespace ontologenius {
     }
 
     template<typename T>
-    bool isA(const std::string& concept,
+    bool isA(const std::string& concept_name,
              T* selector,
              const RelationsWithInductions<SingleElement<T*>>& relations,
              IndivResult_t& res)
@@ -172,12 +172,12 @@ namespace ontologenius {
       {
         if(relations.at(i).elem == selector)
         {
-          constructResult(concept, relations, i, res, true);
+          constructResult(concept_name, relations, i, res, true);
           return true;
         }
         else if(isA(relations.at(i).elem->value(), selector, relations.at(i).elem->mothers_, res))
         {
-          constructResult(concept, relations, i, res, true);
+          constructResult(concept_name, relations, i, res, true);
           return true;
         }
       }
