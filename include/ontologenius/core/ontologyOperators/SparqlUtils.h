@@ -2,7 +2,6 @@
 #define ONTOLOGENIUS_SPARQLUTILS_H
 
 #include <map>
-#include <ranges>
 #include <set>
 #include <string>
 #include <unordered_map>
