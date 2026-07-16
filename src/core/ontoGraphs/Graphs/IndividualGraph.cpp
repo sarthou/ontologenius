@@ -1954,144 +1954,124 @@ namespace ontologenius {
     }
   }
 
-  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritage(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageFromString(const std::string& indiv, const std::string& class_inherited)
   {
     IndividualBranch* branch = findBranchSafe(indiv);
-    std::vector<std::pair<std::string, std::string>> explanations;
-    addInheritage(branch, class_inherited, &explanations);
-    return explanations;
+    if(branch != nullptr)
+      return addInheritage(branch, class_inherited);
+    else
+      return {};
   }
 
-  bool IndividualGraph::addInheritage(IndividualBranch* branch, const std::string& class_inherited, std::vector<std::pair<std::string, std::string>>* explanations)
-  {
-    const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-    const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
-    const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
-    const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
-
-    ClassBranch* inherited = addInheritageUnsafe(branch, class_inherited);
-    if(inherited != nullptr)
-    {
-      const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
-                                   [inherited](const auto& is_a) { return is_a.elem == inherited; });
-
-      // TODO what append with we add it several times ?
-      if(it != branch->is_a_.cend())
-        applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, explanations);
-
-      return true;
-    }
-    return false;
-  }
-
-  ClassBranch* IndividualGraph::addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritage(IndividualBranch* branch, const std::string& class_inherited)
   {
     if(branch != nullptr)
     {
-      // 1 - finding the corresponding class branch as a pointer
-      ClassBranch* inherited = graphs_->classes_.findBranch(class_inherited);
-      if(inherited == nullptr)
+      ClassBranch* inherited = nullptr;
       {
-        IndividualBranch* tmp = findBranch(class_inherited);
-        if(tmp != nullptr)
-          inherited = upgradeToBranch(tmp);
-        else
+        const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
+        const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
+
+        // finding the corresponding class branch as a pointer
+        inherited = graphs_->classes_.findBranch(class_inherited);
+        if(inherited == nullptr)
         {
-          inherited = new ClassBranch(class_inherited);
-          graphs_->classes_.container_.insert(inherited);
-          graphs_->classes_.all_branchs_.push_back(inherited);
+          IndividualBranch* tmp = findBranch(class_inherited);
+          if(tmp != nullptr)
+            inherited = upgradeToBranch(tmp);
+          else
+          {
+            inherited = new ClassBranch(class_inherited);
+            graphs_->classes_.container_.insert(inherited);
+            graphs_->classes_.all_branchs_.push_back(inherited);
+          }
         }
       }
 
-      // 2 - Checking if the new inheritage is compatible with the existing hierarchy
-      std::unordered_set<ClassBranch*> ups_indiv;
-      this->getUpPtr(branch, ups_indiv);
-
-      auto* disjoint_intersection = graphs_->classes_.isDisjoint(ups_indiv, inherited);
-      if(disjoint_intersection != nullptr)
-        throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + inherited->value());
-
-      // 3 - Cheking if the new inheritages from equivalent class are compatible with the existing hierarchy
-      std::unordered_set<ClassBranch*> would_be_proved;
-      getWouldBeProvedClasses(inherited, would_be_proved);
-      for(auto* proved_class : would_be_proved)
-      {
-        auto* disjoint_induced = graphs_->classes_.isDisjoint(ups_indiv, proved_class);
-        if(disjoint_induced != nullptr)
-          throw GraphException("The individual would have a class disjointess over " + disjoint_induced->value() +
-                               " through " + proved_class->value() + " induced by " + inherited->value());
-      }
-
-      // 4 - Checking if the new relations from equivalent class are compatible with the existing class and relations
-      checkWouldBeProvedRelations(branch, inherited);
-      for(auto* proved_class : would_be_proved)
-        checkWouldBeProvedRelations(branch, proved_class);
-
-      // 5 - Apply the new heritage
-      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
-        branch->setUpdated(true);
-      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
-        inherited->setUpdated(true);
-
-      return inherited; // TODO verify that multi inheritances are compatible
+      return addInheritage(branch, inherited);
     }
-    else
-      return nullptr;
+    return {};
   }
 
-  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritage(IndividualBranch* branch, ClassBranch* class_inherited)
   {
     std::vector<std::pair<std::string, std::string>> explanations;
-    ClassBranch* inherited = graphs_->classes_.findBranchSafe(class_inherited);
-    if(inherited != nullptr)
+    if((branch != nullptr) && (class_inherited != nullptr))
     {
-      IndividualBranch* branch = findOrCreateBranchSafe(indiv);
       const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
       const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
       const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
       const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
 
-      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
-        branch->setUpdated(true);
-      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
-        inherited->setUpdated(true);
+      applyInheritage(branch, class_inherited);
 
-      {
-        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
-                                     [inherited](const auto& is_a) { return is_a.elem == inherited; });
-        if(it != branch->is_a_.cend())
-          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, &explanations);
-      }
+      const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                   [class_inherited](const auto& is_a) { return is_a.elem == class_inherited; });
+      size_t index = static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it));
+
+      applyProvedFacts(branch, class_inherited, index, 1.0, true, &explanations);
     }
     return explanations;
   }
 
+  std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvert(const std::string& indiv, const std::string& class_inherited)
+  {
+    ClassBranch* inherited = graphs_->classes_.findBranchSafe(class_inherited);
+    if(inherited != nullptr)
+    {
+      IndividualBranch* branch = findOrCreateBranchSafe(indiv);
+      return addInheritage(branch, inherited);
+    }
+    else
+      return {};
+  }
+
   std::vector<std::pair<std::string, std::string>> IndividualGraph::addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited)
   {
-    std::vector<std::pair<std::string, std::string>> explanations;
     IndividualBranch* tmp = findBranchSafe(class_inherited);
     if(tmp != nullptr)
     {
       ClassBranch* inherited = upgradeToBranch(tmp);
       IndividualBranch* branch = findOrCreateBranchSafe(indiv);
-      const std::lock_guard<std::shared_timed_mutex> lock(mutex_);
-      const std::lock_guard<std::shared_timed_mutex> lock_class(graphs_->classes_.mutex_);
-      const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
-      const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
-
-      if(conditionalPushBack(branch->is_a_, ClassElement(inherited)))
-        branch->setUpdated(true);
-      if(conditionalPushBack(inherited->individual_childs_, IndividualElement(branch)))
-        inherited->setUpdated(true);
-
-      {
-        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
-                                     [inherited](const auto& is_a) { return is_a.elem == inherited; });
-        if(it != branch->is_a_.cend())
-          applyProvedFacts(branch, inherited, static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it)), 1.0, true, &explanations);
-      }
+      return addInheritage(branch, inherited);
     }
-    return explanations;
+    return {};
+  }
+
+  void IndividualGraph::applyInheritage(IndividualBranch* branch, ClassBranch* class_inherited)
+  {
+    if((branch != nullptr) && (class_inherited != nullptr))
+    {
+      // 1 - Checking if the new inheritage is compatible with the existing hierarchy
+      std::unordered_set<ClassBranch*> ups_indiv;
+      this->getUpPtr(branch, ups_indiv);
+
+      auto* disjoint_intersection = graphs_->classes_.isDisjoint(ups_indiv, class_inherited);
+      if(disjoint_intersection != nullptr)
+        throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + class_inherited->value());
+
+      // 2 - Cheking if the new inheritages from equivalent class are compatible with the existing hierarchy
+      std::unordered_set<ClassBranch*> would_be_proved;
+      getWouldBeProvedClasses(class_inherited, would_be_proved);
+      for(auto* proved_class : would_be_proved)
+      {
+        auto* disjoint_induced = graphs_->classes_.isDisjoint(ups_indiv, proved_class);
+        if(disjoint_induced != nullptr)
+          throw GraphException("The individual would have a class disjointess over " + disjoint_induced->value() +
+                               " through " + proved_class->value() + " induced by " + class_inherited->value());
+      }
+
+      // 3 - Checking if the new relations from equivalent class are compatible with the existing class and relations
+      checkWouldBeProvedRelations(branch, class_inherited);
+      for(auto* proved_class : would_be_proved)
+        checkWouldBeProvedRelations(branch, proved_class);
+
+      // 4 - Apply the new heritage
+      if(conditionalPushBack(branch->is_a_, ClassElement(class_inherited)))
+        branch->setUpdated(true);
+      if(conditionalPushBack(class_inherited->individual_childs_, IndividualElement(branch)))
+        class_inherited->setUpdated(true);
+    }
   }
 
   void IndividualGraph::getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result)

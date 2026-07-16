@@ -105,15 +105,52 @@ namespace ontologenius {
     IndividualBranch* findOrCreateBranch(const std::string& name);
     void deleteIndividual(IndividualBranch* indiv);
     void redirectDeleteIndividual(IndividualBranch* indiv, ClassBranch* class_branch);
-    std::vector<std::pair<std::string, std::string>> addInheritage(const std::string& indiv, const std::string& class_inherited);
-    bool addInheritage(IndividualBranch* branch, const std::string& class_inherited, std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
-    ClassBranch* addInheritageUnsafe(IndividualBranch* branch, const std::string& class_inherited);
+
+    /// @brief Add a direct inheritage between an individual and a class. While indiv should exist in the graph, class_inherited can be automatically created.
+    ///        This function has no effect if the individual does not exist.
+    /// @throws GraphException if the inheritage is impossible
+    /// @param indiv The identifier of the individual. This individual should already exist in the graph.
+    /// @param class_inherited The identifier of the class. If the class does not exist, it will be automatically created.
+    /// @return If the inheritage has generated new inferences, thoses are returned as a vector of inferred fact/explanation.
+    std::vector<std::pair<std::string, std::string>> addInheritageFromString(const std::string& indiv, const std::string& class_inherited);
+
+    /// @brief Add a direct inheritage between an individual pointer and a class identifier.
+    ///        While branch should be a valid pointer, class_inherited can be automatically created.
+    /// @throws GraphException if the inheritage is impossible
+    /// @param branch A valid pointer toward an existing individual.
+    /// @param class_inherited The identifier of the class. If the class does not exist, it will be automatically created.
+    /// @return If the inheritage has generated new inferences, thoses are returned as a vector of inferred fact/explanation.
+    std::vector<std::pair<std::string, std::string>> addInheritage(IndividualBranch* branch, const std::string& class_inherited);
+
+    /// @brief Add a direct inheritage between an individual pointer and a class pointer.
+    /// @throws GraphException if the inheritage is impossible
+    /// @param branch A valid pointer toward an existing individual.
+    /// @param class_inherited A valid pointer toward an existing class.
+    /// @return If the inheritage has generated new inferences, thoses are returned as a vector of inferred fact/explanation.
+    std::vector<std::pair<std::string, std::string>> addInheritage(IndividualBranch* branch, ClassBranch* class_inherited);
+
+    /// @brief Add a direct inheritage between an individual and a class. While class should exist in the graph, indiv can be automatically created.
+    ///        This function has no effect if the class does not exist.
+    /// @throws GraphException if the inheritage is impossible
+    /// @param indiv The identifier of the individual. If the individual does not exist, it will be automatically created.
+    /// @param class_inherited The identifier of the class. This class should already exist in the graph.
+    /// @return If the inheritage has generated new inferences, thoses are returned as a vector of inferred fact/explanation.
     std::vector<std::pair<std::string, std::string>> addInheritageInvert(const std::string& indiv, const std::string& class_inherited);
+
+    /// @brief Add a direct inheritage between an individual and an another individual that as to be upgraded as a class.
+    ///        While the individual to upgrade (class_inherited) should exist in the graph, indiv can be automatically created.
+    ///        This function has no effect if the class does not exist.
+    /// @throws GraphException if the inheritage is impossible
+    /// @param indiv The identifier of the individual. If the individual does not exist, it will be automatically created.
+    /// @param class_inherited The identifier of the individual to be upgraded as a class. This class should already exist in the graph.
+    /// @return If the inheritage has generated new inferences, thoses are returned as a vector of inferred fact/explanation.
     std::vector<std::pair<std::string, std::string>> addInheritageInvertUpgrade(const std::string& indiv, const std::string& class_inherited);
+
     size_t addClassAssertion(IndividualBranch* individual, ClassBranch* class_branch, float probability = 1.0, bool inferred = false,
                              std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
     void applyProvedFacts(IndividualBranch* individual, ClassBranch* class_branch, size_t class_idx, float probability = 1.0, bool inferred = true,
                           std::vector<std::pair<std::string, std::string>>* explanations = nullptr);
+
     int addRelation(IndividualBranch* indiv_from, ObjectPropertyBranch* property, IndividualBranch* indiv_on, double proba = 1.0, bool inferred = false, bool check_existence = true);
     int addRelation(IndividualBranch* indiv_from, DataPropertyBranch* property, LiteralNode* data, double proba = 1.0, bool inferred = false, bool check_existence = true);
     void addRelation(IndividualBranch* indiv_from, const std::string& property, const std::string& indiv_on);
@@ -146,6 +183,12 @@ namespace ontologenius {
 
     std::vector<IndividualBranch*> ordered_individuals_; // contains the individuals ordered wrt their index
                                                          // unused indexes have nullptr in
+
+    /// @brief Applies a direct inheritage between an individual branch and a class branch while checking its applicability.
+    /// @throws GraphException if the inheritage is impossible
+    /// @param branch A valid pointer toward an existing individual.
+    /// @param class_inherited A valid pointer toward an existing class.
+    void applyInheritage(IndividualBranch* branch, ClassBranch* class_inherited);
 
     /// @brief  Collectes all the class branches that will be infered because of class expressions,
     ///         both from equivalence and subClassOf.

@@ -137,7 +137,7 @@ namespace ontologenius {
           return onto_->classes_.addInheritage(feed.from_, feed.on_);
         else if(onto_->individuals_.findBranchSafe(feed.from_) != nullptr)
         {
-          auto tmp = onto_->individuals_.addInheritage(feed.from_, feed.on_);
+          auto tmp = onto_->individuals_.addInheritageFromString(feed.from_, feed.on_);
           explanations_.insert(explanations_.end(), tmp.begin(), tmp.end());
         }
         else if(onto_->classes_.findBranchSafe(feed.on_) != nullptr)

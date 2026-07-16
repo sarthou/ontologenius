@@ -38,7 +38,7 @@ TEST(feature_deep_copy, copy)
   std::string type = "Cube";
   onto2.individuals_.removeInheritage(indiv, type);
   type = "Object";
-  onto2.individuals_.addInheritage(indiv, type);
+  onto2.individuals_.addInheritageFromString(indiv, type);
 
   std::cout << "onto1 " << onto1.individuals_.getUp(indiv).size() << std::endl;
   std::cout << "onto2 " << onto2.individuals_.getUp(indiv).size() << std::endl;
