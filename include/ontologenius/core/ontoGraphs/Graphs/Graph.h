@@ -171,6 +171,11 @@ namespace ontologenius {
         *ptr = it->second;
     }
 
+    /// @brief Inserts a data into a vector if the data does not already exist in the vector.
+    /// @tparam C	The type of the containers' elements
+    /// @param vect The vector to push in
+    /// @param data The data to push in
+    /// @return returns true if the data has been newly inseted
     template<typename C>
     bool conditionalPushBack(std::vector<C>& vect, const C& data)
     {
@@ -183,6 +188,11 @@ namespace ontologenius {
         return false;
     }
 
+    /// @brief Inserts a data into a vector if the data does not already exist in the vector.
+    /// @tparam C	The type of the containers' elements
+    /// @param vect The vector to push in
+    /// @param data The data to push in
+    /// @return returns true if the data has been newly inseted
     template<typename C>
     bool conditionalPushBack(RelationsWithInductions<C>& vect, const C& data)
     {
@@ -195,6 +205,12 @@ namespace ontologenius {
         return false;
     }
 
+    /// @brief Inserts a data into a vector if the data does not already exist in the vector.
+    ///        This function also update the inferred flag of the stored data if needed.
+    /// @tparam C	The type of the containers' SingleElement
+    /// @param vect The vector to push in
+    /// @param data The data to push in
+    /// @return returns true if the data has been newly inseted
     template<typename C>
     bool conditionalPushBack(std::vector<SingleElement<C>>& vect, const SingleElement<C>& data)
     {
@@ -210,6 +226,12 @@ namespace ontologenius {
       return false;
     }
 
+    /// @brief Inserts a data into a vector if the data does not already exist in the vector.
+    ///        This function also update the inferred flag of the stored data if needed.
+    /// @tparam C	The type of the containers' SingleElement
+    /// @param vect The vector to push in
+    /// @param data The data to push in
+    /// @return returns true if the data has been newly inseted
     template<typename C>
     bool conditionalPushBack(RelationsWithInductions<SingleElement<C>>& vect, const SingleElement<C>& data)
     {
