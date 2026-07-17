@@ -25,6 +25,7 @@
 #include "ontologenius/core/ontoGraphs/Branchs/WordTable.h"
 #include "ontologenius/core/ontoGraphs/Graphs/Graph.h"
 #include "ontologenius/core/ontoGraphs/Graphs/OntologyGraphs.h"
+#include "ontologenius/graphical/Display.h"
 #include "ontologenius/utils/String.h"
 
 namespace ontologenius {
@@ -144,6 +145,28 @@ namespace ontologenius {
         }
       }
     }
+  }
+
+  size_t IndividualGraph::applyProvedFacts()
+  {
+    size_t nb_error = 0;
+    for(auto* indiv : all_branchs_)
+    {
+      for(size_t index = 0; index < indiv->is_a_.size(); index++)
+      {
+        std::vector<std::pair<std::string, std::string>> explanations;
+        try
+        {
+          applyProvedFacts(indiv, indiv->is_a_[index].elem, index, 1.0, true, &explanations);
+        }
+        catch(const GraphException& e)
+        {
+          nb_error++;
+          Display::error("'" + indiv->value() + "' can't be a '" + indiv->is_a_[index].elem->value() + ". " + e.what());
+        }
+      }
+    }
+    return nb_error;
   }
 
   /*********
@@ -2003,13 +2026,9 @@ namespace ontologenius {
       const std::shared_lock<std::shared_timed_mutex> lock_obj_prop(graphs_->object_properties_.mutex_);
       const std::shared_lock<std::shared_timed_mutex> lock_data_prop(graphs_->data_properties_.mutex_);
 
-      applyInheritage(branch, class_inherited);
-
-      const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
-                                   [class_inherited](const auto& is_a) { return is_a.elem == class_inherited; });
-      size_t index = static_cast<size_t>(std::distance(branch->is_a_.cbegin(), it));
-
-      applyProvedFacts(branch, class_inherited, index, 1.0, true, &explanations);
+      int index = applyInheritage(branch, class_inherited);
+      if(index >= 0)
+        applyProvedFacts(branch, class_inherited, static_cast<size_t>(index), 1.0, true, &explanations);
     }
     return explanations;
   }
@@ -2038,8 +2057,9 @@ namespace ontologenius {
     return {};
   }
 
-  void IndividualGraph::applyInheritage(IndividualBranch* branch, ClassBranch* class_inherited)
+  int IndividualGraph::applyInheritage(IndividualBranch* branch, ClassBranch* class_inherited)
   {
+    int is_a_index = -1;
     if((branch != nullptr) && (class_inherited != nullptr))
     {
       // 1 - Checking if the new inheritage is compatible with the existing hierarchy
@@ -2068,10 +2088,21 @@ namespace ontologenius {
 
       // 4 - Apply the new heritage
       if(conditionalPushBack(branch->is_a_, ClassElement(class_inherited)))
+      {
         branch->setUpdated(true);
+        is_a_index = static_cast<int>(branch->is_a_.size()) - 1;
+      }
+      else
+      {
+        const auto it = std::find_if(branch->is_a_.cbegin(), branch->is_a_.cend(),
+                                     [class_inherited](const auto& is_a) { return is_a.elem == class_inherited; });
+        is_a_index = static_cast<int>(std::distance(branch->is_a_.cbegin(), it));
+      }
       if(conditionalPushBack(class_inherited->individual_childs_, IndividualElement(branch)))
         class_inherited->setUpdated(true);
     }
+
+    return is_a_index;
   }
 
   void IndividualGraph::getWouldBeProvedClasses(ClassBranch* class_branch, std::unordered_set<ClassBranch*>& result)

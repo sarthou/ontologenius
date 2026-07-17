@@ -46,6 +46,7 @@ namespace ontologenius {
 
     IndividualBranch* add(const std::string& value, IndividualDescriptor_t& individual_descriptor);
     void add(std::vector<std::string>& distinct_);
+    size_t applyProvedFacts();
 
     std::unordered_set<std::string> getSame(const std::string& individual); // C1
     std::unordered_set<index_t> getSame(index_t individual);
@@ -188,7 +189,8 @@ namespace ontologenius {
     /// @throws GraphException if the inheritage is impossible
     /// @param branch A valid pointer toward an existing individual.
     /// @param class_inherited A valid pointer toward an existing class.
-    void applyInheritage(IndividualBranch* branch, ClassBranch* class_inherited);
+    /// @return the index of the inheritage in the is_a vector of the individual branch
+    int applyInheritage(IndividualBranch* branch, ClassBranch* class_inherited);
 
     /// @brief  Collectes all the class branches that will be infered because of class expressions,
     ///         both from equivalence and subClassOf.

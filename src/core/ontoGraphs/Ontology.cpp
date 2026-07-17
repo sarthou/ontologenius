@@ -65,10 +65,18 @@ namespace ontologenius {
 
       err += individual_checker.check();
 
-      is_init_ = true;
+      if(err == 0)
+      {
+        err += ano_class_checker.check();
+        err += rule_checker.check();
+
+        if(err == 0)
+        {
+          err += individuals_.applyProvedFacts();
+          is_init_ = (err == 0);
+        }
+      }
     }
-    err += ano_class_checker.check();
-    err += rule_checker.check();
 
     Display::info("\n***************SUMMARY****************");
     if(is_init_)

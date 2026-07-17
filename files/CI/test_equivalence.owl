@@ -128,6 +128,31 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#c">
         <!--untitled-ontology-27:hasMother rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#papa"/-->
     </owl:NamedIndividual>
+
+    
+
+
+    <!-- http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#uncle -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#uncle">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#Uncle"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#bob -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#bob">
+        <rdf:type rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#Bob"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#dad -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#dad">
+        <untitled-ontology-27:hasMother rdf:resource="http://www.semanticweb.org/gsarthou/ontologies/2026/5/untitled-ontology-27#papa"/>
+    </owl:NamedIndividual>
     
 
 
