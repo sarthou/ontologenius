@@ -28,8 +28,8 @@ TEST(reasoning_transitivity, transitivity_base)
   EXPECT_TRUE(onto_ptr->individuals.isInferred("a", "topTransitiveProperty", "c"));
   auto exp = onto_ptr->individuals.getInferenceExplanation("a", "topTransitiveProperty", "c");
   EXPECT_EQ(exp.size(), 2);
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "a|topTransitiveProperty|b") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "b|topTransitiveProperty|c") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "a|topTransitiveProperty|b") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "b|topTransitiveProperty|c") != exp.end());
 
   onto_ptr->feeder.addRelation("c", "topTransitiveProperty", "d");
   onto_ptr->feeder.waitUpdate(WAIT_TIME);
