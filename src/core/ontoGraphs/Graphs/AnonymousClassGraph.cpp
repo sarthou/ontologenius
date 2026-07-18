@@ -113,7 +113,7 @@ namespace ontologenius {
 
     case ClassExpressionType_e::class_expression_union_of:
       // Only ONE branch needs to hold; we cannot determine which one, so nothing is provable
-      // about the initial individual from its branches alone.
+      // about the initial individual from its branches alone. // TODO find common points
       break;
 
     case ClassExpressionType_e::class_expression_complement_of:

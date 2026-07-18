@@ -560,10 +560,4 @@ namespace ontologenius {
       text.erase(text.size() - 1, 1);
   }
 
-  void RosInterface::set2string(const std::unordered_set<std::string>& word_set, std::string& result)
-  {
-    for(const std::string& it : word_set)
-      result += it + " ";
-  }
-
 } // namespace ontologenius

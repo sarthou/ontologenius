@@ -23,20 +23,6 @@ namespace ontologenius {
                                                                   prev_(nullptr)
   {}
 
-  std::vector<Feed_t> VersionNode::getDatasDirect()
-  {
-    return datas_;
-  }
-
-  std::vector<Feed_t> VersionNode::getDatasInvert()
-  {
-    std::vector<Feed_t> datas = datas_;
-    std::reverse(datas.begin(), datas.end());
-    for(auto& data : datas)
-      data.action_ = (data.action_ == action_add) ? action_del : action_add;
-    return datas;
-  }
-
   void VersionNode::appendDatasDirect(std::vector<Feed_t>& datas)
   {
     datas.insert(datas.end(), datas_.begin(), datas_.end());

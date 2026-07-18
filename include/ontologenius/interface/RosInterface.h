@@ -176,10 +176,6 @@ namespace ontologenius {
     /// @brief Removes usless spaces at the begin and end of a string
     /// @param text is the string on which you want to remove the spaces
     void removeUselessSpace(std::string& text);
-    /// @brief Convert a set of strings into a string in which each element is separated by the symbol '-'
-    /// @param word_set is the set to convert
-    /// @param result is the string to which to add the elements of the set
-    void set2string(const std::unordered_set<std::string>& word_set, std::string& result);
     /// @brief Convert a set of T into a vector of T
     /// @param word_set is the set to convert
     /// @param result is the vector of T to which to add the elements of the set

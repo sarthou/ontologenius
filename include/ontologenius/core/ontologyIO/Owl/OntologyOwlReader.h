@@ -49,7 +49,6 @@ namespace ontologenius {
     void readDataProperty(tinyxml2::XMLElement* elem);
     void readAnnotationProperty(tinyxml2::XMLElement* elem);
     void readCollection(std::vector<std::string>& vect, tinyxml2::XMLElement* elem, const std::string& symbol, size_t level = 1);
-    std::string readSomeValuesFrom(tinyxml2::XMLElement* elem);
     void removeDocType(std::string& txt);
     void readDisjoint(tinyxml2::XMLElement* elem, bool is_class);
 

@@ -797,7 +797,7 @@ namespace ontologenius {
   {
     if(class_branch != nullptr)
     {
-      if(do_not_take.find(class_branch->get()) != do_not_take.end())
+      if(do_not_take.contains(class_branch->get()))
         return false;
 
       bool found = false;
@@ -2068,7 +2068,7 @@ namespace ontologenius {
 
       auto* disjoint_intersection = graphs_->classes_.isDisjoint(ups_indiv, class_inherited);
       if(disjoint_intersection != nullptr)
-        throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance" + class_inherited->value());
+        throw GraphException("The individual has a class disjointess over " + disjoint_intersection->value() + " in its inheritance " + class_inherited->value());
 
       // 2 - Cheking if the new inheritages from equivalent class are compatible with the existing hierarchy
       std::unordered_set<ClassBranch*> would_be_proved;
