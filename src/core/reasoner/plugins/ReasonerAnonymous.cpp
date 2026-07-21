@@ -325,8 +325,6 @@ namespace ontologenius {
           {
             if(existInInheritance(indiv->same_as_[i].elem->is_a_[j].elem, expression->class_involved_, used))
             {
-              // used.emplace_back(indiv->same_as_[i].elem->value() + "|isA|" + expression->class_involved_->value(),
-              //                   indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j]);
               used.emplace_back(indiv->same_as_[i].elem->value() + "|isA|" + indiv->same_as_[i].elem->is_a_[j].elem->value(),
                                 indiv->same_as_[i].elem->is_a_.has_induced_inheritance_relations[j]);
 
@@ -343,8 +341,6 @@ namespace ontologenius {
       for(size_t i = 0; i < indiv->is_a_.size(); i++)
         if(existInInheritance(indiv->is_a_[i].elem, expression->class_involved_, used))
         {
-          // used.emplace_back(indiv->value() + "|isA|" + expression->class_involved_->value(),
-          //                   indiv->is_a_.has_induced_inheritance_relations[i]);
           used.emplace_back(indiv->value() + "|isA|" + indiv->is_a_[i].elem->value(),
                             indiv->is_a_.has_induced_inheritance_relations[i]);
           return true;

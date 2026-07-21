@@ -165,9 +165,7 @@ namespace ontologenius {
         {
           if(existInInheritance(branch->mothers_[i].elem, selector, used))
           {
-            //used.emplace_back("", branch->mothers_.has_induced_inheritance_relations[i]);
-            used.emplace_back(branch->value() + "|isA|" + selector->value(), 
-              branch->mothers_.has_induced_inheritance_relations[i]);
+            used.emplace_back(branch->value() + "|isA|" + selector->value(), branch->mothers_.has_induced_inheritance_relations[i]);
             return true;
           }
         }
