@@ -477,7 +477,7 @@ namespace ontologenius {
           res->values = onto_->individuals_.isInferred(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
           break;
         case "getInferenceExplanation"_act:
-          res->values = onto_->individuals_.getInferenceExplanation(params());
+          res->values = onto_->individuals_.getInferenceExplanation(params(), params.compress);
           break;
         case "getInferenceRule"_act:
           res->values = {onto_->individuals_.getInferenceRule(params())};

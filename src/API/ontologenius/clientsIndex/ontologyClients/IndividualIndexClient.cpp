@@ -138,15 +138,19 @@ namespace onto {
     return (callStr("isInferred", param).empty() == false);
   }
 
-  std::vector<std::string> IndividualIndexClient::getInferenceExplanation(int64_t subject, int64_t property, int64_t object)
+  std::vector<std::string> IndividualIndexClient::getRelationInferenceExplanation(int64_t subject, int64_t property, int64_t object, bool compress)
   {
     std::string param = std::to_string(subject) + "|" + std::to_string(property) + "|" + std::to_string(object);
+    if(compress)
+      param += " -c true";
     return call("getInferenceExplanation", param);
   }
 
-  std::vector<std::string> IndividualIndexClient::getInferenceExplanation(int64_t subject, int64_t class_index)
+  std::vector<std::string> IndividualIndexClient::getInheritanceInferenceExplanation(int64_t subject, int64_t class_index, bool compress)
   {
     std::string param = std::to_string(subject) + "|" + std::to_string(class_index);
+    if(compress)
+      param += " -c true";
     return call("getInferenceExplanation", param);
   }
 

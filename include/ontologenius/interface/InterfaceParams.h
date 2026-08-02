@@ -25,10 +25,12 @@ namespace ontologenius {
     int64_t selector_index;
     double threshold;
     bool take_id;
+    bool compress;
 
     InterfaceParams() : main_index(0), optional_index(0),
                         depth(-1), selector_index(0),
-                        threshold(-1), take_id(true) {}
+                        threshold(-1), take_id(true),
+                        compress(false) {}
 
     std::string operator()() const { return base; }
 
@@ -70,6 +72,15 @@ namespace ontologenius {
             tmp = true;
 
           take_id = tmp;
+        }
+        else if((str_params[i] == "-c") || (str_params[i] == "--compress"))
+        {
+          i++;
+          bool tmp = false;
+          if(str_params[i] == "true")
+            tmp = true;
+
+          compress = tmp;
         }
         else if((str_params[i].empty() == false) && (str_params[i][0] == '-'))
         {

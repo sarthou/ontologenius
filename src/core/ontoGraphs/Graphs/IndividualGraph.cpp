@@ -1595,19 +1595,23 @@ namespace ontologenius {
     return res;
   }
 
-  std::vector<std::string> IndividualGraph::getInferenceExplanation(const std::string& param)
+  std::vector<std::string> IndividualGraph::getInferenceExplanation(const std::string& param, bool compress)
   {
     std::vector<std::string> res;
     std::function<std::vector<std::string>(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
     getInferenceData(param, res, lambda);
+    if(compress)
+      compressExplanation(res);
     return res;
   }
 
-  std::vector<std::string> IndividualGraph::getInferenceExplanationIndex(const std::string& param)
+  std::vector<std::string> IndividualGraph::getInferenceExplanationIndex(const std::string& param, bool compress)
   {
     std::vector<std::string> res;
     std::function<std::vector<std::string>(const ProbabilisticElement& elem)> lambda = [](const ProbabilisticElement& elem) { return elem.explanation; };
     getInferenceDataIndex(param, res, lambda);
+    if(compress)
+      compressExplanation(res);
     return res;
   }
 
@@ -1635,6 +1639,47 @@ namespace ontologenius {
     };
     getInferenceDataIndex(param, res, lambda);
     return res;
+  }
+
+  void IndividualGraph::compressExplanation(std::vector<std::string>& explanation)
+  {
+    for(size_t i = 0; i < explanation.size(); i++)
+    {
+      size_t pos = explanation[i].find("|isA|");
+      if(pos != std::string::npos)
+      {
+        bool found = false;
+
+        std::string inheritage_name = explanation[i].substr(pos + 5);
+        if((i + 1) < explanation.size())
+        {
+          size_t pos2 = explanation[i + 1].find(inheritage_name + "|isA|");
+          if(pos2 == 0)
+          {
+            std::string upper_inheritage_name = explanation[i + 1].substr(inheritage_name.size() + 5);
+            explanation[i] = explanation[i].substr(0, pos + 5) + upper_inheritage_name;
+            explanation.erase(explanation.begin() + static_cast<long>(i) + 1);
+            i--;
+            found = true;
+          }
+        }
+
+        if(found == false)
+        {
+          if(i != 0)
+          {
+            size_t pos2 = explanation[i - 1].find(inheritage_name + "|isA|");
+            if(pos2 == 0)
+            {
+              std::string upper_inheritage_name = explanation[i - 1].substr(inheritage_name.size() + 5);
+              explanation[i] = explanation[i].substr(0, pos + 5) + upper_inheritage_name;
+              explanation.erase(explanation.begin() + static_cast<long>(i) - 1);
+              i--;
+            }
+          }
+        }
+      }
+    }
   }
 
   template<typename R>

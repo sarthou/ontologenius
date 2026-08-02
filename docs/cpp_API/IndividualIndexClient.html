@@ -219,11 +219,11 @@
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInferenceExplanation">getInferenceExplanation</a></b>(int64_t <i>subject</i>, int64_t <i>property</i>, int64_t <i>object</i>)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(int64_t <i>subject</i>, int64_t <i>property</i>, int64_t <i>object</i>, bool <i>compress</i> = false)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> std::vector&lt;std::string&gt; </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInferenceExplanation2">getInferenceExplanation</a></b>(int64_t <i>subject</i>, int64_t <i>class_index</i>)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(int64_t <i>subject</i>, int64_t <i>class_index</i>, bool <i>compress</i> = false)</td>
               </tr>
             </tbody>
           </table>
@@ -317,13 +317,15 @@
           <h3 class="fn" id="isInferred2"><a name="isInferred"></a><span class="type">bool</span> IndividualIndexClient::<span class="name">isInferred</span>(<span class="type">int64_t</span> <i>subject</i>, <span class="type">int64_t</span> <i>class_index</i>)</h3>
           <p>Tests if the inheritance has been inferred or not.</p>
 
-          <h3 class="fn" id="getInferenceExplanation"><a name="getInferenceExplanation"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualIndexClient::<span class="name">getInferenceExplanation</span>(<span class="type">int64_t</span> <i>subject</i>, <span class="type">int64_t</span> <i>property</i>, <span class="type">int64_t</span> <i>object</i>)</h3>
+          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualIndexClient::<span class="name">getRelationInferenceExplanation</span>(<span class="type">int64_t</span> <i>subject</i>, <span class="type">int64_t</span> <i>property</i>, <span class="type">int64_t</span> <i>object</i>, bool <i>compress</i> = false)</h3>
           <p>Gives all the relations used in the inference of the provided relation.</p>
           <p>Relations are returned in their string form.</p>
+          <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
-          <h3 class="fn" id="getInferenceExplanation2"><a name="getInferenceExplanation"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualIndexClient::<span class="name">getInferenceExplanation</span>(<span class="type">int64_t</span> <i>subject</i>, <span class="type">int64_t</span> <i>class_index</i>)</h3>
+          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="type">std::vector&lt;std::string&gt;</span> IndividualIndexClient::<span class="name">getInheritanceInferenceExplanation</span>(<span class="type">int64_t</span> <i>subject</i>, <span class="type">int64_t</span> <i>class_index</i>, bool <i>compress</i> = false)</h3>
           <p>Gives all the relations used in the inference of the provided inheritage.</p>
           <p>Relations are returned in their string form.</p>
+          <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
         </div>
       </div>

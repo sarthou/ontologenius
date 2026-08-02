@@ -218,11 +218,11 @@
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object, compress = False)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_index)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_index, compress = False)</td>
               </tr>
             </tbody>
           </table>
@@ -316,13 +316,15 @@
           <h3 class="fn" id="isInheritanceInferred"><a name="isInheritanceInferred"></a><span class="name">isInheritanceInferred</span>(self, subject, class_index)</h3>
           <p>Tests if the inheritance (integer, integer) has been inferred or not.</p>
 
-          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object)</h3>
+          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object, compress = False)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided relation (integer, integer, integer).</p>
           <p>Relations are returned in their string form.</p>
+          <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
-          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_index)</h3>
+          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_index, compress = False)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided inheritage (integer, integer).</p>
           <p>Relations are returned in their string form.</p>
+          <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
         </div>
       </div>
