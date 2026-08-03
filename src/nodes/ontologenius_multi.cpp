@@ -89,7 +89,8 @@ void addInterface(const std::string& name, bool is_root = false)
   tmp->init(params.at("language").getFirst(),
             params.at("intern_file").getFirst(),
             files,
-            params.at("config").getFirst());
+            params.at("config").getFirst(),
+            std::stoul(params.at("feeder_rate").getFirst()));
 
   std::thread th(&ontologenius::RosInterface::run, tmp);
   interfaces_threads[name] = std::move(th);
@@ -241,6 +242,7 @@ int main(int argc, char** argv)
   params.insert(ontologenius::Parameter("human_file", {"-h", "--human"}, {"none"}));
   params.insert(ontologenius::Parameter("robot_file", {"-r", "--robot"}, {"none"}));
   params.insert(ontologenius::Parameter("root", {"--root"}, {"none"}));
+  params.insert(ontologenius::Parameter("feeder_rate", {"-f", "--feeder_rate"}, {std::to_string(FEEDER_DEFAULT_RATE)}));
   params.insert(ontologenius::Parameter("files", {}));
 
   params.set(argc, argv);

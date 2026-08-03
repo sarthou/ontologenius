@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <execinfo.h>
 #include <ontologenius/compat/ros.h>
+#include <string>
 #include <thread>
 #include <unistd.h>
 
@@ -36,6 +37,7 @@ int main(int argc, char** argv)
     params.insert(ontologenius::Parameter("intern_file", {"-i", "--intern_file"}, {"none"}));
     params.insert(ontologenius::Parameter("config", {"-c", "--config"}, {"none"}));
     params.insert(ontologenius::Parameter("display", {"-d", "--display"}, {"true"}));
+    params.insert(ontologenius::Parameter("feeder_rate", {"-f", "--feeder_rate"}, {std::to_string(FEEDER_DEFAULT_RATE)}));
     params.insert(ontologenius::Parameter("files", {}));
 
     params.set(argc, argv);
@@ -45,7 +47,8 @@ int main(int argc, char** argv)
     interface.init(params.at("language").getFirst(),
                    params.at("intern_file").getFirst(),
                    params.at("files").get(),
-                   params.at("config").getFirst());
+                   params.at("config").getFirst(),
+                   std::stoul(params.at("feeder_rate").getFirst()));
 
     interface.run();
   }

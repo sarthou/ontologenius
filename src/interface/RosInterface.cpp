@@ -20,9 +20,6 @@
 #define PUB_QUEU_SIZE 1000
 #define SUB_QUEU_SIZE 10000
 
-#define FEEDER_DEFAULT_RATE 20
-#define FEEDER_COPY_RATE 4000
-
 namespace ontologenius {
 
   RosInterface::RosInterface(const std::string& name) : onto_(new Ontology()),
@@ -75,8 +72,12 @@ namespace ontologenius {
     delete onto_;
   }
 
-  void RosInterface::init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path)
+  void RosInterface::init(const std::string& lang, const std::string& intern_file,
+                          const std::vector<std::string>& files, const std::string& config_path,
+                          size_t feeder_rate)
   {
+    feeder_rate_ = feeder_rate;
+
     onto_->setLanguage(lang);
     std::string dedicated_intern_file = intern_file;
     if(name_.empty() == false)

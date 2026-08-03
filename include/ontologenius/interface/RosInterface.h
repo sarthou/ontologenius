@@ -18,6 +18,9 @@
 
 // #define ONTO_TEST
 
+#define FEEDER_DEFAULT_RATE 20
+#define FEEDER_COPY_RATE 4000
+
 namespace ontologenius {
 
   class RosInterface
@@ -40,7 +43,10 @@ namespace ontologenius {
     /// @param intern_file is the path to the file in which the ontology will be stored at the end of the process. Could be set to "none" to not use it
     /// @param files is a vector of paths to the files to load if no intern file exist
     /// @param config_path is the path to the yaml file used to configure the reasoners. Could be set to "none" if you do not use any configuration file
-    void init(const std::string& lang, const std::string& intern_file, const std::vector<std::string>& files, const std::string& config_path);
+    /// @param feeder_rate is the rate (in Hz) at which the feeder thread run. Can not be modified while the process is running
+    void init(const std::string& lang, const std::string& intern_file,
+              const std::vector<std::string>& files, const std::string& config_path,
+              size_t feeder_rate = FEEDER_DEFAULT_RATE);
     /// @brief Initializes the interface created by a copy of an existing ontology
     /// @param lang is the used language for the natural language names of the concepts
     /// @param config_path is the path to the yaml file used to configure the reasoners. Could be set to "none" if you do not use any configuration file
