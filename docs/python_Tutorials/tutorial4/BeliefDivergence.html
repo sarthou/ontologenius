@@ -38,11 +38,21 @@
       <ul class="sub-navigation">
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Python API sources</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
-      <h1>Ontologenius Python Documentation</h1>
+      <div class="navigationbar-title-row">
+        <h1>Ontologenius Python Documentation</h1>
+        <div class="search-bar-wrapper">
+          <div id="search"></div>
+        </div>
+      </div>
     </div>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        new PagefindUI({ element: '#search', baseUrl: '../../', showImages: false });
+      });
+    </script>
 
     <div class="content">
       <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: 0px;">
