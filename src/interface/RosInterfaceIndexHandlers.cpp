@@ -480,7 +480,7 @@ namespace ontologenius {
           res->string_values = onto_->individuals_.isInferredIndex(params()) ? std::vector<std::string>{params()} : std::vector<std::string>{""};
           break;
         case "getInferenceExplanation"_act:
-          res->string_values = onto_->individuals_.getInferenceExplanationIndex(params());
+          res->string_values = onto_->individuals_.getInferenceExplanationIndex(params(), params.compress);
           break;
         case "getInferenceRule"_act:
           res->string_values = {onto_->individuals_.getInferenceRuleIndex(params())};

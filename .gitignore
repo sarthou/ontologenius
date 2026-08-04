@@ -58,3 +58,5 @@ tasks.json
 !cmake/*.cmake
 *.bin
 build/
+
+docs/pagefind

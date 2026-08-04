@@ -1,4 +1,4 @@
-<html lang="en_US">
+<html lang="en_US" data-pagefind-filter="API:C++">
 
 <head>
   <title>OntologyManipulatorIndex Class (cpp) | Ontologenius 0.4.7</title>
@@ -8,6 +8,8 @@
   <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link href="../pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="../pagefind/pagefind-ui.js"></script>
 </head>
 
 <body>
@@ -34,11 +36,21 @@
       <ul class="sub-navigation">
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Python API sources</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
-      <h1>Ontologenius Cpp API Documentation</h1>
+      <div class="navigationbar-title-row">
+        <h1>Ontologenius Cpp API Documentation</h1>
+        <div class="search-bar-wrapper">
+          <div id="search"></div>
+        </div>
+      </div>
     </div>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        new PagefindUI({ element: '#search', baseUrl: '../', showImages: false });
+      });
+    </script>
 
     <div class="content">
       <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
@@ -123,7 +135,7 @@
       </div>
 
       <div class="context">
-        <h1 class="title">OntologyManipulatorIndex Class</h1>
+        <h1 class="title" data-pagefind-meta="title">OntologyManipulatorIndex Class</h1>
         <p>The OntologyManipulatorIndex class is an object with instances of all classes needed to manipulate an ontology based on indexes.<a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">

@@ -132,15 +132,19 @@ namespace onto {
     return (callStr("isInferred", param).empty() == false);
   }
 
-  std::vector<std::string> IndividualClient::getInferenceExplanation(const std::string& subject, const std::string& property, const std::string& object)
+  std::vector<std::string> IndividualClient::getRelationInferenceExplanation(const std::string& subject, const std::string& property, const std::string& object, bool compress)
   {
     std::string param = subject + "|" + property + "|" + object;
+    if(compress)
+      param += " -c true";
     return call("getInferenceExplanation", param);
   }
 
-  std::vector<std::string> IndividualClient::getInferenceExplanation(const std::string& subject, const std::string& class_name)
+  std::vector<std::string> IndividualClient::getInheritanceInferenceExplanation(const std::string& subject, const std::string& class_name, bool compress)
   {
     std::string param = subject + "|" + class_name;
+    if(compress)
+      param += " -c true";
     return call("getInferenceExplanation", param);
   }
 

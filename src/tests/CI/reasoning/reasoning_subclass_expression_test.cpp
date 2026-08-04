@@ -8,6 +8,54 @@
 
 onto::OntologyManipulator* onto_ptr;
 
+TEST(reasoning_anonymous_class, init)
+{
+  std::vector<std::string> res;
+
+  res = onto_ptr->individuals.getRelationFrom("uncle", 1);
+  EXPECT_EQ(res.size(), 2);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "hasSurname") != res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "hasMother") != res.end());
+
+  res = onto_ptr->individuals.getOn("uncle", "hasSurname");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "string#tata") != res.end());
+
+  res = onto_ptr->individuals.getOn("uncle", "hasMother");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "papa") != res.end());
+
+  res = onto_ptr->individuals.getRelationFrom("bob", 1);
+  EXPECT_EQ(res.size(), 2);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "hasSurname") != res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "hasMother") != res.end());
+
+  res = onto_ptr->individuals.getOn("bob", "hasSurname");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "string#tonton") != res.end());
+
+  res = onto_ptr->individuals.getOn("bob", "hasMother");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "mama") != res.end());
+
+  res = onto_ptr->individuals.getUp("dad", 1);
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "Uncle") != res.end());
+
+  res = onto_ptr->individuals.getRelationFrom("dad", 1);
+  EXPECT_EQ(res.size(), 2);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "hasSurname") != res.end());
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "hasMother") != res.end());
+
+  res = onto_ptr->individuals.getOn("dad", "hasSurname");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "string#tata") != res.end());
+
+  res = onto_ptr->individuals.getOn("dad", "hasMother");
+  EXPECT_EQ(res.size(), 1);
+  EXPECT_TRUE(std::find(res.begin(), res.end(), "papa") != res.end());
+}
+
 TEST(reasoning_anonymous_class, equiv_inherit_equiv)
 {
   std::vector<std::string> res;

@@ -121,15 +121,17 @@ namespace onto {
     /// @param subject the subject of the relation.
     /// @param property the property of the relation.
     /// @param object the object of the relation. Can be an individual or a data (type#value)
+    /// @param compress can be set to true to compress the result by removing inheritage chains.
     /// @return a vector of relation in the form `subject|predicate|object|`
     /// Relations are returned in their string form.
-    std::vector<std::string> getInferenceExplanation(int64_t subject, int64_t property, int64_t object);
+    std::vector<std::string> getRelationInferenceExplanation(int64_t subject, int64_t property, int64_t object, bool compress = false);
     /// @brief Gives all the relations used in the inference of the provided inheritage.
     /// @param subject the subject of the relation.
     /// @param class_index the class the subject inherite.
+    /// @param compress can be set to true to compress the result by removing inheritage chains.
     /// @return a vector of relation in the form `subject|predicate|object|`
     /// Relations are returned in their string form.
-    std::vector<std::string> getInferenceExplanation(int64_t subject, int64_t class_index);
+    std::vector<std::string> getInheritanceInferenceExplanation(int64_t subject, int64_t class_index, bool compress = false);
 
   private:
   };

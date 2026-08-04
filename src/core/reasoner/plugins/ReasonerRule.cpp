@@ -368,10 +368,10 @@ namespace ontologenius {
           if(class_selector == main_class_predicate)
             constructResult(indiv->value(), indiv->is_a_, i, local_res, true);
           else
-          {
-            std::string explanation = indiv->value() + "|isA|" + main_class_predicate->value(); // main explanation
-            local_res.explanations.emplace_back(explanation);
-            constructResult(indiv->value(), indiv->is_a_, i, local_res, false);
+          { // (1) We finaly choose to add he full inheritage links in the explanation. This later could be filterred on query if needed
+            // std::string explanation = indiv->value() + "|isA|" + main_class_predicate->value(); // main explanation
+            // local_res.explanations.emplace_back(explanation);
+            constructResult(indiv->value(), indiv->is_a_, i, local_res, true); // (1) previously false
           }
 
           break;
@@ -389,7 +389,7 @@ namespace ontologenius {
       {
         if(child_ptr->mothers_[i] == class_selector)
         {
-          constructResult(child_ptr->value(), child_ptr->mothers_, i, local_res, false);
+          constructResult(child_ptr->value(), child_ptr->mothers_, i, local_res, true); // (1) previously false
           break;
         }
       }

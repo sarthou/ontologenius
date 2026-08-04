@@ -1,4 +1,4 @@
-<html lang="en_US">
+<html lang="en_US" data-pagefind-filter="API:Python">
 
 <head>
   <title>IndividualIndexClient Class (python) | Ontologenius 0.4.7</title>
@@ -8,6 +8,8 @@
   <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link href="../pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="../pagefind/pagefind-ui.js"></script>
 </head>
 
 <body>
@@ -34,11 +36,21 @@
       <ul class="sub-navigation">
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/src/API/ontologenius">C++ API sources</a></li>
         <li><a href="https://github.com/sarthou/ontologenius/tree/master/include/ontologenius/API/ontologenius">C++ API headers</a></li>
-        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Pyhton API sources</a></li>
+        <li><a href="https://github.com/sarthou/ontologenius/tree/master/ontopy/ontologenius">Python API sources</a></li>
         <li><a href="https://gitlab.com/sarthou/ontologenius/pipelines">Pipelines</a></li>
       </ul>
-      <h1>Ontologenius Python API Documentation</h1>
+      <div class="navigationbar-title-row">
+        <h1>Ontologenius Python API Documentation</h1>
+        <div class="search-bar-wrapper">
+          <div id="search"></div>
+        </div>
+      </div>
     </div>
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        new PagefindUI({ element: '#search', baseUrl: '../', showImages: false });
+      });
+    </script>
 
     <div class="content">
       <div class="sidebar" style="transition: all 0.2s ease-out 0s; top: -240px;">
@@ -122,7 +134,7 @@
       </div>
 
       <div class="context">
-        <h1 class="title">IndividualIndexClient Class</h1>
+        <h1 class="title" data-pagefind-meta="title">IndividualIndexClient Class</h1>
         <p>The IndividualIndexClient class provides a ROS service abstraction for individuals exploration. <a href="#details">More...</a></p>
         <div class="table">
           <table class="alignedsummary">
@@ -218,11 +230,11 @@
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object, compress = False)</td>
               </tr>
               <tr>
                 <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_index)</td>
+                <td class="memItemRight bottomAlign"><b><a href="IndividualIndexClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_index, compress = False)</td>
               </tr>
             </tbody>
           </table>
@@ -316,13 +328,15 @@
           <h3 class="fn" id="isInheritanceInferred"><a name="isInheritanceInferred"></a><span class="name">isInheritanceInferred</span>(self, subject, class_index)</h3>
           <p>Tests if the inheritance (integer, integer) has been inferred or not.</p>
 
-          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object)</h3>
+          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object, compress = False)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided relation (integer, integer, integer).</p>
           <p>Relations are returned in their string form.</p>
+          <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
-          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_index)</h3>
+          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_index, compress = False)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided inheritage (integer, integer).</p>
           <p>Relations are returned in their string form.</p>
+          <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
         </div>
       </div>

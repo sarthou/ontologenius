@@ -148,14 +148,22 @@ class IndividualIndexClient(OntologyIndexClient):
         param = str(subject) + "|" + str(class_index)
         return (self.callStr("isInferred", param) != "")
 
-    def getRelationInferenceExplanation(self, subject, property, object):
+    def getRelationInferenceExplanation(self, subject, property, object, compress = False):
         """Gives all the relations (str[]) used in the inference of the provided relation (integer, integer, integer).
-           Relations are returned in their string form."""
+           Relations are returned in their string form.
+           If compress is True, the explanation is returned in a compressed format, removing inheritance chains.
+        """
         param = str(subject) + "|" + str(property) + "|" + str(object)
+        if compress:
+            param += " -c true"
         return self.call("getInferenceExplanation", param)
 
-    def getInheritanceInferenceExplanation(self, subject, class_index):
+    def getInheritanceInferenceExplanation(self, subject, class_index, compress = False):
         """Gives all the relations (str[]) used in the inference of the provided inheritage (integer, integer).
-           Relations are returned in their string form."""
+           Relations are returned in their string form.
+           If compress is True, the explanation is returned in a compressed format, removing inheritance chains.
+        """
         param = str(subject) + "|" + str(class_index)
+        if compress:
+            param += " -c true"
         return self.call("getInferenceExplanation", param)

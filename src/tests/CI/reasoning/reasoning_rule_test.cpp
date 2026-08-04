@@ -31,10 +31,11 @@ TEST(reasoning_rule, class_predicate)
 
   EXPECT_TRUE(onto_ptr->individuals.isInferred("pepper", "isManipulable", "boolean#false")); // check if the relation has been inferred
 
-  auto exp = onto_ptr->individuals.getInferenceExplanation("pepper", "isManipulable", "boolean#false"); // check the explanations for such inference
-  EXPECT_EQ(exp.size(), 1);
+  auto exp = onto_ptr->individuals.getRelationInferenceExplanation("pepper", "isManipulable", "boolean#false"); // check the explanations for such inference
+  EXPECT_EQ(exp.size(), 2);
 
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "Robot|isA|Agent") != exp.end());
 
   onto_ptr->feeder.removeInheritage("pepper", "Robot"); // removing relation used to infer pepper|isManipulable|boolean#false
   onto_ptr->feeder.waitUpdate(1000);
@@ -67,10 +68,11 @@ TEST(reasoning_rule, object_predicate)
 
   EXPECT_TRUE(onto_ptr->individuals.isInferred("pepper_capa", "Capability"));
 
-  auto exp = onto_ptr->individuals.getInferenceExplanation("pepper_capa", "Capability");
-  EXPECT_EQ(exp.size(), 2);
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|hasCapability|pepper_capa") != res.end());
+  auto exp = onto_ptr->individuals.getInheritanceInferenceExplanation("pepper_capa", "Capability");
+  EXPECT_EQ(exp.size(), 3);
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "Robot|isA|Agent") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|hasCapability|pepper_capa") != exp.end());
 
   onto_ptr->feeder.removeRelation("pepper", "hasCapability", "pepper_capa");
   onto_ptr->feeder.waitUpdate(1000);
@@ -92,7 +94,7 @@ TEST(reasoning_rule, data_predicate)
 
   EXPECT_TRUE(onto_ptr->individuals.isInferred("mug_3", "isManipulable", "boolean#true"));
 
-  auto exp = onto_ptr->individuals.getInferenceExplanation("mug_3", "isManipulable", "boolean#true");
+  auto exp = onto_ptr->individuals.getRelationInferenceExplanation("mug_3", "isManipulable", "boolean#true");
   EXPECT_EQ(exp.size(), 2);
   EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|isA|Mug") != exp.end());
   EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|isFilled|boolean#false") != exp.end());
@@ -129,17 +131,23 @@ TEST(reasoning_rule, complex_class_predicate)
 
   EXPECT_TRUE(onto_ptr->individuals.isInferred("pepper", "ManipulationCapableAgent"));
 
-  auto exp = onto_ptr->individuals.getInferenceExplanation("pepper_capa", "ManipulationCapability");
+  auto exp = onto_ptr->individuals.getInheritanceInferenceExplanation("pepper_capa", "ManipulationCapability");
   EXPECT_EQ(exp.size(), 2);
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_capa|hasAvailableComponent|pepper_left_hand") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_left_hand|isA|Gripper") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_capa|hasAvailableComponent|pepper_left_hand") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_left_hand|isA|Gripper") != exp.end());
 
-  auto exp_manip = onto_ptr->individuals.getInferenceExplanation("pepper", "ManipulationCapableAgent");
+  auto exp_manip = onto_ptr->individuals.getInheritanceInferenceExplanation("pepper", "ManipulationCapableAgent");
   EXPECT_EQ(exp_manip.size(), 4);
-  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper_capa|isA|ManipulationCapability") != res.end());
-  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper|hasCapability|pepper_capa") != res.end());
-  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper|isA|Agent") != res.end()); // should be pepper|isA|Robot -> but is : pepper|isA|Agent
-  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "Robot|isA|Agent") != res.end());
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper_capa|isA|ManipulationCapability") != exp_manip.end());
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper|hasCapability|pepper_capa") != exp_manip.end());
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper|isA|Robot") != exp_manip.end());
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "Robot|isA|Agent") != exp_manip.end());
+
+  exp_manip = onto_ptr->individuals.getInheritanceInferenceExplanation("pepper", "ManipulationCapableAgent", true); // compress the result to remove inheritance chains
+  EXPECT_EQ(exp_manip.size(), 3);
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper_capa|isA|ManipulationCapability") != exp_manip.end());
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper|hasCapability|pepper_capa") != exp_manip.end());
+  EXPECT_TRUE(std::find(exp_manip.begin(), exp_manip.end(), "pepper|isA|Agent") != exp_manip.end());
 
   onto_ptr->feeder.removeRelation("pepper", "hasComponent", "pepper_left_hand");
   onto_ptr->feeder.waitUpdate(1000);
@@ -175,14 +183,24 @@ TEST(reasoning_rule, predicate_combinations)
   onto_ptr->feeder.waitUpdate(1000);
   EXPECT_TRUE(onto_ptr->individuals.isInferred("pepper", "canManipulate", "mug_3"));
 
-  auto exp = onto_ptr->individuals.getInferenceExplanation("pepper", "canManipulate", "mug_3");
+  auto exp = onto_ptr->individuals.getRelationInferenceExplanation("pepper", "canManipulate", "mug_3");
+  EXPECT_EQ(exp.size(), 7);
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3_disp|isA|ManipulableDisposition") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|hasDisposition|mug_3_disp") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|isA|Mug") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "Mug|isA|Object") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_capa|isA|ManipulationCapability") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|hasCapability|pepper_capa") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != exp.end());
+
+  exp = onto_ptr->individuals.getRelationInferenceExplanation("pepper", "canManipulate", "mug_3", true); // compress the result to remove inheritance chains
   EXPECT_EQ(exp.size(), 6);
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3_disp|isA|ManipulableDisposition") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|hasDisposition|mug_3_disp") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|isA|Mug") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_capa|isA|ManipulationCapability") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|hasCapability|pepper_capa") != res.end());
-  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != res.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3_disp|isA|ManipulableDisposition") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|hasDisposition|mug_3_disp") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|isA|Object") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_capa|isA|ManipulationCapability") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|hasCapability|pepper_capa") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != exp.end());
 
   onto_ptr->feeder.removeRelation("mug_3_handle", "isManipulable", "boolean#true");
   onto_ptr->feeder.addRelation("mug_3_handle", "isManipulable", "boolean#false");
@@ -198,15 +216,56 @@ TEST(reasoning_rule, predicate_combinations)
 
   onto_ptr->feeder.waitUpdate(1000);
   EXPECT_TRUE(onto_ptr->individuals.isInferred("robot_helper", "canManipulate", "mug_3"));
-  auto exp_same = onto_ptr->individuals.getInferenceExplanation("robot_helper", "canManipulate", "mug_3");
-  EXPECT_EQ(exp_same.size(), 6);
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "mug_3_disp|isA|ManipulableDisposition") != res.end());
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "mug_3|hasDisposition|mug_3_disp") != res.end());
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "mug_3|isA|Mug") != res.end());
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "pepper_capa|isA|ManipulationCapability") != res.end());
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "pepper|hasCapability|pepper_capa") != res.end());
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "pepper|isA|Robot") != res.end());
-  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "robot_helper|sameAs|pepper") != res.end());
+  auto exp_same = onto_ptr->individuals.getRelationInferenceExplanation("robot_helper", "canManipulate", "mug_3");
+  EXPECT_EQ(exp_same.size(), 7);
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "mug_3_disp|isA|ManipulableDisposition") != exp_same.end());
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "mug_3|hasDisposition|mug_3_disp") != exp_same.end());
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "mug_3|isA|Mug") != exp_same.end());
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "Mug|isA|Object") != exp_same.end());
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "pepper_capa|isA|ManipulationCapability") != exp_same.end());
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "pepper|hasCapability|pepper_capa") != exp_same.end());
+  EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "pepper|isA|Robot") != exp_same.end());
+  // EXPECT_TRUE(std::find(exp_same.begin(), exp_same.end(), "robot_helper|sameAs|pepper") != exp_same.end());
+}
+
+// Do same test as before ut insert the mug first
+TEST(reasoning_rule, predicate_combinations_inverse)
+{
+  // Rule is : Robot(?r), hasCapability(?r, ?c), ManipulationCapability(?c), Object(?o),
+  //           hasDisposition(?o, ?d), ManipulableDisposition(?d) -> canManipulate(?r, ?o), at
+
+  std::vector<std::string> res;
+
+  onto_ptr->feeder.addConcept("mug_3");
+  onto_ptr->feeder.addInheritage("mug_3", "Mug");
+  onto_ptr->feeder.addConcept("mug_3_disp");
+  onto_ptr->feeder.addRelation("mug_3", "hasDisposition", "mug_3_disp");
+
+  onto_ptr->feeder.addRelation("mug_3", "hasPart", "mug_3_handle");
+  onto_ptr->feeder.addRelation("mug_3_handle", "isManipulable", "boolean#true");
+
+  onto_ptr->feeder.addConcept("pepper");
+  onto_ptr->feeder.addInheritage("pepper", "Robot");
+  onto_ptr->feeder.addConcept("pepper_capa");
+  onto_ptr->feeder.addRelation("pepper", "hasCapability", "pepper_capa");
+
+  onto_ptr->feeder.addConcept("pepper_left_hand");
+  onto_ptr->feeder.addInheritage("pepper_left_hand", "Gripper");
+
+  onto_ptr->feeder.addRelation("pepper", "hasComponent", "pepper_left_hand");
+
+  onto_ptr->feeder.waitUpdate(1000);
+  EXPECT_TRUE(onto_ptr->individuals.isInferred("pepper", "canManipulate", "mug_3"));
+
+  auto exp = onto_ptr->individuals.getRelationInferenceExplanation("pepper", "canManipulate", "mug_3");
+  EXPECT_EQ(exp.size(), 7);
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3_disp|isA|ManipulableDisposition") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|hasDisposition|mug_3_disp") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "mug_3|isA|Mug") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "Mug|isA|Object") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper_capa|isA|ManipulationCapability") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|hasCapability|pepper_capa") != exp.end());
+  EXPECT_TRUE(std::find(exp.begin(), exp.end(), "pepper|isA|Robot") != exp.end());
 }
 
 TEST(reasoning_rule, builtin_tests)

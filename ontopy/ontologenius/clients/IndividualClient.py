@@ -148,12 +148,18 @@ class IndividualClient(OntologyClient):
         param = subject + "|" + class_name
         return (self.callStr("isInferred", param) != "")
 
-    def getRelationInferenceExplanation(self, subject, property, object):
-        """Gives all the relations (str[]) used in the inference of the provided relation (str, str, str)."""
+    def getRelationInferenceExplanation(self, subject, property, object, compress = False):
+        """Gives all the relations (str[]) used in the inference of the provided relation (str, str, str).
+           If compress is True, the explanation is returned in a compressed format, removing inheritance chains."""
         param = subject + "|" + property + "|" + object
+        if compress:
+            param += " -c true"
         return self.call("getInferenceExplanation", param)
 
-    def getInheritanceInferenceExplanation(self, subject, class_name):
-        """Gives all the relations (str[]) used in the inference of the provided inheritage (str, str)."""
+    def getInheritanceInferenceExplanation(self, subject, class_name, compress = False):
+        """Gives all the relations (str[]) used in the inference of the provided inheritage (str, str).
+           If compress is True, the explanation is returned in a compressed format, removing inheritance chains."""
         param = subject + "|" + class_name
+        if compress:
+            param += " -c true"
         return self.call("getInferenceExplanation", param)

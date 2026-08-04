@@ -558,19 +558,6 @@ namespace ontologenius {
     }
   }
 
-  std::string OntologyOwlReader::readSomeValuesFrom(tinyxml2::XMLElement* elem)
-  {
-    std::string value = getAttribute(elem, "rdf:resource");
-    if(value.empty())
-      for(tinyxml2::XMLElement* sub_elem = elem->FirstChildElement(); sub_elem != nullptr; sub_elem = sub_elem->NextSiblingElement())
-      {
-        const std::string restriction_name = sub_elem->Value();
-        if(restriction_name == "rdfs:Datatype" && display_)
-          std::cout << restriction_name << std::endl;
-      }
-    return value;
-  }
-
   void OntologyOwlReader::push(Properties_t& properties, tinyxml2::XMLElement* sub_elem, const std::string& symbole, const std::string& attribute)
   {
     const char* sub_attr = sub_elem->Attribute(attribute.c_str());
