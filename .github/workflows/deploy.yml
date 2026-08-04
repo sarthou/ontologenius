@@ -31,8 +31,7 @@ jobs:
 
       - name: Build Pagefind Index
         run:  |
-          cd docs
-          npx -y pagefind --site
+          npx -y pagefind --site ./docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
