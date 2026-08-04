@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <unordered_set>
 #include <vector>
 
 #include "ontologenius/compat/ros.h"
