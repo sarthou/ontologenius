@@ -9,8 +9,9 @@
   <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <script src="../scripts/jquery-3.7.0.min.js"></script>
-  <script src="../scripts/tabs.js" type="text/javascript"></script>
+  <script src="/scripts/jquery-3.7.0.min.js"></script>
+  <script src="/scripts/tabs.js" type="text/javascript"></script>
+  <script src="/scripts/sidebar.js" defer></script>
 </head>
 
 <body>
@@ -60,17 +61,7 @@
           </ul>
         </div>
 
-        <div class="contents">
-          <div id="contents-toggle" class=""></div>
-          <h3>Overview</h3>
-          <ul style="display: block;">
-            <li class="level1"><a href="launchers.html"><b>Launchers</b></a></li>
-            <li class="level1"><a href="ontoloGUI.html">OntoloGUI</a></li>
-            <li class="level1"><a href="reasonersConfiguration.html">Reasoners configuration</a></li>
-            <li class="level1"><a href="reasoningCapabilities.html">Reasoning capabilities</a></li>
-            <!--li class="level1"><a href="plugins.html">Plugins</a></li-->
-          </ul>
-        </div>
+        <div data-sidebar="/overview/sidebar.html"></div>
 
         <div class="contents">
           <h3>
