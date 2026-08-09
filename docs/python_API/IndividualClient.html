@@ -89,88 +89,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#__init__">__init__</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getType">getType</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getSame">getSame</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDistincts">getDistincts</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getOn">getOn</a></b>(self, name, property, selector = '')</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getFrom">getFrom</a></b>(self, property, name, selector = '')</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getWith">getWith</a></b>(self, indiv_from, indiv_to, selector = '', depth = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedFrom">getRelatedFrom</a></b>(self, property)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedOn">getRelatedOn</a></b>(self, property)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelatedWith">getRelatedWith</a></b>(self, name, selector = '')</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationFrom">getRelationFrom</a></b>(self, name, depth = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationOn">getRelationOn</a></b>(self, name, depth = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationWith">getRelationWith</a></b>(self, name, selector = '')</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getDomainOf">getDomainOf</a></b>(self, name, selector = '', depth = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRangeOf">getRangeOf</a></b>(self, name, selector = '', depth = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isRelationInferred">isRelationInferred</a></b>(self, subject, property, object)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#isInheritanceInferred">isInheritanceInferred</a></b>(self, subject, class_name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getRelationInferenceExplanation">getRelationInferenceExplanation</a></b>(self, subject, property, object, compress = False)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="IndividualClient.html#getInheritanceInferenceExplanation">getInheritanceInferenceExplanation</a></b>(self, subject, class_name, compress = False)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="reimplemented-methods"></a>
         <h2 id="reimplemented-methods">Reimplemented Methods</h2>
@@ -196,71 +116,71 @@
           <p>Constructs a class client.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i> should be defined as ''.</p>
 
-          <h3 class="fn" id="getType"><a name="getType"></a><span class="name">getType</span>(self, name)</h3>
+          <h3 class="fn" id="getType"><span class="hidden_type">str[]</span><a name="getType"></a><span class="name">getType</span>(self, name)</h3>
           <p>Gives all the individuals (str[]) of the type of the given class <i>name</i>(str).</p>
 
-          <h3 class="fn" id="getSame"><a name="getSame"></a><span class="name">getSame</span>(self, name)</h3>
+          <h3 class="fn" id="getSame"><span class="hidden_type">str[]</span><a name="getSame"></a><span class="name">getSame</span>(self, name)</h3>
           <p>Gives all the individuals (str[]) that are defined as being identical to the individual <i>name</i>(str).</p>
 
-          <h3 class="fn" id="getDistincts"><a name="getDistincts"></a><span class="name">getDistincts</span>(self, name)</h3>
+          <h3 class="fn" id="getDistincts"><span class="hidden_type">str[]</span><a name="getDistincts"></a><span class="name">getDistincts</span>(self, name)</h3>
           <p>Gives all the defined individuals (str[]) as being distinct from the individual <i>name</i>(str).</p>
 
-          <h3 class="fn" id="getOn"><a name="getOn"></a><span class="name">getOn</span>(self, name, property, selector = '')</h3>
+          <h3 class="fn" id="getOn"><span class="hidden_type">str[]</span><a name="getOn"></a><span class="name">getOn</span>(self, name, property, selector = '')</h3>
           <p>Gives all the individuals (str[]) pointed by the property <i>property</i>(str) and applied to the individual <i>name</i>(str).</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> class. The default value '' represents no restriction on the result.</p>
 
-          <h3 class="fn" id="getFrom"><a name="getFrom"></a><span class="name">getFrom</span>(self, property, name, selector = '')</h3>
+          <h3 class="fn" id="getFrom"><span class="hidden_type">str[]</span><a name="getFrom"></a><span class="name">getFrom</span>(self, property, name, selector = '')</h3>
           <p>Gives all the individuals (str[]) having the given property <i>property</i>(str) and pointing to the individual <i>name</i>(str).</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> class. The default value '' represents no restriction on the result.</p>
 
-          <h3 class="fn" id="getWith"><a name="getWith"></a><span class="name">getWith</span>(self, indiv_from, indiv_to, selector = '', depth = -1)</h3>
+          <h3 class="fn" id="getWith"><span class="hidden_type">str[]</span><a name="getWith"></a><span class="name">getWith</span>(self, indiv_from, indiv_to, selector = '', depth = -1)</h3>
           <p>Gives all the properties (str[]) linking the individual <i>indiv_from</i>(str) to the individual <i>indiv_to</i>(str).</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="getRelatedFrom"><a name="getRelatedFrom"></a><span class="name">getRelatedFrom</span>(self, property)</h3>
+          <h3 class="fn" id="getRelatedFrom"><span class="hidden_type">str[]</span><a name="getRelatedFrom"></a><span class="name">getRelatedFrom</span>(self, property)</h3>
           <p>Gives all the individuals (str[]) possessing the property <i>property</i>(str).</p>
 
-          <h3 class="fn" id="getRelatedOn"><a name="getRelatedOn"></a><span class="name">getRelatedOn</span>(self, property)</h3>
+          <h3 class="fn" id="getRelatedOn"><span class="hidden_type">str[]</span><a name="getRelatedOn"></a><span class="name">getRelatedOn</span>(self, property)</h3>
           <p>Gives all the individuals (str[]) pointed to by the property <i>property</i>(str).</p>
 
-          <h3 class="fn" id="getRelatedWith"><a name="getRelatedWith"></a><span class="name">getRelatedWith</span>(self, name, selector = '')</h3>
+          <h3 class="fn" id="getRelatedWith"><span class="hidden_type">str[]</span><a name="getRelatedWith"></a><span class="name">getRelatedWith</span>(self, name, selector = '')</h3>
           <p>Gives all the individuals (str[]) having a property pointing to the individual <i>name</i>(str).</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> class. The default value '' represents no restriction on the result.</p>
 
-          <h3 class="fn" id="getRelationFrom"><a name="getRelationFrom"></a><span class="name">getRelationFrom</span>(self, name, depth = -1)</h3>
+          <h3 class="fn" id="getRelationFrom"><span class="hidden_type">str[]</span><a name="getRelationFrom"></a><span class="name">getRelationFrom</span>(self, name, depth = -1)</h3>
           <p>Gives all the properties (str[]) applied to the individual <i>name</i>(str).</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="getRelationOn"><a name="getRelationOn"></a><span class="name">getRelationOn</span>(self, name, depth = -1)</h3>
+          <h3 class="fn" id="getRelationOn"><span class="hidden_type">str[]</span><a name="getRelationOn"></a><span class="name">getRelationOn</span>(self, name, depth = -1)</h3>
           <p>Gives all the properties (str[]) going to the individual <i>name</i>(str).</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="getRelationWith"><a name="getRelationWith"></a><span class="name">getRelationWith</span>(self, name, selector = '')</h3>
+          <h3 class="fn" id="getRelationWith"><span class="hidden_type">str[]</span><a name="getRelationWith"></a><span class="name">getRelationWith</span>(self, name, selector = '')</h3>
           <p>Gives all the individuals (str[]) pointed by a property applied to the individual <i>name</i>(str).</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> class. The default value '' represents no restriction on the result.</p>
 
-          <h3 class="fn" id="getDomainOf"><a name="getDomainOf"></a><span class="name">getDomainOf</span>(self, name, selector = '', depth = -1)</h3>
+          <h3 class="fn" id="getDomainOf"><span class="hidden_type">str[]</span><a name="getDomainOf"></a><span class="name">getDomainOf</span>(self, name, selector = '', depth = -1)</h3>
           <p>Gives all the properties (str[]) for which the individual <i>name</i>(str) is part of the domain.</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="getRangeOf"><a name="getRangeOf"></a><span class="name">getRangeOf</span>(self, name, selector = '', depth = -1)</h3>
+          <h3 class="fn" id="getRangeOf"><span class="hidden_type">str[]</span><a name="getRangeOf"></a><span class="name">getRangeOf</span>(self, name, selector = '', depth = -1)</h3>
           <p>Gives all the properties (str[]) for which the individual <i>name</i>(str) is part of the range.</p>
           <p>The optional <i>selector</i>(str) parameter can be set to only get results inheriting from the <i>selector</i> property. The default value '' represents no restriction on the result.</p>
           <p>The optional <i>depth</i>(int) parameter can be set to limit tree propagation of the individual to a specific value. The default value -1 represents no propagation limitation.</p>
 
-          <h3 class="fn" id="isRelationInferred"><a name="isRelationInferred"></a><span class="name">isRelationInferred</span>(self, subject, property, object)</h3>
+          <h3 class="fn" id="isRelationInferred"><span class="hidden_type">bool</span><a name="isRelationInferred"></a><span class="name">isRelationInferred</span>(self, subject, property, object)</h3>
           <p>Tests if the relation (str, str, str) has been inferred or not.</p>
 
-          <h3 class="fn" id="isInheritanceInferred"><a name="isInheritanceInferred"></a><span class="name">isInheritanceInferred</span>(self, subject, class_name)</h3>
+          <h3 class="fn" id="isInheritanceInferred"><span class="hidden_type">bool</span><a name="isInheritanceInferred"></a><span class="name">isInheritanceInferred</span>(self, subject, class_name)</h3>
           <p>Tests if the inheritance (str, str) has been inferred or not.</p>
 
-          <h3 class="fn" id="getRelationInferenceExplanation"><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object, compress = False)</h3>
+          <h3 class="fn" id="getRelationInferenceExplanation"><span class="hidden_type">str[]</span><a name="getRelationInferenceExplanation"></a><span class="name">getRelationInferenceExplanation</span>(self, subject, property, object, compress = False)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided relation (str, str, str).</p>
           <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 
-          <h3 class="fn" id="getInheritanceInferenceExplanation"><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_name, compress = False)</h3>
+          <h3 class="fn" id="getInheritanceInferenceExplanation"><span class="hidden_type">str[]</span><a name="getInheritanceInferenceExplanation"></a><span class="name">getInheritanceInferenceExplanation</span>(self, subject, class_name, compress = False)</h3>
           <p>Gives all the relations (str[]) used in the inference of the provided inheritage (str, str).</p>
           <p>The optional <i>compress</i> parameter can be set to true to get a compressed version of the explanation, removing inheritance chains. The default value false represents no compression.</p>
 

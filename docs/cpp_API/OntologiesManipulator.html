@@ -90,36 +90,8 @@
 
         <a name="public-functions"></a>
         <h2 id="public-functions">Public Functions</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#OntologiesManipulator">OntologiesManipulator</a></b>()</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#waitInit">waitInit</a></b>(int32_t <i>timeout</i> = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> OntologyManipulator* </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#operator">operator[]</a></b>(const std::string&amp; <i>name</i>)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> OntologyManipulator* </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">get</a></b>(const std::string&amp; <i>name</i>)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> OntologyIndexManipulator* </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">getIndex</a></b>(const std::string&amp; <i>name</i>)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#verbose">verbose</a></b>(bool verbose)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        
+        <div data-summary-table></div>
 
         <a name="reimplemented-public-functions"></a>
         <h2 id="reimplemented-public-functions">Reimplemented Public Functions</h2>
@@ -174,15 +146,15 @@
           <p>Returns a pointer on the OntologyIndexManipulator instance named <i>name</i>.</p>
           <p>Returns nullptr if no OntologyIndexManipulator instance is named <i>name</i>.</p>
 
-          <h3 class="fn" id="add"><a name="add"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="rep-fn" id="add"><a name="add"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">add</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Creates a new instance of ontologyManipulator and OntologyIndexManipulator identified by the name <i>name</i>.</p>
           <p>Returns false if the creation fails. Returns true even if the instance already exists.</p>
 
-          <h3 class="fn" id="copy"><a name="copy"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">copy</span>(const <span class="type">std::string</span>&amp; <i>dest_name</i>, const <span class="type">std::string</span>&amp; <i>src_name</i>)</h3>
+          <h3 class="rep-fn" id="copy"><a name="copy"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">copy</span>(const <span class="type">std::string</span>&amp; <i>dest_name</i>, const <span class="type">std::string</span>&amp; <i>src_name</i>)</h3>
           <p>Creates a new instance of ontologyManipulator and OntologyIndexManipulator identified by the name <i>dest_name</i> that manipulates a copy of the ontology handled by the ontologyManipulator <i>src_name</i>.</p>
           <p>Returns false if the copy fails. Returns true even if the instance already exists.</p>
 
-          <h3 class="fn" id="del"><a name="del"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
+          <h3 class="rep-fn" id="del"><a name="del"></a><span class="type">bool</span> OntologiesManipulator::<span class="name">del</span>(const <span class="type">std::string</span>&amp; <i>name</i>)</h3>
           <p>Deletes the instance of ontologyManipulator and OntologyIndexManipulator identified by the name <i>name</i>.</p>
           <p>Returns false deletion fails. Returns true even if the instance does not exist.</p>
 

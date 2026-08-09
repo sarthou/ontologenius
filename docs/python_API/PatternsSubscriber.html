@@ -85,28 +85,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#__init__">__init__</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> int </td>
-                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#subscribe">subscribe</a></b>(self, pattern, callback, count = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#cancel">cancel</a></b>(self, id)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="PatternsSubscriber.html#end">end</a></b>(self, dest_name, src_name)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="details"></a>
         <div class="descr">
@@ -125,7 +105,7 @@
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str).
             For classic use, <i>name</i>(str) should be defined as &quot;&quot;.</p>
 
-          <h3 class="fn" id="subscribe"><a name="subscribe"></a><span class="name">subscribe</span>(self, pattern, callback, count)</h3>
+          <h3 class="fn" id="subscribe"><span class="hidden_type">int</span><a name="subscribe"></a><span class="name">subscribe</span>(self, pattern, callback, count)</h3>
           <p>Subscribes to a given <i>pattern</i>(str) linked to a <i>callback</i>(function(str)). Patterns are in the form "[add]subject|property|object".
             Subject and object can be set as classes such as "[add]Cube|isOnTopOf|Table" to subscibe to any fact representing a cube being on a table.
             In addition, any of the four elements can be setted with question mark which can be read as "any". For example,
@@ -134,11 +114,11 @@
             Default parameter -1 corresponds to an unlimited subscription.</p>
           <p>This function returns the subscription id(int). This later is only used to manually unsubscribe.</p>
 
-          <h3 class="fn" id="cancel"><a name="cancel"></a><span class="name">cancel</span>(self, id)</h3>
+          <h3 class="fn" id="cancel"><span class="hidden_type">bool</span><a name="cancel"></a><span class="name">cancel</span>(self, id)</h3>
           <p>Manualy unsubscribe from a pattern using the corresponding subscription <id>id</id>(int).</p>
           <p>Return True if the unsubscription suceeded.</p>
 
-          <h3 class="fn" id="end"><a name="end"></a><span class="name">end</span>(self)</h3>
+          <h3 class="fn" id="end"><span class="hidden_type">bool</span><a name="end"></a><span class="name">end</span>(self)</h3>
           <p>Tests if any subscription is still ongoing.</p>
         </div>
       </div>

@@ -93,44 +93,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#__init__">__init__</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#list">list</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#add">add</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#copy">copy</a></b>(self, dest_name, src_name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#del">delete</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#getDifference">getDifference</a></b>(self, onto_1, onto_2, concept_name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#hasRoot">hasRoot</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str </td>
-                <td class="memItemRight bottomAlign"><b><a href="ManagerClient.html#getRootName">getRootName</a></b>(self)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="reimplemented-methods"></a>
         <h2 id="reimplemented-methods">Reimplemented Methods</h2>
@@ -153,30 +117,30 @@
           <p>Constructs a manager client.</p>
           <p>Can only be used in a multi-ontology mode.</p>
 
-          <h3 class="fn" id="list"><a name="list"></a><span class="name">list</span>(self)</h3>
+          <h3 class="fn" id="list"><span class="hidden_type">str[]</span><a name="list"></a><span class="name">list</span>(self)</h3>
           <p>Returns the name of the instantiated ontologies (str[]).</p>
 
-          <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, name)</h3>
+          <h3 class="fn" id="add"><span class="hidden_type">bool</span><a name="add"></a><span class="name">add</span>(self, name)</h3>
           <p>Create an ontology instance named <i>name</i>(str).</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="copy"><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
+          <h3 class="fn" id="copy"><span class="hidden_type">bool</span><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
           <p>Create a copy of the ontology instance named <i>src_name</i>(str) with the name <i>dest_name</i>(str).</p>
           <p>Returns False if the service call fails or if the copy fails.</p>
 
-          <h3 class="fn" id="del"><a name="del"></a><span class="name">delete</span>(self, name)</h3>
+          <h3 class="fn" id="del"><span class="hidden_type">bool</span><a name="del"></a><span class="name">delete</span>(self, name)</h3>
           <p>Delete the instance of the ontology named <i>name</i>(str)</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="getDifference"><a name="getDifference"></a><span class="name">getDifference</span>(self, onto_1, onto_2, concept_name)</h3>
+          <h3 class="fn" id="getDifference"><span class="hidden_type">str[]</span><a name="getDifference"></a><span class="name">getDifference</span>(self, onto_1, onto_2, concept_name)</h3>
           <p>Returns the difference of knowledge between <i>onto_1</i>(str) and <i>onto_2</i>(str) regarding the concept (class or individual) <i>concept_name</i>(str).</p>
           <p>The elements of the returned vector are formated as : <b>[+]concept_from|property|concept_on</b> OR <b>[-]concept_from|property|concept_on</b>. An element is positive if it is present in <i>onto_1</i> and not in <i>onto_2</i> and negative in reverse.</p>
           <p>The difference in inheritance knowledge between concepts is returned with the property <b>isA</b>.</p>
 
-          <h3 class="fn" id="hasRoot"><a name="hasRoot"></a><span class="name">hasRoot</span>(self)</h3>
+          <h3 class="fn" id="hasRoot"><span class="hidden_type">bool</span><a name="hasRoot"></a><span class="name">hasRoot</span>(self)</h3>
           <p>Tests if a root has been setted.</p>
 
-          <h3 class="fn" id="getRootName"><a name="getRootName"></a><span class="name">getRootName</span>(self)</h3>
+          <h3 class="fn" id="getRootName"><span class="hidden_type">str</span><a name="getRootName"></a><span class="name">getRootName</span>(self)</h3>
           <p>Gets the name (str) of the root instance if one has been defined.</p>
 
         </div>

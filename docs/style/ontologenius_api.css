@@ -679,6 +679,8 @@ col-1 h2 {
 }
 
 .context h3.fn,
+.context h3.rep-fn,
+.context h3.at,
 .context h3.flags {
   color: #696969;
   font-size: 1.46em;
@@ -693,6 +695,10 @@ col-1 h2 {
 
 .type {
   color: #3d55a2
+}
+
+.hidden_type {
+  display: none;
 }
 
 .name {
@@ -712,6 +718,8 @@ col-1 h2 {
 }
 
 .context h3.fn .name,
+.context h3.rep-fn .name,
+.context h3.at .name,
 .context h3 span.type,
 .qmlname span.name {
   font-weight: 400

@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Initialize On-Page Table of Contents (Scans <h2> tags)
     initPageToc();
+
+    initSummaryTable();
 });
 
 function initExternalSidebars() {
@@ -88,6 +90,82 @@ function initPageToc() {
         <ul style="display: block;">
           ${listItemsHtml}
         </ul>
+      </div>
+    `;
+    });
+}
+
+function initSummaryTable() {
+    const tableContainers = document.querySelectorAll('[data-summary-table]');
+    if (tableContainers.length === 0) return;
+
+    const fnHeaders = document.querySelectorAll('h3.fn');
+    if (fnHeaders.length === 0) return;
+
+    const pageFile = window.location.pathname.split('/').pop() || '';
+    let tableRowsHtml = '';
+
+    fnHeaders.forEach(h3 => {
+        // 1. Get anchor ID
+        const anchorId = h3.id || h3.querySelector('a[name]')?.getAttribute('name') || '';
+        const href = pageFile ? `${pageFile}#${anchorId}` : `#${anchorId}`;
+
+        // 2. Find method name span
+        const nameSpan = h3.querySelector('span.name');
+        if (!nameSpan) return;
+
+        const methodName = nameSpan.textContent.trim();
+
+        // 3. Separate return type nodes from parameter nodes
+        let returnTypeHtml = '';
+        let paramsHtml = '';
+        let passedNameSpan = false;
+
+        h3.childNodes.forEach(node => {
+            // Ignore inner <a name="..."> anchor tags
+            if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'A' && node.getAttribute('name')) {
+                return;
+            }
+
+            if (node === nameSpan) {
+                passedNameSpan = true;
+                return;
+            }
+
+            const nodeHtml = node.nodeType === Node.ELEMENT_NODE ? node.outerHTML : node.textContent;
+
+            if (!passedNameSpan) {
+                returnTypeHtml += nodeHtml;
+            } else {
+                paramsHtml += nodeHtml;
+            }
+        });
+
+        // Fix 1: Strip ONLY the class prefix (e.g. FeederPublisher::) at the end of the return type string.
+        // This preserves std:: and std::vector<std::string>
+        returnTypeHtml = returnTypeHtml.replace(/[A-Za-z0-9_]+::\s*$/, '').trim();
+
+        // Fix 2: Remove class="type" attribute from return type tags
+        returnTypeHtml = returnTypeHtml.replace(/\s*class=["']type["']/gi, '');
+        returnTypeHtml = returnTypeHtml.replace(/\s*class=["']hidden_type["']/gi, '');
+
+        // 4. Build table row
+        tableRowsHtml += `
+      <tr>
+        <td class="memItemLeft rightAlign topAlign">${returnTypeHtml || ' '}</td>
+        <td class="memItemRight bottomAlign"><b><a href="${href}">${methodName}</a></b>${paramsHtml.trim()}</td>
+      </tr>`;
+    });
+
+    // Inject table
+    tableContainers.forEach(container => {
+        container.innerHTML = `
+      <div class="table">
+        <table class="alignedsummary">
+          <tbody>
+            ${tableRowsHtml}
+          </tbody>
+        </table>
       </div>
     `;
     });

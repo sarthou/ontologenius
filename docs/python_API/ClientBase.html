@@ -89,44 +89,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#__init__">__init__</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> int </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#nb">nb</a></b>()</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#resetNb">resetNb</a></b>()</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#setVerbose">setVerbose</a></b>(verbose)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str[] </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#call">call</a></b>(self, action, param)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callStr">callStr</a></b>(self, action, param)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callNR">callNR</a></b>(self, action, param)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ClientBase.html#callBool">callBool</a></b>(self, action, param)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="details"></a>
         <div class="descr">
@@ -141,7 +105,7 @@
           <h3 class="fn" id="__init__"><a name="__init__"></a><span class="name">__init__</span>(self, name)</h3>
           <p>Constructs a ROS client linked to the service <i>name</i>(str).</p>
 
-          <h3 class="fn" id="nb"><a name="nb"></a><span class="name">nb</span>(self)</h3>
+          <h3 class="fn" id="nb"><span class="hidden_type">int</span><a name="nb"></a><span class="name">nb</span>(self)</h3>
           <p>Gives the total number (int) of service calls from all ClientBase instances since the last reset.</p>
 
           <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="name">resetNb</span>(self)</h3>
@@ -150,19 +114,19 @@
           <h3 class="fn" id="setVerbose"><a name="setVerbose"></a><span class="name">setVerbose</span>(verbose)</h3>
           <p>If <i>verbose</i>(bool) is set to True, the clients will post messages about the failure to call the services and about their restoration.</p>
 
-          <h3 class="fn" id="call"><a name="call"></a><span class="name">call</span>(self, action, param)</h3>
+          <h3 class="fn" id="call"><span class="hidden_type">str[]</span><a name="call"></a><span class="name">call</span>(self, action, param)</h3>
           <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the results (str[]).</p>
           <p>If the service call fails, the function returns None</p>
 
-          <h3 class="fn" id="callStr"><a name="callStr"></a><span class="name">callStr</span>(self, action, param)</h3>
+          <h3 class="fn" id="callStr"><span class="hidden_type">str</span><a name="callStr"></a><span class="name">callStr</span>(self, action, param)</h3>
           <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str) and returns all the first result (str).</p>
           <p>If the service call fails, the function returns None</p>
 
-          <h3 class="fn" id="callNR"><a name="callNR"></a><span class="name">callNR</span>(self, action, param)</h3>
+          <h3 class="fn" id="callNR"><span class="hidden_type">bool</span><a name="callNR"></a><span class="name">callNR</span>(self, action, param)</h3>
           <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
           <p>If the service call fails, the function returns False</p>
 
-          <h3 class="fn" id="callBool"><a name="callBool"></a><span class="name">callBool</span>(self, action, param)</h3>
+          <h3 class="fn" id="callBool"><span class="hidden_type">bool</span><a name="callBool"></a><span class="name">callBool</span>(self, action, param)</h3>
           <p>Call the service set up in the constructor of ClientBase with the request defined with <i>action</i>(str) and <i>param</i>(str).</p>
           <p>Returns False if the service call fails or the result code of the service is different from SUCCESS.</p>
 

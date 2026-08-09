@@ -100,32 +100,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#__init__">__init__</a></b>(self, name = '')</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#close">close</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> int </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#nb">nb</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#resetNb">resetNb</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologyManipulator.html#setVerbose">setVerbose</a></b>(self, verbose)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="details"></a>
         <div class="descr">
@@ -138,28 +114,28 @@
         <div class="attr">
           <h2>Attributes Documentation</h2>
 
-          <h3 class="fn" id="individuals"><a name="individuals"></a><span class="name">individuals</span> : <span class="type"><a href="IndividualClient.html">IndividualClient</a></span></h3>
+          <h3 class="at" id="individuals"><a name="individuals"></a><span class="name">individuals</span> : <span class="type"><a href="IndividualClient.html">IndividualClient</a></span></h3>
           <p>ROS service client to query ontologenius about individuals.</p>
 
-          <h3 class="fn" id="objectProperties"><a name="objectProperties"></a><span class="name">objectProperties</span> : <span class="type"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></span></h3>
+          <h3 class="at" id="objectProperties"><a name="objectProperties"></a><span class="name">objectProperties</span> : <span class="type"><a href="ObjectPropertyClient.html">ObjectPropertyClient</a></span></h3>
           <p>ROS service client to query ontologenius about object properties.</p>
 
-          <h3 class="fn" id="dataProperties"><a name="dataProperties"></a><span class="name">dataProperties</span> : <span class="type"><a href="DataPropertyClient.html">DataPropertyClient</a></span></h3>
+          <h3 class="at" id="dataProperties"><a name="dataProperties"></a><span class="name">dataProperties</span> : <span class="type"><a href="DataPropertyClient.html">DataPropertyClient</a></span></h3>
           <p>ROS service client to query ontologenius about data properties.</p>
 
-          <h3 class="fn" id="classes"><a name="classes"></a><span class="name">classes</span> : <span class="type"><a href="ClassClient.html">ClassClient</a></span></h3>
+          <h3 class="at" id="classes"><a name="classes"></a><span class="name">classes</span> : <span class="type"><a href="ClassClient.html">ClassClient</a></span></h3>
           <p>ROS service client to query ontologenius about classes.</p>
 
-          <h3 class="fn" id="actions"><a name="actions"></a><span class="name">actions</span> : <span class="type"><a href="ActionClient.html">ActionClient</a></span></h3>
+          <h3 class="at" id="actions"><a name="actions"></a><span class="name">actions</span> : <span class="type"><a href="ActionClient.html">ActionClient</a></span></h3>
           <p>ROS service client to manage the ontology instance.</p>
 
-          <h3 class="fn" id="reasoners"><a name="reasoners"></a><span class="name">reasoners</span> : <span class="type"><a href="ReasonerClient.html">ReasonerClient</a></span></h3>
+          <h3 class="at" id="reasoners"><a name="reasoners"></a><span class="name">reasoners</span> : <span class="type"><a href="ReasonerClient.html">ReasonerClient</a></span></h3>
           <p>ROS service client to manage reasoners plugins.</p>
 
-          <h3 class="fn" id="feeder"><a name="feeder"></a><span class="name">feeder</span> : <span class="type"><a href="FeederPublisher.html">FeederPublisher</a></span></h3>
+          <h3 class="at" id="feeder"><a name="feeder"></a><span class="name">feeder</span> : <span class="type"><a href="FeederPublisher.html">FeederPublisher</a></span></h3>
           <p>ROS Publisher to insert and delete knowledge dynamically.</p>
 
-          <h3 class="fn" id="sparql"><a name="sparql"></a><span class="name">sparql</span> : <span class="type"><a href="SparqlClient.html">SparqlClient</a></span></h3>
+          <h3 class="at" id="sparql"><a name="sparql"></a><span class="name">sparql</span> : <span class="type"><a href="SparqlClient.html">SparqlClient</a></span></h3>
           <p>ROS service client to make SPARQL queries.</p>
 
         </div>
@@ -171,13 +147,13 @@
           <p>Constructs an ontology manipulator.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, do not specify the ontology name <i>name</i>.</p>
 
-          <h3 class="fn" id="nb"><a name="nb"></a><span class="name">nb</span>(self)</h3>
+          <h3 class="fn" id="nb"><span class="hidden_type">int</span><a name="nb"></a><span class="name">nb</span>(self)</h3>
           <p>Gives the total number (int) of service calls from all ROS clients instances since the last reset.</p>
 
           <h3 class="fn" id="resetNb"><a name="resetNb"></a><span class="name">resetNb</span>(self)</h3>
           <p>Reset Call Counter for all instances of ROS clients.</p>
 
-          <h3 class="fn" id="close"><a name="close"></a><span class="name">close</span>(self)</h3>
+          <h3 class="fn" id="close"><span class="hidden_type">bool</span><a name="close"></a><span class="name">close</span>(self)</h3>
           <p>Same as the ActionClient closing function. Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
           <p>Returns False if the service call fails.</p>
 

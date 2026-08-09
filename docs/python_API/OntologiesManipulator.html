@@ -89,32 +89,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#__init__">__init__</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#waitInit">waitInit</a></b>(self, timeout = -1)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> OntologyManipulator </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#get">get</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> OntologyManipulatorIndex </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#getIndex">getIndex</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="OntologiesManipulator.html#setVerbose">setVerbose</a></b>(self, verbose)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="reimplemented-methods"></a>
         <h2 id="reimplemented-methods">Reimplemented Methods</h2>
@@ -157,23 +133,23 @@
           <p>Wait for ontologenius services to be advertised and available for. Blocks until it is.</p>
           <p><i>timeout</i>(int) is the amount of time to wait for before timing out. If timeout is -1 (default), waits until the node is shutdown.</p>
 
-          <h3 class="fn" id="get"><a name="get"></a><span class="name">get</span>(self, name)</h3>
+          <h3 class="fn" id="get"><span class="hidden_type">OntologyManipulator</span><a name="get"></a><span class="name">get</span>(self, name)</h3>
           <p>Returns an <a href="OntologyManipulator.html">OntologyManipulator</a> object instance named <i>name</i>(str).</p>
           <p>Returns None if no OntologyManipulator instance is named <i>name</i>.</p>
 
-          <h3 class="fn" id="getIndex"><a name="getIndex"></a><span class="name">getIndex</span>(self, name)</h3>
+          <h3 class="fn" id="getIndex"><span class="hidden_type">OntologyManipulatorIndex</span><a name="getIndex"></a><span class="name">getIndex</span>(self, name)</h3>
           <p>Returns an <a href="OntologyManipulatorIndex.html">OntologyManipulatorIndex</a> object instance named <i>name</i>(str).</p>
           <p>Returns None if no OntologyManipulatorIndex instance is named <i>name</i>.</p>
 
-          <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, name)</h3>
+          <h3 class="rep-fn" id="add"><span class="hidden_type">bool</span><a name="add"></a><span class="name">add</span>(self, name)</h3>
           <p>Creates a new instance of OntologyManipulator and OntologyManipulatorIndex identified by the name <i>name</i>(str).</p>
           <p>Returns False if the creation fails. Returns True even if the instance already exists.</p>
 
-          <h3 class="fn" id="copy"><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
+          <h3 class="rep-fn" id="copy"><span class="hidden_type">bool</span><a name="copy"></a><span class="name">copy</span>(self, dest_name, src_name)</h3>
           <p>Creates a new instance of OntologyManipulator and OntologyManipulatorIndex identified by the name <i>dest_name</i>(str) that manipulates a copy of the ontology handled by the OntologyManipulator and OntologyManipulatorIndex <i>src_name</i>(str).</p>
           <p>Returns False if the copy fails. Returns True even if the instance already exists.</p>
 
-          <h3 class="fn" id="del"><a name="del"></a><span class="name">delete</span>(self, name)</h3>
+          <h3 class="rep-fn" id="del"><span class="hidden_type">bool</span><a name="del"></a><span class="name">delete</span>(self, name)</h3>
           <p>Deletes the instance of OntologyManipulator and OntologyManipulatorIndex identified by the name <i>name</i>(str).</p>
           <p>Returns False deletion fails. Returns True even if the instance does not exist.</p>
 

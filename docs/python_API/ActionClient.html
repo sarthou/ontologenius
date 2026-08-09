@@ -89,52 +89,8 @@
 
         <a name="methods"></a>
         <h2 id="methods">Methods</h2>
-        <div class="table">
-          <table class="alignedsummary">
-            <tbody>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#__init__">__init__</a></b>(self, name)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#close">close</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#save">save</a></b>(self, path)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#export">export</a></b>(self, path)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#setLang">setLang</a></b>(self, lang)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> str </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#getLang">getLang</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#add">add</a></b>(self, uri)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#fadd">fadd</a></b>(self, file)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#reset">reset</a></b>(self)</td>
-              </tr>
-              <tr>
-                <td class="memItemLeft rightAlign topAlign"> bool </td>
-                <td class="memItemRight bottomAlign"><b><a href="ActionClient.html#clear">clear</a></b>(self)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+
+        <div data-summary-table></div>
 
         <a name="reimplemented-methods"></a>
         <h2 id="reimplemented-methods">Reimplemented Methods</h2>
@@ -156,43 +112,43 @@
           <p>Constructs an action client.</p>
           <p>Can be used in a multi-ontology mode by specifying the name of the ontology <i>name</i>(str). For classic use, <i>name</i>(str) should be defined as ''.</p>
 
-          <h3 class="fn" id="close"><a name="close"></a><span class="name">close</span>(self)</h3>
+          <h3 class="fn" id="close"><span class="hidden_type">bool</span><a name="close"></a><span class="name">close</span>(self)</h3>
           <p>Link all the concepts loaded from files and the Internet. Before closing an ontology, exploration requests are not allowed.</p>
           <p>Returns false ontology closure fails or if the service call fails. Use getErrorCode method to get the origin.</p>
 
-          <h3 class="fn" id="save"><a name="save"></a><span class="name">save</span>(self, path)</h3>
+          <h3 class="fn" id="save"><span class="hidden_type">bool</span><a name="save"></a><span class="name">save</span>(self, path)</h3>
           <p>Saves the current ontology in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/ontology.owl</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="export"><a name="export"></a><span class="name">export</span>(self, path)</h3>
+          <h3 class="fn" id="export"><span class="hidden_type">bool</span><a name="export"></a><span class="name">export</span>(self, path)</h3>
           <p>Exports the current modification tree in the absolute <i>path</i>(str) path. The <i>path</i>(str) parameter must be of the form: my/path/to/file.xml</p>
           <p>This function has no effect on non copied ontologies.</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="setLang"><a name="setLang"></a><span class="name">setLang</span>(self, lang)</h3>
+          <h3 class="fn" id="setLang"><span class="hidden_type">bool</span><a name="setLang"></a><span class="name">setLang</span>(self, lang)</h3>
           <p>Sets the language of work <i>lang</i>(str).</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="getLang"><a name="getLang"></a><span class="name">getLang</span>(self)</h3>
+          <h3 class="fn" id="getLang"><span class="hidden_type">str</span><a name="getLang"></a><span class="name">getLang</span>(self)</h3>
           <p>Return the working language (str).</p>
 
-          <h3 class="fn" id="add"><a name="add"></a><span class="name">add</span>(self, uri)</h3>
+          <h3 class="fn" id="add"><span class="hidden_type">bool</span><a name="add"></a><span class="name">add</span>(self, uri)</h3>
           <p>Load an ontology file (.owl or .ttl) stored at <i>uri</i>(str) from the internet. The Close function should be called after all the desired files have been loaded.</p>
           <p>The owl files can use the import attribute to import additional files. Imported files can be Github URL, Gitlab URL, raw URL or local path. In all cases, Ontologenius
             will try to identify a ROS package in the paths and will use your local package if it exists.</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="fadd"><a name="fadd"></a><span class="name">fadd</span>(self, file)</h3>
+          <h3 class="fn" id="fadd"><span class="hidden_type">bool</span><a name="fadd"></a><span class="name">fadd</span>(self, file)</h3>
           <p>Load an ontology file (.owl or .ttl) stored at <i>file</i>(str) from your local computer. The Close function should be called after all the desired files have been loaded.</p>
           <p>The owl files can use the import attribute to import additional files. Imported files can be Github URL, Gitlab URL, raw URL or local path. In all cases, Ontologenius
             will try to identify a ROS package in the paths and will use your local package if it exists.</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="reset"><a name="reset"></a><span class="name">reset</span>(self)</h3>
+          <h3 class="fn" id="reset"><span class="hidden_type">bool</span><a name="reset"></a><span class="name">reset</span>(self)</h3>
           <p>Unload all the knowledge previously loaded or learned and reload default files.</p>
           <p>Returns False if the service call fails.</p>
 
-          <h3 class="fn" id="clear"><a name="clear"></a><span class="name">clear</span>(self)</h3>
+          <h3 class="fn" id="clear"><span class="hidden_type">bool</span><a name="clear"></a><span class="name">clear</span>(self)</h3>
           <p>Unload all the knowledge previously loaded or learned.</p>
           <p>Returns False if the service call fails.</p>
 
