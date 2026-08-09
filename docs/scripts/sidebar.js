@@ -5,8 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Initialize On-Page Table of Contents (Scans <h2> tags)
     initPageToc();
 
+    // 3. Initialize Method Summary Table
     initSummaryTable();
 });
+
+// Helper: Automatically detects GitHub Pages subpath (e.g., "/my-repo" on "username.github.io/my-repo/")
+const getBasePath = () => {
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    if (window.location.hostname.endsWith('github.io') && pathSegments.length > 0) {
+        return '/' + pathSegments[0];
+    }
+    return '';
+};
+
+const basePath = getBasePath();
+
+// Helper: Fixes root-relative paths ("/page.html" -> "/my-repo/page.html") on GitHub Pages
+const fixPath = (path) => {
+    if (path && path.startsWith('/') && !path.startsWith(basePath + '/')) {
+        return basePath + path;
+    }
+    return path;
+};
 
 function initExternalSidebars() {
     const containers = document.querySelectorAll('[data-sidebar]');
@@ -14,7 +34,7 @@ function initExternalSidebars() {
 
     const normalize = (urlStr) => {
         try {
-            const url = new URL(urlStr, window.location.href);
+            const url = new URL(fixPath(urlStr), window.location.href);
             return url.pathname
                 .toLowerCase()
                 .replace(/\/$/, '')
@@ -30,7 +50,8 @@ function initExternalSidebars() {
         const sidebarFile = container.getAttribute('data-sidebar');
         if (!sidebarFile) return;
 
-        fetch(sidebarFile)
+        // Fix path for fetch if it starts with '/'
+        fetch(fixPath(sidebarFile))
             .then(response => {
                 if (!response.ok) throw new Error(`Could not load: ${sidebarFile}`);
                 return response.text();
@@ -40,11 +61,19 @@ function initExternalSidebars() {
 
                 const links = container.querySelectorAll('a');
                 links.forEach(link => {
-                    const href = link.getAttribute('href');
-                    if (href && normalize(href) === currentNormalized) {
+                    const originalHref = link.getAttribute('href');
+                    if (!originalHref) return;
+
+                    // Fix root links on GitHub Pages (e.g. href="/ActionClient.html")
+                    if (originalHref.startsWith('/')) {
+                        link.setAttribute('href', fixPath(originalHref));
+                    }
+
+                    // Highlight active page
+                    if (normalize(originalHref) === currentNormalized) {
                         link.style.fontWeight = 'bold';
                         link.classList.add('active');
-                        if (link.parentElement.tagName === 'LI') {
+                        if (link.parentElement && link.parentElement.tagName === 'LI') {
                             link.parentElement.classList.add('active-item');
                         }
                     }
@@ -62,7 +91,6 @@ function initPageToc() {
     const headings = document.querySelectorAll('main h2, article h2, body h2');
     if (headings.length === 0) return;
 
-    // Build the list items
     let listItemsHtml = '';
 
     headings.forEach(h2 => {
@@ -142,12 +170,11 @@ function initSummaryTable() {
         });
 
         // Fix 1: Strip ONLY the class prefix (e.g. FeederPublisher::) at the end of the return type string.
-        // This preserves std:: and std::vector<std::string>
+        // This preserves std::, onto_ros::, etc.
         returnTypeHtml = returnTypeHtml.replace(/[A-Za-z0-9_]+::\s*$/, '').trim();
 
-        // Fix 2: Remove class="type" attribute from return type tags
-        returnTypeHtml = returnTypeHtml.replace(/\s*class=["']type["']/gi, '');
-        returnTypeHtml = returnTypeHtml.replace(/\s*class=["']hidden_type["']/gi, '');
+        // Fix 2: Remove class="type" and class="hidden_type" attributes from return type tags
+        returnTypeHtml = returnTypeHtml.replace(/\s*class=["'](?:type|hidden_type)["']/gi, '');
 
         // 4. Build table row
         tableRowsHtml += `
