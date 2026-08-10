@@ -57,8 +57,33 @@ function initExternalSidebars() {
                 return response.text();
             })
             .then(html => {
-                container.innerHTML = html;
+                let processedHtml = html;
 
+                // Automatically replace all {{datasetKey}} placeholders with data-* values
+                Object.entries(container.dataset).forEach(([key, value]) => {
+                    if (key === 'sidebar') return; // Skip the source filename attribute
+
+                    // Creates regex matching {{title}}, {{title }}, etc.
+                    const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+                    processedHtml = processedHtml.replace(regex, value);
+                });
+
+                container.innerHTML = processedHtml;
+
+                // Initialize Pagefind if #search element exists inside injected HTML
+                const searchElement = container.querySelector('#search');
+                if (searchElement && typeof PagefindUI !== 'undefined') {
+                    // Read data-search-base-url or fallback to fixPath('/') for GitHub Pages compatibility
+                    const baseUrl = container.getAttribute('data-search-base-url') || fixPath('/') || '/';
+
+                    new PagefindUI({
+                        element: searchElement,
+                        baseUrl: baseUrl,
+                        showImages: false
+                    });
+                }
+
+                // Highlight active link
                 const links = container.querySelectorAll('a');
                 links.forEach(link => {
                     const originalHref = link.getAttribute('href');
