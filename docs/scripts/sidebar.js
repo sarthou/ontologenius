@@ -103,6 +103,16 @@ function initExternalSidebars() {
                         }
                     }
                 });
+
+                const imgs = container.querySelectorAll('img');
+                imgs.forEach(img => {
+                    const originalSrc = img.getAttribute('src');
+                    if (!originalSrc) return;
+
+                    if (originalSrc.startsWith('/')) {
+                        img.setAttribute('src', fixPath(originalSrc));
+                    }
+                });
             })
             .catch(error => console.error('Sidebar load error:', error));
     });
