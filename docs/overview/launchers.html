@@ -3,8 +3,6 @@
 <head>
   <title>Launchers | Ontologenius 0.4.7</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
-  <link href="../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../images/favicon.ico" rel="shortcut icon">
   <link href="../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../images/favicon-16x16.png" rel="icon" type="image/png">
@@ -12,6 +10,16 @@
   <script src="../scripts/jquery-3.7.0.min.js"></script>
   <script src="../scripts/tabs.js" type="text/javascript"></script>
   <script src="../scripts/sidebar.js" defer></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+
+  <link href="../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -116,41 +124,33 @@
           </div>
           
           <div aria-labelledby="tab-0-Xml1" class="lang-tabs-panel group-tab" id="panel-0-Xml1" name="Xml1" role="tabpanel" tabindex="0">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_single&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -i $(arg intern_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-              
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+  &lt;arg name="language" default="en"/&gt;
+  &lt;arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/&gt;
+  &lt;arg name="files" default="
+    $(find ontologenius)/files/attribute.owl
+    $(find ontologenius)/files/colors.owl
+    $(find ontologenius)/files/positionProperty.owl
+  "/&gt;
+  &lt;node name="ontologenius_core" pkg="ontologenius" type="ontologenius_single" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)"&gt; &lt;/node&gt;
+&lt;/launch&gt; 
+            </code></pre>
           </div>
           
           <div aria-labelledby="tab-0-Xml2" class="lang-tabs-panel group-tab" id="panel-0-Xml2" name="Xml2" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontologenius_single&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(var language) -i $(var intern_file) $(var files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-              
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+  &lt;arg name="language" default="en"/&gt;
+  &lt;arg name="intern_file" default="$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"/&gt;
+  &lt;arg name="files" default="
+    $(find-pkg-share ontologenius)/files/attribute.owl
+    $(find-pkg-share ontologenius)/files/colors.owl
+    $(find-pkg-share ontologenius)/files/positionProperty.owl
+  "/&gt;
+  &lt;node name="ontologenius_core" pkg="ontologenius" exec="ontologenius_single" output="screen" args="-l $(var language) -i $(var intern_file) $(var files)"&gt; &lt;/node&gt;
+&lt;/launch&gt;
+            </code></pre>
           </div>
           
           <div aria-labelledby="tab-0-Python" class="lang-tabs-panel group-tab" id="panel-0-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
@@ -201,31 +201,28 @@
           </div>
           
           <div aria-labelledby="tab-0-Yaml" class="lang-tabs-panel group-tab" id="panel-0-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block yaml_code">
-                <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;language&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;en&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">&quot;</span></div>
-                <div class="terminal_line"></div>
-                <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;ontologenius_single&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;ontologenius_core&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">args</span>: <span class="yaml_string">&quot;-l $(var language) -i $(var intern_file) $(var files)&quot;</span></div>
-              </div>
-            </div>
+            <pre><code class="language-yaml">
+launch:
+- arg:
+    name: "language"
+    default: "en"
+- arg:
+    name: "intern_file"
+    default: "$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"
+- arg:
+    name: "files"
+    default: "
+      $(find-pkg-share ontologenius)/files/attribute.owl
+      $(find-pkg-share ontologenius)/files/colors.owl
+      $(find-pkg-share ontologenius)/files/positionProperty.owl
+      "
+- node:
+    pkg: "ontologenius"
+    exec: "ontologenius_single"
+    name: "ontologenius_core"
+    output: "screen"
+    args: "-l $(var language) -i $(var intern_file) $(var files)"
+            </code></pre>
           </div>
         
         </div>
@@ -260,41 +257,33 @@
           </div>
           
           <div aria-labelledby="tab-1-Xml1" class="lang-tabs-panel group-tab" id="panel-1-Xml1" name="Xml1" role="tabpanel" tabindex="0">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(arg language) -i $(arg intern_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-                
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+  &lt;arg name="language" default="en"/&gt;
+  &lt;arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/&gt;
+  &lt;arg name="files" default="
+    $(find ontologenius)/files/attribute.owl
+    $(find ontologenius)/files/colors.owl
+    $(find ontologenius)/files/positionProperty.owl
+  "/&gt;
+  &lt;node name="ontologenius_core" pkg="ontologenius" type="ontologenius_multi" output="screen" args="-l $(arg language) -i $(arg intern_file) $(arg files)"&gt; &lt;/node&gt;
+&lt;/launch&gt;
+            </code></pre>
           </div>
           
           <div aria-labelledby="tab-1-Xml2" class="lang-tabs-panel group-tab" id="panel-1-Xml2" name="Xml2" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;-l $(var language) -i $(var intern_file) $(var files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-              
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+  &lt;arg name="language" default="en"/&gt;
+  &lt;arg name="intern_file" default="$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"/&gt;
+  &lt;arg name="files" default="
+    $(find-pkg-share ontologenius)/files/attribute.owl
+    $(find-pkg-share ontologenius)/files/colors.owl
+    $(find-pkg-share ontologenius)/files/positionProperty.owl
+  "/&gt;
+  &lt;node name="ontologenius_core" pkg="ontologenius" exec="ontologenius_multi" output="screen" args="-l $(var language) -i $(var intern_file) $(var files)"&gt; &lt;/node&gt;
+&lt;/launch&gt;
+            </code></pre>
           </div>
           
           <div aria-labelledby="tab-1-Python" class="lang-tabs-panel group-tab" id="panel-1-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
@@ -345,31 +334,28 @@
           </div>
           
           <div aria-labelledby="tab-1-Yaml" class="lang-tabs-panel group-tab" id="panel-1-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block yaml_code">
-                <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;language&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;en&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">&quot;</span></div>
-                <div class="terminal_line"></div>
-                <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;ontologenius_multi&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;ontologenius_core&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">args</span>: <span class="yaml_string">&quot;-l $(var language) -i $(var intern_file) $(var files)&quot;</span></div>
-              </div>
-            </div>
+            <pre><code class="language-yaml">
+launch:
+- arg:
+    name: "language"
+    default: "en"
+- arg:
+    name: "intern_file"
+    default: "$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"
+- arg:
+    name: "files"
+    default: "
+      $(find-pkg-share ontologenius)/files/attribute.owl
+      $(find-pkg-share ontologenius)/files/colors.owl
+      $(find-pkg-share ontologenius)/files/positionProperty.owl
+      "
+- node:
+    pkg: "ontologenius"
+    exec: "ontologenius_multi"
+    name: "ontologenius_core"
+    output: "screen"
+    args: "-l $(var language) -i $(var intern_file) $(var files)"
+            </code></pre>
           </div>
         
         </div>
@@ -390,53 +376,45 @@
           </div>
           
           <div aria-labelledby="tab-2-Xml1" class="lang-tabs-panel group-tab" id="panel-2-Xml1" name="Xml1" role="tabpanel" tabindex="0">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/configuration/config_example.yaml&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;display&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;true&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;feeder_rate&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;20&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;root&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;pr2&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;robot_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_robot.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;human_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius)/files/ontologenius_human.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;--root $(arg root) -l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -f $(arg feeder_rate) -r $(arg robot_file) -h $(arg human_file) $(arg files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-                
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+  &lt;arg name="language" default="en"/&gt;
+  &lt;arg name="intern_file" default="$(find ontologenius)/file_intern/ontologenius.owl"/&gt;
+  &lt;arg name="config_file" default="$(find ontologenius)/configuration/config_example.yaml"/&gt;
+  &lt;arg name="display" default="true"/&gt;
+  &lt;arg name="feeder_rate" default="20"/&gt;
+  &lt;arg name="root" default="pr2"/&gt;
+  &lt;arg name="robot_file" default="$(find ontologenius)/files/ontologenius_robot.owl"/&gt;
+  &lt;arg name="human_file" default="$(find ontologenius)/files/ontologenius_human.owl"/&gt;
+  &lt;arg name="files" default="
+    $(find ontologenius)/files/attribute.owl
+    $(find ontologenius)/files/colors.owl
+    $(find ontologenius)/files/positionProperty.owl
+  "/&gt;
+  &lt;node name="ontologenius_core" pkg="ontologenius" type="ontologenius_multi" output="screen" args="--root $(arg root) -l $(arg language) -c $(arg config_file) -i $(arg intern_file) -d $(arg display) -f $(arg feeder_rate) -r $(arg robot_file) -h $(arg human_file) $(arg files)"&gt; &lt;/node&gt;
+&lt;/launch&gt;
+            </code></pre>
           </div>
           
           <div aria-labelledby="tab-2-Xml2" class="lang-tabs-panel group-tab" id="panel-2-Xml2" name="Xml2" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;language&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;en&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;config_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_example.yaml&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;display&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;true&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;feeder_rate&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;20&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;root&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;pr2&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;robot_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_robot.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;human_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_human.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">    <span class="xml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">  <span class="xml_string">&quot;</span>/&gt;</div>
-                <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_core&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontologenius_multi&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span> <span class="xml_param">args</span>=<span class="xml_string">&quot;--root $(var root) -l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) -f $(var feeder_rate) -r $(var robot_file) -h $(var human_file) $(var files)&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-              
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+  &lt;arg name="language" default="en"/&gt;
+  &lt;arg name="intern_file" default="$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"/&gt;
+  &lt;arg name="config_file" default="$(find-pkg-share ontologenius)/configuration/config_example.yaml"/&gt;
+  &lt;arg name="display" default="true"/&gt;
+  &lt;arg name="feeder_rate" default="20"/&gt;
+  &lt;arg name="root" default="pr2"/&gt;
+  &lt;arg name="robot_file" default="$(find-pkg-share ontologenius)/files/ontologenius_robot.owl"/&gt;
+  &lt;arg name="human_file" default="$(find-pkg-share ontologenius)/files/ontologenius_human.owl"/&gt;
+  &lt;arg name="files" default="
+    $(find-pkg-share ontologenius)/files/attribute.owl
+    $(find-pkg-share ontologenius)/files/colors.owl
+    $(find-pkg-share ontologenius)/files/positionProperty.owl
+  "/&gt;
+  &lt;node name="ontologenius_core" pkg="ontologenius" exec="ontologenius_multi" output="screen" args="--root $(var root) -l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) -f $(var feeder_rate) -r $(var robot_file) -h $(var human_file) $(var files)"&gt; &lt;/node&gt;
+&lt;/launch&gt;
+            </code></pre>
           </div>
           
           <div aria-labelledby="tab-2-Python" class="lang-tabs-panel group-tab" id="panel-2-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
@@ -517,49 +495,46 @@
           </div>
           
           <div aria-labelledby="tab-2-Yaml" class="lang-tabs-panel group-tab" id="panel-2-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block yaml_code">
-                <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;language&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;en&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/file_intern/ontologenius.owl&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;config_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/configuration/config_example.yaml&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;display&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;true&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;feeder_rate&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;20&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;root&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;pr2&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;robot_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_robot.owl&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;human_file&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/files/ontologenius_human.owl&quot;</span></div>
-                <div class="terminal_line">- <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">default</span>: <span class="yaml_string">&quot;</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/attribute.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/colors.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">$(find-pkg-share ontologenius)/files/positionProperty.owl</span></div>
-                <div class="terminal_line">      <span class="yaml_string">&quot;</span></div>
-                <div class="terminal_line"></div>
-                <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;ontologenius_multi&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;ontologenius_core&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">args</span>: <span class="yaml_string">&quot;--root $(var root) -l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) -f $(var feeder_rate) -r $(var robot_file) -h $(var human_file) $(var files)&quot;</span></div>
-              </div>
-            </div>
+            <pre><code class="language-yaml">
+launch:
+- arg:
+    name: "language"
+    default: "en"
+- arg:
+    name: "intern_file"
+    default: "$(find-pkg-share ontologenius)/file_intern/ontologenius.owl"
+- arg:
+    name: "config_file"
+    default: "$(find-pkg-share ontologenius)/configuration/config_example.yaml"
+- arg:
+    name: "display"
+    default: "true"
+- arg:
+    name: "feeder_rate"
+    default: "20"
+- arg:
+    name: "root"
+    default: "pr2"
+- arg:
+    name: "robot_file"
+    default: "$(find-pkg-share ontologenius)/files/ontologenius_robot.owl"
+- arg:
+    name: "human_file"
+    default: "$(find-pkg-share ontologenius)/files/ontologenius_human.owl"
+- arg:
+    name: "files"
+    default: "
+      $(find-pkg-share ontologenius)/files/attribute.owl
+      $(find-pkg-share ontologenius)/files/colors.owl
+      $(find-pkg-share ontologenius)/files/positionProperty.owl
+      "
+- node:
+    pkg: "ontologenius"
+    exec: "ontologenius_multi"
+    name: "ontologenius_core"
+    output: "screen"
+    args: "--root $(var root) -l $(var language) -c $(var config_file) -i $(var intern_file) -d $(var display) -f $(var feeder_rate) -r $(var robot_file) -h $(var human_file) $(var files)"
+            </code></pre>
           </div>
         
         </div>
@@ -578,19 +553,15 @@
             </div>
             
             <div aria-labelledby="tab-3-Xml1" class="lang-tabs-panel group-tab" id="panel-3-Xml1" name="Xml1" role="tabpanel" tabindex="0">
-              <div class="highlight-xml">
-                <div id="codecell0" class="code_block xml_code">
-                  <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_gui&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;ontoloGUI&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-                </div>
-              </div>
+              <pre><code class="language-xml">
+  &lt;node name="ontologenius_gui" pkg="ontologenius" type="ontoloGUI" output="screen"&gt; &lt;/node&gt;
+              </code></pre>
             </div>
             
             <div aria-labelledby="tab-3-Xml2" class="lang-tabs-panel group-tab" id="panel-3-Xml2" name="Xml2" role="tabpanel" tabindex="0" hidden="true">
-              <div class="highlight-xml">
-                <div class="code_block xml_code">
-                  <div class="terminal_line">  &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;ontologenius_gui&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;ontoloGUI&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot;</span>&gt; &lt;/<span class="xml_tag">node</span>&gt;</div>
-                </div>
-              </div>
+              <pre><code class="language-xml">
+  &lt;node name="ontologenius_gui" pkg="ontologenius" exec="ontoloGUI" output="screen"&gt; &lt;/node&gt;
+              </code></pre>
             </div>
             
             <div aria-labelledby="tab-3-Python" class="lang-tabs-panel group-tab" id="panel-3-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
@@ -607,15 +578,13 @@
             </div>
             
             <div aria-labelledby="tab-3-Yaml" class="lang-tabs-panel group-tab" id="panel-3-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
-              <div class="highlight-xml">
-                <div class="code_block yaml_code">
-                  <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                  <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius&quot;</span></div>
-                  <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;ontoloGUI&quot;</span></div>
-                  <div class="terminal_line">    <span class="yaml_key">name</span>: <span class="yaml_string">&quot;ontologenius_gui&quot;</span></div>
-                  <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
-                </div>
-              </div>
+              <pre><code class="language-yaml">
+- node:
+    pkg: "ontologenius"
+    exec: "ontoloGUI"
+    name: "ontologenius_gui"
+    output: "screen"
+              </code></pre>
             </div>
           
           </div>

@@ -3,8 +3,6 @@
 <head>
   <title>Explore possible futures (cpp) : Presentation</title>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
-  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
   <link href="../../images/favicon.ico" rel="shortcut icon">
   <link href="../../images/favicon-32x32.png" rel="icon" type="image/png">
   <link href="../../images/favicon-16x16.png" rel="icon" type="image/png">
@@ -13,6 +11,16 @@
   <link href="../../pagefind/pagefind-ui.css" rel="stylesheet">
   <script src="../../pagefind/pagefind-ui.js"></script>
   <script src="../../scripts/sidebar.js" defer></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+
+  <link href="../../style/ontologenius_api.css" rel="stylesheet" type="text/css">
+  <link href="../../style/ontologenius_tabs.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -129,34 +137,31 @@
           </div>
           
           <div aria-labelledby="tab-2-Ros1" class="lang-tabs-panel group-tab" id="panel-2-Ros1" name="Ros1" role="tabpanel" tabindex="0">
-            <div class="highlight-xml">
-              <div class="code_block xml_code" style="counter-reset:code_line 0;">
-                <div class="code_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="code_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">type</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="code_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find ontologenius)/launch/ontologenius_multi.launch&quot;</span>&gt;</div>
-                <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;$(find ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
-                <div class="code_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">default</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
-                <div class="code_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
-                <div class="code_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+    &lt;node name="explore_futures" pkg="ontologenius_tutorial" type="explore_futures" output="screen"/&gt;
+    &lt;include file="$(find ontologenius)/launch/ontologenius_multi.launch"&gt;
+        &lt;arg name="intern_file" default="$(find ontologenius_tutorial)/futures.owl"/&gt;
+        &lt;arg name="files" default=""/&gt;
+    &lt;/include&gt;
+&lt;/launch&gt;
+            </code></pre>
 
-              <p>Let's call this file <i>futures.launch</i> and put it in our package in the folder <i>launch</i>.</p>
-            </div>
+            <p>Let's call this file <i>futures.launch</i> and put it in our package in the folder <i>launch</i>.</p>
           </div>
           
           <div aria-labelledby="tab-2-Ros2" class="lang-tabs-panel group-tab" id="panel-2-Ros2" name="Ros2" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block xml_code">
-                <div class="terminal_line">&lt;<span class="xml_tag">launch</span>&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">node</span> <span class="xml_param">pkg</span>=<span class="xml_string">&quot;ontologenius_tutorial&quot;</span> <span class="xml_param">exec</span>=<span class="xml_string">&quot;explore_futures&quot;</span> <span class="xml_param">output</span>=<span class="xml_string">&quot;screen&quot</span>/&gt;</div>
-                <div class="terminal_line">    &lt;<span class="xml_tag">include</span> <span class="xml_param">file</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius_multi.xml&quot;</span>&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;intern_file&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;$(find-pkg-share ontologenius_tutorial)/futures.owl&quot;</span>/&gt;</div>
-                <div class="terminal_line">        &lt;<span class="xml_tag">arg</span> <span class="xml_param">name</span>=<span class="xml_string">&quot;files&quot;</span> <span class="xml_param">value</span>=<span class="xml_string">&quot;&quot;</span>/&gt;</div>
-                <div class="terminal_line">    &lt;/<span class="xml_tag">include</span>&gt;</div>
-                <div class="terminal_line">&lt;/<span class="xml_tag">launch</span>&gt;</div>
-              </div>
-              <p>Let's call this file <i>futures.xml</i> and put it in our package in the folder <i>launch</i>.</p>
-            </div>
+            <pre><code class="language-xml">
+&lt;launch&gt;
+    &lt;node pkg="ontologenius_tutorial" exec="explore_futures" output="screen"/&gt;
+    &lt;include file="$(find-pkg-share ontologenius)/launch/ontologenius_multi.xml"&gt;
+        &lt;arg name="intern_file" value="$(find-pkg-share ontologenius_tutorial)/futures.owl"/&gt;
+        &lt;arg name="files" value=""/&gt;
+    &lt;/include&gt;
+&lt;/launch&gt;
+            </code></pre>
+            
+            <p>Let's call this file <i>futures.xml</i> and put it in our package in the folder <i>launch</i>.</p>
           </div>
           
           <div aria-labelledby="tab-2-Python" class="lang-tabs-panel group-tab" id="panel-2-Python" name="Python" role="tabpanel" tabindex="0" hidden="true">
@@ -200,26 +205,25 @@
           </div>
           
           <div aria-labelledby="tab-2-Yaml" class="lang-tabs-panel group-tab" id="panel-2-Yaml" name="Yaml" role="tabpanel" tabindex="0" hidden="true">
-            <div class="highlight-xml">
-              <div class="code_block yaml_code">
-                <div class="terminal_line"><span class="yaml_key">launch</span>:</div>
-                <div class="terminal_line">- <span class="yaml_key">node</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">pkg</span>: <span class="yaml_string">&quot;ontologenius_tutorial&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">exec</span>: <span class="yaml_string">&quot;explore_futures&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">output</span>: <span class="yaml_string">&quot;screen&quot;</span></div>
-                <div class="terminal_line"> </div>
-                <div class="terminal_line">- <span class="yaml_key">include</span>:</div>
-                <div class="terminal_line">    <span class="yaml_key">file</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius)/launch/ontologenius_multi_empty.yaml&quot;</span></div>
-                <div class="terminal_line">    <span class="yaml_key">arg</span>:</div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;intern_file&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;$(find-pkg-share ontologenius_tutorial)/futures.owl&quot;</span></div>
-                <div class="terminal_line">        -</div>
-                <div class="terminal_line">            <span class="yaml_key">name</span>: <span class="yaml_string">&quot;files&quot;</span></div>
-                <div class="terminal_line">            <span class="yaml_key">value</span>: <span class="yaml_string">&quot;&quot;</span></div>
-              </div>
-              <p>Let's call this file <i>futures.yaml</i> and put it in our package in the folder <i>launch</i>.</p>
-            </div>
+            <pre><code class="language-yaml">
+launch:
+- node:
+    pkg: "ontologenius_tutorial"
+    exec: "explore_futures"
+    output: "screen"
+ 
+- include:
+    file: "$(find-pkg-share ontologenius)/launch/ontologenius_multi_empty.yaml"
+    arg:
+        -
+            name: "intern_file"
+            value: "$(find-pkg-share ontologenius_tutorial)/futures.owl"
+        -
+            name: "files"
+            value: ""
+            </code></pre>
+            
+            <p>Let's call this file <i>futures.yaml</i> and put it in our package in the folder <i>launch</i>.</p>
           </div>
         
         </div>

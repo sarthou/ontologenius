@@ -880,19 +880,10 @@ table.propsummary {
 }
 
 .cpp_code,
-.xml_code,
-.yaml_code,
 .python_code {
   border-radius: 5px;
 }
 
-.xml_code div,
-.yaml_code div {
-  color: #aeaeae
-}
-
-.xml_tag,
-.yaml_key,
 .py_def,
 .py_key,
 .cpp_key {
@@ -932,19 +923,15 @@ table.propsummary {
 }
 
 .cpp_comment,
-.py_comment,
-.yaml_comment {
+.py_comment {
   color: #6fa55d;
 }
 
-.xml_param,
 .py_var,
 .cpp_var {
   color: #8eeeff;
 }
 
-.xml_string,
-.yaml_string,
 .cpp_included,
 .py_string,
 .cpp_string {
@@ -1290,4 +1277,94 @@ ol.tutorial-part-summary_list>li {
     font-size: 80%;
     word-wrap: break-word;
   }
+}
+
+/* ── Highlight.js overrides to match the manual code-block theme ─────────── */
+
+pre code.hljs {
+  background: #3a4055;
+  color: #e1e1e1;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-size: .9em;
+  line-height: 1.5;
+  border-radius: 5px;
+  padding: 0px 10px;
+  margin-top: 0.75em;
+  margin-bottom: 10px;
+}
+
+/* XML/HTML tag angle-brackets and default text */
+.hljs-tag {
+  color: #aeaeae;
+}
+
+/* Tag names  →  .xml_tag / .yaml_key / .py_def  (#70b2e8) */
+.hljs-tag .hljs-name,
+.hljs-name,
+.hljs-selector-tag {
+  color: #70b2e8;
+}
+
+/* Attribute names  →  .xml_param / .py_var  (#8eeeff) */
+.hljs-tag .hljs-attr,
+.hljs-attr,
+.hljs-attribute {
+  color: #8eeeff;
+}
+
+/* String literals  →  .xml_string / .yaml_string / .py_string  (#f1a985) */
+.hljs-tag .hljs-string,
+.hljs-string,
+.hljs-template-variable {
+  color: #f1a985;
+}
+
+/* Keywords (def, class, import, from, return …)  →  .py_def  (#70b2e8) */
+.hljs-keyword,
+.hljs-selector-pseudo,
+.hljs-selector-attr {
+  color: #70b2e8;
+}
+
+/* import / from / meta directives  →  .py_import  (#f3a1d6) */
+.hljs-meta,
+.hljs-meta .hljs-keyword {
+  color: #f3a1d6;
+}
+
+/* Function / method names  →  .py_function  (#fff5a9) */
+.hljs-title,
+.hljs-title.function_,
+.hljs-title.function_.invoke__ {
+  color: #fff5a9;
+}
+
+/* Class / module names  →  .py_imported / .cpp_type  (#50ffb0) */
+.hljs-title.class_,
+.hljs-type,
+.hljs-built_in {
+  color: #50ffb0;
+}
+
+/* Comments  →  .py_comment / .yaml_comment  (#6fa55d) */
+.hljs-comment,
+.hljs-quote {
+  color: #6fa55d;
+}
+
+/* Numbers and literals (true/false/null)  →  .cpp_value / .py_value  (#ecbd62) */
+.hljs-number,
+.hljs-literal {
+  color: #ecbd62;
+}
+
+/* Variables  →  .py_var  (#8eeeff) */
+.hljs-variable,
+.hljs-template-tag {
+  color: #8eeeff;
+}
+
+/* Deletion / type annotation  →  .cpp_return  (#fe4481) */
+.hljs-deletion {
+  color: #fe4481;
 }

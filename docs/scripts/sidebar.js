@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Initialize Method Summary Table
     initSummaryTable();
+
+    // Automatically highlight all static code blocks on the page
+    if (typeof hljs !== 'undefined') {
+        hljs.highlightAll();
+    }
 });
 
 // Helper: Automatically detects GitHub Pages subpath (e.g., "/my-repo" on "username.github.io/my-repo/")
